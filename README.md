@@ -116,5 +116,5 @@ All rights reserved. Unauthorized copying of this file, via any medium, is stric
 
 ## Authors / Contact
 
-**Alejandro G.**
+**Alejandro C.**
 Software Engineer
