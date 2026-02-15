@@ -1,0 +1,53 @@
+# --- DEPENDENCIAS Y ENTORNOS (PYTHON) ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+.env
+.venv
+
+# --- DEPENDENCIAS Y BUILDS (NODE/REACT) ---
+# Esto es CRITICO: Evita subir miles de librerías de JS
+node_modules/
+**/node_modules/
+dist/
+build/
+coverage/
+
+# --- CONFIGURACIÓN LOCAL FRONTEND ---
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- DATOS E IMÁGENES (Prevenir subidas masivas) ---
+data/
+data/raw/
+data/processed/
+# Excepción: si quieres mantener la estructura de carpetas vacías
+!data/.gitkeep
+
+# --- MODELOS DE IA (Archivos pesados > 100MB) ---
+*.pth
+*.pt
+*.onnx
+models/helios_v2_pro.pth
+# Si usas Git LFS para modelos, comenta las líneas anteriores
+
+# --- LOGS Y BASES DE DATOS LOCALES ---
+*.log
+*.sqlite3
+celerybeat-schedule
+
+# --- SISTEMA OPERATIVO Y IDEs ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# --- NOTEBOOKS ---
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*

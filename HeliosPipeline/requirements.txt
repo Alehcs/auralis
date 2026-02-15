@@ -1,0 +1,13 @@
+sunpy[all]
+astropy
+numpy
+matplotlib
+pandas
+scikit-learn
+tqdm
+jupyter
+notebook
+torch
+torchvision
+streamlit
+plotly
