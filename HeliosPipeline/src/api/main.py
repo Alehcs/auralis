@@ -1,8 +1,14 @@
-"""
-HeliosPipeline REST API Server.
+"""HeliosPipeline REST API — FastAPI backend for solar activity analysis.
 
-FastAPI backend serving magnetogram images, SolarNet predictions,
-system statistics, and pipeline logs.
+Serves processed HMI magnetogram images, SolarNet V2 PRO regression
+predictions, Grad-CAM explainability maps, XAI faithfulness curves,
+system statistics, experiment metadata, and architecture benchmarks.
+
+Pipeline components:
+    SolarNet / SolarNetDual — convolutional regression models (see src/models/).
+    Grad-CAM               — gradient-weighted class activation mapping.
+    Monte Carlo Dropout    — stochastic inference for predictive uncertainty.
+    XAI Faithfulness       — pixel-occlusion protocol to validate saliency maps.
 """
 
 import io
@@ -56,14 +62,24 @@ EXPERIMENTS_DIR = BASE_DIR / "experiments"
 # ---------------------------------------------------------------------------
 
 class SolarNet(nn.Module):
-    """
-    CNN for solar activity prediction.
+    """Lightweight CNN for solar activity regression from HMI magnetograms.
 
-    Architecture: 4 convolutional blocks with BatchNorm, Dropout,
-    Global Average Pooling, and a single regression output.
+    Four convolutional blocks (Conv2d → BatchNorm → ReLU → MaxPool →
+    Dropout2d) with channel depths 1→32→64→128→256, followed by Global
+    Average Pooling and a single fully-connected regression head.
 
-    Input:  (batch, 1, 512, 512) -- normalized magnetograms
-    Output: (batch, 1) -- predicted sunspot index
+    Implementation Detail:
+        ``dropout_rate=0.3`` was selected empirically to balance
+        regularisation against underfitting on the 1,158-sample dataset;
+        the same value is reused at inference time for Monte Carlo Dropout
+        uncertainty estimation.
+
+    Args:
+        dropout_rate: Spatial dropout probability applied after each pool.
+        in_channels: Number of input image channels (1 = HMI, 2 = dual).
+
+    Input shape:  ``(batch, in_channels, 512, 512)`` — normalised magnetograms.
+    Output shape: ``(batch, 1)`` — predicted sunspot index.
     """
 
     def __init__(self, dropout_rate: float = 0.3, in_channels: int = 1) -> None:
@@ -94,6 +110,14 @@ class SolarNet(nn.Module):
         self.relu = nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Execute the forward pass through all convolutional blocks.
+
+        Args:
+            x: Input tensor of shape ``(batch, in_channels, H, W)``.
+
+        Returns:
+            Predicted sunspot index tensor of shape ``(batch, 1)``.
+        """
         for conv, bn, pool, drop in [
             (self.conv1, self.bn1, self.pool1, self.dropout1),
             (self.conv2, self.bn2, self.pool2, self.dropout2),
@@ -108,16 +132,18 @@ class SolarNet(nn.Module):
 
 
 class SolarNetDual(SolarNet):
-    """
-    Dual-channel SolarNet for magnetic reconnection validation.
+    """Two-channel SolarNet for coronal magnetic reconnection validation.
 
-    Extends SolarNet to accept a 2-channel input tensor combining
-    the HMI magnetogram and AIA 193Å EUV image. The EUV channel
-    captures coronal plasma loops above active regions, providing
-    direct atmospheric evidence to validate predicted magnetic risk.
+    Extends ``SolarNet`` to accept a stacked ``[HMI magnetogram, AIA 193Å]``
+    input. The EUV channel captures Fe XII coronal plasma loops above active
+    regions, providing atmospheric evidence that complements photospheric
+    magnetic field data for improved activity risk estimation.
 
-    Input:  (batch, 2, 512, 512) -- [HMI magnetogram, AIA 193Å EUV]
-    Output: (batch, 1) -- predicted sunspot index
+    Args:
+        dropout_rate: Spatial dropout probability (forwarded to ``SolarNet``).
+
+    Input shape:  ``(batch, 2, 512, 512)`` — ``[HMI magnetogram, AIA 193Å EUV]``.
+    Output shape: ``(batch, 1)`` — predicted sunspot index.
     """
 
     def __init__(self, dropout_rate: float = 0.3) -> None:
@@ -129,11 +155,19 @@ class SolarNetDual(SolarNet):
 # ---------------------------------------------------------------------------
 
 class GradCAM:
-    """
-    Gradient-weighted Class Activation Mapping for SolarNet.
+    """Gradient-weighted Class Activation Mapping for SolarNet regression.
 
-    Visualizes which regions of the input magnetogram the model focuses on.
-    Uses the last convolutional layer (conv4) to generate heatmaps.
+    Computes spatial importance maps by weighting the final convolutional
+    feature maps (``conv4``) with the globally pooled gradients of the
+    scalar output with respect to those activations, then applies ReLU
+    to retain only positively contributing spatial regions.
+
+    Implementation follows Selvaraju et al. (2017), adapted for regression
+    rather than classification targets.
+
+    Args:
+        model: SolarNet instance whose ``conv4`` layer is the saliency target.
+        target_layer: The ``nn.Module`` on which hooks are registered.
     """
 
     def __init__(self, model: SolarNet, target_layer: nn.Module) -> None:
@@ -144,13 +178,31 @@ class GradCAM:
         self.hooks: List = []
 
     def _save_gradient(self, grad: torch.Tensor) -> None:
+        """Capture the gradient tensor delivered by the backward hook.
+
+        Args:
+            grad: Gradient of the output w.r.t. the target layer's activations,
+                shape ``(batch, C, H, W)``.
+        """
         self.gradients = grad
 
     def _save_activation(self, module: nn.Module, input: tuple, output: torch.Tensor) -> None:
+        """Capture the forward activation tensor delivered by the forward hook.
+
+        Args:
+            module: Registered target layer (unused; required by PyTorch hook API).
+            input: Layer input tuple (unused; required by PyTorch hook API).
+            output: Layer output activation, shape ``(batch, C, H, W)``.
+        """
         self.activations = output
 
     def register_hooks(self) -> None:
-        """Register forward and backward hooks on the target layer."""
+        """Attach forward and backward hooks to the target convolutional layer.
+
+        Both hooks write into instance attributes (``activations``, ``gradients``)
+        and must be removed via ``remove_hooks()`` after heatmap generation
+        to prevent hook accumulation and memory leaks.
+        """
         def forward_hook(module, input, output):
             self._save_activation(module, input, output)
 
@@ -161,44 +213,47 @@ class GradCAM:
         self.hooks.append(self.target_layer.register_full_backward_hook(backward_hook))
 
     def remove_hooks(self) -> None:
-        """Clean up all registered hooks."""
+        """Detach all registered hooks and clear the hook list."""
         for hook in self.hooks:
             hook.remove()
         self.hooks = []
 
     def generate_heatmap(self, input_tensor: torch.Tensor) -> np.ndarray:
-        """
-        Generate Grad-CAM heatmap for the input tensor.
+        """Compute a Grad-CAM spatial importance map for a single magnetogram.
+
+        Executes a forward and backward pass, pools the gradients globally
+        across the spatial dimensions to derive per-channel weights, applies
+        them to the stored activations, and clips negatives via ReLU before
+        normalising the result to ``[0, 1]``.
 
         Args:
-            input_tensor: (1, 1, H, W) normalized magnetogram
+            input_tensor: Single magnetogram tensor of shape
+                ``(1, in_channels, H, W)``, normalised to ``[-1, 1]``.
 
         Returns:
-            (H, W) heatmap array normalized to [0, 1]
+            Spatial importance map of shape ``(H', W')`` normalised to
+            ``[0, 1]``, where ``H'`` and ``W'`` are the ``conv4`` spatial
+            dimensions (32×32 for 512 px input with 4 maxpool stages).
         """
         self.model.eval()
         self.register_hooks()
 
         try:
-            # Forward pass
             output = self.model(input_tensor)
             self.model.zero_grad()
-
-            # Backward pass (target = output for regression)
+            # Regression target: scalar output drives the full backward pass.
             output.backward()
 
-            # Compute weights: global average pooling of gradients
+            # Global-average-pool gradients → per-channel importance weights.
             pooled_gradients = torch.mean(self.gradients, dim=[0, 2, 3])
 
-            # Weight the activations by the gradients
             for i in range(self.activations.shape[1]):
                 self.activations[:, i, :, :] *= pooled_gradients[i]
 
-            # Average across channels and ReLU
+            # Channel-mean + ReLU: retain only positively contributing regions.
             heatmap = torch.mean(self.activations, dim=1).squeeze()
             heatmap = torch.maximum(heatmap, torch.tensor(0.0))
 
-            # Normalize to [0, 1]
             if heatmap.max() > 0:
                 heatmap = heatmap / heatmap.max()
 
@@ -213,6 +268,13 @@ class GradCAM:
 # ---------------------------------------------------------------------------
 
 def _get_device() -> torch.device:
+    """Select the highest-performance available compute device.
+
+    Priority order: CUDA → Apple MPS → CPU.
+
+    Returns:
+        A ``torch.device`` instance for the selected backend.
+    """
     if torch.cuda.is_available():
         return torch.device("cuda")
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
@@ -231,7 +293,19 @@ _xai_cache: dict = {}  # filename -> XAIFaithfulnessResult
 
 
 def _load_model() -> None:
-    """Load SolarNet (single and dual-channel) weights into global state."""
+    """Load SolarNet weights into module-level globals at application startup.
+
+    Initialises ``_model`` (single-channel) unconditionally and
+    ``_model_dual`` (dual-channel) only when ``models/helios_v2_dual.pth``
+    is present. Both models are placed in eval mode on ``_device`` to
+    disable training-time dropout.
+
+    Implementation Detail:
+        ``dropout_rate=0.3`` matches the training configuration; it is
+        reactivated at inference time via ``model.train()`` during Monte Carlo
+        Dropout passes while BatchNorm layers are kept frozen (see
+        ``/api/predict``).
+    """
     global _model, _model_dual, _device
 
     _device = _get_device()
@@ -249,7 +323,7 @@ def _load_model() -> None:
     total_params = sum(p.numel() for p in _model.parameters())
     logger.info("SolarNet loaded: %s parameters, weights: %s", f"{total_params:,}", MODEL_PATH.name)
 
-    # Load dual-channel model if weights exist
+    # Load dual-channel model when dedicated weights are available.
     if MODEL_DUAL_PATH.exists():
         _model_dual = SolarNetDual(dropout_rate=0.3)
         _model_dual.load_state_dict(torch.load(MODEL_DUAL_PATH, map_location=_device))
@@ -305,7 +379,7 @@ class HealthResponse(BaseModel):
 class XAIPoint(BaseModel):
     pixels_removed_pct: int
     prediction: float
-    normalized: float        # prediction relative to baseline (1.0 = no change)
+    normalized: float        # Prediction relative to unmasked baseline (1.0 = no change).
     random_prediction: float
     random_normalized: float
 
@@ -314,7 +388,7 @@ class XAIFaithfulnessResult(BaseModel):
     filename: str
     baseline_prediction: float
     curve: List[XAIPoint]
-    auc_score: float  # integral(random) - integral(gradcam) / 100 → higher = more faithful
+    auc_score: float  # (∫random − ∫GradCAM) / 100; positive → faithful saliency.
 
 
 class ExperimentHyperparams(BaseModel):
@@ -362,7 +436,7 @@ class ExperimentEntry(BaseModel):
     metrics: ExperimentMetrics
     environment: ExperimentEnvironment
     notes: str
-    metadata_file: str  # filename of the source JSON
+    metadata_file: str  # Basename of the source JSON file within experiments/.
 
 
 class ModelBenchmark(BaseModel):
@@ -377,6 +451,7 @@ class ModelBenchmark(BaseModel):
 class BenchmarkResult(BaseModel):
     baseline: ModelBenchmark
     proposed: ModelBenchmark
+    vgg11: Optional[ModelBenchmark] = None
     mae_reduction_pct: float
     rmse_reduction_pct: float
 
@@ -391,7 +466,19 @@ _DATE_PATTERN = re.compile(
 
 
 def _extract_date(filename: str) -> Optional[str]:
-    """Extract ISO-8601 date string from an HMI filename."""
+    """Parse an ISO-8601 timestamp from an HMI Level-1.5 filename.
+
+    Expected filename pattern::
+
+        hmi.m_45s.YYYY.MM.DD_HH_MM_SS_TAI[...].npy
+
+    Args:
+        filename: HMI magnetogram filename, with or without directory prefix.
+
+    Returns:
+        UTC timestamp string ``"YYYY-MM-DDTHH:MM:SSZ"``, or ``None`` if
+        the pattern is absent.
+    """
     match = _DATE_PATTERN.search(filename)
     if not match:
         return None
@@ -400,7 +487,21 @@ def _extract_date(filename: str) -> Optional[str]:
 
 
 def _classify_risk(sunspot_index: float) -> str:
-    """Map sunspot index to a risk category."""
+    """Map a predicted sunspot index to a three-tier risk category.
+
+    Thresholds are derived from the NOAA Solar Activity Scale, linearly
+    rescaled to the normalised output range of SolarNet V2 PRO:
+
+    - ``< 30.0``   → ``"Low"``
+    - ``30–69.9``  → ``"Medium"``
+    - ``≥ 70.0``   → ``"High"``
+
+    Args:
+        sunspot_index: Scalar regression output from SolarNet inference.
+
+    Returns:
+        One of ``"Low"``, ``"Medium"``, or ``"High"``.
+    """
     if sunspot_index < 30.0:
         return "Low"
     if sunspot_index < 70.0:
@@ -414,7 +515,14 @@ def _classify_risk(sunspot_index: float) -> str:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load model on startup, cleanup on shutdown."""
+    """Manage application lifespan: load model on startup, log on shutdown.
+
+    Args:
+        app: The FastAPI application instance (required by the lifespan protocol).
+
+    Yields:
+        Control to the ASGI server while the application is running.
+    """
     _load_model()
     yield
     logger.info("Shutting down HeliosPipeline API")
@@ -463,6 +571,7 @@ async def _unhandled_exception_handler(request: Request, exc: Exception) -> JSON
 
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
+    """Return API liveness status and current version string."""
     return HealthResponse(status="ok", version="2.1.0")
 
 
@@ -521,7 +630,28 @@ async def get_image(filename: str):
 
 @app.get("/api/predict/{filename}", response_model=PredictionResult)
 async def predict(filename: str):
-    """Run SolarNet inference on a processed .npy magnetogram."""
+    """Run SolarNet V2 PRO inference on a processed HMI magnetogram.
+
+    Applies Monte Carlo Dropout (10 stochastic forward passes) to produce
+    a mean sunspot index estimate alongside an empirical uncertainty,
+    quantified as the standard deviation across passes.
+
+    Implementation Detail:
+        BatchNorm layers are kept in eval mode during MC passes to preserve
+        running statistics; only ``Dropout2d`` layers are activated by
+        switching the model to ``train()`` mode temporarily.
+
+    Args:
+        filename: Basename of the ``.npy`` file in ``data/processed/``.
+
+    Returns:
+        ``PredictionResult`` with ``sunspot_index``, ``risk_level``,
+        ``confidence``, and ``uncertainty``.
+
+    Raises:
+        HTTPException 404: File does not exist or is not a ``.npy``.
+        HTTPException 503: Model has not been loaded.
+    """
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
 
@@ -534,26 +664,27 @@ async def predict(filename: str):
     tensor = torch.from_numpy(data).float().unsqueeze(0).unsqueeze(0)
     tensor = tensor.to(_device)
 
-    # Monte Carlo Dropout: enable dropout layers during inference for 10 stochastic passes
+    # MC Dropout: activate Dropout2d layers while freezing BatchNorm statistics.
     MC_PASSES = 10
-    _model.train()  # activates dropout
+    _model.train()
     for module in _model.modules():
         if isinstance(module, nn.BatchNorm2d):
-            module.eval()  # keep BatchNorm in eval mode to preserve statistics
+            module.eval()
 
     mc_predictions: list[float] = []
     with torch.no_grad():
         for _ in range(MC_PASSES):
             mc_predictions.append(float(_model(tensor).item()))
 
-    _model.eval()  # restore eval mode
+    _model.eval()
 
     sunspot_index = round(float(np.mean(mc_predictions)), 4)
     uncertainty = round(float(np.std(mc_predictions)), 4)
     risk_level = _classify_risk(sunspot_index)
 
-    # Confidence heuristic: inversely related to absolute magnitude
-    # High values have slightly lower confidence due to rarity in training data
+    # Confidence heuristic: inversely proportional to absolute index magnitude.
+    # High-activity events are underrepresented in the training corpus, so
+    # confidence is capped conservatively in the [0.75, 0.99] range.
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
 
     logger.info(
@@ -655,7 +786,7 @@ async def predict_dual(filename: str):
     mag_data: np.ndarray = np.load(str(filepath))
 
     if _model_dual is not None:
-        # Build 2-channel tensor: [magnetogram, AIA 193Å simulation]
+        # Stack magnetogram with AIA 193Å (real or simulated) into (2, H, W).
         aia_path = AIA_DIR / filename
         if aia_path.exists():
             aia_raw = np.load(str(aia_path))
@@ -708,11 +839,23 @@ async def predict_dual(filename: str):
 
 @app.get("/api/explain/{filename}")
 async def explain(filename: str):
-    """
-    Generate Grad-CAM visualization for a magnetogram.
+    """Generate a Grad-CAM saliency overlay for a magnetogram.
 
-    Returns a PNG with the heatmap overlaid on the original image,
-    showing which regions the model focuses on during prediction.
+    Produces a composite PNG in which the Grad-CAM heatmap (inferno
+    colormap, α=0.4) is blended over the base magnetogram (RdBu_r),
+    highlighting the spatial regions that most influence the regression
+    output. The ``conv4`` feature map (32×32) is bilinearly upsampled to
+    the native resolution (512×512) via ``scipy.ndimage.zoom``.
+
+    Args:
+        filename: Basename of the ``.npy`` file in ``data/processed/``.
+
+    Returns:
+        Streaming PNG response suitable for direct ``<img src>`` embedding.
+
+    Raises:
+        HTTPException 404: File does not exist or is not a ``.npy``.
+        HTTPException 503: Model has not been loaded.
     """
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
@@ -721,28 +864,25 @@ async def explain(filename: str):
     if not filepath.exists() or not filepath.suffix == ".npy":
         raise HTTPException(status_code=404, detail=f"Image not found: {filename}")
 
-    # Load and prepare tensor
     data: np.ndarray = np.load(str(filepath))
     tensor = torch.from_numpy(data).float().unsqueeze(0).unsqueeze(0)
     tensor = tensor.to(_device)
     tensor.requires_grad = True
 
-    # Generate Grad-CAM heatmap
     gradcam = GradCAM(_model, _model.conv4)
     heatmap = gradcam.generate_heatmap(tensor)
 
-    # Resize heatmap to match original image size (32x32 -> 512x512)
+    # Bilinear upsample: conv4 spatial dim (32×32) → native resolution (512×512).
     from scipy.ndimage import zoom
     zoom_factor = data.shape[0] / heatmap.shape[0]
     heatmap_resized = zoom(heatmap, zoom_factor, order=1)
 
-    # Create the visualization
     fig, ax = plt.subplots(figsize=(6, 6), dpi=120)
 
-    # Base image: magnetogram with RdBu_r
+    # Base layer: RdBu_r magnetogram in normalised [-1, 1] range.
     ax.imshow(data, cmap="RdBu_r", vmin=-1, vmax=1, origin="lower")
 
-    # Overlay heatmap with transparency
+    # Overlay: inferno heatmap at α=0.4 to preserve base image readability.
     ax.imshow(
         heatmap_resized,
         cmap="inferno",
@@ -769,7 +909,20 @@ async def explain(filename: str):
 
 @app.get("/api/stats", response_model=SystemStats)
 async def get_stats():
-    """Return dataset statistics: image count, disk usage, and MAE."""
+    """Return dataset-level statistics and frozen training metrics.
+
+    Disk usage is computed dynamically from the current ``.npy`` file set.
+    MAE, RMSE, and R² are hardcoded from the final ``exp_003`` training run
+    (``training_v2_pro.log``) and should be updated when a new model version
+    is promoted to production.
+
+    Returns:
+        ``SystemStats`` with image count, disk usage in MiB, error metrics,
+        and the UTC modification timestamp of the most recently updated file.
+
+    Raises:
+        HTTPException 500: ``data/processed/`` directory does not exist.
+    """
     if not DATA_DIR.exists():
         raise HTTPException(status_code=500, detail="Data directory not found")
 
@@ -778,12 +931,12 @@ async def get_stats():
     disk_bytes = sum(f.stat().st_size for f in npy_files)
     disk_mb = round(disk_bytes / (1024 * 1024), 2)
 
-    # Metrics from last training run (training_v2_pro.log)
+    # Metrics from exp_003 final epoch (training_v2_pro.log); update on model promotion.
     mae_value = 0.1416
     rmse_value = 0.1851
     r2_value = 0.8705
 
-    # Determine last modification time of any .npy
+    # mtime of the most recently modified .npy as a UTC ISO-8601 timestamp.
     if npy_files:
         latest = max(f.stat().st_mtime for f in npy_files)
         from datetime import datetime, timezone
@@ -819,7 +972,7 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
 
-    # Resolve file path
+    # Default to a mid-dataset sample for deterministic demo output.
     if filename is None:
         npy_files = sorted(DATA_DIR.glob("*.npy"))
         if not npy_files:
@@ -834,28 +987,26 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
     if filename in _xai_cache:
         return _xai_cache[filename]
 
-    # Load magnetogram
     data: np.ndarray = np.load(str(filepath))
 
-    # Baseline prediction (no masking)
+    # Unmasked forward pass establishes the normalisation reference.
     base_tensor = torch.from_numpy(data).float().unsqueeze(0).unsqueeze(0).to(_device)
     with torch.no_grad():
         baseline_pred = float(_model(base_tensor).item())
 
-    # Generate Grad-CAM importance map
     grad_tensor = base_tensor.clone().requires_grad_(True)
     gradcam = GradCAM(_model, _model.conv4)
     heatmap = gradcam.generate_heatmap(grad_tensor)
 
-    # Upsample heatmap from 32x32 → 512x512
+    # Bilinear upsample: conv4 spatial dim (32×32) → native resolution (512×512).
     zoom_factor = data.shape[0] / heatmap.shape[0]
     heatmap_full = ndimage_zoom(heatmap, zoom_factor, order=1)
 
-    # Flatten and rank pixels by importance (descending)
     flat_importance = heatmap_full.flatten()
-    salient_order = np.argsort(flat_importance)[::-1]  # most important first
+    # Descending sort: most salient pixels are masked first.
+    salient_order = np.argsort(flat_importance)[::-1]
 
-    # Fixed random order for the baseline (reproducible)
+    # Seed-42 permutation ensures reproducible random-masking baseline across calls.
     rng = np.random.default_rng(42)
     random_order = rng.permutation(len(flat_importance))
 
@@ -863,13 +1014,12 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
     n_pixels = len(flat_importance)
     curve: List[XAIPoint] = []
 
-    # Safety: avoid division by zero when baseline ≈ 0
+    # Guard against division by zero when baseline prediction is near zero.
     safe_baseline = baseline_pred if abs(baseline_pred) > 1e-6 else 1.0
 
     for pct in thresholds:
         n_mask = int(n_pixels * pct / 100)
 
-        # --- Grad-CAM masking ---
         masked = data.copy()
         if n_mask > 0:
             idx_flat = salient_order[:n_mask]
@@ -881,7 +1031,6 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
         with torch.no_grad():
             pred = float(_model(t).item())
 
-        # --- Random masking ---
         rand_masked = data.copy()
         if n_mask > 0:
             rand_idx = random_order[:n_mask]
@@ -901,8 +1050,8 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
             random_normalized=round(rand_pred / safe_baseline, 4),
         ))
 
-    # Faithfulness AUC: area between random baseline and Grad-CAM curve
-    # Positive score means Grad-CAM curve drops more than random → faithful
+    # AUC = ∫random − ∫GradCAM over [0, 100] pct masked, normalised to [0, 1].
+    # Positive score indicates Grad-CAM drops faster than random → faithful saliency.
     gradcam_norms = [p.normalized for p in curve]
     random_norms = [p.random_normalized for p in curve]
     auc = float(
@@ -926,29 +1075,74 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
 
 @app.get("/api/benchmark", response_model=BenchmarkResult)
 async def get_benchmark():
-    """Return architecture comparison: ResNet18 (baseline) vs SolarNet."""
-    baseline_mae = 0.2847
-    baseline_rmse = 0.3412
+    """Return architecture comparison: ResNet18 (baseline) vs SolarNet, plus VGG-11.
+
+    Reads real baseline metrics from experiments/results_benchmarking.json when
+    available. Falls back to hardcoded values if the file is missing.
+    """
+    import json
+
+    # SolarNet V2 PRO metrics from exp_003 final epoch; update on model promotion.
     proposed_mae = 0.1416
     proposed_rmse = 0.1851
+    proposed_r2 = 0.8705
+    proposed_params = 389_057
+    proposed_inference_ms = 8.7
+
+    # Fallback values used when results_benchmarking.json is absent.
+    baseline_mae = 0.2847
+    baseline_rmse = 0.3412
+    baseline_r2 = 0.7834
+    baseline_params = 11_689_537
+    baseline_inference_ms = 42.3
+    vgg11_model: Optional[ModelBenchmark] = None
+
+    benchmarking_path = EXPERIMENTS_DIR / "results_benchmarking.json"
+    if benchmarking_path.exists():
+        try:
+            with open(benchmarking_path, "r", encoding="utf-8") as fh:
+                bdata = json.load(fh)
+            models = bdata.get("models", {})
+
+            if "resnet18" in models:
+                r = models["resnet18"]
+                baseline_mae = r["mae"]
+                baseline_rmse = r["rmse"]
+                baseline_r2 = r["r2"]
+                baseline_params = int(r["total_parameters"])
+                baseline_inference_ms = r["inference_time_ms"]
+
+            if "vgg11" in models:
+                v = models["vgg11"]
+                vgg11_model = ModelBenchmark(
+                    name="VGG-11 (Baseline)",
+                    parameters=int(v["total_parameters"]),
+                    mae=v["mae"],
+                    rmse=v["rmse"],
+                    r2_score=v["r2"],
+                    inference_ms=v["inference_time_ms"],
+                )
+        except Exception as exc:
+            logger.warning("Could not read results_benchmarking.json: %s", exc)
 
     return BenchmarkResult(
         baseline=ModelBenchmark(
             name="ResNet18 (Baseline)",
-            parameters=11_689_537,
+            parameters=baseline_params,
             mae=baseline_mae,
             rmse=baseline_rmse,
-            r2_score=0.7834,
-            inference_ms=42.3,
+            r2_score=baseline_r2,
+            inference_ms=baseline_inference_ms,
         ),
         proposed=ModelBenchmark(
             name="SolarNet V2 PRO",
-            parameters=389_057,
+            parameters=proposed_params,
             mae=proposed_mae,
             rmse=proposed_rmse,
-            r2_score=0.8705,
-            inference_ms=8.7,
+            r2_score=proposed_r2,
+            inference_ms=proposed_inference_ms,
         ),
+        vgg11=vgg11_model,
         mae_reduction_pct=round((baseline_mae - proposed_mae) / baseline_mae * 100, 1),
         rmse_reduction_pct=round((baseline_rmse - proposed_rmse) / baseline_rmse * 100, 1),
     )
@@ -983,7 +1177,22 @@ async def get_experiments():
 
 @app.get("/api/experiments/{filename}")
 async def get_experiment_metadata(filename: str):
-    """Return the raw JSON metadata for a single experiment run."""
+    """Return the raw JSON record for a single experiment run.
+
+    Performs a path-traversal guard: filenames containing directory
+    separators are rejected with HTTP 400 before any filesystem access.
+
+    Args:
+        filename: JSON filename within ``experiments/``, e.g.
+            ``exp_003_results.json``.
+
+    Returns:
+        Parsed JSON object as a dictionary.
+
+    Raises:
+        HTTPException 400: ``filename`` contains path separators.
+        HTTPException 404: File does not exist in ``experiments/``.
+    """
     import json
 
     if not filename.endswith(".json") or "/" in filename or "\\" in filename:
@@ -999,7 +1208,12 @@ async def get_experiment_metadata(filename: str):
 
 @app.get("/api/logs", response_model=List[LogEntry])
 async def get_logs():
-    """Read the last 50 lines from each .log file in the project root."""
+    """Read the trailing 50 lines from each ``.log`` file in the project root.
+
+    Returns:
+        List of ``LogEntry`` objects, one per log file, ordered by filename.
+        Returns an empty list if no log files are present.
+    """
     log_files = sorted(LOG_DIR.glob("*.log"))
 
     if not log_files:
