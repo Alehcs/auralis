@@ -422,7 +422,7 @@ El siguiente diagrama cuadrante posiciona cada modelo según su **complejidad** 
 quadrantChart
     title Relación Error–Complejidad (MAE vs. Parámetros)
     x-axis Baja Complejidad --> Alta Complejidad
-    y-axis Alto Error --> Bajo Error · Mayor Precisión
+    y-axis Alto Error --> Bajo Error - Mayor Precisión
     quadrant-1 Zona Óptima
     quadrant-2 Preciso · Costoso
     quadrant-3 Costoso · Impreciso
