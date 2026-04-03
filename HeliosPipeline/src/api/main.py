@@ -289,7 +289,7 @@ def _get_device() -> torch.device:
 _model: Optional[SolarNet] = None
 _model_dual: Optional[SolarNetDual] = None
 _device: Optional[torch.device] = None
-_xai_cache: dict = {}  # filename -> XAIFaithfulnessResult
+_xai_cache: Dict[str, "XAIFaithfulnessResult"] = {}
 
 
 def _load_model() -> None:
@@ -601,11 +601,23 @@ async def list_images():
 
 @app.get("/api/images/{filename}")
 async def get_image(filename: str):
-    """
-    Render a .npy magnetogram as a PNG using the RdBu_r colormap.
+    """Render a normalised magnetogram tensor as a PNG image.
 
-    The data is expected to be normalized in [-1, 1].
-    Returns a streaming PNG response suitable for <img src="...">.
+    RdBu_r (red-white-blue diverging) is used because it encodes the
+    sign of the LOS magnetic field: red for negative (away from observer),
+    blue for positive (toward observer), consistent with the SDO/HMI team's
+    standard magnetogram colour convention. The display range is fixed to
+    ``[-1, 1]`` to match the normalised float32 tensors written by
+    ``prepare_dataset``.
+
+    Args:
+        filename: Basename of the ``.npy`` file in ``data/processed/``.
+
+    Returns:
+        Streaming PNG response suitable for direct ``<img src>`` embedding.
+
+    Raises:
+        HTTPException 404: File does not exist or extension is not ``.npy``.
     """
     filepath = DATA_DIR / filename
     if not filepath.exists() or not filepath.suffix == ".npy":
@@ -764,14 +776,28 @@ async def get_aia_image(filename: str):
 
 @app.get("/api/predict-dual/{filename}", response_model=PredictionResult)
 async def predict_dual(filename: str):
-    """
-    Run SolarNet inference on a dual-channel [Magnetogram, AIA 193Å] tensor.
+    """Run SolarNet inference on a dual-channel [HMI, AIA 193Å] tensor.
 
-    If helios_v2_dual.pth weights exist, uses SolarNetDual (2-channel input).
-    Otherwise falls back to the single-channel model using the magnetogram only,
-    returning equivalent results until dual-channel weights are trained.
+    When ``helios_v2_dual.pth`` weights are present, ``SolarNetDual`` ingests
+    a stacked ``(2, H, W)`` input combining the LOS magnetogram with the AIA
+    193 Å EUV channel. The EUV channel captures Fe XII coronal plasma at
+    ~1.5 MK, providing atmospheric evidence that complements photospheric
+    field data. When dual-channel weights are absent, falls back to
+    single-channel inference on the magnetogram alone.
 
-    Monte Carlo Dropout (10 passes) is used for uncertainty estimation in both cases.
+    Monte Carlo Dropout (10 stochastic forward passes) is applied in both
+    cases for uncertainty estimation.
+
+    Args:
+        filename: Basename of the ``.npy`` file in ``data/processed/``.
+
+    Returns:
+        ``PredictionResult`` with ``sunspot_index``, ``risk_level``,
+        ``confidence``, and ``uncertainty``.
+
+    Raises:
+        HTTPException 404: File does not exist or extension is not ``.npy``.
+        HTTPException 503: No model is loaded.
     """
     from scipy.ndimage import gaussian_filter
 
@@ -958,14 +984,32 @@ async def get_stats():
 
 @app.get("/api/xai/faithfulness", response_model=XAIFaithfulnessResult)
 async def get_xai_faithfulness(filename: Optional[str] = None):
-    """
-    Compute the Grad-CAM faithfulness curve for a magnetogram.
+    """Compute the Grad-CAM pixel-occlusion faithfulness curve.
 
-    Progressively masks the most salient pixels (ordered by Grad-CAM importance)
-    and records how the model prediction drops at each threshold.
-    A parallel random-masking baseline is also computed for comparison.
+    Implements the deletion metric from Samek et al. (2017): pixels are
+    masked in descending order of Grad-CAM importance (most salient first)
+    and the model prediction is recorded at 11 thresholds from 0 % to 100 %
+    masked. A parallel random-ordering baseline is computed with a fixed
+    seed (42) to ensure reproducibility across calls.
 
-    Results are cached in memory per filename to avoid recomputation.
+    The AUC score is defined as ``(∫random − ∫GradCAM) / 100`` over the
+    masking range. A positive value indicates that the saliency map directs
+    occlusion to regions that meaningfully degrade the prediction faster than
+    chance, validating the faithfulness of the Grad-CAM explanation.
+
+    Results are cached in ``_xai_cache`` (keyed by filename) to avoid
+    recomputation on repeated requests for the same image.
+
+    Args:
+        filename: Basename of the ``.npy`` file in ``data/processed/``.
+            Defaults to the median file in the dataset when omitted.
+
+    Returns:
+        ``XAIFaithfulnessResult`` with the deletion curve and AUC score.
+
+    Raises:
+        HTTPException 404: File does not exist or no images are available.
+        HTTPException 503: Model has not been loaded.
     """
     from scipy.ndimage import zoom as ndimage_zoom
 
@@ -1150,11 +1194,17 @@ async def get_benchmark():
 
 @app.get("/api/experiments", response_model=List[ExperimentEntry])
 async def get_experiments():
-    """
-    List all experiment runs by reading JSON metadata files from experiments/.
+    """List all experiment runs from JSON metadata files in ``experiments/``.
 
-    Files are returned sorted by date descending (most recent first).
-    Malformed or unreadable files are skipped with a warning log.
+    Each JSON file in the directory corresponds to one training run and is
+    deserialised into an ``ExperimentEntry``. Files that fail to parse are
+    skipped with a warning rather than raising an exception, so a single
+    malformed file does not prevent the remaining runs from being served.
+
+    Returns:
+        List of ``ExperimentEntry`` objects sorted by ``date`` descending
+        (most recent run first). Returns an empty list when no JSON files
+        are present.
     """
     import json
 
