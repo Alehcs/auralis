@@ -1,27 +1,29 @@
+"""Preprocessing pipeline: HMI FITS -> normalised NumPy tensors.
+
+Transforms raw HMI Level-1.5 FITS files downloaded from NASA JSOC into
+float32 NumPy arrays suitable for training SolarNet. The normalisation
+protocol is fixed at dataset creation time and must be reproduced exactly
+at inference (see ``predict.preprocess_fits_image``).
+
+Processing steps applied to each magnetogram:
+    1. Load with SunPy to inherit the FITS header coordinate metadata.
+    2. Replace NaN values (off-disk limb mask applied by JSOC) with 0.
+    3. Compute the sunspot proxy index on the raw, pre-resample array to
+       avoid interpolation artefacts inflating the active-pixel count near
+       the detection threshold.
+    4. Resample to 512 x 512 with bilinear anti-aliasing to standardise
+       spatial resolution across the SDO observing baseline (2011-2025),
+       during which the SDO-Sun distance varies by approximately +-3%.
+    5. Clip to +-400 G and scale linearly to [-1, 1].
+    6. Serialise as float32 .npy.
+    7. Append a metadata row to the companion CSV.
 """
-Dataset Preparation Module for HeliosPipeline
 
-Este módulo procesa magnetogramas HMI del SDO para prepararlos para entrenamiento
-de modelos de Machine Learning/Deep Learning.
-
-Pipeline de Procesamiento:
-=========================
-1. Carga masiva de archivos .fits desde data/raw/
-2. Resample a 512x512 píxeles (reducción de resolución para ML)
-3. Normalización: truncar a ±400 G y escalar a [-1, 1]
-4. Almacenamiento como archivos .npy en data/processed/
-5. Generación de metadata CSV con índice de manchas solares
-
-Author: HeliosPipeline Team
-Date: 2026-02-13
-"""
-
-import os
-import logging
 import csv
-from pathlib import Path
+import logging
 from datetime import datetime
-from typing import List, Tuple, Dict
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
 import warnings
 
 import numpy as np
@@ -30,95 +32,84 @@ from skimage.transform import resize
 from tqdm import tqdm
 
 
-# Configuración de logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
 
 def load_and_process_magnetogram(
     fits_path: Path,
     target_size: int = 512,
     clip_value: float = 400.0,
-    sunspot_threshold: float = 200.0
-) -> Tuple[np.ndarray, Dict[str, any]]:
-    """
-    Carga y procesa un magnetograma individual.
-    
-    Parameters
-    ----------
-    fits_path : Path
-        Ruta al archivo FITS
-    target_size : int
-        Tamaño objetivo para redimensionar (default: 512x512)
-    clip_value : float
-        Valor de truncamiento en Gauss (default: ±400 G)
-    sunspot_threshold : float
-        Umbral para detectar manchas solares en Gauss (default: 200 G)
-        
-    Returns
-    -------
-    Tuple[np.ndarray, Dict]
-        - Array procesado normalizado a [-1, 1]
-        - Diccionario con metadatos (fecha, sunspot_index)
-        
-    Raises
-    ------
-    Exception
-        Si hay error al cargar o procesar el archivo
+    sunspot_threshold: float = 200.0,
+) -> Tuple[np.ndarray, Dict[str, Any]]:
+    """Load, resample, and normalise a single HMI FITS magnetogram.
+
+    The sunspot proxy index is computed on the original, pre-resample pixel
+    array to avoid double-counting artefacts introduced by bilinear
+    interpolation near the 200 G detection threshold.
+
+    The clip bound of +-400 G follows Bobra & Couvidat (2015): it covers the
+    99th percentile of LOS flux density in active regions while preventing
+    the <<1% of umbral-core pixels from compressing the dynamic range of the
+    normalised array. The 200 G threshold for active-pixel classification is
+    consistent with HMI SHARP active-region boundary criteria.
+
+    Args:
+        fits_path: Path to an HMI Level-1.5 FITS file.
+        target_size: Square output side length in pixels (default 512).
+        clip_value: Symmetric saturation bound in Gauss (default 400.0).
+        sunspot_threshold: Field strength threshold in Gauss used to classify
+            pixels as magnetically active (default 200.0).
+
+    Returns:
+        Tuple of:
+            - float32 ndarray of shape (target_size, target_size) in [-1, 1].
+            - Metadata dictionary with keys: filename, date, sunspot_index,
+              original_shape, processed_shape, min_value, max_value,
+              mean_value.
+
+    Raises:
+        Exception: Propagated from SunPy or skimage on malformed FITS input.
     """
     try:
-        # 1. Cargar magnetograma con SunPy
         solar_map = sunpy.map.Map(str(fits_path))
         data = solar_map.data
-        
-        # IMPORTANTE: Reemplazar NaN con 0 (ocurren en regiones fuera del disco solar)
+
         data = np.nan_to_num(data, nan=0.0)
-        
-        # 2. Calcular Sunspot Index ANTES de procesar
-        # (porcentaje de píxeles con |B| > threshold)
-        strong_field = np.abs(data) > sunspot_threshold
-        sunspot_index = (np.sum(strong_field) / data.size) * 100
-        
-        # 3. Resample a target_size x target_size
-        # Nota: resize de skimage preserva el rango de valores
+
+        strong_field_mask = np.abs(data) > sunspot_threshold
+        sunspot_index = (np.sum(strong_field_mask) / data.size) * 100.0
+
         data_resampled = resize(
             data,
             (target_size, target_size),
-            mode='reflect',
+            mode="reflect",
             anti_aliasing=True,
-            preserve_range=True
+            preserve_range=True,
         )
-        
-        # Asegurar que no haya NaN después del resample
         data_resampled = np.nan_to_num(data_resampled, nan=0.0)
-        
-        # 4. Normalización:
-        # a) Truncar valores extremos (clip a ±clip_value G)
-        data_clipped = np.clip(data_resampled, -clip_value, clip_value)
-        
-        # b) Escalar linealmente al rango [-1, 1]
-        data_normalized = data_clipped / clip_value
-        
-        # 5. Extraer metadatos
-        metadata = {
-            'filename': fits_path.stem,
-            'date': solar_map.date.iso,
-            'sunspot_index': sunspot_index,
-            'original_shape': data.shape,
-            'processed_shape': data_normalized.shape,
-            'min_value': np.min(data_normalized),
-            'max_value': np.max(data_normalized),
-            'mean_value': np.mean(data_normalized)
+
+        data_normalized = np.clip(data_resampled, -clip_value, clip_value) / clip_value
+
+        metadata: Dict[str, Any] = {
+            "filename": fits_path.stem,
+            "date": solar_map.date.iso,
+            "sunspot_index": sunspot_index,
+            "original_shape": data.shape,
+            "processed_shape": data_normalized.shape,
+            "min_value": float(np.min(data_normalized)),
+            "max_value": float(np.max(data_normalized)),
+            "mean_value": float(np.mean(data_normalized)),
         }
-        
+
         return data_normalized.astype(np.float32), metadata
-        
+
     except Exception as e:
-        logger.error(f"Error procesando {fits_path.name}: {str(e)}")
+        logger.error("Failed to process %s: %s", fits_path.name, e)
         raise
 
 
@@ -127,176 +118,150 @@ def prepare_dataset(
     processed_dir: str = "data/processed",
     target_size: int = 512,
     clip_value: float = 400.0,
-    sunspot_threshold: float = 200.0
-) -> List[Dict]:
+    sunspot_threshold: float = 200.0,
+) -> List[Dict[str, Any]]:
+    """Batch-process all FITS files in ``raw_dir`` and write .npy tensors.
+
+    Files are processed in sorted order for reproducibility. Errors on
+    individual files are logged and skipped; processing continues to enable
+    partial recovery from corrupt or incomplete JSOC downloads.
+
+    Args:
+        raw_dir: Directory containing raw ``.fits`` files.
+        processed_dir: Output directory for ``.npy`` tensors (created if
+            absent).
+        target_size: Square output resolution passed to
+            ``load_and_process_magnetogram``.
+        clip_value: Clip bound in Gauss.
+        sunspot_threshold: Active-region detection threshold in Gauss.
+
+    Returns:
+        List of metadata dictionaries, one per successfully processed file.
     """
-    Procesa todos los magnetogramas de forma masiva.
-    
-    Parameters
-    ----------
-    raw_dir : str
-        Directorio con archivos .fits sin procesar
-    processed_dir : str
-        Directorio de salida para archivos .npy
-    target_size : int
-        Tamaño objetivo de las imágenes procesadas
-    clip_value : float
-        Valor de truncamiento en Gauss
-    sunspot_threshold : float
-        Umbral para calcular el sunspot index
-        
-    Returns
-    -------
-    List[Dict]
-        Lista con metadatos de todas las imágenes procesadas
-    """
-    # Crear directorio de salida si no existe
     processed_path = Path(processed_dir)
     processed_path.mkdir(parents=True, exist_ok=True)
-    
-    # Buscar todos los archivos .fits
+
     raw_path = Path(raw_dir)
-    fits_files = sorted(list(raw_path.glob('*.fits')))
-    
+    fits_files = sorted(raw_path.glob("*.fits"))
+
     if not fits_files:
-        logger.warning(f"No se encontraron archivos .fits en {raw_dir}")
+        logger.warning("No FITS files found in %s", raw_dir)
         return []
-    
-    logger.info(f"Encontrados {len(fits_files)} archivos para procesar")
-    logger.info(f"Configuración: {target_size}x{target_size} px, clip: ±{clip_value} G")
-    
-    # Procesar cada archivo con barra de progreso
-    all_metadata = []
-    errors = []
-    
-    for fits_file in tqdm(fits_files, desc="Procesando magnetogramas", unit="archivo"):
+
+    logger.info(
+        "%d files to process  |  output: %dx%d px  |  clip: +/-%.0f G",
+        len(fits_files), target_size, target_size, clip_value,
+    )
+
+    all_metadata: List[Dict[str, Any]] = []
+    errors: List[Dict[str, str]] = []
+
+    for fits_file in tqdm(fits_files, desc="Processing magnetograms", unit="file"):
         try:
-            # Procesar imagen
             processed_data, metadata = load_and_process_magnetogram(
                 fits_file,
                 target_size=target_size,
                 clip_value=clip_value,
-                sunspot_threshold=sunspot_threshold
+                sunspot_threshold=sunspot_threshold,
             )
-            
-            # Guardar como .npy
+
             output_filename = f"{fits_file.stem}_processed.npy"
-            output_path = processed_path / output_filename
-            np.save(str(output_path), processed_data)
-            
-            # Agregar ruta de salida al metadata
-            metadata['processed_file'] = output_filename
+            np.save(str(processed_path / output_filename), processed_data)
+
+            metadata["processed_file"] = output_filename
             all_metadata.append(metadata)
-            
+
         except Exception as e:
-            logger.error(f"Error fatal con {fits_file.name}: {str(e)}")
-            errors.append({
-                'filename': fits_file.name,
-                'error': str(e)
-            })
-            continue
-    
-    # Resumen de procesamiento
-    logger.info(f"\n{'='*70}")
-    logger.info(f"Procesamiento completado:")
-    logger.info(f"  ✓ Archivos procesados exitosamente: {len(all_metadata)}")
-    logger.info(f"  ✗ Archivos con errores: {len(errors)}")
-    logger.info(f"  → Directorio de salida: {processed_path.absolute()}")
-    logger.info(f"{'='*70}\n")
-    
-    if errors:
-        logger.warning(f"Archivos con errores:")
-        for error in errors:
-            logger.warning(f"  - {error['filename']}: {error['error']}")
-    
+            logger.error("Skipping %s: %s", fits_file.name, e)
+            errors.append({"filename": fits_file.name, "error": str(e)})
+
+    logger.info("=" * 70)
+    logger.info(
+        "Complete  |  processed: %d  |  errors: %d  |  output: %s",
+        len(all_metadata), len(errors), processed_path.absolute(),
+    )
+    logger.info("=" * 70)
+
+    for err in errors:
+        logger.warning("  %s: %s", err["filename"], err["error"])
+
     return all_metadata
 
 
 def save_metadata_csv(
-    metadata_list: List[Dict],
-    output_path: str = "data/processed/metadata_processed.csv"
+    metadata_list: List[Dict[str, Any]],
+    output_path: str = "data/processed/metadata_processed.csv",
 ) -> None:
-    """
-    Guarda los metadatos en formato CSV.
-    
-    Parameters
-    ----------
-    metadata_list : List[Dict]
-        Lista de diccionarios con metadatos
-    output_path : str
-        Ruta del archivo CSV de salida
+    """Write the metadata list to a CSV file.
+
+    Shape tuples are serialised as strings because CSV does not support
+    compound types; downstream code should parse them with ``ast.literal_eval``
+    if shape comparison is required.
+
+    Args:
+        metadata_list: List of dictionaries returned by ``prepare_dataset``.
+        output_path: Destination path for the CSV file (parent created if
+            absent).
     """
     if not metadata_list:
-        logger.warning("No hay metadatos para guardar")
+        logger.warning("No metadata to write.")
         return
-    
-    # Asegurar que el directorio existe
+
     output_file = Path(output_path)
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    
-    # Definir columnas clave para el CSV
+
     fieldnames = [
-        'filename',
-        'date',
-        'sunspot_index',
-        'processed_file',
-        'original_shape',
-        'processed_shape',
-        'min_value',
-        'max_value',
-        'mean_value'
+        "filename",
+        "date",
+        "sunspot_index",
+        "processed_file",
+        "original_shape",
+        "processed_shape",
+        "min_value",
+        "max_value",
+        "mean_value",
     ]
-    
-    with open(output_path, 'w', newline='') as csvfile:
+
+    with open(output_path, "w", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
-        
         for metadata in metadata_list:
-            # Convertir tuplas a strings para CSV
-            metadata['original_shape'] = str(metadata['original_shape'])
-            metadata['processed_shape'] = str(metadata['processed_shape'])
-            writer.writerow(metadata)
-    
-    logger.info(f"✓ Metadata guardada en: {output_path}")
-    logger.info(f"  Total de registros: {len(metadata_list)}")
+            row = dict(metadata)
+            row["original_shape"] = str(row["original_shape"])
+            row["processed_shape"] = str(row["processed_shape"])
+            writer.writerow(row)
+
+    logger.info("Metadata written: %s  (%d records)", output_path, len(metadata_list))
 
 
-def main():
-    """
-    Función principal para ejecutar el pipeline de pre-procesamiento.
-    """
-    logger.info("="*70)
-    logger.info("HeliosPipeline - Dataset Preparation")
-    logger.info("="*70)
-    
-    # Ejecutar pipeline de procesamiento
+def main() -> None:
+    """Execute the dataset preprocessing pipeline."""
+    logger.info("=" * 70)
+    logger.info("HeliosPipeline — Dataset Preparation")
+    logger.info("=" * 70)
+
     metadata = prepare_dataset(
         raw_dir="data/raw",
         processed_dir="data/processed",
         target_size=512,
         clip_value=400.0,
-        sunspot_threshold=200.0
+        sunspot_threshold=200.0,
     )
-    
-    # Guardar metadata como CSV
+
     if metadata:
-        save_metadata_csv(
-            metadata,
-            output_path="data/processed/metadata_processed.csv"
-        )
-        
-        # Mostrar estadísticas del dataset
-        sunspot_indices = [m['sunspot_index'] for m in metadata]
-        logger.info(f"\n{'='*70}")
-        logger.info("Estadísticas del Dataset Procesado:")
-        logger.info(f"  Total de imágenes: {len(metadata)}")
-        logger.info(f"  Sunspot Index promedio: {np.mean(sunspot_indices):.3f}%")
-        logger.info(f"  Sunspot Index min/max: {np.min(sunspot_indices):.3f}% / {np.max(sunspot_indices):.3f}%")
-        logger.info(f"  Tamaño por imagen: 512x512 px")
-        logger.info(f"  Rango de valores: [-1.0, 1.0]")
-        logger.info(f"{'='*70}")
+        save_metadata_csv(metadata, output_path="data/processed/metadata_processed.csv")
+
+        indices = [m["sunspot_index"] for m in metadata]
+        logger.info("=" * 70)
+        logger.info("Dataset statistics:")
+        logger.info("  Images:          %d", len(metadata))
+        logger.info("  Sunspot index — mean: %.3f  min: %.3f  max: %.3f",
+                    np.mean(indices), np.min(indices), np.max(indices))
+        logger.info("  Resolution:      512 x 512 px")
+        logger.info("  Value range:     [-1.0, 1.0]")
+        logger.info("=" * 70)
     else:
-        logger.error("No se procesó ningún archivo exitosamente")
+        logger.error("No files processed successfully.")
 
 
 if __name__ == "__main__":

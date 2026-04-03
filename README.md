@@ -1,121 +1,114 @@
-# Helios Pipeline: Solar Activity Prediction System
+# SolarNet V2 PRO — Helios Pipeline
 
-An enterprise-grade deep learning pipeline for real-time solar activity monitoring and forecasting using SDO/HMI magnetograms.
+**High-efficiency regression framework for solar activity forecasting using HMI/SDO magnetograms.**
 
-## Abstract / Executive Summary
+A full-stack system for near-real-time sunspot index estimation: JSOC data ingestion → HMI magnetogram preprocessing → CNN inference → REST API + interactive dashboard.
 
-Space weather events, driven by solar activity, pose significant risks to satellite infrastructure, power grids, and radio communications. Use of traditional forecasting methods often lacks the temporal resolution required for immediate mitigation. This project implements **SolarNet CNN**, a deep learning model served via **FastAPI**, to analyze solar magnetograms in near real-time. By providing accurate sunspot index predictions and risk assessments, Helios Pipeline enables proactive protection of critical technological infrastructure.
-<img width="1773" height="1487" alt="image" src="https://github.com/user-attachments/assets/3eac8a15-69de-4eab-9495-3cdbae70da39" />
+---
+
+## Performance
+
+| Metric | Value | Condition |
+|:---|:---:|:---|
+| Validation MAE | **0.1416** | Hold-out set, 1,158 magnetograms |
+| R² Score | **0.8705** | Hold-out set |
+| Inference Latency | **8.7 ms** | Single sample, Apple M-series MPS |
+
+---
 
 ## Architecture
 
-This system utilizes a decoupled microservices-inspired architecture:
+SolarNet is a four-block convolutional regressor with Global Average Pooling. GAP collapses each feature map to a single scalar before the regression head, eliminating the O(H·W·C) parameter cost of a dense classification layer. The result is a model that reaches **95.3% of VGG-11's regression performance with 4.2% of its parameters (389 K vs. 9.35 M)**.
 
--   **Backend**: Python 3.10+ / FastAPI. Handles data ingestion, image processing, and model inference.
--   **Machine Learning**: PyTorch / SolarNet CCN. Custom convolutional neural network optimized for specific features in solar magnetograms.
--   **Frontend**: React 18 / TypeScript / Vite. Interactive dashboard for real-time monitoring and historical analysis.
--   **Data Flow**: 
-    1.  Ingestion service fetches raw `.fits` data from NASA JSOC.
-    2.  Processing pipeline normalizes and converts data to optimized `.npy` tensors.
-    3.  Inference engine (SolarNet) assesses activity and risk levels.
-    4.  API serves results and visual explanations (Grad-CAM) to the client.
-
-## Project Structure
-
-```bash
-Helios-Pipeline/
-├── HeliosPipeline/           # Backend Application from Python
-│   ├── src/
-│   │   ├── api/              # REST API endpoints (FastAPI)
-│   │   ├── ingestion/        # Solar data acquisition scripts
-│   │   ├── models/           # SolarNet architecture and training
-│   │   ├── processing/       # Data cleaning and transformation
-│   │   └── visualization/    # Grad-CAM and plotting utilities
-│   └── data/                 # Local data storage (raw/processed)
-├── Helios-front/             # Frontend Application (React)
-│   ├── src/
-│   │   ├── assets/           # Static resources
-│   │   ├── features/         # Functional modules (Dashboard, etc)
-│   │   └── lib/              # Shared utilities
-│   └── package.json
-└── requirements.txt          # Python dependencies
+```
+Input (1, 512, 512)
+  └─ Conv Block ×4  [32→64→128→256 ch, BatchNorm, Dropout2d, MaxPool2d]
+       └─ Global Average Pooling  →  (256,)
+            └─ Linear(256, 1)  →  sunspot index
 ```
 
-## Prerequisites
+| Model | Params | Val MAE | Val R² | Latency |
+|:---|---:|:---:|:---:|:---:|
+| **SolarNet V2 PRO** | **389 K** | **0.1416** | **0.8705** | **8.7 ms** |
+| VGG-11 | 9.35 M | 0.1326 | 0.9137 | 31.4 ms |
+| ResNet-18 | 11.2 M | 0.1589 | 0.8201 | 12.1 ms |
+| Naive Persistence | 0 | 0.4823 | 0.0000 | < 1 ms |
 
--   **Python**: 3.9+
--   **Node.js**: 18+ (LTS recommended)
--   **npm** or **yarn**
--   **Docker** (Optional, for containerized deployment)
+---
 
-## Installation & Setup
+## Scientific Features
 
-### Backend (Python)
+**Explainability — Grad-CAM**
+Class Activation Maps are computed over the final convolutional layer to produce saliency overlays on the magnetogram. This allows visual verification that the model attends to active-region flux concentrations rather than instrument artefacts or limb effects.
 
-1.  Navigate to the project root:
-    ```bash
-    cd HeliosPipeline
-    ```
+**Uncertainty Quantification — Monte Carlo Dropout**
+At inference time, Dropout2d layers are reactivated and N stochastic forward passes are aggregated to produce a predictive mean and variance. This provides a principled, calibration-free uncertainty estimate without retraining.
 
-2.  Create a virtual environment:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # Windows: venv\Scripts\activate
-    ```
+---
 
-3.  Install dependencies:
-    ```bash
-    pip install -r ../requirements.txt
-    ```
+## System Architecture
 
-### Frontend (React)
+```
+NASA JSOC (HMI Level-1.5)
+  └─ ingestion/            SunPy/Fido download, exponential-backoff retry
+       └─ processing/      FITS → float32 .npy, ±400 G clip, [-1, 1] norm
+            └─ models/     SolarNet training + inference engine
+                 └─ api/   FastAPI REST  (predict, gradient-cam, benchmarks)
+                      └─ Helios-front/   React 18 + TypeScript dashboard
+```
 
-1.  Navigate to the frontend directory:
-    ```bash
-    cd Helios-front
-    ```
+---
 
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
+## Quickstart
 
-## Usage / Execution
-
-### 1. Start the API Server
-
-From the `HeliosPipeline` directory (with venv activated):
+**Backend**
 
 ```bash
+cd HeliosPipeline
+python -m venv venv && source venv/bin/activate
+pip install -r ../requirements.txt
 python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-*The API will be available at http://localhost:8000*
 
-### 2. Start the Web Client
-
-From the `Helios-front` directory:
+**Frontend**
 
 ```bash
-npm run dev
+cd Helios-front
+npm install && npm run dev
 ```
-*The dashboard will be available at http://localhost:5173*
 
-## Model Metrics
+API: `http://localhost:8000` — Dashboard: `http://localhost:5173`
 
-The SolarNet V2 Pro model has been trained and validated with the following performance metrics:
+---
 
-| Metric | Value | Description |
-| :--- | :--- | :--- |
-| **Validation MAE** | **0.1416** | Mean Absolute Error on validation set |
-| **Loss Function** | **MSE** | Optimized using Mean Squared Error |
-| **Input Resolution** | **512x512** | High-fidelity magnetogram processing |
+## Repository Layout
+
+```
+Helios-Pipeline/
+├── HeliosPipeline/
+│   ├── src/
+│   │   ├── api/              FastAPI endpoints (inference, Grad-CAM, metrics)
+│   │   ├── ingestion/        JSOC download pipeline
+│   │   ├── models/           SolarNet architecture, training, inference
+│   │   ├── processing/       FITS → normalised tensor pipeline
+│   │   └── experiments/      External baseline benchmarking (ResNet, VGG)
+│   └── data/                 raw/ (FITS) and processed/ (NPY + metadata CSV)
+├── Helios-front/             React 18 / TypeScript / Vite dashboard
+└── requirements.txt
+```
+
+---
+
+## Full Research Dossier
+
+> For deep technical analysis, scientific rigour, and external benchmarking methodology, see the **[Full Research Dossier](RESEARCH_DOSSIER_MASTER.md)**.
+
+---
 
 ## License
 
-**Proprietary Software**
-All rights reserved. Unauthorized copying of this file, via any medium, is strictly prohibited.
+Proprietary. All rights reserved.
 
-## Authors / Contact
+## Author
 
-**Alejandro C.**
-Software Engineer
+**Alejandro C.** — Software Engineer

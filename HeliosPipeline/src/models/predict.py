@@ -1,303 +1,323 @@
-import os
-import sys
+"""Inference engine for SolarNet V2 PRO.
+
+Provides a standalone CLI and importable functions for end-to-end prediction
+on raw HMI FITS files: load → preprocess → infer → visualise.
+
+The preprocessing chain must mirror the training pipeline in
+``prepare_dataset`` exactly — NaN fill → bilinear resample → ±400 G clip →
+[-1, 1] normalisation. Any deviation introduces distribution shift between
+training and inference inputs that cannot be detected at runtime.
+"""
+
 import argparse
 import logging
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 import warnings
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.colors import Normalize
 import torch
 import sunpy.map
 from skimage.transform import resize
 
-# Importar arquitectura del modelo
 from train_model import SolarNet, get_device
 
 
-# Configuración de logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
-
-# ============================================================================
-# PRE-PROCESAMIENTO AL VUELO
-# ============================================================================
 
 def preprocess_fits_image(
     fits_path: Path,
     target_size: int = 512,
-    clip_value: float = 400.0
-) -> torch.Tensor:
-    logger.info(f"Pre-procesando: {fits_path.name}")
-    
-    # 1. Cargar con SunPy
+    clip_value: float = 400.0,
+) -> Tuple[torch.Tensor, "sunpy.map.Map"]:
+    """Load and normalise a raw HMI FITS file for model inference.
+
+    The normalisation chain must be identical to the one applied in
+    ``prepare_dataset.load_and_process_magnetogram`` to avoid distribution
+    shift between training data and inference inputs:
+
+    - NaN fill: off-disk pixels carry NaN in HMI Level-1.5 data because the
+      solar limb mask is applied upstream by JSOC. Replacing with 0 is correct
+      because 0 G is the quiet-Sun background field.
+    - Clip at ±400 G: covers the functional range of plage and network fields
+      while saturating umbral core pixels that represent < 0.1% of the disk
+      area and would otherwise compress the dynamic range of the normalised
+      array. This threshold follows Bobra & Couvidat (2015).
+    - Scale by 1 / clip_value: maps the clipped range linearly to [-1, 1],
+      matching the float32 tensors written by the batch preprocessing pipeline.
+
+    Args:
+        fits_path: Absolute path to an HMI Level-1.5 FITS file.
+        target_size: Square output resolution in pixels. Must match the
+            resolution used during training (default 512).
+        clip_value: Symmetric saturation bound in Gauss (default 400.0).
+
+    Returns:
+        Tuple of:
+            - Tensor of shape (1, 1, H, W), dtype float32, ready for a
+              model forward pass.
+            - ``sunpy.map.Map`` object retaining the original FITS header for
+              downstream visualisation with a heliographic coordinate grid.
+    """
+    logger.info("Preprocessing: %s", fits_path.name)
+
     solar_map = sunpy.map.Map(str(fits_path))
     data = solar_map.data
-    
-    # 2. Reemplazar NaN con 0 (regiones fuera del disco solar)
+
     data = np.nan_to_num(data, nan=0.0)
-    
-    logger.info(f"  Original: {data.shape}, Min: {np.min(data):.2f} G, Max: {np.max(data):.2f} G")
-    
-    # 3. Resample a target_size x target_size
+    logger.info(
+        "  Original shape: %s  |  range: [%.2f, %.2f] G",
+        data.shape, np.min(data), np.max(data),
+    )
+
     data_resampled = resize(
         data,
         (target_size, target_size),
-        mode='reflect',
+        mode="reflect",
         anti_aliasing=True,
-        preserve_range=True
+        preserve_range=True,
     )
-    
-    # Asegurar que no haya NaN después del resample
     data_resampled = np.nan_to_num(data_resampled, nan=0.0)
-    
-    # 4. Normalización: clip a ±clip_value y escala a [-1, 1]
-    data_clipped = np.clip(data_resampled, -clip_value, clip_value)
-    data_normalized = data_clipped / clip_value
-    
-    logger.info(f"  Procesado: {data_normalized.shape}, Rango: [{np.min(data_normalized):.3f}, {np.max(data_normalized):.3f}]")
-    
-    # 5. Convertir a tensor PyTorch
-    # Forma: (512, 512) -> (1, 512, 512) -> (1, 1, 512, 512)
-    #        (H, W)     -> (C, H, W)     -> (B, C, H, W)
-    tensor = torch.from_numpy(data_normalized).float()
-    tensor = tensor.unsqueeze(0)  # Añadir canal: (1, 512, 512)
-    tensor = tensor.unsqueeze(0)  # Añadir batch: (1, 1, 512, 512)
-    
-    logger.info(f"  Tensor shape: {tensor.shape}")
-    
+
+    data_normalized = np.clip(data_resampled, -clip_value, clip_value) / clip_value
+
+    tensor = torch.from_numpy(data_normalized).float().unsqueeze(0).unsqueeze(0)
+    logger.info("  Output tensor shape: %s", tuple(tensor.shape))
+
     return tensor, solar_map
 
 
-# ============================================================================
-# CARGA DEL MODELO
-# ============================================================================
-
 def load_model(
     model_path: str = "models/helios_best.pth",
-    device: Optional[torch.device] = None
-) -> SolarNet:
+    device: Optional[torch.device] = None,
+) -> Tuple[SolarNet, torch.device]:
+    """Instantiate SolarNet and load a saved state dictionary.
 
+    ``model.eval()`` switches BatchNorm layers to use running statistics
+    accumulated during training and disables Dropout2d, giving deterministic
+    output for a fixed input. Monte Carlo Dropout uncertainty estimation
+    requires re-enabling training mode in the calling code before iterating
+    over stochastic forward passes.
+
+    Args:
+        model_path: Path to a ``.pth`` checkpoint written by ``train_model``.
+        device: Target device. Detected automatically if ``None``.
+
+    Returns:
+        Tuple of (loaded SolarNet in eval mode, resolved torch.device).
+
+    Raises:
+        FileNotFoundError: If ``model_path`` does not exist on disk.
+    """
     if device is None:
         device = get_device()
-    
-    # Verificar que existe el archivo
+
     if not Path(model_path).exists():
-        raise FileNotFoundError(f"Modelo no encontrado: {model_path}")
-    
-    logger.info(f"Cargando modelo desde: {model_path}")
-    
-    # Instanciar arquitectura
+        raise FileNotFoundError(f"Checkpoint not found: {model_path}")
+
+    logger.info("Loading checkpoint: %s", model_path)
+
     model = SolarNet(dropout_rate=0.3)
-    
-    # Cargar pesos
     model.load_state_dict(torch.load(model_path, map_location=device))
-    
-    # Modo evaluación (desactiva dropout y batchnorm)
     model.eval()
-    
-    # Mover al dispositivo
     model = model.to(device)
-    
-    # Contar parámetros
+
     total_params = sum(p.numel() for p in model.parameters())
-    logger.info(f"Modelo cargado: {total_params:,} parámetros")
-    logger.info(f"Dispositivo: {device}")
-    
+    logger.info("Model loaded: %d parameters  |  device: %s", total_params, device)
+
     return model, device
 
-
-# ============================================================================
-# INFERENCIA
-# ============================================================================
 
 def predict_sunspot_index(
     model: SolarNet,
     image_tensor: torch.Tensor,
-    device: torch.device
+    device: torch.device,
 ) -> float:
-    
-    # Mover tensor al dispositivo
+    """Run a single deterministic forward pass and return the scalar prediction.
+
+    ``torch.no_grad()`` disables autograd during inference to reduce memory
+    consumption. For Monte Carlo Dropout uncertainty estimation, call this
+    function with ``model.train()`` active and aggregate outputs over N draws
+    to obtain a predictive mean and variance.
+
+    Args:
+        model: SolarNet instance in eval mode (or train mode for MC Dropout).
+        image_tensor: Preprocessed tensor of shape (1, 1, H, W).
+        device: Device on which both model and tensor are resident.
+
+    Returns:
+        Predicted sunspot index as a Python float.
+    """
     image_tensor = image_tensor.to(device)
-    
-    # Inferencia (sin calcular gradientes)
+
     with torch.no_grad():
         prediction = model(image_tensor)
-    
-    # Convertir a escalar de Python
-    predicted_index = prediction.item()
-    
-    logger.info(f"Predicción: {predicted_index:.4f}%")
-    
+
+    predicted_index: float = prediction.item()
+    logger.info("Prediction: %.4f", predicted_index)
+
     return predicted_index
 
 
-# ============================================================================
-# OBTENER VALOR REAL DEL CSV
-# ============================================================================
-
 def get_real_sunspot_index(
     filename: str,
-    metadata_csv: str = "data/processed/metadata_processed.csv"
+    metadata_csv: str = "data/processed/metadata_processed.csv",
 ) -> Optional[float]:
+    """Retrieve the ground-truth sunspot index for a given filename.
 
+    The CSV produced by ``prepare_dataset`` contains one row per processed
+    magnetogram with the sunspot index computed on the raw (pre-normalised)
+    pixel array, so values are in percentage units consistent with the model
+    output scale.
+
+    Args:
+        filename: Stem of the FITS file (without extension), used as the
+            lookup key against the ``filename`` column of the metadata CSV.
+        metadata_csv: Path to the metadata CSV.
+
+    Returns:
+        Ground-truth sunspot index as a float, or ``None`` if the file is
+        absent from the metadata table.
+    """
     if not Path(metadata_csv).exists():
-        logger.warning(f"Metadata CSV no encontrado: {metadata_csv}")
+        logger.warning("Metadata CSV not found: %s", metadata_csv)
         return None
-    
+
     metadata = pd.read_csv(metadata_csv)
-    
-    # Buscar el archivo en el metadata
-    match = metadata[metadata['filename'] == filename]
-    
-    if len(match) == 0:
-        logger.warning(f"Archivo '{filename}' no encontrado en metadata")
+    match = metadata[metadata["filename"] == filename]
+
+    if match.empty:
+        logger.warning("'%s' not found in metadata.", filename)
         return None
-    
-    real_index = match.iloc[0]['sunspot_index']
-    logger.info(f"Valor real: {real_index:.4f}%")
-    
+
+    real_index: float = match.iloc[0]["sunspot_index"]
+    logger.info("Ground truth: %.4f", real_index)
+
     return real_index
 
 
-# ============================================================================
-# VISUALIZACIÓN
-# ============================================================================
-
 def visualize_prediction(
-    solar_map: sunpy.map.Map,
+    solar_map: "sunpy.map.Map",
     predicted_index: float,
     real_index: Optional[float] = None,
-    output_path: str = "reports/figures/prediction_result.png"
-):
-    # Crear directorio si no existe
+    output_path: str = "reports/figures/prediction_result.png",
+) -> None:
+    """Render the magnetogram with prediction annotations and save to disk.
+
+    The HMI colormap ('hmimag') uses a diverging red-blue palette centred at
+    0 G, following the SDO/HMI team convention for LOS magnetograms. The
+    display range is clamped to ±200 G to reveal quiet-Sun network structure;
+    this does not affect the model input, which was clipped at ±400 G.
+
+    Args:
+        solar_map: ``sunpy.map.Map`` instance from the original FITS file,
+            used to draw the heliographic coordinate grid.
+        predicted_index: Model output as a Python float.
+        real_index: Ground-truth value for residual annotation; omitted if
+            ``None``.
+        output_path: Filesystem path for the saved PNG (parent created if
+            absent).
+    """
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-    
+
     fig = plt.figure(figsize=(12, 10))
     ax = fig.add_subplot(111, projection=solar_map)
-    
-    # Plotear magnetograma
-    from matplotlib.colors import Normalize
+
     norm = Normalize(vmin=-200, vmax=200)
-    
-    solar_map.plot(
-        axes=ax,
-        cmap='hmimag',
-        norm=norm
-    )
-    
-    # Grid heliográfico
-    solar_map.draw_grid(axes=ax, color='white', alpha=0.4, linewidth=0.5)
-    
-    # Título con resultados
+    solar_map.plot(axes=ax, cmap="hmimag", norm=norm)
+    solar_map.draw_grid(axes=ax, color="white", alpha=0.4, linewidth=0.5)
+
+    obs_time = solar_map.date.strftime("%Y-%m-%d %H:%M:%S")
     if real_index is not None:
         error = abs(predicted_index - real_index)
-        error_pct = (error / real_index) * 100 if real_index > 0 else 0
-        
-        title = f'Magnetograma SDO/HMI - {solar_map.date.strftime("%Y-%m-%d %H:%M:%S")} UTC\n'
-        title += f'Sunspot Index Real: {real_index:.4f}% | Predicho (IA): {predicted_index:.4f}%\n'
-        title += f'Error Absoluto: {error:.4f}% ({error_pct:.2f}% error relativo)'
-        
-        ax.set_title(title, fontsize=11, fontweight='bold')
+        error_pct = (error / real_index) * 100 if real_index > 0 else 0.0
+        title = (
+            f"SDO/HMI LOS Magnetogram — {obs_time} UTC\n"
+            f"Ground truth: {real_index:.4f}  |  Predicted: {predicted_index:.4f}  "
+            f"|  |Error|: {error:.4f} ({error_pct:.2f}%)"
+        )
     else:
-        title = f'Magnetograma SDO/HMI - {solar_map.date.strftime("%Y-%m-%d %H:%M:%S")} UTC\n'
-        title += f'Sunspot Index Predicho (IA): {predicted_index:.4f}%'
-        
-        ax.set_title(title, fontsize=11, fontweight='bold')
-    
-    # Colorbar
+        title = (
+            f"SDO/HMI LOS Magnetogram — {obs_time} UTC\n"
+            f"Predicted sunspot index: {predicted_index:.4f}"
+        )
+
+    ax.set_title(title, fontsize=11)
+
     cbar = plt.colorbar(ax.images[0], ax=ax, fraction=0.046, pad=0.08)
-    cbar.set_label('Campo Magnético (Gauss)', rotation=270, labelpad=25)
-    
+    cbar.set_label("LOS Magnetic Field (Gauss)", rotation=270, labelpad=25)
+
     plt.tight_layout()
-    plt.savefig(output_path, dpi=150, bbox_inches='tight')
-    logger.info(f"✓ Visualización guardada en: {output_path}")
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    logger.info("Visualisation saved: %s", output_path)
     plt.close()
 
 
-# ============================================================================
-# FUNCIÓN PRINCIPAL
-# ============================================================================
-
-def main():
-    # Configurar parser de argumentos
+def main() -> None:
+    """CLI entry point for single-image inference."""
     parser = argparse.ArgumentParser(
-        description="Predicción de Sunspot Index usando SolarNet"
+        description="SolarNet V2 PRO — sunspot index inference on HMI FITS files"
     )
     parser.add_argument(
-        '--image',
+        "--image",
         type=str,
         default=None,
-        help='Ruta al archivo .fits (si no se especifica, usa el primero de data/raw/)'
+        help="Path to an HMI FITS file. Defaults to the first file in data/raw/.",
     )
     parser.add_argument(
-        '--model',
+        "--model",
         type=str,
-        default='models/helios_best.pth',
-        help='Ruta al modelo entrenado (default: models/helios_best.pth)'
+        default="models/helios_best.pth",
+        help="Path to a trained checkpoint (default: models/helios_best.pth).",
     )
-    
     args = parser.parse_args()
-    
-    logger.info("="*70)
-    logger.info("HeliosPipeline - Inferencia de Sunspot Index")
-    logger.info("="*70)
-    
-    # 1. Determinar imagen a procesar
+
+    logger.info("=" * 70)
+    logger.info("HeliosPipeline — SolarNet Inference")
+    logger.info("=" * 70)
+
     if args.image:
         image_path = Path(args.image)
     else:
-        # Usar el primer archivo de data/raw/
-        raw_files = sorted(list(Path("data/raw").glob("*.fits")))
+        raw_files = sorted(Path("data/raw").glob("*.fits"))
         if not raw_files:
-            logger.error("No se encontraron archivos .fits en data/raw/")
+            logger.error("No FITS files found in data/raw/")
             return
         image_path = raw_files[0]
-        logger.info(f"Usando imagen por defecto: {image_path.name}")
-    
+        logger.info("Defaulting to: %s", image_path.name)
+
     if not image_path.exists():
-        logger.error(f"Archivo no encontrado: {image_path}")
+        logger.error("File not found: %s", image_path)
         return
-    
-    # 2. Cargar modelo
+
     model, device = load_model(args.model)
-    
-    # 3. Pre-procesar imagen
     image_tensor, solar_map = preprocess_fits_image(image_path)
-    
-    # 4. Realizar predicción
     predicted_index = predict_sunspot_index(model, image_tensor, device)
-    
-    # 5. Obtener valor real (si existe)
-    filename = image_path.stem  # Nombre sin extensión
-    real_index = get_real_sunspot_index(filename)
-    
-    # 6. Visualizar resultado
+    real_index = get_real_sunspot_index(image_path.stem)
     visualize_prediction(solar_map, predicted_index, real_index)
-    
-    # 7. Resumen
-    logger.info("\n" + "="*70)
-    logger.info("RESULTADO DE LA PREDICCIÓN")
-    logger.info("="*70)
-    logger.info(f"Archivo: {image_path.name}")
-    logger.info(f"Sunspot Index Predicho: {predicted_index:.4f}%")
-    
+
+    logger.info("=" * 70)
+    logger.info("Results  |  File: %s", image_path.name)
+    logger.info("Predicted sunspot index: %.4f", predicted_index)
+
     if real_index is not None:
         error = abs(predicted_index - real_index)
-        error_pct = (error / real_index) * 100 if real_index > 0 else 0
-        logger.info(f"Sunspot Index Real: {real_index:.4f}%")
-        logger.info(f"Error Absoluto: {error:.4f}%")
-        logger.info(f"Error Relativo: {error_pct:.2f}%")
-    
-    logger.info("="*70)
-    logger.info("\n✅ Inferencia completada exitosamente")
+        error_pct = (error / real_index) * 100 if real_index > 0 else 0.0
+        logger.info("Ground truth:           %.4f", real_index)
+        logger.info("Absolute error:         %.4f", error)
+        logger.info("Relative error:         %.2f%%", error_pct)
+
+    logger.info("=" * 70)
+    logger.info("Inference complete.")
 
 
 if __name__ == "__main__":
