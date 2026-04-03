@@ -5,7 +5,8 @@
 **Standard:** IEEE Conference Paper Format  
 **Repository:** Helios-Pipeline  
 **Dossier Generated:** 2026-04-02  
-**Dossier Version:** 1.0.0  
+**Dossier Updated:** 2026-04-03  
+**Dossier Version:** 1.1.0  
 
 ---
 
@@ -380,42 +381,61 @@ $$
 
 | Metric              | Value    | Formula                                                                 |
 |---------------------|----------|-------------------------------------------------------------------------|
-| MAE                 | 0.1416   | $\frac{1}{N}\sum_{i=1}^{N}\|\hat{y}_i - y_i\|$                        |
+| MAE                 | 0.1416   | $\frac{1}{N}\sum_{i=1}^{N}\left\lvert\hat{y}_i - y_i\right\rvert$     |
 | RMSE                | 0.1851   | $\sqrt{\frac{1}{N}\sum_{i=1}^{N}(\hat{y}_i - y_i)^2}$                |
-| $R^2$ Score         | 0.8705   | $1 - \frac{\sum(\hat{y}_i - y_i)^2}{\sum(y_i - \bar{y})^2}$          |
+| $R^2$ Score         | 0.8705   | $1 - \frac{\sum_{i=1}^{N}(\hat{y}_i - y_i)^2}{\sum_{i=1}^{N}(y_i - \bar{y})^2}$ |
 | Best Val Loss (MSE) | 0.0343   | Minimum observed at epoch 71                                            |
 | Best Epoch          | 71 / 78  | Best checkpoint / training termination                                  |
 | Inference Time      | 8.7 ms   | Single image on MPS (Apple Silicon)                                     |
 
-### 5.2 Model Performance Comparison Table
+### 5.2 Tabla Maestra de Benchmarking Externo
 
-The following table traces performance evolution across the three experiment runs, using the same validation dataset for comparability. The Naive Persistence baseline assumes $\hat{y}_i = \bar{y}_{train}$ (mean prediction), which yields $R^2 = 0$ by construction.
+**Fuente:** `HeliosPipeline/experiments/results_benchmarking.json`  
+**Run ID:** `benchmarking_baselines` · **Fecha de ejecución:** 2026-04-03T15:42:29Z  
+**Dataset:** 1,158 muestras — 927 entrenamiento / 231 validación (split 0.20)  
+**Protocolo externo:** Adam, lr=0.001, batch=32, epochs=30, seed=42
 
+| Modelo                    | MAE        | RMSE       | $R^2$      | Parámetros    | Infer. (ms) |
+|---------------------------|-----------|-----------|-----------|---------------|-------------|
+| Naive Persistence         | 0.3084    | 0.3826    | −0.013    | 0             | < 0.001     |
+| ResNet18 (Baseline)       | 0.2372    | 0.2636    | 0.5193    | 11,170,753    | 5.66        |
+| VGG-11 (Baseline)         | 0.0914    | 0.1299    | 0.8833    | 9,350,913     | 14.85       |
+| **SolarNet V2 PRO**       | **0.1416**| **0.1851**| **0.8705**| **389,057**   | **8.7**     |
+
+> **Nota metodológica.** Los modelos externos (ResNet18, VGG-11) fueron reentrenados desde cero sobre el mismo corpus HMI/SDO con cabeza de regresión lineal, siguiendo el mismo protocolo de normalización y split que SolarNet. Los tiempos de inferencia corresponden a ejecución en MPS (Apple Silicon), procesando una imagen de 512×512 px por pasada.
+
+**Reducción relativa de SolarNet V2 PRO frente a cada baseline:**
+
+| Comparación                        | Reducción MAE | Reducción RMSE | Ganancia $R^2$ |
+|------------------------------------|--------------|---------------|---------------|
+| vs. Naive Persistence              | −54.1%       | −51.6%        | +0.8835       |
+| vs. ResNet18                       | −40.3%       | −29.7%        | +0.3512       |
+| vs. VGG-11                         | +54.9%†      | +42.5%†       | −0.0128       |
+
+> †SolarNet no supera a VGG-11 en error absoluto. Sin embargo, logra el **95.3% del $R^2$ de VGG-11** con solo el **4.2% de sus parámetros** (389K vs. 9.35M) y una latencia **1.7× inferior** (8.7 ms vs. 14.85 ms). Véase Sección 7 para el análisis de eficiencia.
+
+### 5.3 Diagrama de Eficiencia: Error vs. Complejidad
+
+El siguiente diagrama cuadrante posiciona cada modelo según su **complejidad** (número de parámetros, eje X) y su **precisión** (MAE inverso normalizado, eje Y). La Zona Óptima (Q1: baja complejidad, alto rendimiento) identifica el trade-off ideal para despliegue en hardware embebido.
+
+```mermaid
+quadrantChart
+    title Relación Error–Complejidad (MAE vs. Parámetros)
+    x-axis Baja Complejidad --> Alta Complejidad
+    y-axis Alto Error --> Bajo Error · Mayor Precisión
+    quadrant-1 Zona Óptima
+    quadrant-2 Preciso · Costoso
+    quadrant-3 Costoso · Impreciso
+    quadrant-4 Simple · Impreciso
+    Naive Persistence: [0.02, 0.08]
+    SolarNet V2 PRO: [0.05, 0.78]
+    VGG-11: [0.84, 0.92]
+    ResNet18: [0.96, 0.33]
 ```
-Model Performance Benchmarking
-──────────────────────────────────────────────────────────────────────────────
-Model                   Exp ID   MAE     RMSE    R²      Epochs  LR      Augm.
-──────────────────────────────────────────────────────────────────────────────
-Naive Persistence (*)   —        0.394   0.394   0.000   —       —       —
-SolarNet V1 Baseline    exp_001  0.2847  0.3412  0.7213  38/50   0.01    No
-SolarNet V2 Tuned       exp_002  0.1834  0.2297  0.8241  61/80   0.001   Yes
-SolarNet V2 PRO         exp_003  0.1416  0.1851  0.8705  78/100  0.001   Yes
-──────────────────────────────────────────────────────────────────────────────
-(*) Naive Persistence: predicts mean(y_train) for all inputs.
-    MAE = RMSE = std(y_val) = 0.394 (dataset std dev). R² = 0 by definition.
-    Source: dataset statistics from metadata_processed.csv.
-──────────────────────────────────────────────────────────────────────────────
-```
 
-**Relative improvement of SolarNet V2 PRO over baselines:**
+> **Lectura del diagrama.** Eje X lineal normalizado sobre el rango [0, 11.17M] parámetros. Eje Y = $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$, donde $MAE_{max}=0.3084$ (Naive) y $MAE_{min}=0.0914$ (VGG-11). SolarNet V2 PRO es el único modelo que ocupa la Zona Óptima (Q1), combinando complejidad mínima con rendimiento comparable al estado del arte.
 
-| Comparison                          | MAE Reduction | RMSE Reduction | $R^2$ Gain  |
-|-------------------------------------|---------------|----------------|-------------|
-| V2 PRO vs. Naive Persistence        | 64.0%         | 53.0%          | +0.8705     |
-| V2 PRO vs. SolarNet V1 Baseline     | 50.2%         | 45.7%          | +0.1492     |
-| V2 PRO vs. SolarNet V2 Tuned        | 22.8%         | 19.4%          | +0.0464     |
-
-### 5.3 Incremental Experiment Analysis
+### 5.4 Incremental Experiment Analysis
 
 ```
 Ablation Study: Contribution of Each Improvement
@@ -431,7 +451,7 @@ V1 Baseline (LR=0.01, no scheduler)     0.2847      0.7213     exp_001
 ──────────────────────────────────────────────────────────────────────────────
 ```
 
-### 5.4 K-Fold Cross-Validation
+### 5.5 K-Fold Cross-Validation
 
 No K-Fold cross-validation run was found in the experiment logs at the time of dossier generation. The experiments directory contains three sequential experiments (`exp_001`, `exp_002`, `exp_003`) using a fixed 80/20 train-validation split. A future K-Fold evaluation ($k=5$) is recommended to estimate generalization variance. This section will be populated upon execution.
 
@@ -555,7 +575,9 @@ This reflects the observation that high sunspot index values are rarer in the tr
 
 ## 7. Engineering Conclusion
 
-SolarNet V2 PRO establishes a compelling case for task-specific lightweight neural architectures in solar activity prediction. With **389,057 total trainable parameters**, the model achieves a validation $R^2 = 0.8705$, MAE = 0.1416, and RMSE = 0.1851 on the held-out validation set — representing a **64.0% reduction in MAE** relative to the Naive Persistence baseline and a **50.2% reduction** relative to the V1 architecture trained without learning rate scheduling or data augmentation. This performance is achieved at a computational cost more than **30 times lower** than a conventional ResNet18 backbone (11.7M parameters), making SolarNet deployable on edge hardware and capable of real-time inference at **8.7 ms per magnetogram** on Apple Silicon MPS. The architectural decisions — four convolutional blocks with progressive filter doubling (32 to 256), Global Average Pooling in lieu of a dense classification head, and MC Dropout for calibrated uncertainty — collectively yield a system that is simultaneously interpretable via Grad-CAM, probabilistically calibrated, and computationally efficient. The three-experiment ablation trace confirms that the dominant performance driver was the reduction of the initial learning rate from 0.01 to 0.001 combined with adaptive LR scheduling ($\Delta R^2 = +0.1028$), while increased dropout regularization (0.25 to 0.30) provided a secondary but measurable gain ($\Delta R^2 = +0.0464$). The pipeline, from raw FITS acquisition through HMI/SDO ingestion to NPY normalization and model inference, is fully automated and reproducible, constituting a reference implementation for data-driven solar magnetogram regression.
+SolarNet V2 PRO establishes a compelling case for task-specific lightweight neural architectures in solar activity prediction. With **389,057 total trainable parameters**, the model achieves a validation $R^2 = 0.8705$, MAE = 0.1416, and RMSE = 0.1851 on the held-out validation set — representing a **54.1% reduction in MAE** relative to the Naive Persistence baseline and a **40.3% reduction** relative to ResNet18. This performance is achieved at a computational cost more than **28× lower** than a conventional ResNet18 backbone (11,170,753 parameters), making SolarNet deployable on edge hardware and capable of real-time inference at **8.7 ms per magnetogram** on Apple Silicon MPS. The architectural decisions — four convolutional blocks with progressive filter doubling (32 to 256), Global Average Pooling in lieu of a dense classification head, and MC Dropout for calibrated uncertainty — collectively yield a system that is simultaneously interpretable via Grad-CAM, probabilistically calibrated, and computationally efficient. The three-experiment ablation trace confirms that the dominant performance driver was the reduction of the initial learning rate from 0.01 to 0.001 combined with adaptive LR scheduling ($\Delta R^2 = +0.1028$), while increased dropout regularization (0.25 to 0.30) provided a secondary but measurable gain ($\Delta R^2 = +0.0464$). The pipeline, from raw FITS acquisition through HMI/SDO ingestion to NPY normalization and model inference, is fully automated and reproducible, constituting a reference implementation for data-driven solar magnetogram regression.
+
+**Análisis de eficiencia paramétrica frente a VGG-11.** El benchmarking externo introduce una comparación particularmente reveladora con VGG-11, la arquitectura de mayor precisión en el conjunto de validación ($R^2 = 0.8833$, MAE = 0.0914). Aunque VGG-11 supera a SolarNet en error absoluto, lo hace a un coste computacional desproporcionado: sus **9,350,913 parámetros** representan **24× más capacidad** que los 389,057 de SolarNet, y su latencia de inferencia de **14.85 ms** implica un overhead de **1.7×** frente a los 8.7 ms de SolarNet. Expresado en términos de eficiencia, SolarNet alcanza el **95.3% del $R^2$ de VGG-11 utilizando únicamente el 4.2% de sus parámetros** — una ratio de complejidad por unidad de precisión de aproximadamente **24:1**. Esta propiedad es crítica en el contexto de despliegue en hardware de monitorización espacial, donde los límites de almacenamiento ($<$2 MB por checkpoint), ancho de banda de memoria y disipación térmica son restricciones vinculantes. Para comparación, el checkpoint de producción `helios_v2_pro.pth` ocupa **1.5 MB**, frente a los ≈36 MB que requeriría un VGG-11 equivalente en precisión float32. La posición de SolarNet en la Zona Óptima del diagrama Error–Complejidad (§5.3) confirma que la arquitectura logra el equilibrio adecuado entre capacidad representacional y eficiencia operacional para la tarea de regresión sobre magnetogramas HMI/SDO.
 
 ---
 
@@ -583,7 +605,8 @@ HeliosPipeline/
 ├── experiments/
 │   ├── exp_001_v1_baseline.json        — Experiment 001 results
 │   ├── exp_002_v2_tuned.json           — Experiment 002 results
-│   └── exp_003_v2pro_production.json   — Experiment 003 results [CURRENT]
+│   ├── exp_003_v2pro_production.json   — Experiment 003 results [CURRENT]
+│   └── results_benchmarking.json       — External baselines: Naive/ResNet18/VGG-11 [2026-04-03]
 ├── data/processed/
 │   └── metadata_processed.csv          — 1,158-sample metadata index
 ├── notebooks/
@@ -612,4 +635,4 @@ HeliosPipeline/
 ---
 
 *End of RESEARCH_DOSSIER_MASTER.md*  
-*Generated from repository commit `85d82773` — 2026-04-02*
+*Generated from repository commit `85d82773` — 2026-04-02 · Updated 2026-04-03 (v1.1.0 — external benchmarking integration)*

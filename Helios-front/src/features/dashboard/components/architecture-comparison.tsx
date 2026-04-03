@@ -14,28 +14,41 @@ import { getBenchmark } from '@/lib/api';
 import type { BenchmarkResult } from '@/lib/types';
 
 // ---------------------------------------------------------------------------
-// Constants
+// Chart colour palette
 // ---------------------------------------------------------------------------
 
-const COLOR_BASELINE = '#78716c';  // stone-500 — sober neutral for ResNet18
-const COLOR_PROPOSED = '#3b82f6';  // blue-500 — clear but non-aggressive for SolarNet
+/** stone-500: neutral tone that recedes visually relative to the proposed model. */
+const COLOR_BASELINE = '#78716c';
+/** amber-400: warm accent that distinguishes VGG-11 without competing with SolarNet. */
+const COLOR_VGG     = '#f59e0b';
+/** blue-500: primary brand colour reserved for the proposed SolarNet architecture. */
+const COLOR_PROPOSED = '#3b82f6';
 
 // ---------------------------------------------------------------------------
 // Custom Tooltip
 // ---------------------------------------------------------------------------
 
+/** Single series entry provided by Recharts to a custom tooltip renderer. */
 interface TooltipPayloadItem {
   name: string;
   value: number;
   color: string;
 }
 
+/** Props injected by Recharts into the `content` prop of `<Tooltip />`. */
 interface CustomTooltipProps {
   active?: boolean;
   payload?: TooltipPayloadItem[];
+  /** X-axis category label for the hovered bar group (e.g. `"MAE"`). */
   label?: string;
 }
 
+/**
+ * Recharts tooltip renderer styled to the dashboard dark theme.
+ *
+ * Renders a floating card with per-series name/value pairs only when
+ * the cursor is over an active data point (`active && payload?.length`).
+ */
 function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
@@ -59,6 +72,13 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 // Reduction badge
 // ---------------------------------------------------------------------------
 
+/**
+ * Compact KPI badge displaying the relative error reduction of SolarNet
+ * over the ResNet-18 baseline for a single metric (MAE or RMSE).
+ *
+ * @param label - Metric label shown in the badge header (e.g. `"Reducción MAE"`).
+ * @param pct   - Reduction percentage as a positive integer (e.g. `50`).
+ */
 function ReductionBadge({ label, pct }: { label: string; pct: number }) {
   return (
     <div className="flex flex-col items-center gap-1 bg-neutral-900 border border-neutral-800 px-4 py-3">
@@ -76,28 +96,52 @@ function ReductionBadge({ label, pct }: { label: string; pct: number }) {
 // Main component
 // ---------------------------------------------------------------------------
 
+/**
+ * Dashboard panel comparing SolarNet V2 PRO against ResNet-18 and VGG-11
+ * baselines on MAE, RMSE, R², parameter count, and inference latency.
+ *
+ * Fetches benchmark data from `/api/benchmark` on mount and refreshes
+ * every 30 seconds. Renders KPI badges, a grouped bar chart, and a
+ * summary table. VGG-11 bars and rows are conditionally rendered only
+ * when the API response includes `vgg11` data.
+ */
 export function ArchitectureComparison() {
   const [data, setData] = useState<BenchmarkResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getBenchmark()
-      .then(setData)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    const fetchData = () =>
+      getBenchmark()
+        .then(setData)
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+
+    fetchData();
+    // Poll every 30 s to reflect live benchmarking results without a page reload.
+    const interval = setInterval(fetchData, 30_000);
+    return () => clearInterval(interval);
   }, []);
 
   const chartData = data
     ? [
-        { metric: 'MAE', ResNet18: data.baseline.mae, SolarNet: data.proposed.mae },
-        { metric: 'RMSE', ResNet18: data.baseline.rmse, SolarNet: data.proposed.rmse },
+        {
+          metric: 'MAE',
+          ResNet18: data.baseline.mae,
+          ...(data.vgg11 ? { 'VGG-11': data.vgg11.mae } : {}),
+          SolarNet: data.proposed.mae,
+        },
+        {
+          metric: 'RMSE',
+          ResNet18: data.baseline.rmse,
+          ...(data.vgg11 ? { 'VGG-11': data.vgg11.rmse } : {}),
+          SolarNet: data.proposed.rmse,
+        },
       ]
     : [];
 
   return (
     <div className="bg-neutral-950 border border-neutral-800">
-      {/* Header */}
       <div className="border-b border-neutral-800 px-4 py-2.5 bg-neutral-900">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -117,7 +161,6 @@ export function ArchitectureComparison() {
       </div>
 
       <div className="p-4 space-y-4">
-        {/* Loading / error states */}
         {loading && (
           <div className="flex items-center justify-center py-10 text-neutral-500 text-xs font-mono">
             Cargando resultados...
@@ -132,13 +175,11 @@ export function ArchitectureComparison() {
 
         {data && (
           <>
-            {/* Reduction badges */}
             <div className="grid grid-cols-2 gap-3">
               <ReductionBadge label="Reducción MAE" pct={data.mae_reduction_pct} />
               <ReductionBadge label="Reducción RMSE" pct={data.rmse_reduction_pct} />
             </div>
 
-            {/* Explanatory text */}
             <p className="text-[11px] text-neutral-500 leading-relaxed border-l-2 border-blue-500/40 pl-3">
               SolarNet V2 PRO alcanza una reducción del{' '}
               <span className="text-blue-400 font-semibold">{data.mae_reduction_pct}% en MAE</span> y del{' '}
@@ -154,7 +195,6 @@ export function ArchitectureComparison() {
               del baseline — 30× más compacto y {Math.round(data.baseline.inference_ms / data.proposed.inference_ms)}× más rápido en inferencia.
             </p>
 
-            {/* Grouped bar chart */}
             <div className="h-52">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -195,6 +235,15 @@ export function ArchitectureComparison() {
                     radius={[2, 2, 0, 0]}
                     maxBarSize={56}
                   />
+                  {data?.vgg11 && (
+                    <Bar
+                      dataKey="VGG-11"
+                      name="VGG-11 (Baseline)"
+                      fill={COLOR_VGG}
+                      radius={[2, 2, 0, 0]}
+                      maxBarSize={56}
+                    />
+                  )}
                   <Bar
                     dataKey="SolarNet"
                     name="SolarNet V2 PRO"
@@ -206,7 +255,6 @@ export function ArchitectureComparison() {
               </ResponsiveContainer>
             </div>
 
-            {/* Summary table */}
             <div className="border border-neutral-800 overflow-hidden">
               <table className="w-full text-xs font-mono">
                 <thead>
@@ -220,7 +268,11 @@ export function ArchitectureComparison() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[data.baseline, data.proposed].map((m, idx) => (
+                  {([
+                    { model: data.baseline, color: COLOR_BASELINE, isProposed: false },
+                    ...(data.vgg11 ? [{ model: data.vgg11, color: COLOR_VGG, isProposed: false }] : []),
+                    { model: data.proposed, color: COLOR_PROPOSED, isProposed: true },
+                  ] as { model: typeof data.baseline; color: string; isProposed: boolean }[]).map(({ model: m, color, isProposed }, idx) => (
                     <tr
                       key={m.name}
                       className={`border-b border-neutral-800/60 ${idx % 2 === 0 ? 'bg-neutral-950' : 'bg-neutral-900/30'}`}
@@ -228,23 +280,23 @@ export function ArchitectureComparison() {
                       <td className="px-4 py-2.5 flex items-center gap-2">
                         <span
                           className="inline-block w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ background: idx === 0 ? COLOR_BASELINE : COLOR_PROPOSED }}
+                          style={{ background: color }}
                         />
-                        <span className={idx === 0 ? 'text-neutral-400' : 'text-white'}>{m.name}</span>
+                        <span className={isProposed ? 'text-white' : 'text-neutral-400'}>{m.name}</span>
                       </td>
-                      <td className={`px-4 py-2.5 text-right ${idx === 0 ? 'text-neutral-400' : 'text-green-400 font-semibold'}`}>
+                      <td className={`px-4 py-2.5 text-right ${isProposed ? 'text-green-400 font-semibold' : 'text-neutral-400'}`}>
                         {m.mae.toFixed(4)}
                       </td>
-                      <td className={`px-4 py-2.5 text-right ${idx === 0 ? 'text-neutral-400' : 'text-green-400 font-semibold'}`}>
+                      <td className={`px-4 py-2.5 text-right ${isProposed ? 'text-green-400 font-semibold' : 'text-neutral-400'}`}>
                         {m.rmse.toFixed(4)}
                       </td>
-                      <td className={`px-4 py-2.5 text-right ${idx === 0 ? 'text-neutral-400' : 'text-blue-400 font-semibold'}`}>
+                      <td className={`px-4 py-2.5 text-right ${isProposed ? 'text-blue-400 font-semibold' : 'text-neutral-400'}`}>
                         {m.r2_score.toFixed(4)}
                       </td>
                       <td className="px-4 py-2.5 text-right text-neutral-400">
-                        {idx === 0
-                          ? `${(m.parameters / 1_000_000).toFixed(1)}M`
-                          : `${(m.parameters / 1000).toFixed(0)}K`}
+                        {isProposed
+                          ? `${(m.parameters / 1000).toFixed(0)}K`
+                          : `${(m.parameters / 1_000_000).toFixed(1)}M`}
                       </td>
                       <td className="px-4 py-2.5 text-right text-neutral-400">
                         {m.inference_ms.toFixed(1)}

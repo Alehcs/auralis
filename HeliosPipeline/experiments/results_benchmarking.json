@@ -1,0 +1,43 @@
+{
+  "run_id": "benchmarking_baselines",
+  "date": "2026-04-03T15:42:29Z",
+  "dataset": {
+    "total_samples": 1158,
+    "train_samples": 927,
+    "val_samples": 231,
+    "val_split": 0.2
+  },
+  "hyperparameters": {
+    "epochs": 30,
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "optimizer": "Adam",
+    "seed": 42
+  },
+  "models": {
+    "naive_persistence": {
+      "mae": 0.3084,
+      "rmse": 0.3826,
+      "r2": -0.013,
+      "inference_time_ms": 1e-05,
+      "total_parameters": 0,
+      "weights_file": null
+    },
+    "resnet18": {
+      "mae": 0.2372,
+      "rmse": 0.2636,
+      "r2": 0.5193,
+      "inference_time_ms": 5.66,
+      "total_parameters": 11170753,
+      "weights_file": "models/baselines/resnet18_baseline.pth"
+    },
+    "vgg11": {
+      "mae": 0.0914,
+      "rmse": 0.1299,
+      "r2": 0.8833,
+      "inference_time_ms": 14.85,
+      "total_parameters": 9350913,
+      "weights_file": "models/baselines/vgg11_baseline.pth"
+    }
+  }
+}
