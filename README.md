@@ -5,6 +5,7 @@ An enterprise-grade deep learning pipeline for real-time solar activity monitori
 ## Abstract / Executive Summary
 
 Space weather events, driven by solar activity, pose significant risks to satellite infrastructure, power grids, and radio communications. Use of traditional forecasting methods often lacks the temporal resolution required for immediate mitigation. This project implements **SolarNet CNN**, a deep learning model served via **FastAPI**, to analyze solar magnetograms in near real-time. By providing accurate sunspot index predictions and risk assessments, Helios Pipeline enables proactive protection of critical technological infrastructure.
+<img width="1773" height="1487" alt="image" src="https://github.com/user-attachments/assets/3eac8a15-69de-4eab-9495-3cdbae70da39" />
 
 ## Architecture
 
@@ -116,5 +117,5 @@ All rights reserved. Unauthorized copying of this file, via any medium, is stric
 
 ## Authors / Contact
 
-**Alejandro G.**
+**Alejandro C.**
 Software Engineer
