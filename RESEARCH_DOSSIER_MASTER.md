@@ -117,7 +117,7 @@ The Sunspot Index (SI) is a proxy computed from the magnetogram data itself, def
 **Source:** `HeliosPipeline/src/processing/prepare_dataset.py`, Lines 83-84
 
 $$
-SI = \frac{\left|\left\{p \in \mathcal{I} : |B(p)| > B_{thresh}\right\}\right|}{|\mathcal{I}|} \times 100
+SI = \frac{|\lbrace p \in \mathcal{I} : |B(p)| > B_{thresh}\rbrace|}{|\mathcal{I}|} \times 100
 $$
 
 where:
@@ -478,7 +478,7 @@ where $Z = 32 \times 32 = 1024$ is the spatial extent of the feature maps.
 **Step 4 — Weighted activation summation and ReLU.** The heatmap is formed as a weighted combination of activations, followed by ReLU to retain only positive contributions:
 
 $$
-L^{Grad\text{-}CAM} = \text{ReLU}\!\left( \sum_{k} \alpha_k A^k \right)
+L^{Grad\text{-}CAM} = \text{ReLU}\left( \sum_{k} \alpha_k A^k \right)
 $$
 
 **Step 5 — Normalization and upsampling.** The resulting $32 \times 32$ heatmap is normalized to $[0, 1]$ and bilinearly upsampled to the input resolution $512 \times 512$ via `scipy.ndimage.zoom`:
@@ -513,17 +513,17 @@ for module in _model.modules():
 3. Execute $T = 10$ stochastic forward passes under `torch.no_grad()`:
 
 $$
-\left\lbrace \hat{y}_1, \hat{y}_2, \ldots, \hat{y}_T \right\rbrace = \left\lbrace f_\theta^{(t)}(\mathbf{x}) \right\rbrace_{t=1{T=10}
+\lbrace \hat{y}_1, \hat{y}_2, \ldots, \hat{y}_T \rbrace = \lbrace f_\theta^{(t)}(\mathbf{x}) \rbrace_{t=1}^{T=10}
 $$
 
 4. Compute the point estimate and uncertainty score:
 
 $$
-\hat{y} = \mathbb{E}\left[\hat{y}_t\right] = \frac{1}{T}\sum_{t=1}^{T} \hat{y}_t
+\hat{y} = \mathbb{E}[\hat{y}_t] = \frac{1}{T}\sum_{t=1}^{T} \hat{y}_t
 $$
 
 $$
-\sigma_{MC} = \text{Std}\left[\hat{y}_t\right] = \sqrt{\frac{1}{T-1}\sum_{t=1}^{T}\left(\hat{y}_t - \hat{y}\right)^2}
+\sigma_{MC} = \text{Std}[\hat{y}_t] = \sqrt{\frac{1}{T-1}\sum_{t=1}^{T}(\hat{y}_t - \hat{y})^2}
 $$
 
 5. Restore evaluation mode after sampling:
@@ -535,7 +535,7 @@ _model.eval()
 **Confidence Score.** An additional heuristic confidence score is computed inversely proportional to the prediction magnitude, clipped to $[0.75, 0.99]$:
 
 $$
-c = \text{clip}\!\left(1.0 - \frac{|\hat{y}|}{500.0},\ 0.75,\ 0.99\right)
+c = \text{clip}(1.0 - \frac{|\hat{y}|}{500.0}, 0.75, 0.99)
 $$
 
 This reflects the observation that high sunspot index values are rarer in the training data, warranting reduced confidence in extreme predictions.
