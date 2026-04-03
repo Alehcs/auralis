@@ -9,6 +9,7 @@ import { ExecutionLogs } from './execution-logs';
 import { DataQuality } from './data-quality';
 import { PredictionChart } from './prediction-chart';
 import { ConfigPanel } from './components/config-panel';
+import { ResearchInsights } from './pages/research-insights';
 import { ArrowLeft } from 'lucide-react';
 
 export function DashboardPage() {
@@ -66,6 +67,10 @@ export function DashboardPage() {
 
             {activeTab === 'config' && (
               <ConfigPanel />
+            )}
+
+            {activeTab === 'research' && (
+              <ResearchInsights />
             )}
           </div>
         </div>

@@ -36,7 +36,6 @@ export function MagnetogramViz({ imageUrl }: MagnetogramVizProps) {
             src={imageUrl}
             alt="Solar Magnetogram"
             className="w-full h-full object-cover"
-            searchQuery="solar magnetogram sun"
           />
           <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-3 py-1 rounded text-xs text-white">
             Original
@@ -48,7 +47,6 @@ export function MagnetogramViz({ imageUrl }: MagnetogramVizProps) {
             src={imageUrl}
             alt="Solar Magnetogram with Detections"
             className="w-full h-full object-cover"
-            searchQuery="solar magnetogram sun"
           />
           {detections.map((detection) => (
             <div

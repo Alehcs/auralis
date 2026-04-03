@@ -1,7 +1,7 @@
-import { Activity, Database, FileText, Settings, BarChart3 } from 'lucide-react';
+import { Activity, Database, FileText, Settings, BarChart3, LineChart } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/language-context';
 
-export type TabId = 'overview' | 'monitoring' | 'pipeline' | 'logs' | 'config';
+export type TabId = 'overview' | 'monitoring' | 'pipeline' | 'logs' | 'config' | 'research';
 
 interface ScientificSidebarProps {
   activeTab: TabId;
@@ -16,6 +16,7 @@ export function ScientificSidebar({ activeTab, onTabChange }: ScientificSidebarP
     { icon: Activity, label: t.sidebar.monitoring, id: 'monitoring' },
     { icon: Database, label: t.sidebar.dataPipeline, id: 'pipeline' },
     { icon: FileText, label: t.sidebar.logs, id: 'logs' },
+    { icon: LineChart, label: t.sidebar.researchInsights, id: 'research' },
     { icon: Settings, label: t.sidebar.config, id: 'config' },
   ];
 

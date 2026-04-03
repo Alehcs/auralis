@@ -10,6 +10,9 @@ import type {
     SystemStats,
     LogEntry,
     HealthResponse,
+    BenchmarkResult,
+    XAIFaithfulnessResult,
+    ExperimentEntry,
 } from './types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -64,4 +67,44 @@ export function getStats(): Promise<SystemStats> {
 /** Fetch the last 50 lines from each .log file. */
 export function getLogs(): Promise<LogEntry[]> {
     return fetchJson<LogEntry[]>('/api/logs');
+}
+
+/** Fetch architecture benchmark: ResNet18 (baseline) vs SolarNet. */
+export function getBenchmark(): Promise<BenchmarkResult> {
+    return fetchJson<BenchmarkResult>('/api/benchmark');
+}
+
+/** Compute/fetch XAI faithfulness curve for a magnetogram. */
+export function getXAIFaithfulness(filename?: string): Promise<XAIFaithfulnessResult> {
+    const qs = filename ? `?filename=${encodeURIComponent(filename)}` : '';
+    return fetchJson<XAIFaithfulnessResult>(`/api/xai/faithfulness${qs}`);
+}
+
+/** List all experiment runs (sorted by date descending). */
+export function getExperiments(): Promise<ExperimentEntry[]> {
+    return fetchJson<ExperimentEntry[]>('/api/experiments');
+}
+
+/**
+ * Build the full URL for rendering an AIA 193Å EUV image.
+ * The backend derives EUV from real AIA data (data/aia/) when available,
+ * or synthesizes it from the co-registered magnetogram as a proxy.
+ */
+export function getAiaUrl(filename: string): string {
+    return `${API_URL}/api/aia/${encodeURIComponent(filename)}`;
+}
+
+/**
+ * Run SolarNetDual prediction on [Magnetogram, AIA 193Å].
+ * Falls back to single-channel inference when dual weights are not yet trained.
+ */
+export function predictDual(filename: string): Promise<PredictionResult> {
+    return fetchJson<PredictionResult>(
+        `/api/predict-dual/${encodeURIComponent(filename)}`,
+    );
+}
+
+/** Fetch raw JSON metadata for a single experiment run. */
+export function getExperimentMetadata(filename: string): Promise<unknown> {
+    return fetchJson<unknown>(`/api/experiments/${encodeURIComponent(filename)}`);
 }
