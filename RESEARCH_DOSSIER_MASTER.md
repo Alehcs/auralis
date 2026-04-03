@@ -513,7 +513,7 @@ for module in _model.modules():
 3. Execute $T = 10$ stochastic forward passes under `torch.no_grad()`:
 
 $$
-\left\{\hat{y}_1, \hat{y}_2, \ldots, \hat{y}_T\right\} = \left\{f_\theta^{(t)}(\mathbf{x})\right\}_{t=1}^{T=10}
+\left\lbrace \hat{y}_1, \hat{y}_2, \ldots, \hat{y}_T \right\rbrace = \left\lbrace f_\theta^{(t)}(\mathbf{x}) \right\rbrace_{t=1{T=10}
 $$
 
 4. Compute the point estimate and uncertainty score:
