@@ -422,11 +422,11 @@ El siguiente diagrama cuadrante posiciona cada modelo según su **complejidad** 
 quadrantChart
     title Relación Error–Complejidad (MAE vs. Parámetros)
     x-axis Baja Complejidad --> Alta Complejidad
-    y-axis Alto Error --> Bajo Error - Mayor Precisión
+    y-axis "Alto Error --> Bajo Error - Mayor Precisión"
     quadrant-1 Zona Óptima
-    quadrant-2 Preciso · Costoso
-    quadrant-3 Costoso · Impreciso
-    quadrant-4 Simple · Impreciso
+    quadrant-2 Preciso - Costoso
+    quadrant-3 Costoso - Impreciso
+    quadrant-4 Simple - Impreciso
     Naive Persistence: [0.02, 0.08]
     SolarNet V2 PRO: [0.05, 0.78]
     VGG-11: [0.84, 0.92]
