@@ -1,4 +1,4 @@
-"""Preprocessing pipeline: HMI FITS -> normalised NumPy tensors.
+"""Preprocessing pipeline: HMI FITS -> dual-channel log-scaled NumPy tensors.
 
 Transforms raw HMI Level-1.5 FITS files downloaded from NASA JSOC into
 float32 NumPy arrays suitable for training SolarNet. The normalisation
@@ -14,14 +14,26 @@ Processing steps applied to each magnetogram:
     4. Resample to 512 x 512 with bilinear anti-aliasing to standardise
        spatial resolution across the SDO observing baseline (2011-2025),
        during which the SDO-Sun distance varies by approximately +-3%.
-    5. Clip to +-400 G and scale linearly to [-1, 1].
-    6. Serialise as float32 .npy.
-    7. Append a metadata row to the companion CSV.
+    5. Apply symmetric logarithmic scaling: x' = sign(x) * log(1 + |x|).
+       This transform compresses extreme umbral flux densities (> 2000 G)
+       without discarding them, preserving roughly 3x more dynamic range
+       than the former +-400 G hard clip while remaining differentiable
+       almost everywhere. The mapping is monotone, sign-preserving, and
+       invertible, so no physical information is destroyed.
+    6. Decompose into two non-negative polarity channels:
+         B+ = ReLU(x')   — positive (leading) polarity flux
+         B- = ReLU(-x')  — negative (trailing) polarity flux
+       Separating polarities into independent channels allows convolutional
+       filters to specialise by polarity sign without relying on negative
+       activations, which is consistent with the bipolar active-region
+       morphology targeted by SolarNet.
+    7. Stack channels into a (2, H, W) float32 tensor and serialise as .npy.
+    8. Append a metadata row to the companion CSV.
 """
 
 import csv
+import json
 import logging
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 import warnings
@@ -40,51 +52,85 @@ logger = logging.getLogger(__name__)
 warnings.filterwarnings("ignore")
 
 
+def log_scale(x: np.ndarray) -> np.ndarray:
+    """Apply symmetric logarithmic scaling to a magnetogram array.
+
+    Implements the transform x' = sign(x) * log(1 + |x|), which maps the
+    unbounded Gauss domain to a compressed real range while preserving sign,
+    monotonicity, and the zero crossing. Unlike hard clipping at +-400 G, this
+    function retains information from strong-field umbral cores (> 2000 G) that
+    are diagnostic of X-class flare precursors, effectively extending the
+    usable dynamic range of the representation by approximately one decade.
+
+    Args:
+        x: Input array in Gauss (any shape, float32 or float64).
+
+    Returns:
+        Transformed array of the same shape and dtype as ``x``.
+    """
+    return np.sign(x) * np.log1p(np.abs(x))
+
+
 def load_and_process_magnetogram(
     fits_path: Path,
     target_size: int = 512,
-    clip_value: float = 400.0,
     sunspot_threshold: float = 200.0,
 ) -> Tuple[np.ndarray, Dict[str, Any]]:
-    """Load, resample, and normalise a single HMI FITS magnetogram.
+    """Load, resample, log-scale, and decompose a single HMI FITS magnetogram.
 
     The sunspot proxy index is computed on the original, pre-resample pixel
     array to avoid double-counting artefacts introduced by bilinear
     interpolation near the 200 G detection threshold.
 
-    The clip bound of +-400 G follows Bobra & Couvidat (2015): it covers the
-    99th percentile of LOS flux density in active regions while preventing
-    the <<1% of umbral-core pixels from compressing the dynamic range of the
-    normalised array. The 200 G threshold for active-pixel classification is
-    consistent with HMI SHARP active-region boundary criteria.
+    Normalisation rationale — V3 PRO logarithmic scaling
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Previous versions clipped the line-of-sight flux density to +-400 G and
+    scaled linearly to [-1, 1] following Bobra & Couvidat (2015). While
+    appropriate for statistical studies of active-region properties, the hard
+    clip permanently discards information from pixels above 400 G — which,
+    in penumbral and umbral regions, can reach 2000–3500 G and carry strong
+    predictive signal for major flare events.
+
+    The V3 PRO pipeline replaces clipping with the symmetric log transform
+    x' = sign(x) * log(1 + |x|). For reference values:
+        |B| = 100 G  ->  x' ≈ 4.62
+        |B| = 400 G  ->  x' ≈ 5.99   (former saturation point)
+        |B| = 2000 G ->  x' ≈ 7.60   (previously clipped, now retained)
+        |B| = 3500 G ->  x' ≈ 8.16   (umbral cores)
+
+    The transformed array is then decomposed into two non-negative polarity
+    channels (B+ and B-) using ReLU. This disentangles leading and trailing
+    polarity lobes of bipolar magnetic regions into separate feature maps,
+    enabling convolutional kernels to specialise by polarity without relying
+    on negative activation values.
 
     Args:
         fits_path: Path to an HMI Level-1.5 FITS file.
         target_size: Square output side length in pixels (default 512).
-        clip_value: Symmetric saturation bound in Gauss (default 400.0).
         sunspot_threshold: Field strength threshold in Gauss used to classify
             pixels as magnetically active (default 200.0).
 
     Returns:
         Tuple of:
-            - float32 ndarray of shape (target_size, target_size) in [-1, 1].
+            - float32 ndarray of shape (2, target_size, target_size).
+              Channel 0 is B+ = ReLU(x'), channel 1 is B- = ReLU(-x').
             - Metadata dictionary with keys: filename, date, sunspot_index,
-              original_shape, processed_shape, min_value, max_value,
-              mean_value.
+              original_shape, processed_shape, b_pos_max, b_neg_max,
+              mean_b_pos, mean_b_neg.
 
     Raises:
         Exception: Propagated from SunPy or skimage on malformed FITS input.
     """
     try:
         solar_map = sunpy.map.Map(str(fits_path))
-        data = solar_map.data
+        data: np.ndarray = solar_map.data
 
         data = np.nan_to_num(data, nan=0.0)
 
-        strong_field_mask = np.abs(data) > sunspot_threshold
-        sunspot_index = (np.sum(strong_field_mask) / data.size) * 100.0
+        strong_field_mask: np.ndarray = np.abs(data) > sunspot_threshold
+        sunspot_index: float = (np.sum(strong_field_mask) / data.size) * 100.0
 
-        data_resampled = resize(
+        data_resampled: np.ndarray = resize(
             data,
             (target_size, target_size),
             mode="reflect",
@@ -93,20 +139,29 @@ def load_and_process_magnetogram(
         )
         data_resampled = np.nan_to_num(data_resampled, nan=0.0)
 
-        data_normalized = np.clip(data_resampled, -clip_value, clip_value) / clip_value
+        # Symmetric log scaling: x' = sign(x) * log(1 + |x|)
+        data_log: np.ndarray = log_scale(data_resampled)
+
+        # Polarity decomposition into two non-negative channels
+        b_pos: np.ndarray = np.maximum(data_log, 0.0)   # ReLU(x')
+        b_neg: np.ndarray = np.maximum(-data_log, 0.0)  # ReLU(-x')
+
+        # Stack into (2, H, W) tensor — channel 0: B+, channel 1: B-
+        processed: np.ndarray = np.stack([b_pos, b_neg], axis=0)
 
         metadata: Dict[str, Any] = {
             "filename": fits_path.stem,
             "date": solar_map.date.iso,
             "sunspot_index": sunspot_index,
             "original_shape": data.shape,
-            "processed_shape": data_normalized.shape,
-            "min_value": float(np.min(data_normalized)),
-            "max_value": float(np.max(data_normalized)),
-            "mean_value": float(np.mean(data_normalized)),
+            "processed_shape": processed.shape,
+            "b_pos_max": float(np.max(b_pos)),
+            "b_neg_max": float(np.max(b_neg)),
+            "mean_b_pos": float(np.mean(b_pos)),
+            "mean_b_neg": float(np.mean(b_neg)),
         }
 
-        return data_normalized.astype(np.float32), metadata
+        return processed.astype(np.float32), metadata
 
     except Exception as e:
         logger.error("Failed to process %s: %s", fits_path.name, e)
@@ -117,10 +172,13 @@ def prepare_dataset(
     raw_dir: str = "data/raw",
     processed_dir: str = "data/processed",
     target_size: int = 512,
-    clip_value: float = 400.0,
     sunspot_threshold: float = 200.0,
 ) -> List[Dict[str, Any]]:
-    """Batch-process all FITS files in ``raw_dir`` and write .npy tensors.
+    """Batch-process all FITS files in ``raw_dir`` and write dual-channel .npy tensors.
+
+    Each output tensor has shape (2, target_size, target_size) where channel 0
+    holds the positive-polarity map B+ and channel 1 holds the negative-polarity
+    map B-, both derived from the symmetric log-scaled magnetogram.
 
     Files are processed in sorted order for reproducibility. Errors on
     individual files are logged and skipped; processing continues to enable
@@ -128,11 +186,9 @@ def prepare_dataset(
 
     Args:
         raw_dir: Directory containing raw ``.fits`` files.
-        processed_dir: Output directory for ``.npy`` tensors (created if
-            absent).
+        processed_dir: Output directory for ``.npy`` tensors (created if absent).
         target_size: Square output resolution passed to
             ``load_and_process_magnetogram``.
-        clip_value: Clip bound in Gauss.
         sunspot_threshold: Active-region detection threshold in Gauss.
 
     Returns:
@@ -142,15 +198,15 @@ def prepare_dataset(
     processed_path.mkdir(parents=True, exist_ok=True)
 
     raw_path = Path(raw_dir)
-    fits_files = sorted(raw_path.glob("*.fits"))
+    fits_files: List[Path] = sorted(raw_path.glob("*.fits"))
 
     if not fits_files:
         logger.warning("No FITS files found in %s", raw_dir)
         return []
 
     logger.info(
-        "%d files to process  |  output: %dx%d px  |  clip: +/-%.0f G",
-        len(fits_files), target_size, target_size, clip_value,
+        "%d files to process  |  output: 2 x %dx%d px  |  scaling: log1p",
+        len(fits_files), target_size, target_size,
     )
 
     all_metadata: List[Dict[str, Any]] = []
@@ -161,7 +217,6 @@ def prepare_dataset(
             processed_data, metadata = load_and_process_magnetogram(
                 fits_file,
                 target_size=target_size,
-                clip_value=clip_value,
                 sunspot_threshold=sunspot_threshold,
             )
 
@@ -186,6 +241,64 @@ def prepare_dataset(
         logger.warning("  %s: %s", err["filename"], err["error"])
 
     return all_metadata
+
+
+def normalize_sunspot_targets(
+    metadata_list: List[Dict[str, Any]],
+    scaler_path: str = "models/target_scaler.json",
+) -> Tuple[float, float]:
+    """Apply Z-Score standardization to ``sunspot_index`` in-place and persist the scaler.
+
+    Computes the global mean and standard deviation from the full training
+    batch, applies the transform ``y_norm = (y - mean) / std`` to every
+    metadata entry, and writes the two scalar parameters to a JSON file so
+    that evaluation / inference code can invert the transform without
+    re-loading the dataset.
+
+    The raw ``sunspot_index`` value is preserved under the key
+    ``sunspot_index_raw`` to allow debugging and distribution checks
+    after the fact.
+
+    Args:
+        metadata_list: List of metadata dicts produced by ``prepare_dataset``.
+            Modified **in-place**: each dict gains ``sunspot_index_raw`` and
+            its ``sunspot_index`` field is replaced with the normalised value.
+        scaler_path: Destination path for the JSON scaler file
+            (parent directory created if absent).
+
+    Returns:
+        Tuple ``(mean, std)`` computed over the batch.
+
+    Raises:
+        ValueError: If ``metadata_list`` is empty or std is zero (constant target).
+    """
+    if not metadata_list:
+        raise ValueError("metadata_list is empty — cannot fit scaler.")
+
+    raw_values = np.array([m["sunspot_index"] for m in metadata_list], dtype=np.float64)
+    mean: float = float(raw_values.mean())
+    std: float = float(raw_values.std())
+
+    if std == 0.0:
+        raise ValueError(
+            "sunspot_index has zero variance across the dataset — "
+            "Z-Score normalisation is undefined."
+        )
+
+    for m in metadata_list:
+        m["sunspot_index_raw"] = m["sunspot_index"]
+        m["sunspot_index"] = (m["sunspot_index"] - mean) / std
+
+    scaler_file = Path(scaler_path)
+    scaler_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(scaler_file, "w") as f:
+        json.dump({"mean": mean, "std": std}, f, indent=2)
+
+    logger.info(
+        "Target scaler saved: %s  |  mean=%.4f  std=%.4f",
+        scaler_file.absolute(), mean, std,
+    )
+    return mean, std
 
 
 def save_metadata_csv(
@@ -213,13 +326,15 @@ def save_metadata_csv(
     fieldnames = [
         "filename",
         "date",
-        "sunspot_index",
+        "sunspot_index",        # Z-Score normalised value (model input)
+        "sunspot_index_raw",    # Original value before normalisation
         "processed_file",
         "original_shape",
         "processed_shape",
-        "min_value",
-        "max_value",
-        "mean_value",
+        "b_pos_max",
+        "b_neg_max",
+        "mean_b_pos",
+        "mean_b_neg",
     ]
 
     with open(output_path, "w", newline="") as csvfile:
@@ -235,30 +350,50 @@ def save_metadata_csv(
 
 
 def main() -> None:
-    """Execute the dataset preprocessing pipeline."""
+    """Execute the V3 PRO dataset preprocessing pipeline."""
     logger.info("=" * 70)
-    logger.info("HeliosPipeline — Dataset Preparation")
+    logger.info("HeliosPipeline — Dataset Preparation  [V3 PRO / log1p + dual-channel]")
     logger.info("=" * 70)
 
     metadata = prepare_dataset(
         raw_dir="data/raw",
         processed_dir="data/processed",
         target_size=512,
-        clip_value=400.0,
         sunspot_threshold=200.0,
     )
 
     if metadata:
+        # ── Z-Score normalization of the regression target ───────────────────
+        # Must be applied BEFORE writing the CSV so that the persisted
+        # sunspot_index values match what the model will receive at training
+        # time. The raw values are kept under sunspot_index_raw for auditing.
+        mean, std = normalize_sunspot_targets(
+            metadata,
+            scaler_path="models/target_scaler.json",
+        )
+
         save_metadata_csv(metadata, output_path="data/processed/metadata_processed.csv")
 
-        indices = [m["sunspot_index"] for m in metadata]
+        raw_indices = [m["sunspot_index_raw"] for m in metadata]
+        norm_indices = [m["sunspot_index"] for m in metadata]
+        b_pos_maxima = [m["b_pos_max"] for m in metadata]
+        b_neg_maxima = [m["b_neg_max"] for m in metadata]
         logger.info("=" * 70)
         logger.info("Dataset statistics:")
-        logger.info("  Images:          %d", len(metadata))
-        logger.info("  Sunspot index — mean: %.3f  min: %.3f  max: %.3f",
-                    np.mean(indices), np.min(indices), np.max(indices))
-        logger.info("  Resolution:      512 x 512 px")
-        logger.info("  Value range:     [-1.0, 1.0]")
+        logger.info("  Images:            %d", len(metadata))
+        logger.info("  Tensor shape:      (2, 512, 512) — [B+, B-]")
+        logger.info("  Sunspot index (raw)  — mean: %.4f  std: %.4f  "
+                    "min: %.4f  max: %.4f",
+                    np.mean(raw_indices), np.std(raw_indices),
+                    np.min(raw_indices), np.max(raw_indices))
+        logger.info("  Sunspot index (norm) — mean: %.4f  std: %.4f  "
+                    "min: %.4f  max: %.4f  [Z-Score: μ=%.4f σ=%.4f]",
+                    np.mean(norm_indices), np.std(norm_indices),
+                    np.min(norm_indices), np.max(norm_indices), mean, std)
+        logger.info("  B+ max  — mean: %.3f  max: %.3f",
+                    np.mean(b_pos_maxima), np.max(b_pos_maxima))
+        logger.info("  B- max  — mean: %.3f  max: %.3f",
+                    np.mean(b_neg_maxima), np.max(b_neg_maxima))
         logger.info("=" * 70)
     else:
         logger.error("No files processed successfully.")
