@@ -12,11 +12,13 @@ COPY requirements.api.txt .
 RUN pip install --no-cache-dir -r requirements.api.txt
 
 # Copy source code and assets
-COPY src/        ./src/
-COPY models/     ./models/
-COPY data/       ./data/
+COPY src/         ./src/
+COPY models/      ./models/
 COPY experiments/ ./experiments/
-COPY reports/    ./reports/
+COPY reports/     ./reports/
+
+# Sample dataset (16 representative magnetograms for demo)
+COPY data/sample/ ./data/processed/
 
 # Expose port (Render uses $PORT, default 8000)
 ENV PORT=8000

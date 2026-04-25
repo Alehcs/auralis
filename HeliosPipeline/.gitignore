@@ -23,11 +23,11 @@ coverage/
 .env.production.local
 
 # --- DATOS E IMÁGENES (Prevenir subidas masivas) ---
-data/
 data/raw/
 data/processed/
-# Excepción: si quieres mantener la estructura de carpetas vacías
-!data/.gitkeep
+# Excepción: muestra para demo (16 magnetogramas ~16 MB)
+!data/sample/
+!data/sample/**
 
 # --- MODELOS DE IA (Archivos pesados > 100MB) ---
 *.pth
