@@ -59,7 +59,7 @@ REPORT_CSV    = Path("reports/results_comparison.csv")
 # Debe coincidir exactamente con lo usado en train_model.main()
 VAL_SPLIT    = 0.2
 BATCH_SIZE   = 32
-DROPOUT_RATE = 0.4
+DROPOUT_RATE = 0.2
 
 
 # ---------------------------------------------------------------------------
@@ -265,8 +265,10 @@ def main() -> None:
     # ── Inferencia (espacio normalizado) ──────────────────────────────────────
     y_real_norm, y_pred_norm = run_inference(model, val_loader, device)
 
-    # ── Transformada inversa Z-Score → escala real ────────────────────────────
-    y_real = (y_real_norm * std) + mean
+    # ── Transformada inversa Z-Score → escala real (solo predicciones) ───────
+    # y_real_norm ya viene en escala física desde SolarDataset; no se toca.
+    # Solo y_pred sale del modelo en espacio Z-Score y debe desnormalizarse.
+    y_real = y_real_norm
     y_pred = (y_pred_norm * std) + mean
 
     # ── Métricas en escala real ───────────────────────────────────────────────

@@ -10,10 +10,11 @@ Models evaluated:
   3. VGG-11              — adapted to 1-channel input and scalar regression
 
 Protocol:
-  - Dataset : SolarDataset (1,158 magnetograms, 80/20 split, seed=42)
+  - Dataset : SolarDataset (1,763 magnetograms, 80/20 split, seed=42)
   - Epochs  : 30
-  - LR      : 0.001  (Adam, matching exp_003)
+  - LR      : 0.001  (Adam)
   - Batch   : 32
+  - Input   : 1 canal colapsado |B| = B+ + B−  (SolarDataset devuelve 2ch; se colapsa aquí)
 
 Output:
   - experiments/results_benchmarking.json  (MAE, RMSE, R², inference time, # params)
@@ -150,7 +151,10 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
     preds, targets = [], []
     with torch.no_grad():
         for images, labels in loader:
-            out = model(images.to(device)).squeeze(-1).cpu().numpy()
+            # Collapse dual-channel (B+, B-) → single-channel |B| = B+ + B-.
+            # SolarDataset always returns (N, 2, H, W); baselines require (N, 1, H, W).
+            images_1ch = (images[:, 0:1, :, :] + images[:, 1:2, :, :]).to(device)
+            out = model(images_1ch).squeeze(-1).cpu().numpy()
             preds.extend(out.tolist())
             targets.extend(labels.squeeze(-1).numpy().tolist())
 
@@ -210,7 +214,9 @@ def train(model: nn.Module, train_loader: DataLoader, val_loader: DataLoader,
         model.train()
         running_loss = 0.0
         for images, labels in train_loader:
-            images, labels = images.to(device), labels.to(device)
+            # Collapse dual-channel (B+, B-) → single-channel |B| = B+ + B-.
+            images = (images[:, 0:1, :, :] + images[:, 1:2, :, :]).to(device)
+            labels = labels.to(device)
             optimizer.zero_grad()
             loss = criterion(model(images), labels)
             loss.backward()

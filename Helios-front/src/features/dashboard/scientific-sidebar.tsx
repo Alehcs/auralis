@@ -1,4 +1,8 @@
-import { Activity, Database, FileText, Settings, BarChart3, LineChart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import {
+  Sun, LayoutDashboard, Activity,
+  Database, FlaskConical, FileText, Settings,
+} from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/language-context';
 
 export type TabId = 'overview' | 'monitoring' | 'pipeline' | 'logs' | 'config' | 'research';
@@ -10,51 +14,78 @@ interface ScientificSidebarProps {
 
 export function ScientificSidebar({ activeTab, onTabChange }: ScientificSidebarProps) {
   const { t } = useLanguage();
+  const [now, setNow] = useState(new Date());
 
-  const menuItems: { icon: typeof BarChart3; label: string; id: TabId }[] = [
-    { icon: BarChart3, label: t.sidebar.overview, id: 'overview' },
-    { icon: Activity, label: t.sidebar.monitoring, id: 'monitoring' },
-    { icon: Database, label: t.sidebar.dataPipeline, id: 'pipeline' },
-    { icon: FileText, label: t.sidebar.logs, id: 'logs' },
-    { icon: LineChart, label: t.sidebar.researchInsights, id: 'research' },
-    { icon: Settings, label: t.sidebar.config, id: 'config' },
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const tickStr = now.toLocaleTimeString('en-GB', { hour12: false });
+
+  const NAV_ITEMS: { icon: typeof LayoutDashboard; label: string; id: TabId }[] = [
+    { icon: LayoutDashboard, label: t.nav.dashboard,    id: 'overview'   },
+    { icon: Activity,        label: t.nav.monitoring,   id: 'monitoring' },
+    { icon: Database,        label: t.nav.pipeline,     id: 'pipeline'   },
+    { icon: FlaskConical,    label: t.nav.experiments,  id: 'research'   },
+    { icon: FileText,        label: t.nav.logs,         id: 'logs'       },
+    { icon: Settings,        label: t.nav.settings,     id: 'config'     },
   ];
 
   return (
-    <aside className="w-56 bg-neutral-950 border-r border-neutral-800 flex flex-col">
-      <div className="p-4 border-b border-neutral-800">
-        <div className="mb-2">
-          <h1 className="text-sm font-semibold text-white tracking-tight">HeliosPipeline</h1>
-          <p className="text-[11px] text-neutral-500 font-mono">v2.1.0</p>
+    <aside className="w-[220px] flex-shrink-0 bg-[#0d0d0d] border-r border-neutral-800/60 flex flex-col">
+
+      {/* ── Logo ─────────────────────────────────────────────────── */}
+      <div className="px-5 py-5 flex items-center gap-3.5">
+        <div
+          className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #fb923c 0%, #f97316 40%, #ea580c 100%)' }}
+        >
+          <Sun className="w-5 h-5 text-black" strokeWidth={2.2} />
+        </div>
+        <div className="leading-none">
+          <div className="text-[17px] font-bold text-white tracking-tight">Helios</div>
+          <div className="text-[10px] text-neutral-400 tracking-[0.2em] mt-1">SOLAR INTELLIGENCE</div>
         </div>
       </div>
 
-      <nav className="flex-1 p-3">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onTabChange(item.id)}
-              className={`w-full flex items-center space-x-2 px-3 py-2 mb-1 text-sm transition-colors ${activeTab === item.id
-                ? 'bg-neutral-800 text-white'
-                : 'text-neutral-400 hover:bg-neutral-900 hover:text-neutral-300'
+      {/* ── Nav ──────────────────────────────────────────────────── */}
+      <div className="px-3 flex-1">
+        <div className="text-[9px] text-neutral-600 tracking-[0.18em] px-2.5 mb-2">
+          {t.nav.workspace}
+        </div>
+        <nav className="space-y-[2px]">
+          {NAV_ITEMS.map(({ icon: Icon, label, id }) => {
+            const active = activeTab === id;
+            return (
+              <button
+                key={id}
+                onClick={() => onTabChange(id)}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[14px] transition-colors ${
+                  active
+                    ? 'bg-neutral-800/80 text-white'
+                    : 'text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800/40'
                 }`}
-            >
-              <Icon className="w-4 h-4" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </nav>
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className={`w-[17px] h-[17px] flex-shrink-0 ${active ? 'text-neutral-300' : 'text-neutral-600'}`} />
+                  <span>{label}</span>
+                </div>
+                {active && <div className="w-[6px] h-[6px] rounded-full bg-orange-500 flex-shrink-0" />}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
-      <div className="p-3 border-t border-neutral-800">
-        <div className="bg-neutral-900 border border-neutral-800 p-3">
-          <div className="flex items-center space-x-2 mb-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-            <span className="text-[11px] text-neutral-400">{t.sidebar.systemStatus}</span>
-          </div>
-          <p className="text-xs text-white">{t.sidebar.nominal}</p>
+      {/* ── Status bar ───────────────────────────────────────────── */}
+      <div className="px-4 py-4 border-t border-neutral-800/60">
+        <div className="flex items-center gap-2">
+          <div className="w-[7px] h-[7px] rounded-full bg-green-500 flex-shrink-0" />
+          <span className="text-[12px] text-neutral-300">{t.nav.pipelineOnline}</span>
+        </div>
+        <div className="text-[10px] text-neutral-600 font-mono mt-1 pl-[15px]">
+          {t.nav.lastTick} {tickStr} · CPU
         </div>
       </div>
     </aside>

@@ -27,7 +27,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ── Paths (relative to the directory where you launch the script) ─────────────
-WEIGHTS_PATH    = Path("models/helios_v3_final.pth")
+WEIGHTS_PATH    = Path("models/helios_v3_pro.pth")
 DATA_DIR        = Path("data/processed")
 METADATA_CSV    = Path("data/processed/metadata_processed.csv")
 OUTPUT_PATH     = Path("reports/figures/error_scatter.png")
@@ -35,7 +35,13 @@ OUTPUT_PATH     = Path("reports/figures/error_scatter.png")
 # ── Hyper-params must match train_model.main() exactly ───────────────────────
 VAL_SPLIT    = 0.2
 BATCH_SIZE   = 32
-DROPOUT_RATE = 0.4
+DROPOUT_RATE = 0.2
+
+# ── Población Z-Score scaler (from models/target_scaler.json) ─────────────────
+# Targets in SolarDataset are raw physical scale; model output is Z-score space.
+# Inverse transform: y_physical = y_norm * SCALER_STD + SCALER_MEAN
+SCALER_MEAN = 1.7658
+SCALER_STD  = 0.3462
 
 
 def build_val_loader() -> DataLoader:
@@ -92,12 +98,10 @@ def plot_scatter(targets: np.ndarray, preds: np.ndarray, output_path: Path) -> N
     mae  = np.mean(np.abs(preds - targets))
     rmse = np.sqrt(np.mean((preds - targets) ** 2))
 
-    # Determine axis limits with a small margin around the data range.
-    global_min = min(targets.min(), preds.min())
-    global_max = max(targets.max(), preds.max())
-    margin     = (global_max - global_min) * 0.05
-    axis_min   = global_min - margin
-    axis_max   = global_max + margin
+    # Fixed axis limits matching the physical sunspot index range [1.0, 3.0].
+    # Both arrays must already be in physical scale before calling this function.
+    axis_min = 1.0
+    axis_max = 3.0
 
     fig, ax = plt.subplots(figsize=(7, 7))
 
@@ -158,14 +162,20 @@ def main() -> None:
 
     # ── Inference ─────────────────────────────────────────────────────────────
     targets, preds = run_inference(model, val_loader, device)
+
+    # targets viene en escala física cruda desde SolarDataset — no se toca.
+    # Solo las predicciones salen del modelo en espacio Z-Score y se desnormalizan.
+    targets_physical = targets
+    preds_physical   = preds * SCALER_STD + SCALER_MEAN
+
     logger.info(
         "Inference complete — MAE: %.4f | RMSE: %.4f",
-        np.mean(np.abs(preds - targets)),
-        np.sqrt(np.mean((preds - targets) ** 2)),
+        np.mean(np.abs(preds_physical - targets_physical)),
+        np.sqrt(np.mean((preds_physical - targets_physical) ** 2)),
     )
 
     # ── Plot ──────────────────────────────────────────────────────────────────
-    plot_scatter(targets, preds, OUTPUT_PATH)
+    plot_scatter(targets_physical, preds_physical, OUTPUT_PATH)
 
 
 if __name__ == "__main__":

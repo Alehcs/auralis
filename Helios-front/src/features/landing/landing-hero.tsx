@@ -71,7 +71,7 @@ export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
           <div className="w-1 h-1 bg-neutral-700 rounded-full" />
           <div className="flex items-center space-x-2">
             <span className="text-neutral-500">Model:</span>
-            <span className="text-white font-mono">CNN-ResNet50</span>
+            <span className="text-white font-mono">SolarNetV3 PRO</span>
           </div>
         </div>
       </div>

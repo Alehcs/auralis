@@ -9,59 +9,46 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Layers, TrendingDown } from 'lucide-react';
 import { getBenchmark } from '@/lib/api';
 import type { BenchmarkResult } from '@/lib/types';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 // ---------------------------------------------------------------------------
-// Chart colour palette
+// Shared hook
 // ---------------------------------------------------------------------------
 
-/** stone-500: neutral tone that recedes visually relative to the proposed model. */
-const COLOR_BASELINE = '#78716c';
-/** amber-400: warm accent that distinguishes VGG-11 without competing with SolarNet. */
-const COLOR_VGG     = '#f59e0b';
-/** blue-500: primary brand colour reserved for the proposed SolarNet architecture. */
-const COLOR_PROPOSED = '#3b82f6';
+function useBenchmark() {
+  const [data, setData] = useState<BenchmarkResult | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-// ---------------------------------------------------------------------------
-// Custom Tooltip
-// ---------------------------------------------------------------------------
+  useEffect(() => {
+    getBenchmark()
+      .then(setData)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
-/** Single series entry provided by Recharts to a custom tooltip renderer. */
-interface TooltipPayloadItem {
-  name: string;
-  value: number;
-  color: string;
+  return { data, loading, error };
 }
 
-/** Props injected by Recharts into the `content` prop of `<Tooltip />`. */
-interface CustomTooltipProps {
-  active?: boolean;
-  payload?: TooltipPayloadItem[];
-  /** X-axis category label for the hovered bar group (e.g. `"MAE"`). */
-  label?: string;
-}
+// ---------------------------------------------------------------------------
+// Tooltip
+// ---------------------------------------------------------------------------
 
-/**
- * Recharts tooltip renderer styled to the dashboard dark theme.
- *
- * Renders a floating card with per-series name/value pairs only when
- * the cursor is over an active data point (`active && payload?.length`).
- */
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+interface TItem { name: string; value: number; color: string }
+interface TProps { active?: boolean; payload?: TItem[]; label?: string }
+
+function ChartTooltip({ active, payload, label }: TProps) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-neutral-900 border border-neutral-700 px-3 py-2 text-xs font-mono shadow-lg">
+    <div className="bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-xs font-mono shadow-lg">
       <p className="text-neutral-400 mb-1.5">{label}</p>
-      {payload.map((entry) => (
-        <div key={entry.name} className="flex items-center gap-2">
-          <span
-            className="inline-block w-2 h-2 rounded-full"
-            style={{ background: entry.color }}
-          />
-          <span className="text-neutral-300">{entry.name}:</span>
-          <span className="text-white font-semibold">{entry.value.toFixed(4)}</span>
+      {payload.map((e) => (
+        <div key={e.name} className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full inline-block" style={{ background: e.color }} />
+          <span className="text-neutral-300">{e.name}:</span>
+          <span className="text-white font-semibold">{e.value.toFixed(4)}</span>
         </div>
       ))}
     </div>
@@ -69,246 +56,222 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Reduction badge
+// Model comparison — horizontal bar chart (right column)
 // ---------------------------------------------------------------------------
 
-/**
- * Compact KPI badge displaying the relative error reduction of SolarNet
- * over the ResNet-18 baseline for a single metric (MAE or RMSE).
- *
- * @param label - Metric label shown in the badge header (e.g. `"Reducción MAE"`).
- * @param pct   - Reduction percentage as a positive integer (e.g. `50`).
- */
-function ReductionBadge({ label, pct }: { label: string; pct: number }) {
-  return (
-    <div className="flex flex-col items-center gap-1 bg-neutral-900 border border-neutral-800 px-4 py-3">
-      <div className="flex items-center gap-1.5">
-        <TrendingDown className="w-3.5 h-3.5 text-blue-400" />
-        <span className="text-[10px] text-neutral-500 font-mono uppercase tracking-wider">{label}</span>
+export function ModelComparisonChart() {
+  const { data, loading, error } = useBenchmark();
+  const { t } = useLanguage();
+  const e = t.experiments;
+
+  // Normalise params to [0, 1] so all three bars share the same X axis
+  const allModels = data
+    ? [
+      ...(data.vgg11 ? [data.vgg11] : []),
+      data.baseline,
+      data.proposed,
+    ]
+    : [];
+
+  const maxParams = Math.max(...allModels.map((m) => m.parameters), 1);
+
+  const rows = allModels.map((m) => ({
+    model: m.name,
+    mae: m.mae,
+    rmse: m.rmse,
+    params_norm: parseFloat((m.parameters / maxParams).toFixed(4)),
+    params_label: m.parameters >= 1_000_000
+      ? `${(m.parameters / 1_000_000).toFixed(1)}M`
+      : `${(m.parameters / 1_000).toFixed(0)}K`,
+  }));
+
+  // Custom tooltip that shows params_norm as the real param count
+  const paramLabels = Object.fromEntries(rows.map((r) => [r.model, r.params_label]));
+
+  function TooltipWithParams({ active, payload, label }: {
+    active?: boolean; payload?: { name: string; value: number; color: string }[]; label?: string;
+  }) {
+    if (!active || !payload?.length) return null;
+    return (
+      <div className="bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-xs font-mono shadow-lg">
+        <p className="text-neutral-400 mb-1.5">{label}</p>
+        {payload.map((item) => (
+          <div key={item.name} className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full inline-block" style={{ background: item.color }} />
+            <span className="text-neutral-300">{item.name}:</span>
+            <span className="text-white font-semibold">
+              {item.name === 'params'
+                ? paramLabels[label ?? ''] ?? item.value.toFixed(2)
+                : item.value.toFixed(4)}
+            </span>
+          </div>
+        ))}
       </div>
-      <span className="text-2xl font-bold text-blue-400 font-mono">−{pct}%</span>
-      <span className="text-[10px] text-neutral-600 font-mono">vs ResNet18</span>
+    );
+  }
+
+  return (
+    <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-neutral-800">
+        <div className="text-[15px] font-semibold text-white">{e.modelComparison}</div>
+        <div className="text-[11px] text-neutral-500 mt-0.5">{e.lowerBetter}</div>
+      </div>
+
+      <div className="p-5">
+        {loading && (
+          <div className="flex items-center justify-center h-60 text-neutral-600 text-sm">{e.loading}</div>
+        )}
+        {error && (
+          <div className="text-xs text-red-400 font-mono">{error}</div>
+        )}
+        {!loading && !error && data && (
+          <>
+            <div className="h-60">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={rows}
+                  layout="vertical"
+                  margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                  barCategoryGap="22%"
+                  barGap={2}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#262626" horizontal={false} />
+                  <XAxis
+                    type="number"
+                    domain={[0, 'auto']}
+                    tick={{ fill: '#525252', fontSize: 10, fontFamily: 'monospace' }}
+                    axisLine={{ stroke: '#404040' }}
+                    tickLine={false}
+                    tickFormatter={(v: number) => v.toFixed(2)}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="model"
+                    tick={{ fill: '#a3a3a3', fontSize: 10, fontFamily: 'monospace' }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={90}
+                  />
+                  <Tooltip content={<TooltipWithParams />} cursor={{ fill: '#ffffff08' }} />
+                  <Bar dataKey="mae" name="mae" fill="#f59e0b" radius={[0, 2, 2, 0]} maxBarSize={12} />
+                  <Bar dataKey="rmse" name="rmse" fill="#38bdf8" radius={[0, 2, 2, 0]} maxBarSize={12} />
+                  <Bar dataKey="params_norm" name="params" fill="#a78bfa" radius={[0, 2, 2, 0]} maxBarSize={12} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Legend */}
+            <div className="flex items-center gap-4 mt-1 px-1">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block" />
+                <span className="text-[10px] text-neutral-500 font-mono">mae</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-sky-400 inline-block" />
+                <span className="text-[10px] text-neutral-500 font-mono">rmse</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-violet-400 inline-block" />
+                <span className="text-[10px] text-neutral-500 font-mono">params</span>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Main component
+// Model comparison — table (left column row 3)
 // ---------------------------------------------------------------------------
 
-/**
- * Dashboard panel comparing SolarNet V2 PRO against ResNet-18 and VGG-11
- * baselines on MAE, RMSE, R², parameter count, and inference latency.
- *
- * Fetches benchmark data from `/api/benchmark` on mount and refreshes
- * every 30 seconds. Renders KPI badges, a grouped bar chart, and a
- * summary table. VGG-11 bars and rows are conditionally rendered only
- * when the API response includes `vgg11` data.
- */
-export function ArchitectureComparison() {
-  const [data, setData] = useState<BenchmarkResult | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export function ModelComparisonTable() {
+  const { data, loading, error } = useBenchmark();
+  const { t } = useLanguage();
+  const e = t.experiments;
 
-  useEffect(() => {
-    const fetchData = () =>
-      getBenchmark()
-        .then(setData)
-        .catch((err) => setError(err.message))
-        .finally(() => setLoading(false));
-
-    fetchData();
-    // Poll every 30 s to reflect live benchmarking results without a page reload.
-    const interval = setInterval(fetchData, 30_000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const chartData = data
+  const rows = data
     ? [
-        {
-          metric: 'MAE',
-          ResNet18: data.baseline.mae,
-          ...(data.vgg11 ? { 'VGG-11': data.vgg11.mae } : {}),
-          SolarNet: data.proposed.mae,
-        },
-        {
-          metric: 'RMSE',
-          ResNet18: data.baseline.rmse,
-          ...(data.vgg11 ? { 'VGG-11': data.vgg11.rmse } : {}),
-          SolarNet: data.proposed.rmse,
-        },
-      ]
+      { m: data.proposed, highlight: true },
+      ...(data.vgg11 ? [{ m: data.vgg11, highlight: false }] : []),
+      { m: data.baseline, highlight: false },
+    ]
     : [];
 
+  const count = rows.length;
+
   return (
-    <div className="bg-neutral-950 border border-neutral-800">
-      <div className="border-b border-neutral-800 px-4 py-2.5 bg-neutral-900">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-neutral-400" />
-            <div>
-              <h2 className="text-sm font-semibold text-white">Comparación de Arquitecturas</h2>
-              <p className="text-[11px] text-neutral-500 mt-0.5">
-                ResNet18 (Baseline) vs. SolarNet V2 PRO · Conjunto de Validación
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-            <span className="text-[10px] text-neutral-500 font-mono">BENCHMARK</span>
-          </div>
+    <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-neutral-800 flex items-start justify-between">
+        <div>
+          <div className="text-[15px] font-semibold text-white">{e.modelTable}</div>
         </div>
+        <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
+          {count} {e.candidates}
+        </span>
       </div>
 
-      <div className="p-4 space-y-4">
-        {loading && (
-          <div className="flex items-center justify-center py-10 text-neutral-500 text-xs font-mono">
-            Cargando resultados...
-          </div>
-        )}
+      {loading && (
+        <div className="flex items-center justify-center p-10 text-neutral-600 text-sm">{e.loading}</div>
+      )}
+      {error && (
+        <div className="px-5 py-4 text-xs text-red-400 font-mono">{error}</div>
+      )}
+      {!loading && !error && data && (
+        <table className="w-full text-xs font-mono">
+          <thead>
+            <tr className="border-b border-neutral-800">
+              <th className="text-left px-5 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colModel}</th>
+              <th className="text-right px-4 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colMae}</th>
+              <th className="text-right px-4 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colRmse}</th>
+              <th className="text-right px-4 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colR2}</th>
+              <th className="text-right px-5 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colParams}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(({ m, highlight }, idx) => (
+              <tr
+                key={m.name}
+                className={`border-b border-neutral-800/50 ${idx % 2 === 0 ? '' : 'bg-neutral-800/20'}`}
+              >
+                <td className={`px-5 py-3 ${highlight ? 'text-white font-semibold' : 'text-neutral-400'}`}>
+                  {m.name}
+                </td>
+                <td className={`px-4 py-3 text-right ${highlight ? 'text-white' : 'text-neutral-400'}`}>
+                  {m.mae.toFixed(4)}
+                </td>
+                <td className={`px-4 py-3 text-right ${highlight ? 'text-white' : 'text-neutral-400'}`}>
+                  {m.rmse.toFixed(4)}
+                </td>
+                <td className={`px-4 py-3 text-right ${highlight ? 'text-white' : 'text-neutral-400'}`}>
+                  {m.r2_score.toFixed(3)}
+                </td>
+                <td className="px-5 py-3 text-right text-neutral-400">
+                  {m.parameters >= 1_000_000
+                    ? `${(m.parameters / 1_000_000).toFixed(0)}M`
+                    : m.parameters >= 1_000
+                      ? `${(m.parameters / 1_000).toFixed(0)}K`
+                      : '—'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
 
-        {error && (
-          <div className="bg-red-950 border border-red-900 px-3 py-2 text-xs text-red-400">
-            {error}
-          </div>
-        )}
+// ---------------------------------------------------------------------------
+// Legacy default export (kept for backward compat)
+// ---------------------------------------------------------------------------
 
-        {data && (
-          <>
-            <div className="grid grid-cols-2 gap-3">
-              <ReductionBadge label="Reducción MAE" pct={data.mae_reduction_pct} />
-              <ReductionBadge label="Reducción RMSE" pct={data.rmse_reduction_pct} />
-            </div>
-
-            <p className="text-[11px] text-neutral-500 leading-relaxed border-l-2 border-blue-500/40 pl-3">
-              SolarNet V2 PRO alcanza una reducción del{' '}
-              <span className="text-blue-400 font-semibold">{data.mae_reduction_pct}% en MAE</span> y del{' '}
-              <span className="text-blue-400 font-semibold">{data.rmse_reduction_pct}% en RMSE</span> respecto
-              al baseline ResNet18, con apenas{' '}
-              <span className="text-white font-mono">
-                {(data.proposed.parameters / 1000).toFixed(0)}K parámetros
-              </span>{' '}
-              frente a los{' '}
-              <span className="text-neutral-300 font-mono">
-                {(data.baseline.parameters / 1_000_000).toFixed(1)}M
-              </span>{' '}
-              del baseline — 30× más compacto y {Math.round(data.baseline.inference_ms / data.proposed.inference_ms)}× más rápido en inferencia.
-            </p>
-
-            <div className="h-52">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={chartData}
-                  margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
-                  barCategoryGap="30%"
-                  barGap={4}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="#262626"
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey="metric"
-                    tick={{ fill: '#a3a3a3', fontSize: 11, fontFamily: 'monospace' }}
-                    axisLine={{ stroke: '#404040' }}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    tick={{ fill: '#737373', fontSize: 10, fontFamily: 'monospace' }}
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={(v: number) => v.toFixed(2)}
-                    domain={[0, 'auto']}
-                    width={40}
-                  />
-                  <Tooltip content={<CustomTooltip />} cursor={{ fill: '#ffffff08' }} />
-                  <Legend
-                    iconType="square"
-                    iconSize={8}
-                    wrapperStyle={{ fontSize: 11, fontFamily: 'monospace', color: '#a3a3a3' }}
-                  />
-                  <Bar
-                    dataKey="ResNet18"
-                    name="ResNet18 (Baseline)"
-                    fill={COLOR_BASELINE}
-                    radius={[2, 2, 0, 0]}
-                    maxBarSize={56}
-                  />
-                  {data?.vgg11 && (
-                    <Bar
-                      dataKey="VGG-11"
-                      name="VGG-11 (Baseline)"
-                      fill={COLOR_VGG}
-                      radius={[2, 2, 0, 0]}
-                      maxBarSize={56}
-                    />
-                  )}
-                  <Bar
-                    dataKey="SolarNet"
-                    name="SolarNet V2 PRO"
-                    fill={COLOR_PROPOSED}
-                    radius={[2, 2, 0, 0]}
-                    maxBarSize={56}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="border border-neutral-800 overflow-hidden">
-              <table className="w-full text-xs font-mono">
-                <thead>
-                  <tr className="bg-neutral-900 border-b border-neutral-800">
-                    <th className="text-left px-4 py-2 text-[11px] text-neutral-500 font-medium">Modelo</th>
-                    <th className="text-right px-4 py-2 text-[11px] text-neutral-500 font-medium">MAE</th>
-                    <th className="text-right px-4 py-2 text-[11px] text-neutral-500 font-medium">RMSE</th>
-                    <th className="text-right px-4 py-2 text-[11px] text-neutral-500 font-medium">R²</th>
-                    <th className="text-right px-4 py-2 text-[11px] text-neutral-500 font-medium">Params</th>
-                    <th className="text-right px-4 py-2 text-[11px] text-neutral-500 font-medium">Infer. ms</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {([
-                    { model: data.baseline, color: COLOR_BASELINE, isProposed: false },
-                    ...(data.vgg11 ? [{ model: data.vgg11, color: COLOR_VGG, isProposed: false }] : []),
-                    { model: data.proposed, color: COLOR_PROPOSED, isProposed: true },
-                  ] as { model: typeof data.baseline; color: string; isProposed: boolean }[]).map(({ model: m, color, isProposed }, idx) => (
-                    <tr
-                      key={m.name}
-                      className={`border-b border-neutral-800/60 ${idx % 2 === 0 ? 'bg-neutral-950' : 'bg-neutral-900/30'}`}
-                    >
-                      <td className="px-4 py-2.5 flex items-center gap-2">
-                        <span
-                          className="inline-block w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ background: color }}
-                        />
-                        <span className={isProposed ? 'text-white' : 'text-neutral-400'}>{m.name}</span>
-                      </td>
-                      <td className={`px-4 py-2.5 text-right ${isProposed ? 'text-green-400 font-semibold' : 'text-neutral-400'}`}>
-                        {m.mae.toFixed(4)}
-                      </td>
-                      <td className={`px-4 py-2.5 text-right ${isProposed ? 'text-green-400 font-semibold' : 'text-neutral-400'}`}>
-                        {m.rmse.toFixed(4)}
-                      </td>
-                      <td className={`px-4 py-2.5 text-right ${isProposed ? 'text-blue-400 font-semibold' : 'text-neutral-400'}`}>
-                        {m.r2_score.toFixed(4)}
-                      </td>
-                      <td className="px-4 py-2.5 text-right text-neutral-400">
-                        {isProposed
-                          ? `${(m.parameters / 1000).toFixed(0)}K`
-                          : `${(m.parameters / 1_000_000).toFixed(1)}M`}
-                      </td>
-                      <td className="px-4 py-2.5 text-right text-neutral-400">
-                        {m.inference_ms.toFixed(1)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </div>
+export function ArchitectureComparison() {
+  return (
+    <div className="space-y-4">
+      <ModelComparisonChart />
+      <ModelComparisonTable />
     </div>
   );
 }

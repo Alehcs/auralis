@@ -162,7 +162,7 @@ export interface ModelBenchmark {
 }
 
 /**
- * Architecture comparison: baseline models vs. SolarNet V2 PRO.
+ * Architecture comparison: baseline models vs. SolarNetV3 PRO.
  *
  * `mae_reduction_pct` and `rmse_reduction_pct` express the relative
  * improvement of `proposed` over `baseline` as positive percentages.
@@ -170,7 +170,7 @@ export interface ModelBenchmark {
 export interface BenchmarkResult {
     /** ResNet-18 baseline metrics. */
     baseline: ModelBenchmark;
-    /** SolarNet V2 PRO metrics (the proposed architecture). */
+    /** SolarNetV3 PRO metrics (the proposed architecture). */
     proposed: ModelBenchmark;
     /** VGG-11 baseline metrics; `null` when the benchmarking JSON is absent. */
     vgg11?: ModelBenchmark | null;
@@ -251,7 +251,7 @@ export interface ExperimentEntry {
  * Inference result from the dual-channel SolarNetDual endpoint.
  *
  * Extends {@link PredictionResult} with the active inference mode. When
- * `helios_v2_dual.pth` weights are unavailable, the backend silently falls
+ * `helios_v3_dual.pth` weights are unavailable, the backend silently falls
  * back to single-channel inference and sets `dual_channel = false`.
  */
 export interface DualChannelPredictionResult extends PredictionResult {

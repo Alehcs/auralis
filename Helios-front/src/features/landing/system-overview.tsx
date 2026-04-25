@@ -2,8 +2,8 @@ export function SystemOverview() {
   const specs = [
     {
       label: 'Model Architecture',
-      value: 'CNN-ResNet50',
-      detail: 'Deep convolutional network for active region detection'
+      value: 'SolarNetV3 PRO',
+      detail: 'Custom 4-stage residual CNN, 88K params, dual-channel B+/B−'
     },
     {
       label: 'Data Source',

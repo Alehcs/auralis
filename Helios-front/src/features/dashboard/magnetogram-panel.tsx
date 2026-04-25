@@ -1,352 +1,372 @@
 import { useState, useEffect } from 'react';
-import { ChevronDown, Loader2, Eye, Layers } from 'lucide-react';
-import { getImageList, getImageUrl, getAiaUrl, predictDual } from '@/lib/api';
-import type { ImageListItem, PredictionResult } from '@/lib/types';
-import { useLanguage } from '@/lib/i18n/language-context';
+import { ChevronDown, Cpu, Eye } from 'lucide-react';
 import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from '@/app/components/ui/tooltip';
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine,
+} from 'recharts';
+import {
+  getImageList, getImageUrl, getAiaUrl, predictDual,
+  getExplainPanelsUrl, getPolaritySeries,
+} from '@/lib/api';
+import type { ImageListItem, PredictionResult } from '@/lib/types';
+import type { PolarityPoint } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/language-context';
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function flareClass(risk: string) {
+  if (risk === 'High') return 'X-class';
+  if (risk === 'Medium') return 'M-class';
+  return 'B-class';
+}
+
+function riskColors(risk: string) {
+  if (risk === 'High')
+    return { bg: 'bg-red-900/40 border-red-700/50', text: 'text-red-400' };
+  if (risk === 'Medium')
+    return { bg: 'bg-amber-900/40 border-amber-700/50', text: 'text-amber-400' };
+  return { bg: 'bg-green-900/30 border-green-700/40', text: 'text-green-400' };
+}
+
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
+
+function Badge({ label, color = 'amber' }: { label: string; color?: 'amber' | 'blue' }) {
+  const cls = color === 'blue'
+    ? 'bg-blue-500/15 border-blue-500/30 text-blue-300'
+    : 'bg-amber-500/15 border-amber-500/30 text-amber-300';
+  return (
+    <span className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border ${cls}`}>
+      {label}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 
 export function MagnetogramPanel() {
   const { t } = useLanguage();
+  const m = t.monitoring;
   const [images, setImages] = useState<ImageListItem[]>([]);
   const [selected, setSelected] = useState<string>('');
   const [prediction, setPrediction] = useState<PredictionResult | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [predLoading, setPredLoading] = useState(false);
+  const [gradcamOn, setGradcamOn] = useState(false);
+  const [panelImgKey, setPanelImgKey] = useState(0);
+  const [polarity, setPolarity] = useState<PolarityPoint[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [gradcamEnabled, setGradcamEnabled] = useState(false);
 
+  // Load image list once
   useEffect(() => {
     getImageList()
       .then((res) => {
         setImages(res.images);
         if (res.images.length > 0) setSelected(res.images[0].filename);
       })
-      .catch((err) => setError(err.message));
+      .catch((e) => setError(e.message));
+
+    getPolaritySeries(48)
+      .then(setPolarity)
+      .catch(console.error);
   }, []);
 
+  // Run inference when selection changes
   useEffect(() => {
     if (!selected) return;
-    setLoading(true);
+    setPredLoading(true);
     setPrediction(null);
     predictDual(selected)
-      .then((res) => setPrediction(res))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .then(setPrediction)
+      .catch((e) => setError(e.message))
+      .finally(() => setPredLoading(false));
   }, [selected]);
 
-  const riskColor: Record<string, string> = {
-    Low: 'bg-green-950 text-green-400 border-green-900',
-    Medium: 'bg-yellow-950 text-yellow-400 border-yellow-900',
-    High: 'bg-red-950 text-red-400 border-red-900',
-  };
-
-  const getRiskLabel = (level: string) => {
-    if (level === 'Low') return t.magnetogram.lowRisk;
-    if (level === 'Medium') return t.magnetogram.mediumRisk;
-    if (level === 'High') return t.magnetogram.highRisk;
-    return level.toUpperCase() + ' RISK';
-  };
+  // Force image reload when selection changes while Grad-CAM is on
+  useEffect(() => {
+    if (gradcamOn) setPanelImgKey((k) => k + 1);
+  }, [selected, gradcamOn]);
 
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-  const magnetogramUrl = gradcamEnabled
-    ? `${API_BASE}/api/explain/${selected}`
-    : getImageUrl(selected);
+  const magnetoUrl = getImageUrl(selected);
   const aiaUrl = getAiaUrl(selected);
+  const selectedImg = images.find((i) => i.filename === selected);
+  const dateLabel = selectedImg?.date ?? '—';
+  const risk = prediction?.risk_level ?? 'Low';
+  const { bg, text } = riskColors(risk);
+  const confPct = prediction ? prediction.confidence * 100 : 0;
 
   return (
-    <div className="bg-neutral-950 border border-neutral-800">
-      {/* Header */}
-      <div className="border-b border-neutral-800 px-4 py-2.5 bg-neutral-900">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div>
-              <h2 className="text-sm font-semibold text-white">{t.magnetogram.title}</h2>
-              <p className="text-[11px] text-neutral-500 mt-0.5">{t.magnetogram.subtitle}</p>
-            </div>
-            {/* Dual-channel badge */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center space-x-1 bg-amber-950 border border-amber-800 px-2 py-0.5 cursor-help">
-                  <Layers className="w-3 h-3 text-amber-400" />
-                  <span className="text-[10px] font-mono text-amber-400">{t.magnetogram.dualChannelBadge}</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent
-                side="bottom"
-                className="max-w-[260px] text-center bg-neutral-800 text-neutral-200 border border-neutral-700"
-              >
-                {t.magnetogram.dualChannelTooltip}
-              </TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="flex items-center space-x-2 text-[11px]">
-            <span className="text-neutral-500">{t.magnetogram.images}:</span>
-            <span className="font-mono text-white">{images.length}</span>
-          </div>
+    <div className="space-y-4">
+
+      {/* ── Image selector ─────────────────────────────────────────── */}
+      <div className="flex items-center gap-3">
+        <span className="text-[11px] text-neutral-500 flex-shrink-0">{m.observation}</span>
+        <div className="relative max-w-sm">
+          <select
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
+            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg text-[12px] font-mono text-white px-3 py-1.5 pr-8 appearance-none focus:outline-none focus:border-neutral-600 transition-colors"
+          >
+            {images.map((img) => (
+              <option key={img.filename} value={img.filename}>
+                {img.date ? `${img.date}` : img.filename}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500 pointer-events-none" />
         </div>
+        {error && (
+          <span className="text-[11px] text-red-400 font-mono">{error}</span>
+        )}
       </div>
 
-      <div className="p-4 space-y-4">
-        {/* Image Selector */}
-        <div className="relative">
-          <label className="block text-[11px] text-neutral-500 mb-1.5">{t.magnetogram.selectMagnetogram}</label>
-          <div className="relative">
-            <select
-              value={selected}
-              onChange={(e) => setSelected(e.target.value)}
-              className="w-full bg-neutral-900 border border-neutral-700 text-white text-xs font-mono px-3 py-2 pr-8 appearance-none focus:outline-none focus:border-blue-500 transition-colors"
-            >
-              {images.map((img) => (
-                <option key={img.filename} value={img.filename}>
-                  {img.date ? `${img.date}  —  ` : ''}{img.filename}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500 pointer-events-none" />
-          </div>
-        </div>
+      {/* ── Top 3-column row ───────────────────────────────────────── */}
+      <div className="grid grid-cols-[1fr_1fr_360px] gap-4">
 
-        {error && (
-          <div className="bg-red-950 border border-red-900 px-3 py-2 text-xs text-red-400">
-            {error}
-          </div>
-        )}
-
-        {/* Three-column layout: Magnetogram | AIA 193Å | Predictions */}
-        <div className="grid grid-cols-3 gap-4">
-
-          {/* ── Column 1: HMI Magnetogram ──────────────────────────────── */}
-          <div className="bg-neutral-900 border border-neutral-800 p-3">
-            <div className="text-[11px] text-neutral-500 mb-2">
-              {gradcamEnabled ? t.magnetogram.gradcamHeatmap : t.magnetogram.renderedMagnetogram}
-            </div>
-
-            {/* Grad-CAM Toggle */}
-            <div className="mb-3 flex items-center justify-between bg-neutral-950 border border-neutral-800 px-3 py-2">
-              <div className="flex items-center space-x-2">
-                <Eye className={`w-3.5 h-3.5 ${gradcamEnabled ? 'text-blue-400' : 'text-neutral-500'}`} />
-                <span className="text-xs text-white">{t.magnetogram.aiVision}</span>
+        {/* ── Magnetogram ──────────────────────────────────────────── */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 flex items-center justify-between border-b border-neutral-800">
+            <div>
+              <div className="text-[14px] font-semibold text-white">{m.magnetogram}</div>
+              <div className="text-[11px] text-neutral-500 mt-0.5">
+                {m.hmiLos} · {dateLabel} {m.utc}
               </div>
-              <button
-                onClick={() => setGradcamEnabled(!gradcamEnabled)}
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-neutral-950 ${
-                  gradcamEnabled ? 'bg-blue-600' : 'bg-neutral-700'
-                }`}
-                role="switch"
-                aria-checked={gradcamEnabled}
-              >
-                <span
-                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
-                    gradcamEnabled ? 'translate-x-5' : 'translate-x-0.5'
-                  }`}
-                />
-              </button>
             </div>
-
-            {gradcamEnabled && (
-              <div className="mb-2 bg-blue-950 border border-blue-900 px-2 py-1.5 text-[10px] text-blue-400">
-                {t.magnetogram.gradcamTooltip}
+            <Badge label="HMI" />
+          </div>
+          <div className="aspect-square bg-black">
+            {selected ? (
+              <img
+                key={magnetoUrl}
+                src={magnetoUrl}
+                alt="SDO/HMI Magnetogram"
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-neutral-700 text-xs">
+                {m.noImage}
               </div>
             )}
+          </div>
+        </div>
 
-            <div className="relative aspect-square bg-black border border-neutral-800 overflow-hidden">
-              {selected ? (
-                <img
-                  key={magnetogramUrl}
-                  src={magnetogramUrl}
-                  alt={gradcamEnabled ? 'Grad-CAM Heatmap' : 'SDO/HMI Magnetogram'}
-                  className="w-full h-full object-contain transition-opacity duration-300"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-neutral-600 text-xs">
-                  {t.magnetogram.noImageSelected}
-                </div>
-              )}
-              <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 text-[9px] text-neutral-400 font-mono border border-neutral-700">
-                512×512
+        {/* ── EUV 193Å ─────────────────────────────────────────────── */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 flex items-center justify-between border-b border-neutral-800">
+            <div>
+              <div className="text-[14px] font-semibold text-white">{m.euv}</div>
+              <div className="text-[11px] text-neutral-500 mt-0.5">
+                {m.coronalPlasma} · {dateLabel} {m.utc}
               </div>
             </div>
-
-            {/* Magnetogram Legend */}
-            <div className="mt-3 bg-neutral-950 border border-neutral-800 px-3 py-2">
-              <div className="text-[11px] text-neutral-400 mb-2 font-medium">
-                {t.magnetogram.dataInterpretation}
-              </div>
-              <div
-                className="h-3 w-full border border-neutral-700"
-                style={{
-                  background: 'linear-gradient(to right, #0000ff, #4040ff, #8080ff, #c0c0c0, #ff8080, #ff4040, #ff0000)',
-                }}
+            <Badge label="AIA" color="blue" />
+          </div>
+          <div className="aspect-square bg-black">
+            {selected ? (
+              <img
+                key={aiaUrl}
+                src={aiaUrl}
+                alt="AIA 193Å EUV"
+                className="w-full h-full object-contain"
               />
-              <div className="grid grid-cols-3 text-[9px] text-neutral-500 mt-1">
-                <div className="text-left">{t.magnetogram.bluePolarity}</div>
-                <div className="text-center">{t.magnetogram.neutral}</div>
-                <div className="text-right">{t.magnetogram.redPolarity}</div>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-neutral-700 text-xs">
+                {m.noImage}
               </div>
-              {gradcamEnabled && (
-                <div className="mt-2 pt-2 border-t border-neutral-800">
-                  <div className="text-[11px] text-blue-400 mb-1.5 font-medium">{t.magnetogram.modelAttention}</div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Prediction ───────────────────────────────────────────── */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 flex flex-col gap-4">
+
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-[14px] font-semibold text-white">{m.prediction}</div>
+              <div className="text-[11px] text-neutral-500 mt-0.5">{dateLabel} {m.utc}</div>
+            </div>
+            <span className="flex items-center gap-1.5 text-[11px] text-green-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+              {m.live}
+            </span>
+          </div>
+
+          {/* Solar Activity Index */}
+          <div>
+            <div className="text-[9px] text-neutral-500 tracking-[0.15em] mb-1">
+              {m.solarActivity}
+            </div>
+            {predLoading ? (
+              <div className="text-[38px] font-mono font-bold text-neutral-600">…</div>
+            ) : (
+              <div className="text-[38px] font-mono font-bold text-orange-400 leading-none">
+                {prediction?.sunspot_index?.toFixed(4) ?? '—'}
+              </div>
+            )}
+            <div className="text-[11px] text-neutral-500 mt-1">
+              {m.predictedFlare}{' '}
+              <span className="text-cyan-400 font-medium">{flareClass(risk)}</span>
+            </div>
+          </div>
+
+          {/* Risk + Confidence */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className={`rounded-lg border p-3 ${bg}`}>
+              <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">
+                {m.riskLevel}
+              </div>
+              <div className={`text-[20px] font-bold font-mono ${text}`}>
+                {risk.toUpperCase()}
+              </div>
+            </div>
+            <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-3">
+              <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">
+                {m.confidence}
+              </div>
+              <div className="text-[20px] font-bold font-mono text-white">
+                {prediction ? `${confPct.toFixed(1)}%` : '—'}
+              </div>
+              {prediction && (
+                <div className="mt-2 h-1 bg-neutral-700 rounded-full overflow-hidden">
                   <div
-                    className="h-3 w-full border border-blue-900/50"
-                    style={{
-                      background: 'linear-gradient(to right, #000004, #1b0c41, #4a0c6b, #781c6d, #a52c60, #cf4446, #ed6925, #fb9b06, #f7d13d, #fcffa4)',
-                    }}
+                    className="h-full rounded-full bg-orange-500 transition-all duration-700"
+                    style={{ width: `${confPct}%` }}
                   />
-                  <div className="text-[9px] text-blue-400/80 mt-1">{t.magnetogram.gradcamDescription}</div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* ── Column 2: AIA 193Å EUV ─────────────────────────────────── */}
-          <div className="bg-neutral-900 border border-neutral-800 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[11px] text-neutral-500">{t.magnetogram.aiaTitle}</div>
-              <div className="text-[10px] font-mono text-amber-500 bg-amber-950 border border-amber-900 px-1.5 py-0.5">
-                EUV
-              </div>
+          {/* Model row */}
+          <div className="flex items-center justify-between text-[11px] py-2 border-t border-neutral-800">
+            <div className="flex items-center gap-1.5 text-neutral-500">
+              <Cpu className="w-3.5 h-3.5" />
+              <span>{m.model}</span>
             </div>
+            <span className="text-neutral-300 font-mono">SolarNetV3 PRO · v3.0</span>
+          </div>
 
-            {/* Spacer to align image with magnetogram column (compensate for toggle row) */}
-            <div className="mb-3 bg-amber-950/20 border border-amber-900/40 px-3 py-2">
-              <div className="flex items-center space-x-2">
-                <span className="text-[10px] text-amber-400/80">{t.magnetogram.aiaSubtitle}</span>
-              </div>
+          {/* Grad-CAM toggle */}
+          <button
+            onClick={() => setGradcamOn(!gradcamOn)}
+            className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg border transition-colors ${gradcamOn
+                ? 'bg-orange-500/10 border-orange-500/50 text-orange-400'
+                : 'bg-neutral-800/60 border-neutral-700 text-neutral-400 hover:text-neutral-300'
+              }`}
+          >
+            <div className="flex items-center gap-2 text-[12px] font-medium">
+              <Eye className="w-4 h-4" />
+              {m.aiVision}
             </div>
+            <span className={`text-[11px] font-mono font-bold ${gradcamOn ? 'text-orange-400' : 'text-neutral-600'}`}>
+              {gradcamOn ? 'ON' : 'OFF'}
+            </span>
+          </button>
+        </div>
+      </div>
 
-            <div className="relative aspect-square bg-black border border-amber-900/30 overflow-hidden">
-              {selected ? (
-                <img
-                  key={aiaUrl}
-                  src={aiaUrl}
-                  alt="AIA 193Å EUV Coronal Loops"
-                  className="w-full h-full object-contain transition-opacity duration-300"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-neutral-600 text-xs">
-                  {t.magnetogram.noImageSelected}
+      {/* ── Bottom: Grad-CAM + Polarity chart ──────────────────────── */}
+      {gradcamOn && (
+        <div className="space-y-4">
+
+          {/* Grad-CAM 3-panel full-width */}
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+            <div className="px-5 py-3 border-b border-neutral-800 flex items-center justify-between">
+              <div>
+                <div className="text-[13px] font-semibold text-white">{m.gradcamTitle}</div>
+                <div className="text-[11px] text-neutral-500 mt-0.5">
+                  {m.gradcamSubtitle} — hook en stage4.conv · K=96 canales
                 </div>
-              )}
-              <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 text-[9px] text-amber-400/70 font-mono border border-amber-900/40">
-                193Å
               </div>
+              <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
+                XAI
+              </span>
             </div>
-
-            {/* AIA Legend */}
-            <div className="mt-3 bg-neutral-950 border border-amber-900/30 px-3 py-2">
-              <div className="text-[11px] text-amber-400 mb-2 font-medium">
-                {t.magnetogram.aiaDataInterpretation}
-              </div>
-              <div
-                className="h-3 w-full border border-amber-900/40"
-                style={{
-                  background: 'linear-gradient(to right, #000000, #3a0f00, #c43700, #f76000, #ffaa00, #ffd700, #ffffff)',
-                }}
+            <div className="bg-black p-1">
+              <img
+                key={`panels-${panelImgKey}-${selected}`}
+                src={getExplainPanelsUrl(selected)}
+                alt="Grad-CAM 3-panel: B+ | B− | Grad-CAM on |B|"
+                className="w-full object-contain"
               />
-              <div className="flex justify-between text-[9px] text-amber-500/70 mt-1">
-                <span>{t.magnetogram.aiaDark}</span>
-                <span>{t.magnetogram.aiaGoldBright}</span>
-              </div>
-              <div className="mt-2 pt-2 border-t border-amber-900/30 text-[9px] text-amber-600/60 font-mono">
-                {t.magnetogram.aiaSimulated}
-              </div>
+            </div>
+            <div className="px-5 py-2.5 border-t border-neutral-800">
+              <p className="text-[10px] text-neutral-600 font-mono">
+                L<sub>GC</sub> = ReLU(Σ<sub>k</sub> α<sub>k</sub> · A<sup>k</sup>)
+                &nbsp;·&nbsp;
+                α<sub>k</sub> = GAP(∂ŷ / ∂A<sup>k</sup>)
+                &nbsp;·&nbsp;
+                Upsampling bilineal 32×32 → 512×512
+              </p>
             </div>
           </div>
 
-          {/* ── Column 3: Prediction Results ───────────────────────────── */}
-          <div className="bg-neutral-900 border border-neutral-800 p-3">
-            <div className="text-[11px] text-neutral-500 mb-2">{t.magnetogram.prediction}</div>
-            <div className="bg-black border border-neutral-800 flex flex-col items-center justify-center p-4 min-h-[calc(theme(spacing.3)+theme(aspectRatio.square)*100%+theme(spacing.3))]" style={{ minHeight: 0 }}>
-              {loading ? (
-                <div className="flex flex-col items-center space-y-3 py-12">
-                  <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
-                  <span className="text-xs text-neutral-500">{t.magnetogram.runningInference}</span>
-                </div>
-              ) : prediction ? (
-                <div className="w-full space-y-5 py-4">
-                  {/* Sunspot Index */}
-                  <div className="text-center">
-                    <div className="text-[11px] text-neutral-500 mb-1">{t.magnetogram.sunspotIndex}</div>
-                    <div className="text-5xl font-mono text-white font-bold">
-                      {prediction.sunspot_index.toFixed(2)}
-                    </div>
-                    <div className="text-[10px] text-neutral-600 font-mono mt-1">%</div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="mt-2 inline-flex items-center cursor-help">
-                          <span
-                            className={`text-xs font-mono px-2 py-0.5 rounded border ${
-                              prediction.uncertainty <= 0.05
-                                ? 'text-green-400 bg-green-950 border-green-900'
-                                : 'text-orange-400 bg-orange-950 border-orange-900'
-                            }`}
-                          >
-                            ±{prediction.uncertainty.toFixed(4)}
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent
-                        side="bottom"
-                        className="max-w-[220px] text-center bg-neutral-800 text-neutral-200 border border-neutral-700"
-                      >
-                        Intervalo de confianza (Monte Carlo Dropout, 10 pasadas)
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
+          {/* Magnetic polarity chart */}
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+            <div className="mb-4">
+              <div className="text-[13px] font-semibold text-white">{m.magneticPolarity}</div>
+              <div className="text-[11px] text-neutral-500 mt-0.5">
+                {m.polaritySubtitle}
+              </div>
+            </div>
 
-                  {/* Risk Level */}
-                  <div className="flex justify-center">
-                    <span className={`text-sm font-mono px-3 py-1 border ${riskColor[prediction.risk_level] || ''}`}>
-                      {getRiskLabel(prediction.risk_level)}
-                    </span>
-                  </div>
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={polarity} margin={{ top: 5, right: 10, left: -10, bottom: 5 }} barCategoryGap="20%">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fill: '#525252', fontSize: 9, fontFamily: 'monospace' }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval={Math.floor(polarity.length / 6)}
+                  />
+                  <YAxis
+                    tick={{ fill: '#525252', fontSize: 9, fontFamily: 'monospace' }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <ReferenceLine y={0} stroke="#404040" />
+                  <RechartsTooltip
+                    contentStyle={{
+                      background: '#171717',
+                      border: '1px solid #404040',
+                      borderRadius: '8px',
+                      fontSize: '11px',
+                      fontFamily: 'monospace',
+                    }}
+                    labelStyle={{ color: '#a3a3a3' }}
+                    formatter={(value: number, name: string) => [
+                      value.toFixed(4),
+                      name === 'b_pos' ? m.positiveB : m.negativeB,
+                    ]}
+                  />
+                  <Bar dataKey="b_pos" fill="#f97316" radius={[2, 2, 0, 0]} maxBarSize={12} />
+                  <Bar dataKey="b_neg" fill="#3b82f6" radius={[0, 0, 2, 2]} maxBarSize={12} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
 
-                  {/* Confidence */}
-                  <div className="text-center">
-                    <div className="text-[11px] text-neutral-500 mb-1">{t.magnetogram.confidence}</div>
-                    <div className="text-lg font-mono text-white">
-                      {(prediction.confidence * 100).toFixed(1)}%
-                    </div>
-                  </div>
-
-                  {/* Magnetic Reconnection indicator */}
-                  <div className="bg-amber-950/30 border border-amber-900/50 px-3 py-2 text-center">
-                    <div className="text-[10px] text-amber-500 font-mono mb-1">
-                      {t.magnetogram.magneticReconnection}
-                    </div>
-                    <div className="flex items-center justify-center space-x-1">
-                      <div className="w-2 h-2 rounded-full bg-blue-500" title="HMI" />
-                      <div className="text-[9px] text-neutral-500">+</div>
-                      <div className="w-2 h-2 rounded-full bg-amber-500" title="AIA" />
-                      <div className="text-[9px] text-neutral-400 ml-1">→ SolarNet</div>
-                    </div>
-                  </div>
-
-                  {/* Model info */}
-                  <div className="grid grid-cols-2 gap-x-2 text-[10px] font-mono border-t border-neutral-800 pt-3">
-                    <div className="flex flex-col">
-                      <span className="text-neutral-500">{t.magnetogram.model}</span>
-                      <span className="text-white">SolarNet V2</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-neutral-500">{t.magnetogram.weights}</span>
-                      <span className="text-white truncate">helios_v2_pro</span>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-xs text-neutral-600 py-12 text-center">
-                  {t.magnetogram.selectImageToPredict}
-                </div>
-              )}
+            <div className="flex items-center gap-4 mt-2 px-1">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-sm bg-orange-500" />
+                <span className="text-[10px] text-neutral-500 font-mono">{m.positiveB}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-sm bg-blue-500" />
+                <span className="text-[10px] text-neutral-500 font-mono">{m.negativeB}</span>
+              </div>
             </div>
           </div>
 
         </div>
-      </div>
+      )}
     </div>
   );
 }
