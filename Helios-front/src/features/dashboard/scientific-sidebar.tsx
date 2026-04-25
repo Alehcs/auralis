@@ -10,9 +10,11 @@ export type TabId = 'overview' | 'monitoring' | 'pipeline' | 'logs' | 'config' |
 interface ScientificSidebarProps {
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function ScientificSidebar({ activeTab, onTabChange }: ScientificSidebarProps) {
+export function ScientificSidebar({ activeTab, onTabChange, isOpen, onClose }: ScientificSidebarProps) {
   const { t } = useLanguage();
   const [now, setNow] = useState(new Date());
 
@@ -33,8 +35,15 @@ export function ScientificSidebar({ activeTab, onTabChange }: ScientificSidebarP
   ];
 
   return (
-    <aside className="w-[220px] flex-shrink-0 bg-[#0d0d0d] border-r border-neutral-800/60 flex flex-col">
-
+    <aside
+      className={`
+        fixed inset-y-0 left-0 z-50 w-[220px] flex-shrink-0
+        bg-[#0d0d0d] border-r border-neutral-800/60 flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:relative md:translate-x-0 md:z-auto
+      `}
+    >
       {/* ── Logo ─────────────────────────────────────────────────── */}
       <div className="px-5 py-5 flex items-center gap-3.5">
         <div
@@ -60,7 +69,7 @@ export function ScientificSidebar({ activeTab, onTabChange }: ScientificSidebarP
             return (
               <button
                 key={id}
-                onClick={() => onTabChange(id)}
+                onClick={() => { onTabChange(id); onClose(); }}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[14px] transition-colors ${
                   active
                     ? 'bg-neutral-800/80 text-white'

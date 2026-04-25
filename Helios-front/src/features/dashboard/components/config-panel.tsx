@@ -58,7 +58,7 @@ export function ConfigPanel() {
   const API_KEY   = 'hk_live_••••••••••••••a3f2';
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
       {/* ── TOP-LEFT: Language ───────────────────────────────────── */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">

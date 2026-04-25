@@ -195,7 +195,8 @@ export function ModelComparisonTable() {
         <div className="px-5 py-4 text-xs text-red-400 font-mono">{error}</div>
       )}
       {!loading && !error && data && (
-        <table className="w-full text-xs font-mono">
+        <div className="overflow-x-auto">
+        <table className="w-full text-xs font-mono min-w-[340px]">
           <thead>
             <tr className="border-b border-neutral-800">
               <th className="text-left px-5 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colModel}</th>
@@ -234,6 +235,7 @@ export function ModelComparisonTable() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

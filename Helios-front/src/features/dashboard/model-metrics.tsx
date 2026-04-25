@@ -175,7 +175,7 @@ export function ModelMetrics() {
           }}
         />
 
-        <div className="relative flex items-center justify-between gap-6">
+        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* Left */}
           <div>
             <div className="text-[10px] text-neutral-500 tracking-[0.18em] mb-2">
@@ -195,7 +195,7 @@ export function ModelMetrics() {
           </div>
 
           {/* Right: badges */}
-          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+          <div className="flex flex-row sm:flex-col items-start sm:items-end gap-2 flex-shrink-0">
             <RiskBadge level={riskLevel} labels={riskLabels} />
             <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-transparent border border-green-600/50 text-green-400 text-[11px] font-medium">
               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -206,7 +206,7 @@ export function ModelMetrics() {
       </div>
 
       {/* ── 4 Metric cards ─────────────────────────────────────── */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <MetricCard
           label={o.modelMae}
           value={mae}
@@ -245,10 +245,10 @@ export function ModelMetrics() {
       </div>
 
       {/* ── Dataset summary + System status ────────────────────── */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
 
         {/* Dataset summary (2/3) */}
-        <div className="col-span-2 bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+        <div className="lg:col-span-2 bg-neutral-900 border border-neutral-800 rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[13px] font-semibold text-white">{o.datasetSummary}</span>
             <span className="text-[10px] font-mono text-neutral-500 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
@@ -256,7 +256,7 @@ export function ModelMetrics() {
             </span>
           </div>
 
-          <div className="grid grid-cols-4 gap-3 mb-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
             {[
               { icon: CalendarDays, label: o.years,      value: '2010 — 2024' },
               { icon: Layers,       label: o.channels,   value: '2 (B+/B−)' },
