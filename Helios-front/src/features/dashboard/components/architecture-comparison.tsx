@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts';
 import { getBenchmark } from '@/lib/api';
@@ -30,29 +29,6 @@ function useBenchmark() {
   }, []);
 
   return { data, loading, error };
-}
-
-// ---------------------------------------------------------------------------
-// Tooltip
-// ---------------------------------------------------------------------------
-
-interface TItem { name: string; value: number; color: string }
-interface TProps { active?: boolean; payload?: TItem[]; label?: string }
-
-function ChartTooltip({ active, payload, label }: TProps) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-xs font-mono shadow-lg">
-      <p className="text-neutral-400 mb-1.5">{label}</p>
-      {payload.map((e) => (
-        <div key={e.name} className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full inline-block" style={{ background: e.color }} />
-          <span className="text-neutral-300">{e.name}:</span>
-          <span className="text-white font-semibold">{e.value.toFixed(4)}</span>
-        </div>
-      ))}
-    </div>
-  );
 }
 
 // ---------------------------------------------------------------------------
