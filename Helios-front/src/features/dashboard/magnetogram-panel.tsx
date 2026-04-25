@@ -91,7 +91,6 @@ export function MagnetogramPanel() {
     if (gradcamOn) setPanelImgKey((k) => k + 1);
   }, [selected, gradcamOn]);
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const magnetoUrl = getImageUrl(selected);
   const aiaUrl = getAiaUrl(selected);
   const selectedImg = images.find((i) => i.filename === selected);
@@ -281,7 +280,7 @@ export function MagnetogramPanel() {
               <div>
                 <div className="text-[13px] font-semibold text-white">{m.gradcamTitle}</div>
                 <div className="text-[11px] text-neutral-500 mt-0.5">
-                  {m.gradcamSubtitle} — hook en stage4.conv · K=96 canales
+                  {m.gradcamSubtitle} — stage4.conv · K=96
                 </div>
               </div>
               <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
