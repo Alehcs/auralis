@@ -1,0 +1,13 @@
+# Runtime dependencies for the FastAPI inference server.
+# Excludes ingestion-only libraries (sunpy, astropy, drms, zeep)
+# to keep the Docker image lean (~2 GB vs ~4 GB).
+
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+python-multipart>=0.0.9
+
+torch>=2.2.0
+numpy>=1.26.0
+scipy>=1.12.0
+matplotlib>=3.8.0

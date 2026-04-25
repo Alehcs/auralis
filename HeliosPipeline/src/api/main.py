@@ -261,6 +261,7 @@ def _prepare_tensor(data: np.ndarray, device: torch.device) -> torch.Tensor:
 _model: Optional[SolarNetV3] = None
 _device: Optional[torch.device] = None
 _xai_cache: Dict[str, "XAIFaithfulnessResult"] = {}
+_predict_cache: Dict[str, "PredictionResult"] = {}
 
 
 def _load_model() -> None:
@@ -336,6 +337,8 @@ class LogEntry(BaseModel):
 class HealthResponse(BaseModel):
     status: str
     version: str
+    model_loaded: bool
+    device: str
 
 
 class XAIPoint(BaseModel):
@@ -500,7 +503,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-_CORS_ORIGINS = ["http://localhost:5173", "http://localhost:5174"]
+_CORS_ORIGINS = [
+    o.strip()
+    for o in os.environ.get(
+        "CORS_ORIGINS", "http://localhost:5173,http://localhost:5174"
+    ).split(",")
+    if o.strip()
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -531,10 +540,19 @@ async def _unhandled_exception_handler(request: Request, exc: Exception) -> JSON
 # Endpoints
 # ---------------------------------------------------------------------------
 
-@app.get("/health", response_model=HealthResponse)
+@app.get("/health", response_model=HealthResponse, tags=["System"])
 async def health_check():
-    """Return API liveness status and current version string."""
-    return HealthResponse(status="ok", version="3.0.0")
+    """Return API liveness status, version, and model readiness.
+
+    Used by Railway / Render health checks to verify the service is up
+    and the model has been loaded successfully.
+    """
+    return HealthResponse(
+        status="ok",
+        version="3.0.0",
+        model_loaded=_model is not None,
+        device=str(_device) if _device else "none",
+    )
 
 
 # -- Images ----------------------------------------------------------------
@@ -616,7 +634,7 @@ async def get_image(filename: str):
 
 # -- Prediction ------------------------------------------------------------
 
-@app.get("/api/predict/{filename}", response_model=PredictionResult)
+@app.get("/api/predict/{filename}", response_model=PredictionResult, tags=["Inference"])
 async def predict(filename: str):
     """Run SolarNetV3 inference on a dual-channel log-scaled HMI magnetogram.
 
@@ -630,11 +648,8 @@ async def predict(filename: str):
     Monte Carlo Dropout (10 stochastic forward passes) produces a mean sunspot
     index and an empirical uncertainty (std across passes).
 
-    Optimisation: ``torch.inference_mode()`` is used instead of
-    ``torch.no_grad()`` for ~5–10% lower overhead on Apple Silicon MPS by
-    disabling version tracking in addition to gradient computation.
-    BatchNorm layers are kept in eval mode during MC passes to preserve
-    running statistics; only ``Dropout2d`` layers activate via ``train()``.
+    Results are cached in-memory by filename to avoid redundant MC passes on
+    repeated requests for the same image.
 
     Args:
         filename: Basename of the ``.npy`` file in ``data/processed/``.
@@ -649,6 +664,9 @@ async def predict(filename: str):
     """
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
+
+    if filename in _predict_cache:
+        return _predict_cache[filename]
 
     filepath = DATA_DIR / filename
     if not filepath.exists() or not filepath.suffix == ".npy":
@@ -686,12 +704,14 @@ async def predict(filename: str):
         filename, sunspot_index, uncertainty, risk_level, confidence,
     )
 
-    return PredictionResult(
+    result = PredictionResult(
         sunspot_index=sunspot_index,
         risk_level=risk_level,
         confidence=confidence,
         uncertainty=uncertainty,
     )
+    _predict_cache[filename] = result
+    return result
 
 
 # -- AIA 193Å EUV ----------------------------------------------------------
@@ -758,7 +778,7 @@ async def get_aia_image(filename: str):
 
 # -- Dual-Channel Prediction -----------------------------------------------
 
-@app.get("/api/predict-dual/{filename}", response_model=PredictionResult)
+@app.get("/api/predict-dual/{filename}", response_model=PredictionResult, tags=["Inference"])
 async def predict_dual(filename: str):
     """Run SolarNet V3 PRO inference using the native dual-channel B+/B- input.
 
@@ -785,6 +805,9 @@ async def predict_dual(filename: str):
     """
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
+
+    if filename in _predict_cache:
+        return _predict_cache[filename]
 
     filepath = DATA_DIR / filename
     if not filepath.exists() or not filepath.suffix == ".npy":
@@ -817,12 +840,14 @@ async def predict_dual(filename: str):
         filename, sunspot_index, uncertainty, risk_level,
     )
 
-    return PredictionResult(
+    result = PredictionResult(
         sunspot_index=sunspot_index,
         risk_level=risk_level,
         confidence=confidence,
         uncertainty=uncertainty,
     )
+    _predict_cache[filename] = result
+    return result
 
 
 # -- Explainability (Grad-CAM) ----------------------------------------------
