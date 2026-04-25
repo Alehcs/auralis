@@ -33,8 +33,9 @@ data/processed/
 *.pth
 *.pt
 *.onnx
-models/helios_v2_pro.pth
-# Si usas Git LFS para modelos, comenta las líneas anteriores
+# Excepción: modelo final V3 (367 KB, cabe en git)
+!models/helios_v3_final.pth
+!models/target_scaler.json
 
 # --- LOGS Y BASES DE DATOS LOCALES ---
 *.log
