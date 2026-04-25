@@ -40,7 +40,8 @@ export function KFoldResults() {
       </div>
 
       {/* Table */}
-      <table className="w-full text-xs font-mono">
+      <div className="overflow-x-auto">
+      <table className="w-full text-xs font-mono min-w-[320px]">
         <thead>
           <tr className="border-b border-neutral-800">
             <th className="text-left px-5 py-3 text-[10px] text-neutral-500 font-medium tracking-[0.12em]">{e.colFold}</th>
@@ -80,6 +81,7 @@ export function KFoldResults() {
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

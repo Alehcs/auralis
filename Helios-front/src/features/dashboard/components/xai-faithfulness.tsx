@@ -235,8 +235,8 @@ export function XAIFaithfulness() {
             </div>
 
             {/* Data table */}
-            <div className="border border-neutral-800 rounded-lg overflow-hidden">
-              <table className="w-full text-xs font-mono">
+            <div className="border border-neutral-800 rounded-lg overflow-hidden overflow-x-auto">
+              <table className="w-full text-xs font-mono min-w-[360px]">
                 <thead>
                   <tr className="border-b border-neutral-800 bg-neutral-800/40">
                     <th className="text-left   px-4 py-2.5 text-[10px] text-neutral-500 font-medium tracking-[0.1em]">{e.colPixels}</th>

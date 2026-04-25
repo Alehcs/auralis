@@ -125,7 +125,7 @@ export function MagnetogramPanel() {
       </div>
 
       {/* ── Top 3-column row ───────────────────────────────────────── */}
-      <div className="grid grid-cols-[1fr_1fr_360px] gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1fr_360px] gap-4">
 
         {/* ── Magnetogram ──────────────────────────────────────────── */}
         <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">

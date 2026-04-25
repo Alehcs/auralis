@@ -10,15 +10,35 @@ import { ResearchInsights } from './pages/research-insights';
 
 export function DashboardPage() {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleTabChange = (tab: TabId) => {
+    setActiveTab(tab);
+    setSidebarOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] flex">
-      <ScientificSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <ScientificSidebar
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
       <main className="flex-1 flex flex-col min-w-0">
-        <ScientificHeader />
+        <ScientificHeader onMenuClick={() => setSidebarOpen(true)} />
 
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-3 md:p-5">
           <div className="max-w-[1600px] mx-auto">
             {activeTab === 'overview'    && <ModelMetrics />}
             {activeTab === 'monitoring'  && <MagnetogramPanel />}

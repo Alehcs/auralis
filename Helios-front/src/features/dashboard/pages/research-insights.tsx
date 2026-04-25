@@ -17,7 +17,7 @@ export function ResearchInsights() {
       <GlobalMetrics />
 
       {/* ── Row 2: scatter plot | model comparison chart ─────────── */}
-      <div className="grid grid-cols-[1fr_380px] gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-4">
         <PredictedVsActual />
         <ModelComparisonChart />
       </div>
@@ -26,7 +26,7 @@ export function ResearchInsights() {
       <ModelComparisonTable />
 
       {/* ── Row 4: K-Fold | Experiment history ───────────────────── */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <KFoldResults />
         <ExperimentLog />
       </div>
