@@ -108,3 +108,38 @@ export function predictDual(filename: string): Promise<PredictionResult> {
 export function getExperimentMetadata(filename: string): Promise<unknown> {
     return fetchJson<unknown>(`/api/experiments/${encodeURIComponent(filename)}`);
 }
+
+/** Fetch predicted-vs-actual comparison data (352 validation samples). */
+export function getResultsComparison(): Promise<{ real: number; predicted: number; error: number }[]> {
+    return fetchJson<{ real: number; predicted: number; error: number }[]>('/api/results-comparison');
+}
+
+/**
+ * Build the full URL for the 3-panel Grad-CAM figure (B+ | B− | Grad-CAM on |B|).
+ * Use this as the `src` attribute for an `<img>` tag.
+ */
+export function getExplainPanelsUrl(filename: string): string {
+    return `${API_URL}/api/explain-panels/${encodeURIComponent(filename)}`;
+}
+
+export interface GradCAMLayer {
+    layer: string;
+    activation_pct: number;
+    image: string; // base64 PNG
+}
+
+/** Fetch Grad-CAM heatmaps for stage2, stage3, and stage4. */
+export function getExplainLayers(filename: string): Promise<GradCAMLayer[]> {
+    return fetchJson<GradCAMLayer[]>(`/api/explain-layers/${encodeURIComponent(filename)}`);
+}
+
+export interface PolarityPoint {
+    date: string;
+    b_pos: number;
+    b_neg: number;
+}
+
+/** Fetch B+ / B− mean flux time-series for the most recent images. */
+export function getPolaritySeries(limit = 48): Promise<PolarityPoint[]> {
+    return fetchJson<PolarityPoint[]>(`/api/polarity-series?limit=${limit}`);
+}

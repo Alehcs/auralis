@@ -85,8 +85,8 @@ OUTPUT_FIGURE = Path("reports/figures/gradcam_sample.png")
 # stage4 = V3ResidualBlock(64 → 96) — salida (N, 96, 64, 64) antes del pool4.
 TARGET_LAYER_NAME = "stage4"
 
-# Dropout rate idéntico al usado durante el entrenamiento del checkpoint.
-DROPOUT_RATE = 0.4
+# Dropout rate idéntico al usado durante el entrenamiento del checkpoint (exp_004).
+DROPOUT_RATE = 0.2
 
 
 # ===========================================================================

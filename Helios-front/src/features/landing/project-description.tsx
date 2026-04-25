@@ -9,10 +9,10 @@ export function ProjectDescription() {
   ];
 
   const technicalFeatures = [
-    { label: 'Dataset Size', value: '847K+ images' },
-    { label: 'Model Accuracy', value: '94.23%' },
-    { label: 'Prediction Confidence', value: '95% CI' },
-    { label: 'Update Frequency', value: '45s cadence' }
+    { label: 'Dataset Size', value: '1,763 samples' },
+    { label: 'Model Accuracy', value: '94.48%' },
+    { label: 'Prediction Confidence', value: '95% CI · MC Dropout' },
+    { label: 'SDO/HMI Cadence', value: '45s' }
   ];
 
   return (
@@ -66,7 +66,7 @@ export function ProjectDescription() {
                 Technology Stack
               </h3>
               <div className="flex flex-wrap gap-2">
-                {['Python', 'TensorFlow', 'ResNet50', 'Docker', 'Apache Airflow', 'PostgreSQL', 'React', 'Recharts'].map((tech) => (
+                {['Python', 'PyTorch', 'FastAPI', 'NumPy / SciPy', 'SolarNetV3 PRO', 'Grad-CAM', 'React', 'Recharts'].map((tech) => (
                   <span key={tech} className="px-2 py-1 bg-neutral-950 border border-neutral-700 text-xs text-neutral-300 font-mono">
                     {tech}
                   </span>

@@ -3,16 +3,16 @@
 SolarNet is a lightweight CNN regressor trained on HMI/SDO Level-1.5
 magnetograms to predict a proxy sunspot index. V3 PRO introduces Efficient
 Channel Attention (ECA) within residual blocks and a narrower filter schedule
-(16→32→64→96), keeping the total parameter count well below 500 K while
-preserving the resolution-agnostic Global Average Pooling regression head.
+(16→32→64→96), totalling ~88,313 trainable parameters while preserving the
+resolution-agnostic Global Average Pooling regression head.
 
 The dual-channel input (B+, B-) encodes positive and negative polarity lobes
 separately, enabling convolutional kernels to specialise by polarity sign.
 
 Training protocol:
-    Loss      : weighted_huber_loss (δ=1.0, α=2.0) + L1 (diagnostic reporting)
-    Optimiser : Adam, lr=1e-3
-    Schedule  : ReduceLROnPlateau (factor=0.5, patience=5)
+    Loss      : WeightedHuberLoss (δ=1.0, α=2.0) + L1 (diagnostic reporting)
+    Optimiser : AdamW, lr=1e-3, weight_decay=1e-5
+    Schedule  : ReduceLROnPlateau (factor=0.5, patience=3, min_lr=1e-6)
     Stop      : EarlyStopping (patience=10) on validation Weighted Huber Loss
     Eval      : MC Dropout (T=20 forward passes, dropout active) + mean prediction
     Aug       : random horizontal/vertical flip, ±10° rotation
@@ -63,8 +63,7 @@ class SolarAugmentation:
         self.transforms = transforms.Compose([
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
-            transforms.RandomRotation(degrees=180),
-            transforms.RandomAffine(degrees=0, scale=(0.9, 1.1)),
+            transforms.RandomRotation(degrees=10),
         ])
 
     def __call__(self, img: torch.Tensor) -> torch.Tensor:
@@ -366,7 +365,7 @@ class V3ResidualBlock(nn.Module):
         self,
         in_channels: int,
         out_channels: int,
-        dropout_rate: float = 0.3,
+        dropout_rate: float = 0.2,
     ) -> None:
         super().__init__()
         self.conv = nn.Conv2d(
@@ -410,7 +409,7 @@ class SolarNetV3(nn.Module):
         Stage 4 : V3ResidualBlock(64 →  96) → MaxPool2d(2)    64→ 32
         Head    : GlobalAvgPool → Linear(96, 1)
 
-    Total parameters: < 500,000 (verified at instantiation via count_parameters).
+    Total parameters: ~88,313 (verified at instantiation via count_parameters).
 
     The two-channel input (B+, B-) separates positive and negative polarity
     lobes of bipolar active regions so that convolutional kernels can specialise
@@ -434,7 +433,7 @@ class SolarNetV3(nn.Module):
             Also controls MC Dropout uncertainty spread at inference time.
     """
 
-    def __init__(self, in_channels: int = 2, dropout_rate: float = 0.3) -> None:
+    def __init__(self, in_channels: int = 2, dropout_rate: float = 0.2) -> None:
         super().__init__()
 
         self.stage1 = V3ResidualBlock(in_channels, 16, dropout_rate)
@@ -681,7 +680,7 @@ def train_model(
     """Run the full training loop with adaptive LR scheduling and early stopping.
 
     The learning rate is halved whenever validation Weighted Huber Loss fails
-    to decrease for five consecutive epochs (ReduceLROnPlateau), preventing
+    to decrease for 3 consecutive epochs (ReduceLROnPlateau), preventing
     oscillation in flat loss regions. Training terminates early when no
     improvement is observed for ``patience`` epochs. The best checkpoint
     (lowest val WHL) is persisted to ``models/helios_v3_pro.pth`` at each
@@ -692,7 +691,7 @@ def train_model(
         train_loader: DataLoader with augmentation applied.
         val_loader: DataLoader without augmentation.
         num_epochs: Upper bound on the number of training epochs.
-        learning_rate: Initial Adam learning rate.
+        learning_rate: Initial AdamW learning rate (weight_decay=1e-5).
         patience: EarlyStopping patience in epochs.
         device: Target compute device. Detected automatically if ``None``.
 
@@ -871,7 +870,7 @@ def main() -> None:
         "Reduce filter counts or remove blocks."
     )
     logger.info(
-        "SolarNetV3 PRO — %d parameters (< 500 K budget ✓)  |  input: (2, 512, 512) [B+, B-]",
+        "SolarNetV3 PRO — %d parameters (~88,313 expected) ✓  |  input: (2, 512, 512) [B+, B-]",
         total_params,
     )
 

@@ -1,10 +1,10 @@
 {
   "run_id": "benchmarking_baselines",
-  "date": "2026-04-03T15:42:29Z",
+  "date": "2026-04-23T22:28:31Z",
   "dataset": {
-    "total_samples": 1158,
-    "train_samples": 927,
-    "val_samples": 231,
+    "total_samples": 1763,
+    "train_samples": 1411,
+    "val_samples": 352,
     "val_split": 0.2
   },
   "hyperparameters": {
@@ -16,26 +16,26 @@
   },
   "models": {
     "naive_persistence": {
-      "mae": 0.3084,
-      "rmse": 0.3826,
-      "r2": -0.013,
-      "inference_time_ms": 1e-05,
+      "mae": 0.2882,
+      "rmse": 0.3349,
+      "r2": -0.0077,
+      "inference_time_ms": 9e-06,
       "total_parameters": 0,
       "weights_file": null
     },
     "resnet18": {
-      "mae": 0.2372,
-      "rmse": 0.2636,
-      "r2": 0.5193,
-      "inference_time_ms": 5.66,
+      "mae": 0.0755,
+      "rmse": 0.0898,
+      "r2": 0.9276,
+      "inference_time_ms": 6.16,
       "total_parameters": 11170753,
       "weights_file": "models/baselines/resnet18_baseline.pth"
     },
     "vgg11": {
-      "mae": 0.0914,
-      "rmse": 0.1299,
-      "r2": 0.8833,
-      "inference_time_ms": 14.85,
+      "mae": 0.1079,
+      "rmse": 0.1239,
+      "r2": 0.8621,
+      "inference_time_ms": 17.23,
       "total_parameters": 9350913,
       "weights_file": "models/baselines/vgg11_baseline.pth"
     }

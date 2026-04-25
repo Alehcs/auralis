@@ -267,7 +267,7 @@ def _load_model() -> None:
     """Load SolarNetV3 weights from ``helios_v3_final.pth`` at application startup.
 
     Instantiates ``SolarNetV3`` (imported from ``src/models/train_model.py``) with
-    the same ``in_channels=2`` and ``dropout_rate=0.3`` used during training, then
+    the same ``in_channels=2`` and ``dropout_rate=0.2`` used during training, then
     restores the checkpoint state dict. The model is placed in eval mode on
     ``_device`` to freeze BatchNorm running statistics and disable Dropout2d;
     both are selectively re-enabled during Monte Carlo Dropout inference passes
@@ -285,7 +285,7 @@ def _load_model() -> None:
         logger.error("Model file not found: %s", MODEL_PATH)
         return
 
-    _model = SolarNetV3(in_channels=2, dropout_rate=0.3)
+    _model = SolarNetV3(in_channels=2, dropout_rate=0.2)
     _model.load_state_dict(torch.load(MODEL_PATH, map_location=_device, weights_only=True))
     _model.eval()
     _model.to(_device)
@@ -587,17 +587,27 @@ async def get_image(filename: str):
 
     data: np.ndarray = np.load(str(filepath))
 
-    # V3 PRO tensors are (2, H, W) [B+, B-]; reconstruct signed log-scaled
-    # magnetogram for display: B+ − B- recovers the signed log-scale values.
+    # V3 PRO tensors are (2, H, W) [B+, B-]; reconstruct signed magnetogram.
+    # B+ − B− recovers the signed log-scaled field: positive = bright, negative = dark.
     display = (data[0] - data[1]) if data.ndim == 3 else data
 
+    # Percentile clipping for high-contrast grayscale (standard HMI style).
+    # 2nd–98th percentile saturates noise while preserving active-region detail.
+    vmin, vmax = np.percentile(display, [2, 98])
+    # Ensure symmetric range so zero field maps to mid-gray.
+    v = max(abs(vmin), abs(vmax))
+    vmin, vmax = -v, v
+
     fig, ax = plt.subplots(figsize=(6, 6), dpi=120)
-    ax.imshow(display, cmap="RdBu_r", origin="lower")
+    fig.patch.set_facecolor("black")
+    ax.set_facecolor("black")
+    ax.imshow(display, cmap="gray", origin="lower", vmin=vmin, vmax=vmax)
     ax.axis("off")
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0, dpi=120)
+    fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0,
+                dpi=120, facecolor="black")
     plt.close(fig)
     buf.seek(0)
 
@@ -898,6 +908,245 @@ async def explain(filename: str):
     return StreamingResponse(buf, media_type="image/png")
 
 
+@app.get("/api/explain-panels/{filename}")
+async def explain_panels(filename: str):
+    """Generate a 3-panel Grad-CAM figure identical to explain_model.py output.
+
+    Panels (exact replication of ``plot_gradcam()``):
+    - Panel 1 — B+ with ``cmap="hot"``: black background, bright active regions.
+    - Panel 2 — B− with ``cmap="cool"``: cyan background, magenta active regions.
+    - Panel 3 — Grad-CAM (``cmap="jet"``, α=0.55) over |B| grayscale base.
+
+    Data channels are used as-is (already log-normalised to [0, 1] by
+    ``prepare_dataset``). No additional log transform is applied.
+    """
+    if _model is None or _device is None:
+        raise HTTPException(status_code=503, detail="Model not loaded")
+
+    filepath = DATA_DIR / filename
+    if not filepath.exists() or filepath.suffix != ".npy":
+        raise HTTPException(status_code=404, detail=f"Image not found: {filename}")
+
+    import matplotlib.gridspec as gridspec
+    from scipy.ndimage import zoom as ndimage_zoom
+
+    data: np.ndarray = np.load(str(filepath))
+    tensor = _prepare_tensor(data, _device)
+
+    # Extract dual channels (already normalised [0, 1] by prepare_dataset)
+    if data.ndim == 3 and data.shape[0] == 2:
+        b_pos: np.ndarray = data[0]
+        b_neg: np.ndarray = data[1]
+    else:
+        arr = data if data.ndim == 2 else data[0]
+        b_pos = np.clip(arr, 0, None)
+        b_neg = np.clip(-arr, 0, None)
+
+    b_mag: np.ndarray = b_pos + b_neg
+    b_mag_norm: np.ndarray = b_mag / (b_mag.max() + 1e-8)
+
+    # Scalar prediction (no-grad pass — separate from GradCAM backward)
+    with torch.no_grad():
+        pred_val = float(_model(tensor).item())
+
+    # Grad-CAM heatmap via hooks on stage4.conv
+    gradcam = GradCAM(_model, _model.stage4.conv)
+    heatmap = gradcam.generate_heatmap(tensor)   # shape (H', W'), normalised [0,1]
+
+    spatial_h = data.shape[1] if data.ndim == 3 else data.shape[0]
+    zoom_factor = spatial_h / heatmap.shape[0]
+    heatmap_up = ndimage_zoom(heatmap, zoom_factor, order=1)
+
+    # ── Figure — exact replica of explain_model.plot_gradcam() ───────────────
+    DARK_BG = "#0d0d0d"
+    stem = Path(filename).stem
+
+    fig = plt.figure(figsize=(19, 6.5), facecolor=DARK_BG)
+    fig.suptitle(
+        f"Grad-CAM  ·  SolarNet V3 PRO\n"
+        f"Muestra: {stem}     "
+        f"Predicción (índice proxy norm.): {pred_val:+.5f}",
+        fontsize=12, color="white", fontweight="bold", y=1.03,
+    )
+    gs = gridspec.GridSpec(1, 3, figure=fig, wspace=0.10, left=0.04, right=0.97)
+
+    def _style_ax(ax):
+        ax.tick_params(colors="#aaaaaa", labelsize=7)
+        for spine in ax.spines.values():
+            spine.set_edgecolor("#444444")
+        ax.set_facecolor(DARK_BG)
+
+    def _style_cbar(cb, label):
+        cb.set_label(label, color="#aaaaaa", fontsize=7)
+        cb.ax.yaxis.set_tick_params(color="#aaaaaa", labelsize=7)
+        plt.setp(cb.ax.yaxis.get_ticklabels(), color="#aaaaaa")
+
+    # Panel 1: B+ (hot)
+    ax1 = fig.add_subplot(gs[0])
+    im1 = ax1.imshow(b_pos, cmap="hot", origin="lower", aspect="equal",
+                     interpolation="nearest")
+    ax1.set_title("Magnetograma  B+\n(Lóbulo de Polaridad Positiva)",
+                  color="white", fontsize=10, pad=7)
+    ax1.set_xlabel("Píxel X  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
+    ax1.set_ylabel("Píxel Y  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
+    _style_ax(ax1)
+    _style_cbar(fig.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04),
+                "Flujo B+  [u.a. log-norm.]")
+
+    # Panel 2: B− (cool → cyan background, magenta active regions)
+    ax2 = fig.add_subplot(gs[1])
+    im2 = ax2.imshow(b_neg, cmap="cool", origin="lower", aspect="equal",
+                     interpolation="nearest")
+    ax2.set_title("Magnetograma  B−\n(Lóbulo de Polaridad Negativa)",
+                  color="white", fontsize=10, pad=7)
+    ax2.set_xlabel("Píxel X  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
+    _style_ax(ax2)
+    _style_cbar(fig.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04),
+                "Flujo B−  [u.a. log-norm.]")
+
+    # Panel 3: Grad-CAM (jet α=0.55) over |B| grayscale
+    ax3 = fig.add_subplot(gs[2])
+    ax3.imshow(b_mag_norm, cmap="gray", origin="lower", aspect="equal",
+               interpolation="nearest", alpha=1.0)
+    im3 = ax3.imshow(heatmap_up, cmap="jet", origin="lower", aspect="equal",
+                     interpolation="bilinear", alpha=0.55, vmin=0.0, vmax=1.0)
+    ax3.set_title("Grad-CAM  sobre  |B| = B+ + B−\n"
+                  "(Regiones relevantes para la predicción del modelo)",
+                  color="white", fontsize=10, pad=7)
+    ax3.set_xlabel("Píxel X  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
+    _style_ax(ax3)
+    _style_cbar(fig.colorbar(im3, ax=ax3, fraction=0.046, pad=0.04),
+                "Importancia Grad-CAM  [0 = irrelevante · 1 = máxima activación]")
+    ax3.text(0.01, 0.01,
+             "L_GC = ReLU(Σ_k α_k · A^k)   |   α_k = GAP(∂y/∂A^k)",
+             transform=ax3.transAxes, fontsize=6.5, color="#888888",
+             verticalalignment="bottom", fontfamily="monospace")
+
+    fig.patch.set_facecolor(DARK_BG)
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=150,
+                facecolor=DARK_BG)
+    plt.close(fig)
+    buf.seek(0)
+
+    logger.info("3-panel Grad-CAM figure generated for %s", filename)
+    return StreamingResponse(buf, media_type="image/png")
+
+
+@app.get("/api/explain-layers/{filename}")
+async def explain_layers(filename: str):
+    """Return Grad-CAM heatmaps for stage2, stage3, and stage4 as base64 PNGs.
+
+    Each entry contains:
+    - ``layer``: stage name (``"stage2"`` / ``"stage3"`` / ``"stage4"``).
+    - ``activation_pct``: peak heatmap activation as a 0-100 integer.
+    - ``image``: base64-encoded PNG (grayscale base + coloured heatmap overlay).
+
+    Colourmap per stage:
+    - stage2 → ``"hot"``  (coarse spatial features — red/orange).
+    - stage3 → ``"RdYlGn"`` (mid-level features — orange/green).
+    - stage4 → ``"Greens"`` (task-relevant deep features — green).
+    """
+    if _model is None or _device is None:
+        raise HTTPException(status_code=503, detail="Model not loaded")
+
+    filepath = DATA_DIR / filename
+    if not filepath.exists() or filepath.suffix != ".npy":
+        raise HTTPException(status_code=404, detail=f"Image not found: {filename}")
+
+    import base64
+    from scipy.ndimage import zoom as ndimage_zoom
+
+    data: np.ndarray = np.load(str(filepath))
+    tensor = _prepare_tensor(data, _device)
+
+    display = (data[0] - data[1]) if data.ndim == 3 else data
+    spatial_h = data.shape[1] if data.ndim == 3 else data.shape[0]
+
+    stage_defs = [
+        ("stage2", _model.stage2.conv, "hot"),
+        ("stage3", _model.stage3.conv, "RdYlGn"),
+        ("stage4", _model.stage4.conv, "Greens"),
+    ]
+
+    results = []
+    for stage_name, layer, cmap in stage_defs:
+        gradcam = GradCAM(_model, layer)
+        heatmap = gradcam.generate_heatmap(tensor)
+        zoom_factor = spatial_h / heatmap.shape[0]
+        heatmap_up = ndimage_zoom(heatmap, zoom_factor, order=1)
+
+        activation_pct = min(int(float(heatmap.max()) * 100), 99)
+
+        fig, ax = plt.subplots(figsize=(5, 5), dpi=90)
+        fig.patch.set_facecolor("black")
+        ax.set_facecolor("black")
+        ax.imshow(display, cmap="gray", origin="lower")
+        ax.imshow(heatmap_up, cmap=cmap, alpha=0.72, origin="lower", vmin=0, vmax=1)
+        ax.axis("off")
+        fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
+
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0,
+                    facecolor="black")
+        plt.close(fig)
+        buf.seek(0)
+
+        results.append({
+            "layer": stage_name,
+            "activation_pct": activation_pct,
+            "image": base64.b64encode(buf.read()).decode(),
+        })
+
+    logger.info("Multi-layer Grad-CAM generated for %s", filename)
+    return results
+
+
+@app.get("/api/polarity-series")
+async def polarity_series(limit: int = 48):
+    """Return B+ / B− mean flux for the most recent ``limit`` processed images.
+
+    Loads the last *limit* ``.npy`` files from ``data/processed/``, sorted by
+    filename (which encodes the observation date).  For each file computes:
+
+    - ``date``: ISO date string extracted from the filename.
+    - ``b_pos``: mean of the positive-polarity channel (B+) × 100.
+    - ``b_neg``: negative of the mean of the negative-polarity channel (B−) × 100
+      (returned as a negative number so the bar chart mirrors the design).
+
+    Only dual-channel files (shape ``(2, H, W)``) are included; single-channel
+    legacy files are skipped.
+    """
+    npy_files = sorted(DATA_DIR.glob("*.npy"))[-limit:]
+    points = []
+    for fp in npy_files:
+        try:
+            arr = np.load(str(fp))
+            if arr.ndim == 3 and arr.shape[0] == 2:
+                # Dual-channel (2, H, W): channel 0 = B+, channel 1 = B−
+                b_pos = float(arr[0].mean()) * 100
+                b_neg = -float(arr[1].mean()) * 100
+            elif arr.ndim == 2:
+                # Single-channel (H, W): signed magnetogram
+                b_pos = float(np.clip(arr, 0, None).mean()) * 100
+                b_neg = -float(np.clip(-arr, 0, None).mean()) * 100
+            else:
+                continue
+            # Extract date from filename — e.g. "hmi.m_45s.2016.02.03_..."
+            stem = fp.stem
+            # Try to find YYYY.MM.DD or YYYY-MM-DD in the stem
+            import re
+            m = re.search(r'(\d{4})[.\-](\d{2})[.\-](\d{2})', stem)
+            date_part = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else stem[:10]
+            points.append({"date": date_part,
+                           "b_pos": round(b_pos, 4),
+                           "b_neg": round(b_neg, 4)})
+        except Exception:
+            continue
+    return points
+
+
 # -- Stats -----------------------------------------------------------------
 
 @app.get("/api/stats", response_model=SystemStats)
@@ -905,8 +1154,8 @@ async def get_stats():
     """Return dataset-level statistics and frozen training metrics.
 
     Disk usage is computed dynamically from the current ``.npy`` file set.
-    MAE, RMSE, and R² are hardcoded from the final ``exp_003`` training run
-    (``training_v3_pro.log``) and should be updated when a new model version
+    MAE, RMSE, and R² are hardcoded from the final ``exp_004`` production run
+    (``exp_004_v3pro_final.json``) and should be updated when a new model version
     is promoted to production.
 
     Returns:
@@ -924,10 +1173,11 @@ async def get_stats():
     disk_bytes = sum(f.stat().st_size for f in npy_files)
     disk_mb = round(disk_bytes / (1024 * 1024), 2)
 
-    # Metrics from training_v3_pro.log best checkpoint; update on model promotion.
-    mae_value = 0.1416
-    rmse_value = 0.1851
-    r2_value = 0.8705
+    # Métricas del checkpoint de producción exp_004 (helios_v3_pro.pth).
+    # MAE físico: escala real [% píxeles |B| > 200 G]. R² calculado en espacio Z-Score.
+    mae_value  = 0.3167   # MAE físico (métrica oficial de salida)
+    rmse_value = 0.3596   # RMSE físico
+    r2_value   = 0.81     # R² (espacio normalizado, training loop)
 
     # mtime of the most recently modified .npy as a UTC ISO-8601 timestamp.
     if npy_files:
@@ -1108,12 +1358,12 @@ async def get_benchmark():
     """
     import json
 
-    # SolarNet V3 PRO metrics from training_v3_pro.log; update on model promotion.
-    # V3 PRO filter schedule 16→32→64→96 (< 200 K params) vs V2's 32→64→128→256 (389 K).
-    proposed_mae = 0.1416
-    proposed_rmse = 0.1851
-    proposed_r2 = 0.8705
-    proposed_params = 189_601   # approximate; run sum(p.numel()) on the loaded model
+    # SolarNet V3 PRO métricas de producción — exp_004_v3pro_final.json
+    # MAE físico (escala real [% píxeles |B| > 200 G]). R² en espacio Z-Score.
+    proposed_mae = 0.3167          # MAE físico (métrica oficial)
+    proposed_rmse = 0.3596         # RMSE físico
+    proposed_r2 = 0.81             # R² (espacio normalizado)
+    proposed_params = 88_313       # verificado: sum(p.numel() for p in model.parameters())
     proposed_inference_ms = 8.7
 
     # Fallback values used when results_benchmarking.json is absent.
@@ -1217,7 +1467,7 @@ async def get_experiment_metadata(filename: str):
 
     Args:
         filename: JSON filename within ``experiments/``, e.g.
-            ``exp_003_results.json``.
+            ``exp_004_v3pro_final.json``.
 
     Returns:
         Parsed JSON object as a dictionary.
@@ -1237,6 +1487,39 @@ async def get_experiment_metadata(filename: str):
 
     with open(json_path, "r", encoding="utf-8") as fh:
         return json.load(fh)
+
+
+@app.get("/api/results-comparison")
+async def get_results_comparison():
+    """Serve the predicted-vs-actual comparison data for the scatter plot.
+
+    Reads ``reports/results_comparison.csv`` generated by ``evaluate_final.py``
+    and returns the rows as a JSON array. Each row contains Real_SSN,
+    Predicted_SSN, and Error_Absoluto for all 352 validation samples.
+
+    Returns:
+        List of dicts with keys ``real``, ``predicted``, ``error``.
+
+    Raises:
+        HTTPException 404: CSV file not found — run evaluate_final.py first.
+    """
+    import csv
+    csv_path = BASE_DIR / "reports" / "results_comparison.csv"
+    if not csv_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="results_comparison.csv not found. Run evaluate_final.py first.",
+        )
+    points = []
+    with open(csv_path, newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            points.append({
+                "real":      float(row["Real_SSN"]),
+                "predicted": float(row["Predicted_SSN"]),
+                "error":     float(row["Error_Absoluto"]),
+            })
+    return points
 
 
 @app.get("/api/logs", response_model=List[LogEntry])

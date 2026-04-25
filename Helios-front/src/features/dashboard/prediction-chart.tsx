@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Loader2 } from 'lucide-react';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip as RechartsTooltip, ResponsiveContainer,
+} from 'recharts';
+import { Database, Calendar, Layers } from 'lucide-react';
 import { getImageList } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n/language-context';
 
@@ -9,16 +12,45 @@ interface YearCount {
   count: number;
 }
 
+// ---------------------------------------------------------------------------
+// Gradient bar shape
+// ---------------------------------------------------------------------------
+function GradientBar(props: {
+  x?: number; y?: number; width?: number; height?: number;
+  [key: string]: unknown;
+}) {
+  const { x = 0, y = 0, width = 0, height = 0 } = props;
+  if (!height || height <= 0) return null;
+  return (
+    <g>
+      <defs>
+        <linearGradient id="solar-bar-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#fbbf24" stopOpacity={1} />
+          <stop offset="100%" stopColor="#dc2626" stopOpacity={1} />
+        </linearGradient>
+      </defs>
+      <rect
+        x={x} y={y}
+        width={width} height={height}
+        fill="url(#solar-bar-grad)"
+        rx={3} ry={3}
+      />
+    </g>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 export function PredictionChart() {
   const { t } = useLanguage();
-  const [data, setData] = useState<YearCount[]>([]);
+  const p = t.pipeline;
+  const [data,    setData]    = useState<YearCount[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     getImageList()
       .then((res) => {
-        // Group images by year from their date field
         const counts: Record<string, number> = {};
         for (const img of res.images) {
           if (img.date) {
@@ -26,100 +58,148 @@ export function PredictionChart() {
             counts[year] = (counts[year] || 0) + 1;
           }
         }
-        // Sort by year ascending
         const sorted = Object.entries(counts)
           .map(([year, count]) => ({ year, count }))
           .sort((a, b) => a.year.localeCompare(b.year));
         setData(sorted);
       })
-      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
+  const totalImages = data.reduce((s, d) => s + d.count, 0);
+  const firstYear   = data.length > 0 ? data[0].year : '—';
+  const lastYear    = data.length > 0 ? data[data.length - 1].year : '—';
+  const yearRange   = data.length > 0 ? `${firstYear} — ${lastYear}` : '—';
+  const yearsSpan   = data.length > 0
+    ? parseInt(lastYear) - parseInt(firstYear) + 1
+    : 0;
+  const avgPerYear  = data.length > 0
+    ? Math.round(totalImages / data.length)
+    : 0;
+
+  const CARDS = [
+    {
+      label:     p.totalImages,
+      value:     loading ? '—' : totalImages.toLocaleString(),
+      sub:       p.acrossChannels,
+      Icon:      Database,
+      iconBg:    'bg-orange-500/20',
+      iconColor: 'text-orange-400',
+    },
+    {
+      label:     p.yearRange,
+      value:     loading ? '—' : yearRange,
+      sub:       loading ? `— ${p.yearsOfSdo}` : `${yearsSpan} ${p.yearsOfSdo}`,
+      Icon:      Calendar,
+      iconBg:    'bg-teal-500/20',
+      iconColor: 'text-teal-400',
+    },
+    {
+      label:     p.avgPerYear,
+      value:     loading ? '—' : avgPerYear.toLocaleString(),
+      sub:       p.annually,
+      Icon:      null,
+      iconBg:    'bg-purple-500/20',
+      iconColor: 'text-purple-400',
+    },
+    {
+      label:     p.channels,
+      value:     '2',
+      sub:       p.hmiChannels,
+      Icon:      Layers,
+      iconBg:    'bg-amber-500/20',
+      iconColor: 'text-amber-400',
+    },
+  ] as const;
+
   return (
-    <div className="bg-neutral-950 border border-neutral-800">
-      <div className="border-b border-neutral-800 px-4 py-2.5 bg-neutral-900">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-sm font-semibold text-white">{t.predictionChart.title}</h2>
-            <p className="text-[11px] text-neutral-500 mt-0.5">
-              {t.predictionChart.subtitle}
-            </p>
+    <div className="space-y-4">
+
+      {/* ── Metric cards ──────────────────────────────────────────── */}
+      <div className="grid grid-cols-4 gap-4">
+        {CARDS.map((card) => (
+          <div
+            key={card.label}
+            className="bg-neutral-900 border border-neutral-800 rounded-xl p-5"
+          >
+            <div className="flex items-start justify-between">
+              <div className="text-[9px] text-neutral-500 tracking-[0.15em] font-mono">
+                {card.label}
+              </div>
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${card.iconBg}`}>
+                {card.Icon
+                  ? <card.Icon className={`w-4 h-4 ${card.iconColor}`} />
+                  : <span className={`text-[16px] font-bold leading-none ${card.iconColor}`}>Σ</span>
+                }
+              </div>
+            </div>
+            <div className="text-[30px] font-mono font-bold text-white mt-3 leading-none tracking-tight">
+              {card.value}
+            </div>
+            <div className="text-[11px] text-neutral-500 mt-2">{card.sub}</div>
           </div>
-          <div className="flex items-center space-x-2 text-[11px]">
-            <span className="text-neutral-500">{t.predictionChart.yearsCovered}:</span>
-            <span className="font-mono text-white">{data.length}</span>
-          </div>
-        </div>
+        ))}
       </div>
 
-      <div className="p-4">
-        {error && (
-          <div className="bg-red-950 border border-red-900 px-3 py-2 text-xs text-red-400 mb-4">
-            {error}
-          </div>
-        )}
+      {/* ── Bar chart ─────────────────────────────────────────────── */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
 
-        <div className="h-80 bg-neutral-900 border border-neutral-800 p-4">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <div className="text-[15px] font-semibold text-white">{p.chartTitle}</div>
+            <div className="text-[11px] text-neutral-500 mt-0.5">{p.chartSubtitle}</div>
+          </div>
+          <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
+            {p.pipeline}
+          </span>
+        </div>
+
+        <div className="h-80">
           {loading ? (
-            <div className="w-full h-full flex items-center justify-center">
-              <Loader2 className="w-5 h-5 text-neutral-500 animate-spin" />
+            <div className="w-full h-full flex items-center justify-center text-neutral-600 text-sm">
+              {p.loading}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} margin={{ top: 5, right: 20, bottom: 25, left: 45 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#404040" />
+              <BarChart
+                data={data}
+                margin={{ top: 5, right: 10, left: -10, bottom: 5 }}
+                barCategoryGap="25%"
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
                 <XAxis
                   dataKey="year"
-                  stroke="#737373"
-                  tick={{ fill: '#a3a3a3', fontSize: 11 }}
-                  label={{ value: t.predictionChart.observationYear, position: 'insideBottom', offset: -15, fill: '#a3a3a3', fontSize: 11 }}
+                  tick={{ fill: '#525252', fontSize: 10, fontFamily: 'monospace' }}
+                  axisLine={false}
+                  tickLine={false}
                 />
                 <YAxis
-                  stroke="#737373"
-                  tick={{ fill: '#a3a3a3', fontSize: 11 }}
-                  label={{ value: t.predictionChart.imageCount, angle: -90, position: 'insideLeft', fill: '#a3a3a3', fontSize: 11 }}
+                  tick={{ fill: '#525252', fontSize: 10, fontFamily: 'monospace' }}
+                  axisLine={false}
+                  tickLine={false}
                 />
-                <Tooltip
+                <RechartsTooltip
                   contentStyle={{
-                    backgroundColor: '#171717',
+                    background: '#171717',
                     border: '1px solid #404040',
-                    borderRadius: '2px',
+                    borderRadius: '8px',
                     fontSize: '11px',
-                    fontFamily: 'IBM Plex Mono, monospace',
+                    fontFamily: 'monospace',
+                    color: '#ffffff',
                   }}
                   labelStyle={{ color: '#a3a3a3' }}
+                  itemStyle={{ color: '#ffffff' }}
+                  formatter={(value: number) => [value.toLocaleString(), p.images]}
                 />
-                <Bar dataKey="count" fill="#3b82f6" radius={[2, 2, 0, 0]} />
+                {/* @ts-expect-error custom shape */}
+                <Bar dataKey="count" shape={<GradientBar />} maxBarSize={44} />
               </BarChart>
             </ResponsiveContainer>
           )}
         </div>
-
-        {/* Summary stats */}
-        <div className="grid grid-cols-3 gap-4 mt-4">
-          <div className="bg-neutral-900 border border-neutral-800 p-3">
-            <div className="text-[11px] text-neutral-500 mb-1">{t.predictionChart.totalImages}</div>
-            <div className="text-xl font-mono text-white">
-              {data.reduce((sum, d) => sum + d.count, 0).toLocaleString()}
-            </div>
-          </div>
-          <div className="bg-neutral-900 border border-neutral-800 p-3">
-            <div className="text-[11px] text-neutral-500 mb-1">{t.predictionChart.yearRange}</div>
-            <div className="text-xl font-mono text-white">
-              {data.length > 0 ? `${data[0].year} - ${data[data.length - 1].year}` : '--'}
-            </div>
-          </div>
-          <div className="bg-neutral-900 border border-neutral-800 p-3">
-            <div className="text-[11px] text-neutral-500 mb-1">{t.predictionChart.avgPerYear}</div>
-            <div className="text-xl font-mono text-white">
-              {data.length > 0
-                ? Math.round(data.reduce((sum, d) => sum + d.count, 0) / data.length).toLocaleString()
-                : '--'}
-            </div>
-          </div>
-        </div>
       </div>
+
     </div>
   );
 }

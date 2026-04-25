@@ -10,9 +10,10 @@ Sistema full-stack validado para estimación en tiempo casi-real del índice de 
 
 | Métrica | Valor | Condición |
 |:---|:---:|:---|
-| MAE (Error Absoluto Medio) | **0.1380** | Conjunto hold-out, 352 magnetogramas |
-| MAPE (Error Porcentual Medio) | **5.52%** | Precisión superior al 94% |
-| R² (Varianza Explicada) | **~0.81** | Calculado analíticamente sobre hold-out |
+| MAE físico (escala real) | **0.3167** | Targets crudos vs. preds desnormalizadas — métrica oficial de salida |
+| MAE espacio Z-Score | 0.1380 | Error en espacio de optimización (comparación interna de training) |
+| MAPE | **5.52%** | Precisión superior al 94% |
+| R² (analítico) | **~0.81** | Calculado en espacio Z-Score durante training |
 | Latencia de Inferencia | **8.7 ms** | Muestra única, Apple M-series MPS |
 
 ---
@@ -23,17 +24,20 @@ SolarNetV3 PRO es una arquitectura residual ligera de menos de 500K parámetros,
 
 ```
 Input (2, 512, 512)  ← canal 0: B+  |  canal 1: B−
-  └─ Residual Block ×4  [32→64→128→256 ch, BatchNorm, Dropout2d, MaxPool2d]
-       └─ Global Average Pooling  →  (256,)
-            └─ Linear(256, 1)  →  sunspot index
+  └─ Residual Block ×4  [16→32→64→96 ch, ECA Attention, BatchNorm, Dropout2d, MaxPool2d]
+       └─ Global Average Pooling  →  (96,)
+            └─ Linear(96, 1)  →  sunspot index
 ```
 
-| Modelo | Parámetros | MAE Val | R² Val | Latencia |
+> Baselines evaluados con entrada |B| = B+ + B− (1 canal, escala física cruda) — comparación justa 1-canal vs. 2-canal.  
+> MAE SolarNetV3 PRO en escala física: **0.3167**. MAE en espacio Z-Score (training loop): 0.1380.
+
+| Modelo | Parámetros | MAE físico | R² | Latencia |
 |:---|---:|:---:|:---:|:---:|
-| **SolarNetV3 PRO** | **< 500 K** | **0.1380** | **~0.81** | **8.7 ms** |
-| VGG-11 | 9.35 M | 0.0914 | 0.8833 | 14.85 ms |
-| ResNet-18 | 11.2 M | 0.2372 | 0.5193 | 12.1 ms |
-| Naive Persistence | 0 | 0.3084 | −0.013 | < 1 ms |
+| **SolarNetV3 PRO** | **~88 K** | **0.3167** | **~0.81** | **8.7 ms** |
+| ResNet-18 | 11.2 M | 0.0755 | 0.9276 | 6.16 ms |
+| VGG-11 | 9.35 M | 0.1079 | 0.8621 | 17.23 ms |
+| Naive Persistence | 0 | 0.2882 | −0.008 | < 1 ms |
 
 ---
 
@@ -92,6 +96,31 @@ NASA JSOC (HMI Level-1.5)
                  └─ api/   FastAPI REST  (predict, gradient-cam, benchmarks)
                       └─ Helios-front/   React 18 + TypeScript dashboard
 ```
+
+---
+
+## Tech Stack
+
+**Backend**
+| Layer | Technology |
+|:---|:---|
+| API REST | FastAPI 0.110 + Uvicorn |
+| Deep Learning | PyTorch 2.2.0 (Apple Silicon MPS) |
+| Datos solares | SunPy / Fido (descarga JSOC) |
+| Procesamiento | NumPy · SciPy · Astropy (FITS) |
+| XAI | Grad-CAM custom hook (stage4.conv) |
+| Incertidumbre | Monte Carlo Dropout (T=20 pases) |
+
+**Frontend**
+| Layer | Technology |
+|:---|:---|
+| Framework | React 18 + TypeScript |
+| Build tool | Vite 6 |
+| Estilos | Tailwind CSS v4 |
+| Gráficos | Recharts 3.7 |
+| Routing | React Router v7 |
+| Iconos | Lucide React |
+| i18n | Context API custom (EN / ES) |
 
 ---
 

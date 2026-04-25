@@ -1,0 +1,58 @@
+{
+  "run_id": "exp_004",
+  "run_name": "SolarNet V3 PRO — Producción Final",
+  "date": "2026-04-16T10:55:00Z",
+  "model_name": "SolarNet V3 PRO",
+  "weights_file": "helios_v3_final.pth",
+  "weights_file_alt": "helios_v3_pro.pth",
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "dropout_rate": 0.2,
+    "seed": 42,
+    "batch_size": 32,
+    "optimizer": "AdamW",
+    "weight_decay": 1e-5,
+    "scheduler": "ReduceLROnPlateau (patience=3, factor=0.5, min_lr=1e-6)",
+    "loss_function": "WeightedHuberLoss (delta=1.0, alpha=2.0)",
+    "max_epochs": 100,
+    "early_stopping_patience": 10,
+    "epochs_run": 43
+  },
+  "architecture": {
+    "model_class": "SolarNetV3",
+    "input_shape": [2, 512, 512],
+    "filter_schedule": [2, 16, 32, 64, 96],
+    "attention": "ECA (Efficient Channel Attention)",
+    "pooling": "GlobalAveragePooling2d",
+    "head": "Linear(96, 1)",
+    "total_parameters": 88313
+  },
+  "dataset": {
+    "total_samples": 1763,
+    "train_samples": 1411,
+    "val_samples": 352,
+    "val_split": 0.2,
+    "augmentation": true,
+    "augmentation_ops": ["RandomHorizontalFlip", "RandomVerticalFlip", "RandomRotation(10deg)"],
+    "temporal_coverage": "2011-2025 (Solar Cycles 24-25)"
+  },
+  "metrics": {
+    "mae_z_space": 0.1380,
+    "rmse_z_space": 0.1473,
+    "mae_physical": 0.3167,
+    "rmse_physical": 0.3596,
+    "metric_note": "z_space = error en espacio Z-Score normalizado (calculado durante training loop). physical = error en escala real [% píxeles |B|>200G], targets crudos vs preds desnormalizadas con (pred*0.3462)+1.7658. La métrica física es la oficial para reportes externos.",
+    "final_mape_pct": 5.52,
+    "r2_score": 0.81,
+    "best_epoch": 43,
+    "inference_time_ms": 8.7,
+    "mc_dropout_passes": 20
+  },
+  "environment": {
+    "device": "mps",
+    "framework": "PyTorch 2.2.0",
+    "python_version": "3.12.1",
+    "os": "macOS 15.4"
+  },
+  "notes": "Corrida de producción final. Arquitectura V3ResidualBlock con ECA attention. Dataset ampliado a 1763 muestras (605 nuevas respecto a V2 PRO). Loss WeightedHuberLoss resuelve el sesgo hacia sol quieto. Dropout reducido a 0.2 (mejor generalización sobre dataset ampliado). Optimizer cambiado de Adam a AdamW con weight_decay=1e-5. Early stopping activado en época 43. Pesos guardados en helios_v3_final.pth y helios_v3_pro.pth (idénticos)."
+}

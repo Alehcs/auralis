@@ -1,154 +1,310 @@
 import { useState, useEffect } from 'react';
-import { Loader2 } from 'lucide-react';
-import { getStats } from '@/lib/api';
-import type { SystemStats } from '@/lib/types';
+import {
+  Sigma,
+  ImageIcon,
+  HardDrive,
+  Activity,
+  CheckCircle2,
+  AlertTriangle,
+  CalendarDays,
+  Layers,
+  ScanLine,
+  Timer,
+} from 'lucide-react';
+import { getStats, getImageList, predictDual } from '@/lib/api';
+import type { SystemStats, PredictionResult } from '@/lib/types';
 import { useLanguage } from '@/lib/i18n/language-context';
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function RiskBadge({ level, labels }: { level: string; labels: { high: string; medium: string; low: string } }) {
+  if (level === 'High')
+    return (
+      <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-medium">
+        <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+        {labels.high}
+      </span>
+    );
+  if (level === 'Medium')
+    return (
+      <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] font-medium">
+        <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+        {labels.medium}
+      </span>
+    );
+  return (
+    <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-[11px] font-medium">
+      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+      {labels.low}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Metric card
+// ---------------------------------------------------------------------------
+
+interface MetricCardProps {
+  label: string;
+  value: string;
+  unit?: string;
+  trend?: string;
+  trendUp?: boolean;
+  icon: React.ElementType;
+  iconBg: string;
+  iconColor: string;
+}
+
+function MetricCard({ label, value, unit, trend, trendUp, icon: Icon, iconBg, iconColor }: MetricCardProps) {
+  return (
+    <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 flex flex-col gap-3">
+      <div className="flex items-start justify-between">
+        <span className="text-[10px] text-neutral-500 tracking-[0.12em] uppercase">{label}</span>
+        <div className={`w-8 h-8 rounded-lg border flex items-center justify-center flex-shrink-0 ${iconBg}`}>
+          <Icon className={`w-4 h-4 ${iconColor}`} />
+        </div>
+      </div>
+
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-[28px] font-mono font-semibold text-white leading-none">{value}</span>
+        {unit && <span className="text-[12px] text-neutral-500 font-mono">{unit}</span>}
+      </div>
+
+      {trend && (
+        <div className={`flex items-center gap-1 text-[11px] font-mono ${trendUp ? 'text-green-400' : 'text-neutral-500'}`}>
+          {trendUp && <span>↗</span>}
+          <span>{trend}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Status row
+// ---------------------------------------------------------------------------
+
+function StatusRow({ label, status, labels }: {
+  label: string;
+  status: 'nominal' | 'degraded' | 'offline';
+  labels: { nominal: string; degraded: string; offline: string };
+}) {
+  return (
+    <div className="flex items-center justify-between py-2.5 border-b border-neutral-800/60 last:border-0">
+      <span className="text-[12px] text-neutral-400">{label}</span>
+      {status === 'nominal' ? (
+        <span className="flex items-center gap-1.5 text-[11px] text-green-400">
+          <CheckCircle2 className="w-3.5 h-3.5" />
+          {labels.nominal}
+        </span>
+      ) : status === 'degraded' ? (
+        <span className="flex items-center gap-1.5 text-[11px] text-orange-400">
+          <AlertTriangle className="w-3.5 h-3.5" />
+          {labels.degraded}
+        </span>
+      ) : (
+        <span className="flex items-center gap-1.5 text-[11px] text-red-400">
+          <AlertTriangle className="w-3.5 h-3.5" />
+          {labels.offline}
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 
 export function ModelMetrics() {
   const { t } = useLanguage();
-  const [stats, setStats] = useState<SystemStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const o = t.overview;
+
+  const [stats, setStats]           = useState<SystemStats | null>(null);
+  const [prediction, setPrediction] = useState<PredictionResult | null>(null);
+  const [latestFile, setLatestFile] = useState<string>('—');
+  const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch dataset stats
     getStats()
-      .then((data) => setStats(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .then(setStats)
+      .catch(console.error)
+      .finally(() => setStatsLoading(false));
+
+    // Fetch most-recent image and run inference
+    getImageList()
+      .then((res) => {
+        if (res.images.length === 0) return;
+        const img = res.images[0];
+        setLatestFile(img.date ?? img.filename);
+        return predictDual(img.filename).then(setPrediction).catch(console.error);
+      })
+      .catch(console.error);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="bg-neutral-950 border border-neutral-800 p-8 flex items-center justify-center">
-        <Loader2 className="w-5 h-5 text-neutral-500 animate-spin" />
-      </div>
-    );
-  }
+  // Derived
+  const activityIndex = prediction?.sunspot_index?.toFixed(4) ?? '—';
+  const riskLevel     = prediction?.risk_level ?? 'Low';
+  const confidence    = prediction ? `${(prediction.confidence * 100).toFixed(1)}%` : '—';
+  const mae           = stats ? stats.mae.toFixed(4) : '—';
+  const totalImages   = stats ? stats.total_images.toLocaleString() : '—';
+  const diskGb        = stats ? (stats.disk_usage_mb / 1024).toFixed(2) : '—';
+  const diskMb        = stats?.disk_usage_mb ?? 0;
 
-  if (error) {
-    return (
-      <div className="bg-neutral-950 border border-neutral-800 p-4">
-        <div className="bg-red-950 border border-red-900 px-3 py-2 text-xs text-red-400">{error}</div>
-      </div>
-    );
-  }
+  // Disk allocation bar (max 20 GB display cap)
+  const MAX_DISK_MB = 20_000;
+  const diskPct     = Math.min((diskMb / MAX_DISK_MB) * 100, 100);
 
-  const metrics = [
-    { label: t.metrics.mae, value: stats?.mae.toFixed(4) ?? '--', unit: '%', target: '< 0.50', status: 'pass' },
-    { label: t.metrics.totalImages, value: stats?.total_images.toLocaleString() ?? '--', unit: '', target: '> 500', status: 'pass' },
-    { label: t.metrics.diskUsage, value: stats?.disk_usage_mb.toFixed(1) ?? '--', unit: 'MB', target: '', status: 'pass' },
-  ];
-
-  const trainingInfo = [
-    { label: t.metrics.architecture, value: 'SolarNet (4-Conv CNN)' },
-    { label: t.metrics.parameters, value: '389,057' },
-    { label: t.metrics.inputSize, value: '512 x 512' },
-    { label: t.metrics.epochs, value: '26 (early stop)' },
-    { label: t.metrics.batchSize, value: '32' },
-    { label: t.metrics.learningRate, value: '5e-4 (final)' },
-  ];
+  const statusLabels = { nominal: o.nominal, degraded: o.degraded, offline: o.offline };
+  const riskLabels   = { high: o.highRisk, medium: o.mediumRisk, low: o.lowRisk };
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="bg-neutral-950 border border-neutral-800">
-        <div className="border-b border-neutral-800 px-4 py-2.5 bg-neutral-900">
-          <h2 className="text-sm font-semibold text-white">{t.metrics.modelPerformance}</h2>
-          <p className="text-[11px] text-neutral-500 mt-0.5">{t.metrics.modelPerformanceSubtitle}</p>
-        </div>
+    <div className="space-y-4">
 
-        <div className="p-4">
-          <div className="grid grid-cols-3 gap-3">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="bg-neutral-900 border border-neutral-800 p-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] text-neutral-500">{metric.label}</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+      {/* ── Hero: Current Solar State ──────────────────────────── */}
+      <div className="relative overflow-hidden rounded-xl bg-neutral-900 border border-neutral-800 px-7 py-6">
+        {/* Warm glow overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at 85% 50%, rgba(146,64,14,0.28) 0%, transparent 65%)',
+          }}
+        />
+
+        <div className="relative flex items-center justify-between gap-6">
+          {/* Left */}
+          <div>
+            <div className="text-[10px] text-neutral-500 tracking-[0.18em] mb-2">
+              {o.currentState}
+            </div>
+            <div className="flex items-baseline gap-3 mb-2">
+              <span className="text-[13px] font-medium text-neutral-300">{o.activityIndex}</span>
+              <span className="text-[42px] font-mono font-bold text-orange-400 leading-none">
+                {statsLoading ? '…' : activityIndex}
+              </span>
+            </div>
+            <div className="text-[12px] text-neutral-500">
+              {o.predictedBy}{' '}
+              <span className="text-neutral-300 font-medium">SolarNetV3 PRO</span>{' '}
+              · {latestFile}
+            </div>
+          </div>
+
+          {/* Right: badges */}
+          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+            <RiskBadge level={riskLevel} labels={riskLabels} />
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-transparent border border-green-600/50 text-green-400 text-[11px] font-medium">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              {o.systemNominal}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 4 Metric cards ─────────────────────────────────────── */}
+      <div className="grid grid-cols-4 gap-4">
+        <MetricCard
+          label={o.modelMae}
+          value={mae}
+          trend={o.physicalScale}
+          icon={Sigma}
+          iconBg="bg-orange-500/10 border-orange-500/20"
+          iconColor="text-orange-400"
+        />
+        <MetricCard
+          label={o.processedImages}
+          value={totalImages}
+          trend={`live ${o.since2010}`}
+          trendUp={!!stats}
+          icon={ImageIcon}
+          iconBg="bg-blue-500/10 border-blue-500/20"
+          iconColor="text-blue-400"
+        />
+        <MetricCard
+          label={o.diskUsage}
+          value={diskGb}
+          unit="GB"
+          trend={`${stats?.disk_usage_mb.toFixed(0) ?? '—'} ${o.mbTotal}`}
+          icon={HardDrive}
+          iconBg="bg-amber-500/10 border-amber-500/20"
+          iconColor="text-amber-400"
+        />
+        <MetricCard
+          label={o.confidence}
+          value={confidence}
+          trend={o.mcDropout}
+          trendUp={!!prediction}
+          icon={Activity}
+          iconBg="bg-violet-500/10 border-violet-500/20"
+          iconColor="text-violet-400"
+        />
+      </div>
+
+      {/* ── Dataset summary + System status ────────────────────── */}
+      <div className="grid grid-cols-3 gap-4">
+
+        {/* Dataset summary (2/3) */}
+        <div className="col-span-2 bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-[13px] font-semibold text-white">{o.datasetSummary}</span>
+            <span className="text-[10px] font-mono text-neutral-500 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
+              SDO / HMI · AIA
+            </span>
+          </div>
+
+          <div className="grid grid-cols-4 gap-3 mb-5">
+            {[
+              { icon: CalendarDays, label: o.years,      value: '2010 — 2024' },
+              { icon: Layers,       label: o.channels,   value: '2 (B+/B−)' },
+              { icon: ScanLine,     label: o.resolution, value: '512²' },
+              { icon: Timer,        label: o.cadence,    value: '45 s' },
+            ].map(({ icon: Icon, label, value }) => (
+              <div
+                key={label}
+                className="bg-neutral-950 border border-neutral-800 rounded-lg p-3 flex flex-col gap-2"
+              >
+                <div className="flex items-center gap-1.5">
+                  <Icon className="w-3.5 h-3.5 text-neutral-600" />
+                  <span className="text-[9px] text-neutral-600 tracking-[0.14em]">{label}</span>
                 </div>
-                <div className="flex items-baseline space-x-1">
-                  <span className="text-lg font-mono text-white">{metric.value}</span>
-                  <span className="text-[10px] text-neutral-500 font-mono">{metric.unit}</span>
-                </div>
-                {metric.target && (
-                  <div className="text-[10px] text-neutral-600 font-mono mt-1">
-                    {t.metrics.target}: {metric.target}
-                  </div>
-                )}
+                <span className="text-[15px] font-mono text-white font-medium leading-none">
+                  {value}
+                </span>
               </div>
             ))}
           </div>
 
-          <div className="mt-4 bg-neutral-900 border border-neutral-800 p-3">
-            <div className="text-[11px] text-neutral-500 mb-3">{t.metrics.trainingConfiguration}</div>
-            <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-xs font-mono">
-              {trainingInfo.map((info) => (
-                <div key={info.label} className="flex justify-between">
-                  <span className="text-neutral-400">{info.label}:</span>
-                  <span className="text-white">{info.value}</span>
-                </div>
-              ))}
+          {/* Disk allocation bar */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] text-neutral-500">{o.diskAllocation}</span>
+              <span className="text-[11px] font-mono text-neutral-400">{diskGb} {o.diskUsed}</span>
+            </div>
+            <div className="h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{
+                  width: `${diskPct}%`,
+                  background: 'linear-gradient(to right, #22c55e, #f59e0b, #ef4444)',
+                }}
+              />
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="bg-neutral-950 border border-neutral-800">
-        <div className="border-b border-neutral-800 px-4 py-2.5 bg-neutral-900">
-          <h2 className="text-sm font-semibold text-white">{t.metrics.datasetOverview}</h2>
-          <p className="text-[11px] text-neutral-500 mt-0.5">
-            {t.metrics.lastUpdated}: {stats?.last_updated ? new Date(stats.last_updated).toLocaleString() : '--'}
-          </p>
-        </div>
-
-        <div className="p-4">
-          <div className="space-y-3">
-            {/* Total Images */}
-            <div className="bg-neutral-900 border border-neutral-800 p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-white">{t.metrics.processedImages}</span>
-                <div className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  <span className="text-[10px] font-mono text-green-400">{t.metrics.ready}</span>
-                </div>
-              </div>
-              <div className="text-2xl font-mono text-white">{stats?.total_images.toLocaleString()}</div>
-              <div className="text-[10px] text-neutral-600 font-mono mt-1">{t.metrics.npyFiles}</div>
-            </div>
-
-            {/* Disk Usage */}
-            <div className="bg-neutral-900 border border-neutral-800 p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-white">{t.metrics.diskUsage}</span>
-                <div className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                  <span className="text-[10px] font-mono text-blue-400">{t.metrics.nominal}</span>
-                </div>
-              </div>
-              <div className="flex items-baseline space-x-1">
-                <span className="text-2xl font-mono text-white">
-                  {stats ? (stats.disk_usage_mb / 1024).toFixed(2) : '--'}
-                </span>
-                <span className="text-xs text-neutral-500 font-mono">{t.metrics.diskUsageUnit}</span>
-              </div>
-              <div className="text-[10px] text-neutral-600 font-mono mt-1">
-                {stats?.disk_usage_mb.toFixed(1)} {t.metrics.diskUsageDetail}
-              </div>
-            </div>
-
-            {/* Model MAE */}
-            <div className="bg-neutral-900 border border-neutral-800 p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-white">{t.metrics.bestValidationMAE}</span>
-                <div className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  <span className="text-[10px] font-mono text-green-400">{t.metrics.optimal}</span>
-                </div>
-              </div>
-              <div className="flex items-baseline space-x-1">
-                <span className="text-2xl font-mono text-white">{stats?.mae.toFixed(4)}</span>
-                <span className="text-xs text-neutral-500 font-mono">%</span>
-              </div>
-              <div className="text-[10px] text-neutral-600 font-mono mt-1">{t.metrics.meanAbsoluteError}</div>
-            </div>
+        {/* System status (1/3) */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+          <div className="text-[13px] font-semibold text-white mb-4">{o.systemStatus}</div>
+          <div>
+            <StatusRow label={o.inferenceWorker} status="nominal"  labels={statusLabels} />
+            <StatusRow label={o.sdoIngestion}    status="nominal"  labels={statusLabels} />
+            <StatusRow label={o.modelRegistry}   status="nominal"  labels={statusLabels} />
+            <StatusRow label={o.gradcamEngine}   status="nominal"  labels={statusLabels} />
+            <StatusRow label={o.experimentStore} status="nominal"  labels={statusLabels} />
           </div>
         </div>
       </div>
