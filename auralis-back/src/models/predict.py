@@ -1,4 +1,4 @@
-"""Inference engine for Coronium V2 PRO.
+"""Inference engine for Coronium V3 PRO.
 
 Provides a standalone CLI and importable functions for end-to-end prediction
 on raw HMI FITS files: load → preprocess → infer → visualise.
@@ -265,7 +265,7 @@ def visualize_prediction(
 def main() -> None:
     """CLI entry point for single-image inference."""
     parser = argparse.ArgumentParser(
-        description="Coronium V2 PRO — sunspot index inference on HMI FITS files"
+        description="Coronium V3 PRO — sunspot index inference on HMI FITS files"
     )
     parser.add_argument(
         "--image",

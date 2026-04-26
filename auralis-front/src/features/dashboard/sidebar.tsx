@@ -19,7 +19,7 @@ export function Sidebar() {
           </div>
           <div>
             <h1 className="font-bold text-white">Auralis</h1>
-            <p className="text-xs text-gray-400">v2.1.0</p>
+            <p className="text-xs text-gray-400">v3.0.0</p>
           </div>
         </div>
       </div>

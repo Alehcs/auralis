@@ -194,7 +194,7 @@ class WeightedHuberLoss(nn.Module):
        MSE gradient is overwhelmingly driven by the majority class. The model
        learns to minimise residuals on quiet days at the cost of systematic
        underestimation on active days, producing the characteristic
-       *activity-floor bias* observed in V2 PRO validation curves.
+       *activity-floor bias* observed in V2/V3 PRO validation curves.
 
     The Weighted Huber Loss corrects both failure modes simultaneously:
 
@@ -268,7 +268,7 @@ def weighted_huber_loss(
         quiet Sun (y≈0.1): weight≈1.2; moderate AR (y≈1.0): weight≈3.0;
         major AR (y≈20): weight≈41.0. Combined with Huber robustness (δ=1.0),
         this corrects the *activity-floor bias* of MSE objectives observed
-        in V2 PRO without requiring oversampling strategies.
+        in prior versions without requiring oversampling strategies.
 
     Args:
         y_pred: Predicted sunspot indices, shape (N, 1).
