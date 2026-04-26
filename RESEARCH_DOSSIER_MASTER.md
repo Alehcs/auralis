@@ -1,9 +1,9 @@
 # RESEARCH DOSSIER MASTER
-## SolarNetV3 PRO: A Residual Convolutional Neural Network for Solar Activity Index Prediction from Dual-Channel HMI/SDO Magnetograms
+## Coronium V3 PRO: A Residual Convolutional Neural Network for Solar Activity Index Prediction from Dual-Channel HMI/SDO Magnetograms
 
 **Classification:** Technical Research Report  
 **Standard:** IEEE Conference Paper Format  
-**Repository:** Helios-Pipeline  
+**Repository:** Auralis  
 **Dossier Generated:** 2026-04-02  
 **Dossier Updated:** 2026-04-23  
 **Dossier Version:** 2.1.0  
@@ -14,7 +14,7 @@
 
 1. [Version Metadata](#1-version-metadata)
 2. [Data Engineering — Scientific Rigor](#2-data-engineering--scientific-rigor)
-3. [Architecture Specification — SolarNet](#3-architecture-specification--solarnet)
+3. [Architecture Specification — Coronium](#3-architecture-specification--coronium)
 4. [Hyperparameters and Training Protocol](#4-hyperparameters-and-training-protocol)
 5. [Results and Benchmarking](#5-results-and-benchmarking)
 6. [Explainability and Confidence Estimation](#6-explainability-and-confidence-estimation)
@@ -28,12 +28,12 @@
 
 | Field                  | Value                                              |
 |------------------------|----------------------------------------------------|
-| Production Checkpoint  | `helios_v3_pro.pth`                                |
+| Production Checkpoint  | `coronium_v3_pro.pth`                                |
 | File Size              | ~1.9 MB                                            |
 | Checkpoint Date        | 2026-04-16                                         |
-| System Version         | **SolarNetV3 PRO**                                 |
+| System Version         | **Coronium V3 PRO**                                 |
 | Experiment ID          | `exp_004`                                          |
-| Run Name               | SolarNetV3 PRO — Production Final                  |
+| Run Name               | Coronium V3 PRO — Production Final                  |
 | Experiment Date        | 2026-04-16T00:00:00Z                               |
 
 ### 1.2 Git Repository State
@@ -58,13 +58,13 @@
 ### 1.4 Model Checkpoint Inventory
 
 ```
-HeliosPipeline/models/
-├── helios_v1.pth          (1.5 MB)   — SolarNet V1 final weights
-├── helios_best.pth        (1.5 MB)   — SolarNet V1 best-epoch weights
-├── helios_v2_final.pth    (1.5 MB)   — SolarNet V2 Tuned final weights
-├── helios_v2_pro.pth      (1.5 MB)   — SolarNet V2 PRO production weights [DEPRECADO]
-├── helios_v3_final.pth    (~367 KB)  — SolarNetV3 PRO last-epoch weights
-└── helios_v3_pro.pth      (~367 KB)  — SolarNetV3 PRO best-val checkpoint [ACTIVO]
+auralis-back/models/
+├── coronium_v1.pth          (1.5 MB)   — Coronium V1 final weights
+├── coronium_best.pth        (1.5 MB)   — Coronium V1 best-epoch weights
+├── coronium_v2_final.pth    (1.5 MB)   — Coronium V2 Tuned final weights
+├── coronium_v2_pro.pth      (1.5 MB)   — Coronium V2 PRO production weights [DEPRECADO]
+├── coronium_v3_final.pth    (~367 KB)  — Coronium V3 PRO last-epoch weights
+└── coronium_v3_pro.pth      (~367 KB)  — Coronium V3 PRO best-val checkpoint [ACTIVO]
 
 Total model storage: ~7.4 MB
 ```
@@ -98,7 +98,7 @@ Total model storage: ~7.4 MB
 
 The dataset was constructed to span Solar Cycles 24 and 25, with deliberate oversampling of the most recent active period.
 
-**Source:** `HeliosPipeline/src/ingestion/massive_ingest_pipeline.py`, Lines 46-65
+**Source:** `auralis-back/src/ingestion/massive_ingest_pipeline.py`, Lines 46-65
 
 ```
 Dataset Temporal Distribution
@@ -119,7 +119,7 @@ Note: Target ingestion = 2000; Validated and deduplicated = 1,763
 
 The Sunspot Index (SI) is a proxy computed from the magnetogram data itself, defined as the fraction of pixels with magnetic field strength exceeding the strong-field threshold $B_{thresh}$.
 
-**Source:** `HeliosPipeline/src/processing/prepare_dataset.py`, Lines 83-84
+**Source:** `auralis-back/src/processing/prepare_dataset.py`, Lines 83-84
 
 $$
 SI = \frac{|\lbrace p \in \mathcal{I} : |B(p)| > B_{thresh}\rbrace|}{|\mathcal{I}|} \times 100
@@ -153,11 +153,11 @@ where:
 
 ### 2.4 Normalization Parameters — Pipeline Completo (V3)
 
-**Source:** `HeliosPipeline/src/processing/prepare_dataset.py`, Lines 99-104  
-**Source:** `HeliosPipeline/src/ingestion/massive_ingest_pipeline.py`, Lines 38-87  
-**Source:** `HeliosPipeline/recalculate_scaler.py`
+**Source:** `auralis-back/src/processing/prepare_dataset.py`, Lines 99-104  
+**Source:** `auralis-back/src/ingestion/massive_ingest_pipeline.py`, Lines 38-87  
+**Source:** `auralis-back/recalculate_scaler.py`
 
-El pipeline de normalización de SolarNetV3 PRO aplica tres pasos secuenciales: (1) clipping + reescalado lineal sobre los valores de campo magnético, (2) separación de polaridad en canales independientes, y (3) normalización logarítmica más Z-Score Poblacional sobre el target (Sunspot Index). Esta tercera etapa fue la cura matemática que resolvió el problema de Mode Collapse.
+El pipeline de normalización de Coronium V3 PRO aplica tres pasos secuenciales: (1) clipping + reescalado lineal sobre los valores de campo magnético, (2) separación de polaridad en canales independientes, y (3) normalización logarítmica más Z-Score Poblacional sobre el target (Sunspot Index). Esta tercera etapa fue la cura matemática que resolvió el problema de Mode Collapse.
 
 **Paso 1 — Hard Clipping sobre el campo magnético:**
 
@@ -196,7 +196,7 @@ Esto permite al modelo distinguir arquitecturalmente entre flujo magnético entr
 
 ### 2.4.1 Normalización del Target — Log + Z-Score Poblacional (Cura del Mode Collapse)
 
-**Fuente:** `HeliosPipeline/recalculate_scaler.py`  
+**Fuente:** `auralis-back/recalculate_scaler.py`  
 **Tensores reales analizados:** 1,314
 
 El Modo Collapse fue identificado como consecuencia de una distribución del target (Sunspot Index) fuertemente sesgada hacia la derecha, con alta concentración de valores bajos. El gradiente de pérdida convergía hacia la media del target independientemente de la entrada, impidiendo al modelo aprender diferenciación real.
@@ -236,7 +236,7 @@ La estandarización garantiza que el gradiente de pérdida opere sobre una distr
 
 ### 2.5 FITS-to-NPY Transformation Pipeline
 
-**Source:** `HeliosPipeline/src/processing/prepare_dataset.py`, Lines 42-116
+**Source:** `auralis-back/src/processing/prepare_dataset.py`, Lines 42-116
 
 ```
 FITS-to-NPY Processing Pipeline
@@ -276,7 +276,7 @@ Output file size:             ≈ 1.0 MB per image (float32, uncompressed)
 
 Applied exclusively to the training split. Validation data receives no augmentation.
 
-**Source:** `HeliosPipeline/src/models/train_model.py`, Lines 31-43
+**Source:** `auralis-back/src/models/train_model.py`, Lines 31-43
 
 ```python
 transforms.RandomHorizontalFlip(p=0.5)
@@ -288,20 +288,20 @@ This augmentation strategy is physically motivated: the Sun's magnetic field top
 
 ---
 
-## 3. Architecture Specification — SolarNetV3 PRO
+## 3. Architecture Specification — Coronium V3 PRO
 
 ### 3.1 Design Rationale
 
-SolarNetV3 PRO es una arquitectura residual ligera diseñada específicamente para regresión sobre magnetogramas HMI/SDO de **doble canal** (B+/B−). La arquitectura incorpora conexiones residuales (skip connections) que permiten un flujo de gradiente estable a través de los bloques convolucionales, elemento crítico para evitar la degradación del gradiente en entrenamiento profundo. Se mantiene bajo el umbral de **500K parámetros totales**, lo que la hace deployable en hardware embebido y en tiempo real sobre Apple Silicon MPS.
+Coronium V3 PRO es una arquitectura residual ligera diseñada específicamente para regresión sobre magnetogramas HMI/SDO de **doble canal** (B+/B−). La arquitectura incorpora conexiones residuales (skip connections) que permiten un flujo de gradiente estable a través de los bloques convolucionales, elemento crítico para evitar la degradación del gradiente en entrenamiento profundo. Se mantiene bajo el umbral de **500K parámetros totales**, lo que la hace deployable en hardware embebido y en tiempo real sobre Apple Silicon MPS.
 
 La separación de polaridades en canales de entrada independientes (B+, B−) es una innovación física: al permitir que la red procese flujo magnético positivo y negativo por caminos de convolución paralelos, se habilita la detección diferencial de estructuras bipolares (pares de manchas solares) que son la firma más característica de la actividad solar máxima.
 
-**Source:** `HeliosPipeline/src/models/train_model.py`
+**Source:** `auralis-back/src/models/train_model.py`
 
 ### 3.2 Layer-by-Layer Specification
 
 ```
-SolarNetV3 PRO — Architecture Summary
+Coronium V3 PRO — Architecture Summary
 ─────────────────────────────────────────────────────────────────────────────────────
 Layer / Block   Type                In→Out Filters  Kernel  Output Shape    Param Count
 ─────────────────────────────────────────────────────────────────────────────────────
@@ -355,7 +355,7 @@ TOTAL PARÁMETROS ENTRENABLES:                                               ~88
 
 ### 3.3 Conexiones Residuales — Rationale
 
-Cada uno de los cuatro stages de SolarNetV3 PRO incluye una skip connection que proyecta la entrada del bloque directamente a su salida mediante una convolución 1×1 (cuando las dimensiones de canal difieren):
+Cada uno de los cuatro stages de Coronium V3 PRO incluye una skip connection que proyecta la entrada del bloque directamente a su salida mediante una convolución 1×1 (cuando las dimensiones de canal difieren):
 
 $$
 \mathbf{h}^{(l)} = \text{ReLU}\!\left(\mathcal{F}(\mathbf{x}^{(l)}) + W_s \mathbf{x}^{(l)}\right)
@@ -385,11 +385,11 @@ Global Average Pooling (GAP) agrega cada uno de los 96 mapas de activación de `
 
 ### 4.1 Consolidated Hyperparameter Table
 
-**Source:** `HeliosPipeline/src/models/train_model.py`, Lines 407-522  
-**Source:** `HeliosPipeline/experiments/exp_004_v3pro_final.json`
+**Source:** `auralis-back/src/models/train_model.py`, Lines 407-522  
+**Source:** `auralis-back/experiments/exp_004_v3pro_final.json`
 
 ```
-SolarNetV3 PRO — Training Hyperparameters (exp_004)
+Coronium V3 PRO — Training Hyperparameters (exp_004)
 ─────────────────────────────────────────────────────────────────────
 Parameter                    Value              Notes
 ─────────────────────────────────────────────────────────────────────
@@ -401,7 +401,7 @@ Training Loss Function       WeightedHuberLoss  δ=1.0, α=2.0 (activity-proport
 Reporting Metric             L1Loss (MAE)       Used for human-readable reporting
 Max Epochs                   100                Hard ceiling
 Actual Epochs Run            43                 Early stopping activado dinámicamente
-Best Epoch                   43                 Checkpoint guardado en helios_v3_pro.pth
+Best Epoch                   43                 Checkpoint guardado en coronium_v3_pro.pth
 Early Stopping Patience      10                 Épocas consecutivas sin mejora
 Validation Split             0.2 (20%)          Hold-out aislado — 352 muestras
 Input Channels               2                  B+ (positivo) / B− (negativo)
@@ -434,7 +434,7 @@ MAE is reported in two spaces: **Z-Score space** (mae_z_space = 0.1380, from tra
 
 ### 4.3 Learning Rate Scheduler
 
-**Source:** `HeliosPipeline/src/models/train_model.py`, Lines 442-447
+**Source:** `auralis-back/src/models/train_model.py`, Lines 442-447
 
 ```python
 torch.optim.lr_scheduler.ReduceLROnPlateau(
@@ -455,7 +455,7 @@ This policy prevents oscillation around local minima while maintaining sufficien
 
 ### 4.4 Early Stopping
 
-**Source:** `HeliosPipeline/src/models/train_model.py`, Lines 407-522
+**Source:** `auralis-back/src/models/train_model.py`, Lines 407-522
 
 Early stopping monitorea la validation loss con una paciencia de 10 épocas. El entrenamiento termina cuando no se observa mejora durante 10 épocas consecutivas, restaurando en ese momento los pesos del mejor checkpoint. En la producción final (exp_004), el mecanismo se activó **dinámicamente en la Época 43**, identificando automáticamente el punto de máxima inteligencia del modelo — aquel en que la capacidad de generalización es máxima antes de que comience cualquier sobreajuste. Este comportamiento confirma que el modelo **no memorizó**: la brecha entre la curva de entrenamiento y la de validación permaneció controlada durante todo el ciclo.
 
@@ -469,9 +469,9 @@ $$
 
 ## 5. Results and Benchmarking
 
-### 5.1 Final Metrics — SolarNetV3 PRO (Production Run — exp_004)
+### 5.1 Final Metrics — Coronium V3 PRO (Production Run — exp_004)
 
-**Source:** `HeliosPipeline/experiments/exp_004_v3pro_final.json`  
+**Source:** `auralis-back/experiments/exp_004_v3pro_final.json`  
 **Evaluación sobre:** 352 muestras hold-out, completamente aisladas del proceso de entrenamiento.
 
 | Métrica                     | Valor        | Espacio              | Fórmula / Nota                                          |
@@ -489,22 +489,22 @@ $$
 
 ### 5.2 Tabla Maestra de Benchmarking Externo
 
-**Fuente:** `HeliosPipeline/experiments/results_benchmarking.json` + `exp_004`  
+**Fuente:** `auralis-back/experiments/results_benchmarking.json` + `exp_004`  
 **Run ID:** `benchmarking_baselines` · **Fecha de ejecución:** 2026-04-23  
 **Dataset de referencia:** 1,763 muestras — 1,411 entrenamiento / 352 validación (split 0.20)  
 **Protocolo externo:** AdamW, lr=0.001, batch=32, epochs=30, seed=42  
-**Nota de canal:** Baselines operan con entrada de 1 canal — tensor colapsado $|B| = B^+ + B^-$ (suma de los dos canales del dataset dual). SolarNetV3 PRO opera sobre los 2 canales separados (B+, B−). Comparación justa: mismos datos, diferente representación de entrada.
+**Nota de canal:** Baselines operan con entrada de 1 canal — tensor colapsado $|B| = B^+ + B^-$ (suma de los dos canales del dataset dual). Coronium V3 PRO opera sobre los 2 canales separados (B+, B−). Comparación justa: mismos datos, diferente representación de entrada.
 
 | Modelo                     | MAE (físico) | RMSE (físico) | $R^2$     | Parámetros    | Infer. (ms) |
 |----------------------------|-------------|--------------|-----------|---------------|-------------|
 | Naive Persistence          | 0.2882      | 0.3273       | −0.0077   | 0             | < 0.001     |
 | ResNet-18 (Baseline)       | 0.0755      | 0.0898       | 0.9276    | 11,170,753    | 6.16        |
 | VGG-11 (Baseline)          | 0.1079      | 0.1239       | 0.8621    | 9,350,913     | 17.23       |
-| **SolarNetV3 PRO**         | **0.3167**  | **0.3596**   | **~0.81** | **~88,313**   | **8.7**     |
+| **Coronium V3 PRO**         | **0.3167**  | **0.3596**   | **~0.81** | **~88,313**   | **8.7**     |
 
-> **Nota metodológica.** Los modelos externos (ResNet-18, VGG-11) fueron reentrenados desde cero sobre el mismo corpus HMI/SDO (1,763 muestras) con cabeza de regresión lineal, entrada 1 canal (|B| colapsado). SolarNetV3 PRO opera sobre 2 canales separados (B+, B−) y aplica normalización Log + Z-Score adicional en el target — técnica ausente en los baselines. Las métricas de todos los modelos están reportadas en escala física real (% píxeles con |B| > 200 G). Los tiempos de inferencia corresponden a MPS (Apple Silicon), imagen 512×512 por pasada.
+> **Nota metodológica.** Los modelos externos (ResNet-18, VGG-11) fueron reentrenados desde cero sobre el mismo corpus HMI/SDO (1,763 muestras) con cabeza de regresión lineal, entrada 1 canal (|B| colapsado). Coronium V3 PRO opera sobre 2 canales separados (B+, B−) y aplica normalización Log + Z-Score adicional en el target — técnica ausente en los baselines. Las métricas de todos los modelos están reportadas en escala física real (% píxeles con |B| > 200 G). Los tiempos de inferencia corresponden a MPS (Apple Silicon), imagen 512×512 por pasada.
 
-**Posición relativa de SolarNetV3 PRO frente a cada baseline:**
+**Posición relativa de Coronium V3 PRO frente a cada baseline:**
 
 | Comparación                        | Delta MAE     | Precisión MAPE | Delta $R^2$  |
 |------------------------------------|--------------|----------------|--------------|
@@ -512,7 +512,7 @@ $$
 | vs. ResNet-18                      | +319.9%†     | —              | −0.118       |
 | vs. VGG-11                         | +193.5%†     | —              | −0.052       |
 
-> †SolarNetV3 PRO no supera a ResNet-18 ni VGG-11 en MAE absoluto en escala física — ambos baselines se benefician de 11M+ parámetros. Sin embargo, SolarNetV3 PRO logra **MAPE 5.52% (precisión > 94%)** con solo **~88K parámetros** (~0.8% de ResNet-18) y **latencia 8.7 ms** competitiva. La comparación directa de MAE físico es asimétrica: baselines operan sobre |B| (1 canal, escala cruda); SolarNetV3 PRO sobre B+/B− (2 canales, normalización Log+Z-Score). Véase Sección 7 para el análisis de eficiencia paramétrica.
+> †Coronium V3 PRO no supera a ResNet-18 ni VGG-11 en MAE absoluto en escala física — ambos baselines se benefician de 11M+ parámetros. Sin embargo, Coronium V3 PRO logra **MAPE 5.52% (precisión > 94%)** con solo **~88K parámetros** (~0.8% de ResNet-18) y **latencia 8.7 ms** competitiva. La comparación directa de MAE físico es asimétrica: baselines operan sobre |B| (1 canal, escala cruda); Coronium V3 PRO sobre B+/B− (2 canales, normalización Log+Z-Score). Véase Sección 7 para el análisis de eficiencia paramétrica.
 
 ### 5.3 Diagrama de Eficiencia: Error vs. Complejidad
 
@@ -528,12 +528,12 @@ quadrantChart
     quadrant-3 "Costoso - Impreciso"
     quadrant-4 "Simple - Impreciso"
     Naive Persistence: [0.02, 0.08]
-    SolarNetV3 PRO: [0.05, 0.55]
+    Coronium V3 PRO: [0.05, 0.55]
     VGG-11: [0.84, 0.82]
     ResNet18: [0.96, 0.94]
 ```
 
-> **Lectura del diagrama.** Eje X lineal normalizado sobre el rango [0, 11.17M] parámetros. Eje Y = $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$, donde $MAE_{max}=0.3167$ (SolarNetV3 PRO, escala física) y $MAE_{min}=0.0755$ (ResNet-18). SolarNetV3 PRO ocupa la Zona Óptima (Q1) por su complejidad mínima (~88K parámetros); ResNet-18 y VGG-11 ofrecen mayor precisión absoluta a costo de 100× más parámetros. El valor diferencial de SolarNetV3 PRO es la relación eficiencia/tamaño: MAPE 5.52% (precisión > 94%) con el menor footprint del benchmark.
+> **Lectura del diagrama.** Eje X lineal normalizado sobre el rango [0, 11.17M] parámetros. Eje Y = $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$, donde $MAE_{max}=0.3167$ (Coronium V3 PRO, escala física) y $MAE_{min}=0.0755$ (ResNet-18). Coronium V3 PRO ocupa la Zona Óptima (Q1) por su complejidad mínima (~88K parámetros); ResNet-18 y VGG-11 ofrecen mayor precisión absoluta a costo de 100× más parámetros. El valor diferencial de Coronium V3 PRO es la relación eficiencia/tamaño: MAPE 5.52% (precisión > 94%) con el menor footprint del benchmark.
 
 ### 5.4 Incremental Experiment Analysis — Ablation Study
 
@@ -547,14 +547,14 @@ V1 Baseline (LR=0.01, sin scheduler)            0.2847      0.7213     exp_001
 + Data augmentation + expansión dataset (1158)  (incluido)  (incluido)
 + Dropout increase (0.20→0.25→0.30)             -0.0418     +0.0464    exp_003
 ─────────────────────────────────────────────────────────────────────────────────
-= SolarNet V2 PRO (MAE: 0.1416)                                         exp_003
+= Coronium V2 PRO (MAE: 0.1416)                                         exp_003
 ─────────────────────────────────────────────────────────────────────────────────
 + Arquitectura residual (skip connections)       ↓           ↑          exp_004
 + Entrada dual canal (B+/B−, 2ch)               ↓           ↑          exp_004
 + Normalización Log + Z-Score del target         ↓↓          ↑↑         exp_004
 + Expansión dataset (1158→1763 muestras)         ↓           ↑          exp_004
 ─────────────────────────────────────────────────────────────────────────────────
-= SolarNetV3 PRO (MAE físico: 0.3167 | MAE Z-Score: 0.1380, MAPE: 5.52%)  exp_004
+= Coronium V3 PRO (MAE físico: 0.3167 | MAE Z-Score: 0.1380, MAPE: 5.52%)  exp_004
 ─────────────────────────────────────────────────────────────────────────────────
 ```
 
@@ -575,15 +575,15 @@ $$
 
 ### 6.1 Grad-CAM Implementation — Validación Empírica XAI
 
-**Source:** `HeliosPipeline/src/models/explain_model.py`  
-**Source:** `HeliosPipeline/src/api/main.py`  
+**Source:** `auralis-back/src/models/explain_model.py`  
+**Source:** `auralis-back/src/api/main.py`  
 **Target Layer:** `model.stage4` (Stage residual 4, última capa convolucional)
 
 Gradient-weighted Class Activation Mapping (Grad-CAM) fue implementado hookeando la capa `stage4` antes del MaxPool final (forma de salida $B \times 96 \times 64 \times 64$). La elección de `stage4` es deliberada: al ser el último stage residual antes del Global Average Pooling, contiene los mapas de activación de mayor nivel semántico — aquellos que codifican las estructuras globales del magnetograma, no meros bordes o texturas locales.
 
-**Validación empírica completada.** Los mapas de calor generados por Grad-CAM sobre el conjunto hold-out demostraron empíricamente que el modelo enfoca su atención de manera **quirúrgica y exclusiva sobre las regiones magnéticas activas** (manchas solares). El fondo espacial, el disco solar en reposo y el ruido instrumental recibieron valores de activación cercanos a cero. Este resultado valida que SolarNetV3 PRO aprendió física solar real — la correlación entre flujo magnético concentrado y actividad — y no patrones espúreos del pipeline de adquisición.
+**Validación empírica completada.** Los mapas de calor generados por Grad-CAM sobre el conjunto hold-out demostraron empíricamente que el modelo enfoca su atención de manera **quirúrgica y exclusiva sobre las regiones magnéticas activas** (manchas solares). El fondo espacial, el disco solar en reposo y el ruido instrumental recibieron valores de activación cercanos a cero. Este resultado valida que Coronium V3 PRO aprendió física solar real — la correlación entre flujo magnético concentrado y actividad — y no patrones espúreos del pipeline de adquisición.
 
-> Los mapas de calor de muestra están disponibles en `HeliosPipeline/reports/figures/gradcam_sample.png` y `HeliosPipeline/reports/figures/gradcam_v3pro_maxactivity_20240810.png` (magnetograma de máxima actividad: 2024-08-10, SI=2.978).
+> Los mapas de calor de muestra están disponibles en `auralis-back/reports/figures/gradcam_sample.png` y `auralis-back/reports/figures/gradcam_v3pro_maxactivity_20240810.png` (magnetograma de máxima actividad: 2024-08-10, SI=2.978).
 
 Gradient-weighted Class Activation Mapping (Grad-CAM) opera sobre la capa `stage4` para producir mapas de saliencia espaciales indicando qué regiones del magnetograma impulsan la predicción del modelo.
 
@@ -629,7 +629,7 @@ heatmap_full = ndimage_zoom(heatmap, zoom_factor, order=1)   # bilinear
 
 ### 6.2 Monte Carlo Dropout — Uncertainty Estimation
 
-**Source:** `HeliosPipeline/src/api/main.py`, Lines 537-552  
+**Source:** `auralis-back/src/api/main.py`, Lines 537-552  
 **MC Passes:** 20 stochastic forward passes  
 
 Monte Carlo (MC) Dropout is used at inference time to produce a distribution of predictions, from which an uncertainty score is derived. This technique exploits the Dropout layers already present in the architecture, which are normally deactivated during evaluation mode.
@@ -691,27 +691,27 @@ This reflects the observation that high sunspot index values are rarer in the tr
 
 ## 7. Engineering Conclusion
 
-SolarNetV3 PRO constituye un resultado de investigación finalizado y validado en producción, que demuestra la viabilidad de arquitecturas residuales ligeras para predicción de actividad solar a partir de magnetogramas HMI/SDO. Con **~88,313 parámetros entrenables**, el modelo alcanza un **MAE físico = 0.3167** (escala real de % píxeles activos), **MAE Z-Score = 0.1380** (espacio de optimización interno), **MAPE = 5.52% (precisión > 94%)** y un **$R^2 \approx 0.81$** sobre 352 muestras hold-out completamente aisladas.
+Coronium V3 PRO constituye un resultado de investigación finalizado y validado en producción, que demuestra la viabilidad de arquitecturas residuales ligeras para predicción de actividad solar a partir de magnetogramas HMI/SDO. Con **~88,313 parámetros entrenables**, el modelo alcanza un **MAE físico = 0.3167** (escala real de % píxeles activos), **MAE Z-Score = 0.1380** (espacio de optimización interno), **MAPE = 5.52% (precisión > 94%)** y un **$R^2 \approx 0.81$** sobre 352 muestras hold-out completamente aisladas.
 
 **El hito técnico central de V3 es la resolución del Mode Collapse** mediante la aplicación de normalización logarítmica más Z-Score Poblacional ($\mu = 1.7658$, $\sigma = 0.3462$, calculados sobre 1,314 tensores reales) al target de entrenamiento. Este refinamiento matemático eliminó el sesgo numérico que llevaba al modelo a predecir la media de la distribución independientemente de la entrada, desbloqueando la capacidad de discriminación real entre niveles de actividad magnética. La convergencia acelerada — Early Stopping en Época 43 frente a las 78 de V2 PRO — corrobora que el modelo aprendió más eficientemente gracias a un gradiente de pérdida bien condicionado.
 
 La innovación arquitectónica de **entrada de doble canal** (B+/B−) sobre el tensor (2, 512, 512) introduce representación física explícita de la polaridad magnética, permitiendo que la red detecte estructuras bipolares — la firma característica de manchas solares maduras — mediante caminos de convolución paralelos en los cuatro stages residuales.
 
-La validación mediante **Grad-CAM sobre `stage4`** aportó evidencia empírica de explicabilidad: los mapas de calor demuestran que el modelo concentra su atención quirúrgicamente sobre las regiones magnéticas activas e ignora por completo el fondo espacial y el ruido instrumental. Este resultado tiene valor científico independiente: confirma que SolarNetV3 PRO no aprendió correlaciones espúreas del pipeline de adquisición, sino física solar real.
+La validación mediante **Grad-CAM sobre `stage4`** aportó evidencia empírica de explicabilidad: los mapas de calor demuestran que el modelo concentra su atención quirúrgicamente sobre las regiones magnéticas activas e ignora por completo el fondo espacial y el ruido instrumental. Este resultado tiene valor científico independiente: confirma que Coronium V3 PRO no aprendió correlaciones espúreas del pipeline de adquisición, sino física solar real.
 
-**Análisis de eficiencia paramétrica.** El benchmarking externo establece que ResNet-18 (MAE = 0.0755, $R^2 = 0.9276$) y VGG-11 (MAE = 0.1079, $R^2 = 0.8621$) ofrecen mayor precisión absoluta en escala física. Sin embargo, lo logran a un coste desproporcionado: sus **11M+ parámetros** representan más de **100× la capacidad** de SolarNetV3 PRO. SolarNetV3 PRO alcanza **MAPE 5.52% (precisión > 94%) utilizando solo ~88K parámetros** — menos del 0.8% de ResNet-18 — con un checkpoint de producción `helios_v3_pro.pth` que ocupa **~367 KB** frente a los decenas de MB de los baselines. Esta ratio de eficiencia es crítica para despliegue en hardware de monitorización espacial con restricciones de almacenamiento, ancho de banda y disipación térmica.
+**Análisis de eficiencia paramétrica.** El benchmarking externo establece que ResNet-18 (MAE = 0.0755, $R^2 = 0.9276$) y VGG-11 (MAE = 0.1079, $R^2 = 0.8621$) ofrecen mayor precisión absoluta en escala física. Sin embargo, lo logran a un coste desproporcionado: sus **11M+ parámetros** representan más de **100× la capacidad** de Coronium V3 PRO. Coronium V3 PRO alcanza **MAPE 5.52% (precisión > 94%) utilizando solo ~88K parámetros** — menos del 0.8% de ResNet-18 — con un checkpoint de producción `coronium_v3_pro.pth` que ocupa **~367 KB** frente a los decenas de MB de los baselines. Esta ratio de eficiencia es crítica para despliegue en hardware de monitorización espacial con restricciones de almacenamiento, ancho de banda y disipación térmica.
 
-El pipeline completo — desde adquisición FITS en NASA JSOC hasta inferencia REST con Grad-CAM y cuantificación de incertidumbre MC Dropout — es completamente automatizado, reproducible, y opera en producción sobre Apple Silicon MPS. SolarNetV3 PRO constituye la implementación de referencia para regresión de datos de magnetogramas HMI/SDO mediante deep learning ligero.
+El pipeline completo — desde adquisición FITS en NASA JSOC hasta inferencia REST con Grad-CAM y cuantificación de incertidumbre MC Dropout — es completamente automatizado, reproducible, y opera en producción sobre Apple Silicon MPS. Coronium V3 PRO constituye la implementación de referencia para regresión de datos de magnetogramas HMI/SDO mediante deep learning ligero.
 
 ---
 
 ## APPENDIX A — Source File Reference Index
 
 ```
-HeliosPipeline/
+auralis-back/
 ├── src/
 │   ├── models/
-│   │   ├── train_model.py              — Arquitectura SolarNetV3 PRO, training loop, hiperparámetros
+│   │   ├── train_model.py              — Arquitectura Coronium V3 PRO, training loop, hiperparámetros
 │   │   ├── evaluate_final.py           — Evaluación final sobre hold-out (352 muestras)
 │   │   ├── evaluate_model.py           — Evaluación general del modelo
 │   │   └── explain_model.py            — Grad-CAM XAI sobre stage4
@@ -726,11 +726,11 @@ HeliosPipeline/
 ├── tools/
 │   └── recalculate_scaler.py           — Cálculo del Z-Score Poblacional (μ=1.7658, σ=0.3462)
 ├── models/
-│   ├── helios_v1.pth                   — SolarNet V1 weights
-│   ├── helios_best.pth                 — SolarNet V1 best epoch
-│   ├── helios_v2_final.pth             — SolarNet V2 final weights
-│   ├── helios_v2_pro.pth               — SolarNet V2 PRO [DEPRECADO]
-│   └── helios_v3_pro.pth               — SolarNetV3 PRO [PRODUCCIÓN ACTIVA]
+│   ├── coronium_v1.pth                   — Coronium V1 weights
+│   ├── coronium_best.pth                 — Coronium V1 best epoch
+│   ├── coronium_v2_final.pth             — Coronium V2 final weights
+│   ├── coronium_v2_pro.pth               — Coronium V2 PRO [DEPRECADO]
+│   └── coronium_v3_pro.pth               — Coronium V3 PRO [PRODUCCIÓN ACTIVA]
 ├── experiments/
 │   ├── exp_001_v1_baseline.json        — Experiment 001 results
 │   ├── exp_002_v2_tuned.json           — Experiment 002 results
