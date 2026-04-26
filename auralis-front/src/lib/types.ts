@@ -81,7 +81,7 @@ export interface SystemStats {
 
 /** Trailing log lines from a single `.log` file in the project root. */
 export interface LogEntry {
-    /** Log filename, e.g. `training_v2_pro.log`. */
+    /** Log filename, e.g. `training_v3_pro.log`. */
     filename: string;
     /** Last 50 lines of the file, stripped of trailing newlines. */
     lines: string[];

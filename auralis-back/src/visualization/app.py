@@ -80,7 +80,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-MODEL_PATH = PROJECT_ROOT / "models" / "coronium_v2_pro.pth"
+MODEL_PATH = PROJECT_ROOT / "models" / "coronium_v3_final.pth"
 DATA_PATH = PROJECT_ROOT / "data" / "processed"
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
@@ -159,7 +159,7 @@ class Coronium(nn.Module):
 
 @st.cache_resource
 def load_model():
-    """Load trained Coronium V2 PRO model."""
+    """Load trained Coronium V3 PRO model."""
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = Coronium(dropout_rate=0.3)
     
@@ -290,7 +290,7 @@ def main():
             AURALIS
         </h1>
         <p style='margin: 0.3rem 0 0 0; font-size: 0.95rem; color: #A0A0A0; font-weight: 400;'>
-            Real-Time Monitoring | Model: <span style='color: #1E88E5;'>Coronium V2 PRO</span> | Val MAE: <span style='color: #2ECC71;'>0.07%</span>
+            Real-Time Monitoring | Model: <span style='color: #1E88E5;'>Coronium V3 PRO</span> | Val MAE: <span style='color: #2ECC71;'>5.52%</span>
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -525,7 +525,7 @@ def main():
             aboard NASA's SDO (Solar Dynamics Observatory) mission.
             
             **Technical Specifications**:
-            - Architecture: Coronium V2 PRO (4 convolutional layers)
+            - Architecture: Coronium V3 PRO (V3ResidualBlock + ECA attention)
             - Performance: 0.07% MAE on validation set
             - Training: 2000+ solar magnetograms
             - Inference: Real-time prediction capability
