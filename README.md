@@ -1,4 +1,4 @@
-# SolarNetV3 PRO — Helios Pipeline
+# Coronium V3 PRO — Auralis
 
 **High-efficiency regression framework for solar activity prediction from HMI/SDO magnetograms.**
 
@@ -20,7 +20,7 @@ Full-stack system validated for near-real-time estimation of the sunspot index: 
 
 ## Architecture
 
-SolarNetV3 PRO is a lightweight residual architecture with under 500K parameters, optimized for Apple Silicon (MPS). It accepts **dual-channel** input (2, 512, 512) that physically separates positive (B+) and negative (B−) magnetic polarity from the magnetogram. Global Average Pooling collapses each activation map to a scalar before the regression head, eliminating the O(H·W·C) cost of a dense layer. The result is a model that achieves over 94% accuracy with under 500K parameters versus 9.35M for VGG-11.
+Coronium V3 PRO is a lightweight residual architecture with under 500K parameters, optimized for Apple Silicon (MPS). It accepts **dual-channel** input (2, 512, 512) that physically separates positive (B+) and negative (B−) magnetic polarity from the magnetogram. Global Average Pooling collapses each activation map to a scalar before the regression head, eliminating the O(H·W·C) cost of a dense layer. The result is a model that achieves over 94% accuracy with under 500K parameters versus 9.35M for VGG-11.
 
 ```
 Input (2, 512, 512)  ← channel 0: B+  |  channel 1: B−
@@ -30,11 +30,11 @@ Input (2, 512, 512)  ← channel 0: B+  |  channel 1: B−
 ```
 
 > Baselines evaluated with |B| = B+ + B− input (1 channel, raw physical scale) — fair 1-channel vs. 2-channel comparison.  
-> SolarNetV3 PRO physical MAE: **0.3167**. Z-Score MAE (training loop): 0.1380.
+> Coronium V3 PRO physical MAE: **0.3167**. Z-Score MAE (training loop): 0.1380.
 
 | Model | Parameters | Physical MAE | R² | Latency |
 |:---|---:|:---:|:---:|:---:|
-| **SolarNetV3 PRO** | **~88 K** | **0.3167** | **~0.81** | **8.7 ms** |
+| **Coronium V3 PRO** | **~88 K** | **0.3167** | **~0.81** | **8.7 ms** |
 | ResNet-18 | 11.2 M | 0.0755 | 0.9276 | 6.16 ms |
 | VGG-11 | 9.35 M | 0.1079 | 0.8621 | 17.23 ms |
 | Naive Persistence | 0 | 0.2882 | −0.008 | < 1 ms |
@@ -92,9 +92,9 @@ At inference time, Dropout2d layers are reactivated and N stochastic forward pas
 NASA JSOC (HMI Level-1.5)
   └─ ingestion/            SunPy/Fido download, exponential-backoff retry
        └─ processing/      FITS → float32 .npy, B+/B− polarity, log + Z-score norm
-            └─ models/     SolarNetV3 PRO — training + inference engine
+            └─ models/     Coronium V3 PRO — training + inference engine
                  └─ api/   FastAPI REST  (predict, gradient-cam, benchmarks)
-                      └─ Helios-front/   React 18 + TypeScript dashboard
+                      └─ auralis-front/   React 18 + TypeScript dashboard
 ```
 
 ---
@@ -129,7 +129,7 @@ NASA JSOC (HMI Level-1.5)
 **Backend**
 
 ```bash
-cd HeliosPipeline
+cd Auralis
 python -m venv venv && source venv/bin/activate
 pip install -r ../requirements.txt
 python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
@@ -138,7 +138,7 @@ python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
 **Frontend**
 
 ```bash
-cd Helios-front
+cd auralis-front
 npm install && npm run dev
 ```
 
@@ -149,16 +149,16 @@ API: `http://localhost:8000` — Dashboard: `http://localhost:5173`
 ## Repository Layout
 
 ```
-Helios-Pipeline/
-├── HeliosPipeline/
+auralis-back/
+├── auralis-back/
 │   ├── src/
 │   │   ├── api/              FastAPI endpoints (inference, Grad-CAM, metrics)
 │   │   ├── ingestion/        JSOC download pipeline
-│   │   ├── models/           SolarNetV3 PRO architecture, training, inference
+│   │   ├── models/           Coronium V3 PRO architecture, training, inference
 │   │   ├── processing/       FITS → normalized tensor (B+/B−, log, Z-score)
 │   │   └── experiments/      External benchmarking (ResNet, VGG)
 │   └── data/                 raw/ (FITS) and processed/ (NPY + metadata CSV)
-├── Helios-front/             React 18 / TypeScript / Vite dashboard
+├── auralis-front/             React 18 / TypeScript / Vite dashboard
 └── requirements.txt
 ```
 
