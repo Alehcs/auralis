@@ -10,7 +10,7 @@ Matemáticas de Grad-CAM para un regresor escalar
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Sea A^k ∈ ℝ^{H×W}  la activación del k-ésimo canal de la última capa
-convolucional (stage4, k=1…96, H=W=64).
+convolucional (stage4, k=1…128, H=W=64).
 
 Sea y ∈ ℝ  la predicción escalar del modelo (índice proxy normalizado).
 
@@ -37,8 +37,8 @@ Sea y ∈ ℝ  la predicción escalar del modelo (índice proxy normalizado).
 Capa objetivo
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    model.stage4  →  V3ResidualBlock(64 → 96)
-    Salida: (N, 96, 64, 64) — máxima riqueza semántica con resolución
+    model.stage4  →  V3ResidualBlock(96 → 128)
+    Salida: (N, 128, 64, 64) — máxima riqueza semántica con resolución
     espacial antes del GlobalAvgPool que colapsa dimensiones espaciales.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -77,7 +77,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Rutas (relativas al directorio de trabajo auralis-back/)
 # ---------------------------------------------------------------------------
-WEIGHTS_PATH  = Path("models/coronium_v3_pro.pth")
+WEIGHTS_PATH  = Path("models/best_coronium_v3_pro.pth")
 DATA_DIR      = Path("data/processed")
 OUTPUT_FIGURE = Path("reports/figures/gradcam_sample.png")
 
@@ -142,7 +142,7 @@ class GradCAMHookManager:
             output: torch.Tensor,
         ) -> None:
             # Detach para no contaminar el grafo computacional con la copia.
-            # Shape: (N, 96, 64, 64) para stage4 con entrada (N, 2, 512, 512)
+            # Shape: (N, 128, 64, 64) para stage4 con entrada (N, 2, 512, 512)
             self.activations = output.detach().cpu()
 
         def _save_gradients(
@@ -151,7 +151,7 @@ class GradCAMHookManager:
             grad_output: Tuple[torch.Tensor, ...],
         ) -> None:
             # grad_output[0]: gradiente respecto a la salida del módulo.
-            # Shape: (N, 96, 64, 64) — idéntica a las activaciones.
+            # Shape: (N, 128, 64, 64) — idéntica a las activaciones.
             self.gradients = grad_output[0].detach().cpu()
 
         self._handles.append(
@@ -242,8 +242,8 @@ def compute_gradcam(
     output.squeeze().backward()   # backward sobre el escalar y
 
     # ── Recuperar datos de los hooks ──────────────────────────────────────────
-    activations: Optional[torch.Tensor] = hook_manager.activations   # (1, 96, 64, 64)
-    gradients:   Optional[torch.Tensor] = hook_manager.gradients     # (1, 96, 64, 64)
+    activations: Optional[torch.Tensor] = hook_manager.activations   # (1, 128, 64, 64)
+    gradients:   Optional[torch.Tensor] = hook_manager.gradients     # (1, 128, 64, 64)
 
     if activations is None or gradients is None:
         raise RuntimeError(
@@ -259,11 +259,11 @@ def compute_gradcam(
     )
 
     # ── Paso 3: Importancia por canal via GAP sobre los gradientes ────────────
-    # α_k = mean_{i,j}(∂y/∂A^k_{ij})   →   shape: (1, 96, 1, 1)
+    # α_k = mean_{i,j}(∂y/∂A^k_{ij})   →   shape: (1, 128, 1, 1)
     alpha_k: torch.Tensor = gradients.mean(dim=(2, 3), keepdim=True)
 
     # ── Paso 4: Combinación lineal ponderada y ReLU ───────────────────────────
-    # Σ_k α_k · A^k → shape: (1, 96, 64, 64)
+    # Σ_k α_k · A^k → shape: (1, 128, 64, 64)
     # .sum(dim=1, keepdim=True) → (1, 1, 64, 64)  [colapsa la dimensión de canales]
     weighted_sum: torch.Tensor = (alpha_k * activations).sum(dim=1, keepdim=True)
     cam: torch.Tensor = F.relu(weighted_sum)   # ReLU: sólo regiones que elevan y
@@ -638,7 +638,7 @@ def main() -> None:
 
     logger.info("=" * 62)
     logger.info("Pipeline Grad-CAM completado exitosamente.")
-    logger.info("Capa objetivo     : model.%s (V3ResidualBlock 64→96)", TARGET_LAYER_NAME)
+    logger.info("Capa objetivo     : model.%s (V3ResidualBlock 96→128)", TARGET_LAYER_NAME)
     logger.info("Resolución CAM    : (64, 64) → redimensionado a (512, 512)")
     logger.info("Figura guardada   : %s", OUTPUT_FIGURE)
     logger.info("=" * 62)

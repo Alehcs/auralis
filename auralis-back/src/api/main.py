@@ -313,11 +313,19 @@ class ImageListResponse(BaseModel):
     total: int
 
 
+class ClassificationInfo(BaseModel):
+    level: str        # "Low" | "Medium" | "High"
+    label: str        # human-readable label in Spanish
+    flare_class: str  # "C" | "M" | "X"
+    hex_color: str    # "#22c55e" | "#f97316" | "#ef4444"
+
+
 class PredictionResult(BaseModel):
     sunspot_index: float
     risk_level: str
     confidence: float
     uncertainty: float
+    classification: ClassificationInfo
 
 
 class SystemStats(BaseModel):
@@ -451,27 +459,42 @@ def _extract_date(filename: str) -> Optional[str]:
     return f"{y}-{mo}-{d}T{h}:{mi}:{s}Z"
 
 
-def _classify_risk(sunspot_index: float) -> str:
-    """Map a predicted sunspot index to a three-tier risk category.
+def _classify(sunspot_index: float) -> ClassificationInfo:
+    """Map a predicted sunspot index to a three-tier solar activity classification.
 
-    Thresholds are derived from the NOAA Solar Activity Scale, linearly
-    rescaled to the normalised output range of Coronium V3 PRO:
+    Thresholds mirror the GOES X-ray flare scale adapted to the normalised
+    output range of Coronium V3 PRO:
 
-    - ``< 30.0``   → ``"Low"``
-    - ``30–69.9``  → ``"Medium"``
-    - ``≥ 70.0``   → ``"High"``
+    - ``< 1.6``         → Low  / C-class / Verde  (#22c55e)
+    - ``1.6 – < 2.0``  → Medium / M-class / Naranja (#f97316)
+    - ``≥ 2.0``         → High / X-class / Rojo   (#ef4444)
 
     Args:
         sunspot_index: Scalar regression output from Coronium inference.
 
     Returns:
-        One of ``"Low"``, ``"Medium"``, or ``"High"``.
+        ``ClassificationInfo`` with level, label, flare_class, and hex_color.
     """
-    if sunspot_index < 30.0:
-        return "Low"
-    if sunspot_index < 70.0:
-        return "Medium"
-    return "High"
+    if sunspot_index < 1.6:
+        return ClassificationInfo(
+            level="Low",
+            label="Bajo / Actividad Normal",
+            flare_class="C",
+            hex_color="#22c55e",
+        )
+    if sunspot_index < 2.0:
+        return ClassificationInfo(
+            level="Medium",
+            label="Medio / Tormenta Moderada",
+            flare_class="M",
+            hex_color="#f97316",
+        )
+    return ClassificationInfo(
+        level="High",
+        label="Alto / Riesgo Extremo",
+        flare_class="X",
+        hex_color="#ef4444",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -645,7 +668,7 @@ async def predict(filename: str):
               B+ = ReLU(x'),  B- = ReLU(-x')     (dual-channel polarity split)
               Final shape: (1, 2, H, W) contiguous on target device.
 
-    Monte Carlo Dropout (10 stochastic forward passes) produces a mean sunspot
+    Monte Carlo Dropout (20 stochastic forward passes) produces a mean sunspot
     index and an empirical uncertainty (std across passes).
 
     Results are cached in-memory by filename to avoid redundant MC passes on
@@ -677,13 +700,13 @@ async def predict(filename: str):
     tensor = _prepare_tensor(data, _device)
 
     # MC Dropout: activate Dropout2d layers while freezing BatchNorm statistics.
-    MC_PASSES = 10
+    MC_PASSES = 20
     _model.train()
     for module in _model.modules():
         if isinstance(module, nn.BatchNorm2d):
             module.eval()
 
-    mc_predictions: list[float] = []
+    mc_predictions: List[float] = []
     with torch.inference_mode():
         for _ in range(MC_PASSES):
             mc_predictions.append(float(_model(tensor).item()))
@@ -692,7 +715,7 @@ async def predict(filename: str):
 
     sunspot_index = round(float(np.mean(mc_predictions)), 4)
     uncertainty = round(float(np.std(mc_predictions)), 4)
-    risk_level = _classify_risk(sunspot_index)
+    classification = _classify(sunspot_index)
 
     # Confidence heuristic: inversely proportional to absolute index magnitude.
     # High-activity events are underrepresented in the training corpus, so
@@ -700,15 +723,16 @@ async def predict(filename: str):
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
 
     logger.info(
-        "Prediction for %s: sunspot_index=%.4f, uncertainty=%.4f, risk=%s, confidence=%.2f",
-        filename, sunspot_index, uncertainty, risk_level, confidence,
+        "Prediction for %s: sunspot_index=%.4f, uncertainty=%.4f, class=%s, confidence=%.2f",
+        filename, sunspot_index, uncertainty, classification.flare_class, confidence,
     )
 
     result = PredictionResult(
         sunspot_index=sunspot_index,
-        risk_level=risk_level,
+        risk_level=classification.level,
         confidence=confidence,
         uncertainty=uncertainty,
+        classification=classification,
     )
     _predict_cache[filename] = result
     return result
@@ -789,7 +813,7 @@ async def predict_dual(filename: str):
     preprocessing and the same model as ``/api/predict``; it is retained
     for API backwards compatibility.
 
-    Monte Carlo Dropout (10 stochastic forward passes) is applied for
+    Monte Carlo Dropout (20 stochastic forward passes) is applied for
     uncertainty estimation.
 
     Args:
@@ -817,13 +841,13 @@ async def predict_dual(filename: str):
     data: np.ndarray = np.load(str(filepath))
     tensor = _prepare_tensor(data, _device)
 
-    MC_PASSES = 10
+    MC_PASSES = 20
     _model.train()
     for module in _model.modules():
         if isinstance(module, nn.BatchNorm2d):
             module.eval()
 
-    mc_predictions: list[float] = []
+    mc_predictions: List[float] = []
     with torch.inference_mode():
         for _ in range(MC_PASSES):
             mc_predictions.append(float(_model(tensor).item()))
@@ -832,19 +856,20 @@ async def predict_dual(filename: str):
 
     sunspot_index = round(float(np.mean(mc_predictions)), 4)
     uncertainty = round(float(np.std(mc_predictions)), 4)
-    risk_level = _classify_risk(sunspot_index)
+    classification = _classify(sunspot_index)
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
 
     logger.info(
-        "Predict-dual (V3 PRO B+/B-) for %s: sunspot_index=%.4f, uncertainty=%.4f, risk=%s",
-        filename, sunspot_index, uncertainty, risk_level,
+        "Predict-dual (V3 PRO B+/B-) for %s: sunspot_index=%.4f, uncertainty=%.4f, class=%s",
+        filename, sunspot_index, uncertainty, classification.flare_class,
     )
 
     result = PredictionResult(
         sunspot_index=sunspot_index,
-        risk_level=risk_level,
+        risk_level=classification.level,
         confidence=confidence,
         uncertainty=uncertainty,
+        classification=classification,
     )
     _predict_cache[filename] = result
     return result
@@ -1356,7 +1381,8 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
     gradcam_norms = [p.normalized for p in curve]
     random_norms = [p.random_normalized for p in curve]
     auc = float(
-        np.trapezoid(random_norms, thresholds) - np.trapezoid(gradcam_norms, thresholds)
+        (np.trapezoid if hasattr(np, "trapezoid") else np.trapz)(random_norms, thresholds)
+        - (np.trapezoid if hasattr(np, "trapezoid") else np.trapz)(gradcam_norms, thresholds)
     ) / 100.0
 
     result = XAIFaithfulnessResult(
@@ -1388,7 +1414,7 @@ async def get_benchmark():
     proposed_mae = 0.3167          # MAE físico (métrica oficial)
     proposed_rmse = 0.3596         # RMSE físico
     proposed_r2 = 0.81             # R² (espacio normalizado)
-    proposed_params = 88_313       # verificado: sum(p.numel() for p in model.parameters())
+    proposed_params = 206_875      # verificado: sum(p.numel() for p in model.parameters())
     proposed_inference_ms = 8.7
 
     # Fallback values used when results_benchmarking.json is absent.

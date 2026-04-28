@@ -13,24 +13,6 @@ import type { PolarityPoint } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n/language-context';
 
 // ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function flareClass(risk: string) {
-  if (risk === 'High') return 'X-class';
-  if (risk === 'Medium') return 'M-class';
-  return 'B-class';
-}
-
-function riskColors(risk: string) {
-  if (risk === 'High')
-    return { bg: 'bg-red-900/40 border-red-700/50', text: 'text-red-400' };
-  if (risk === 'Medium')
-    return { bg: 'bg-amber-900/40 border-amber-700/50', text: 'text-amber-400' };
-  return { bg: 'bg-green-900/30 border-green-700/40', text: 'text-green-400' };
-}
-
-// ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
 
@@ -95,8 +77,8 @@ export function MagnetogramPanel() {
   const aiaUrl = getAiaUrl(selected);
   const selectedImg = images.find((i) => i.filename === selected);
   const dateLabel = selectedImg?.date ?? '—';
-  const risk = prediction?.risk_level ?? 'Low';
-  const { bg, text } = riskColors(risk);
+  const classification = prediction?.classification;
+  const hexColor = classification?.hex_color ?? '#6b7280';
   const confPct = prediction ? prediction.confidence * 100 : 0;
 
   return (
@@ -204,24 +186,44 @@ export function MagnetogramPanel() {
             {predLoading ? (
               <div className="text-[38px] font-mono font-bold text-neutral-600">…</div>
             ) : (
-              <div className="text-[38px] font-mono font-bold text-orange-400 leading-none">
-                {prediction?.sunspot_index?.toFixed(4) ?? '—'}
+              <div
+                className="text-[38px] font-mono font-bold leading-none"
+                style={{ color: hexColor }}
+              >
+                {prediction?.sunspot_index?.toFixed(2) ?? '—'}
               </div>
             )}
             <div className="text-[11px] text-neutral-500 mt-1">
               {m.predictedFlare}{' '}
-              <span className="text-cyan-400 font-medium">{flareClass(risk)}</span>
+              <span className="font-medium" style={{ color: hexColor }}>
+                {classification ? `${classification.flare_class}-class` : '—'}
+              </span>
             </div>
           </div>
 
           {/* Risk + Confidence */}
           <div className="grid grid-cols-2 gap-3">
-            <div className={`rounded-lg border p-3 ${bg}`}>
+            <div
+              className="rounded-lg border p-3"
+              style={{
+                borderColor: `${hexColor}50`,
+                backgroundColor: `${hexColor}18`,
+              }}
+            >
               <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">
                 {m.riskLevel}
               </div>
-              <div className={`text-[20px] font-bold font-mono ${text}`}>
-                {risk.toUpperCase()}
+              <div
+                className="text-[18px] font-bold font-mono leading-tight"
+                style={{ color: hexColor }}
+              >
+                {classification?.flare_class ?? '—'}
+              </div>
+              <div
+                className="text-[9px] mt-0.5 font-medium truncate"
+                style={{ color: hexColor }}
+              >
+                {classification?.label ?? '—'}
               </div>
             </div>
             <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-3">

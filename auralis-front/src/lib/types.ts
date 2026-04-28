@@ -33,21 +33,42 @@ export interface ImageListResponse {
 // ---------------------------------------------------------------------------
 
 /**
+ * Solar activity classification derived from the predicted sunspot index.
+ *
+ * Thresholds follow the GOES X-ray scale adapted to the V3 PRO normalised range:
+ * - `< 1.6`      → Low  / C-class / #22c55e
+ * - `1.6 – <2.0` → Medium / M-class / #f97316
+ * - `≥ 2.0`      → High / X-class / #ef4444
+ */
+export interface ClassificationInfo {
+    /** "Low" | "Medium" | "High" */
+    level: 'Low' | 'Medium' | 'High';
+    /** Human-readable label, e.g. "Bajo / Actividad Normal" */
+    label: string;
+    /** GOES flare class letter: "C" | "M" | "X" */
+    flare_class: string;
+    /** Hex colour for UI rendering, e.g. "#22c55e" */
+    hex_color: string;
+}
+
+/**
  * Solar activity regression result from a single Coronium inference call.
  *
- * `uncertainty` is the standard deviation across 10 Monte Carlo Dropout
+ * `uncertainty` is the standard deviation across 20 Monte Carlo Dropout
  * stochastic forward passes. `confidence` is a heuristic inversely
  * proportional to the absolute magnitude of `sunspot_index`.
  */
 export interface PredictionResult {
     /** Predicted sunspot index (continuous, normalised to the training distribution). */
     sunspot_index: number;
-    /** Three-tier NOAA-derived activity classification. */
+    /** Three-tier activity level derived from `classification.level`. */
     risk_level: 'Low' | 'Medium' | 'High';
     /** Prediction confidence in `[0.75, 0.99]`; conservative for high-activity events. */
     confidence: number;
-    /** Empirical uncertainty: std-dev of 10 MC Dropout passes. */
+    /** Empirical uncertainty: std-dev of 20 MC Dropout passes. */
     uncertainty: number;
+    /** Full classification object with label, flare class, and hex colour. */
+    classification: ClassificationInfo;
 }
 
 // ---------------------------------------------------------------------------
