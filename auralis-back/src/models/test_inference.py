@@ -18,6 +18,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
+from typing import List
 
 # ---------------------------------------------------------------------------
 # Make src/ importable so train_model resolves without package install
@@ -63,7 +64,7 @@ def load_model(path: Path) -> CoroniumV3:
     return model
 
 
-def run_inference(model: CoroniumV3, rows: pd.DataFrame) -> list:
+def run_inference(model: CoroniumV3, rows: pd.DataFrame) -> List[dict]:
     results = []
     with torch.no_grad():
         for _, row in rows.iterrows():
@@ -83,7 +84,7 @@ def run_inference(model: CoroniumV3, rows: pd.DataFrame) -> list:
     return results
 
 
-def print_table(title: str, checkpoint: str, results: list) -> float:
+def print_table(title: str, checkpoint: str, results: List[dict]) -> float:
     col_w   = 52
     header  = f"{'Image ID':<{col_w}}  {'Real':>8}  {'Predicted':>10}  {'Abs Error':>10}"
     divider = "-" * len(header)
