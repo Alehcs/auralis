@@ -78,6 +78,52 @@ class SolarAugmentation:
         return self.transforms(img)
 
 
+class ExtremeAugmentation:
+    """Interpolation-free augmentation for high-activity solar magnetogram samples.
+
+    Applied exclusively to samples whose sunspot_index exceeds ``extreme_threshold``
+    (default 2.0). Uses only isometric transforms that preserve the log-scaled
+    polarity signal exactly:
+
+    - ``torch.flip``   — bitwise pixel reversal along H or W; zero information loss.
+    - ``torch.rot90``  — exact 90°-multiple rotation; no interpolation kernel applied.
+
+    ``torchvision.RandomRotation(degrees=arbitrary)`` is intentionally avoided:
+    bilinear interpolation creates edge artefacts on active-region boundaries and
+    introduces sub-pixel signal mixing in the log-scaled B+/B- channels, which
+    corrupts the polarity gradient information the model relies on for high-index
+    predictions.
+
+    Physical validity (Hale's law): solar bipolar active regions are statistically
+    symmetric under hemisphere reflection and 90°-multiple rotation, so these
+    transforms do not introduce polarity bias into the training distribution.
+    """
+
+    def __call__(self, img: torch.Tensor) -> torch.Tensor:
+        """Apply stochastic isometric transforms to a dual-channel magnetogram tensor.
+
+        Args:
+            img: Float tensor of shape (2, H, W) — channels B+ and B-.
+
+        Returns:
+            Augmented tensor with identical shape (no spatial resampling).
+        """
+        # Horizontal flip along the W axis (p=0.5)
+        if torch.rand(1).item() > 0.5:
+            img = torch.flip(img, dims=[2])
+
+        # Vertical flip along the H axis (p=0.5)
+        if torch.rand(1).item() > 0.5:
+            img = torch.flip(img, dims=[1])
+
+        # Rotation in {0°, 90°, 180°, 270°} — pixel-perfect, no interpolation
+        k = int(torch.randint(0, 4, (1,)).item())
+        if k > 0:
+            img = torch.rot90(img, k=k, dims=[1, 2])
+
+        return img
+
+
 class SolarDataset(Dataset):
     """PyTorch Dataset wrapper for preprocessed dual-channel HMI magnetogram tensors.
 
@@ -98,8 +144,12 @@ class SolarDataset(Dataset):
         metadata_csv: Path to the CSV produced by ``prepare_dataset``,
             containing at minimum the columns ``processed_file`` and
             ``sunspot_index``.
-        transform: Optional callable applied to the image tensor after loading.
+        transform: Optional callable applied to normal samples (target ≤ threshold).
             Expected interface: ``Tensor -> Tensor``.
+        extreme_threshold: When set, samples whose ``sunspot_index`` exceeds this
+            value receive ``ExtremeAugmentation`` (interpolation-free isometric
+            transforms) instead of ``transform``. Set to ``None`` for the
+            validation dataset to guarantee immutable validation data.
     """
 
     def __init__(
@@ -107,9 +157,13 @@ class SolarDataset(Dataset):
         data_dir: str = "data/processed",
         metadata_csv: str = "data/processed/metadata_processed.csv",
         transform: Optional[SolarAugmentation] = None,
+        extreme_threshold: Optional[float] = None,
     ) -> None:
         self.data_dir = Path(data_dir)
         self.transform = transform
+        self.extreme_threshold = extreme_threshold
+        # Pre-instantiate only when threshold is active (never for val datasets).
+        self._extreme_aug = ExtremeAugmentation() if extreme_threshold is not None else None
         self.metadata = pd.read_csv(metadata_csv)
         logger.info("Dataset loaded: %d samples", len(self.metadata))
         logger.info(
@@ -117,6 +171,14 @@ class SolarDataset(Dataset):
             self.metadata["sunspot_index"].min(),
             self.metadata["sunspot_index"].max(),
         )
+        if self.extreme_threshold is not None:
+            n_extreme = int((self.metadata["sunspot_index"] > self.extreme_threshold).sum())
+            logger.info(
+                "ExtremeAugmentation active — threshold: %.1f  |  "
+                "extreme samples: %d / %d (%.1f%%)",
+                self.extreme_threshold, n_extreme, len(self.metadata),
+                100.0 * n_extreme / len(self.metadata),
+            )
 
     def __len__(self) -> int:
         return len(self.metadata)
@@ -156,7 +218,16 @@ class SolarDataset(Dataset):
         image_tensor: torch.Tensor = torch.from_numpy(image).float()
         target_tensor: torch.Tensor = torch.tensor([target], dtype=torch.float32)
 
-        if self.transform:
+        if (
+            self._extreme_aug is not None          # threshold active (train only)
+            and target > self.extreme_threshold    # sample is high-activity
+        ):
+            # Targeted augmentation: interpolation-free isometric transforms.
+            # Replaces base SolarAugmentation to avoid bilinear artefacts on
+            # the most informative (and rarest) high-index samples.
+            image_tensor = self._extreme_aug(image_tensor)
+        elif self.transform:
+            # Standard augmentation for normal samples (existing behaviour).
             image_tensor = self.transform(image_tensor)
 
         return image_tensor, target_tensor
@@ -402,22 +473,26 @@ class V3ResidualBlock(nn.Module):
 class CoroniumV3(nn.Module):
     """Four-stage residual CNN with ECA attention for solar magnetogram regression.
 
-    Architecture (V3 PRO — dual-channel):
-        Stage 1 : V3ResidualBlock(2  →  16) → MaxPool2d(2)   512→256
-        Stage 2 : V3ResidualBlock(16 →  32) → MaxPool2d(2)   256→128
-        Stage 3 : V3ResidualBlock(32 →  64) → MaxPool2d(2)   128→ 64
-        Stage 4 : V3ResidualBlock(64 →  96) → MaxPool2d(2)    64→ 32
-        Head    : GlobalAvgPool → Linear(96, 1)
+    Architecture (V3 PRO — dual-channel, widened schedule):
+        Stage 1 : V3ResidualBlock(2  →  32) → MaxPool2d(2)   512→256
+        Stage 2 : V3ResidualBlock(32 →  64) → MaxPool2d(2)   256→128
+        Stage 3 : V3ResidualBlock(64 →  96) → MaxPool2d(2)   128→ 64
+        Stage 4 : V3ResidualBlock(96 → 128) → MaxPool2d(2)    64→ 32
+        Head    : GlobalAvgPool → Dropout(0.3) → Linear(128, 1)
 
-    Total parameters: ~88,313 (verified at instantiation via count_parameters).
+    Total parameters: ~206,875 (resource budget: 150 K–250 K for ONNX/C++ edge deployment).
 
-    The two-channel input (B+, B-) separates positive and negative polarity
-    lobes of bipolar active regions so that convolutional kernels can specialise
-    by polarity sign without relying on negative activation values. The narrower
-    filter schedule (16→32→64→96) combined with k-parameter ECA attention keeps
-    the total count well below 500 K — preserving Coronium's competitive
-    efficiency advantage over VGG-style baselines while adding channel
-    self-calibration at every stage.
+    Channel schedule widened from (16→32→64→96) to (32→64→96→128) for
+    increased representational capacity while remaining within the TinyML
+    parameter budget. The wider filters improve discrimination of subtle
+    polarity gradients in active-region magnetograms without requiring a
+    deeper network (which would increase latency on edge hardware).
+
+    A scalar Dropout(p=0.3) is applied after GlobalAvgPool and before the
+    final Linear layer to regularise the 128-dimensional feature vector,
+    complementing the spatial Dropout2d already present in each residual
+    block. This two-level dropout strategy reduces co-adaptation of both
+    spatial feature maps and the aggregated channel descriptor.
 
     MC Dropout is supported natively: calling ``enable_mc_dropout`` keeps
     Dropout2d active during inference, enabling T stochastic forward passes
@@ -436,20 +511,31 @@ class CoroniumV3(nn.Module):
     def __init__(self, in_channels: int = 2, dropout_rate: float = 0.2) -> None:
         super().__init__()
 
-        self.stage1 = V3ResidualBlock(in_channels, 16, dropout_rate)
+        # --- Backbone: four widened residual stages ----------------------------
+        # Schedule: 32 → 64 → 96 → 128 (up from 16 → 32 → 64 → 96)
+        self.stage1 = V3ResidualBlock(in_channels, 32, dropout_rate)   # 512→256
         self.pool1  = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.stage2 = V3ResidualBlock(16, 32, dropout_rate)
+        self.stage2 = V3ResidualBlock(32, 64, dropout_rate)            # 256→128
         self.pool2  = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.stage3 = V3ResidualBlock(32, 64, dropout_rate)
+        self.stage3 = V3ResidualBlock(64, 96, dropout_rate)            # 128→ 64
         self.pool3  = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.stage4 = V3ResidualBlock(64, 96, dropout_rate)
+        self.stage4 = V3ResidualBlock(96, 128, dropout_rate)           #  64→ 32
         self.pool4  = nn.MaxPool2d(kernel_size=2, stride=2)
 
+        # --- Head: global pooling → dropout → regression ----------------------
+        # AdaptiveAvgPool collapses (N, 128, 32, 32) → (N, 128, 1, 1),
+        # avoiding parameter explosion from a raw Flatten.
         self.global_avg_pool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(96, 1)
+
+        # Scalar dropout regularises the 128-d descriptor before the linear
+        # projection, complementing Dropout2d inside each residual block.
+        self.head_dropout = nn.Dropout(p=0.3)
+
+        # Final regression layer: 128 channels → 1 predicted sunspot index.
+        self.fc = nn.Linear(128, 1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Compute the regression output for a batch of magnetograms.
@@ -461,13 +547,17 @@ class CoroniumV3(nn.Module):
         Returns:
             Output tensor of shape (N, 1) containing predicted sunspot indices.
         """
-        x = self.pool1(self.stage1(x))
-        x = self.pool2(self.stage2(x))
-        x = self.pool3(self.stage3(x))
-        x = self.pool4(self.stage4(x))
-        x = self.global_avg_pool(x)
-        x = x.view(x.size(0), -1)
-        return self.fc(x)
+        # Backbone — four residual stages with spatial downsampling
+        x = self.pool1(self.stage1(x))   # (N,  32, 256, 256)
+        x = self.pool2(self.stage2(x))   # (N,  64, 128, 128)
+        x = self.pool3(self.stage3(x))   # (N,  96,  64,  64)
+        x = self.pool4(self.stage4(x))   # (N, 128,  32,  32)
+
+        # Head — collapse spatial dims, regularise, regress
+        x = self.global_avg_pool(x)      # (N, 128,   1,   1)
+        x = x.view(x.size(0), -1)        # (N, 128)
+        x = self.head_dropout(x)         # (N, 128) — scalar dropout
+        return self.fc(x)                # (N,   1)
 
 
 class EarlyStopping:
@@ -755,7 +845,7 @@ def train_model(
         if val_whl < best_val_whl:
             best_val_whl = val_whl
             Path("models").mkdir(parents=True, exist_ok=True)
-            torch.save(model.state_dict(), "models/coronium_v3_pro.pth")
+            torch.save(model.state_dict(), "models/best_coronium_v3_pro_augmented.pth")
             logger.info(
                 "Checkpoint saved  |  val_whl: %.6f  val_mae: %.4f", val_whl, val_mae
             )
@@ -842,11 +932,14 @@ def main() -> None:
         data_dir="data/processed",
         metadata_csv="data/processed/metadata_processed.csv",
         transform=SolarAugmentation(),
+        extreme_threshold=2.0,    # targeted augmentation for high-activity samples
     )
     val_dataset_full = SolarDataset(
         data_dir="data/processed",
         metadata_csv="data/processed/metadata_processed.csv",
         transform=None,
+        # extreme_threshold intentionally omitted (defaults to None):
+        # double lock — both transform and _extreme_aug are disabled for val.
     )
 
     total_size = len(train_dataset_full)
@@ -870,7 +963,7 @@ def main() -> None:
         "Reduce filter counts or remove blocks."
     )
     logger.info(
-        "CoroniumV3 PRO — %d parameters (~88,313 expected) ✓  |  input: (2, 512, 512) [B+, B-]",
+        "CoroniumV3 PRO — %d parameters (~206,875 expected) ✓  |  input: (2, 512, 512) [B+, B-]",
         total_params,
     )
 
