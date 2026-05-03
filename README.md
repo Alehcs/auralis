@@ -29,7 +29,7 @@ Input (2, 512, 512)  ← channel 0: B+  |  channel 1: B−
             └─ Linear(96, 1)  →  sunspot index
 ```
 
-> Baselines evaluated with |B| = B+ + B− input (1 channel, raw physical scale) — fair 1-channel vs. 2-channel comparison.  
+> Baselines evaluated with |B| = B+ + B− input (1 channel, raw physical scale). Fair 1-channel vs. 2-channel comparison.  
 > Coronium V3 PRO physical MAE: **0.3167**. Z-Score MAE (training loop): 0.1380.
 
 | Model | Parameters | Physical MAE | R² | Latency |
@@ -41,12 +41,12 @@ Input (2, 512, 512)  ← channel 0: B+  |  channel 1: B−
 
 ---
 
-## Mode Collapse Fix — The Mathematical Solution
+## Mathematical Approach to solve Mode Collapse Fix  
 
 The mode collapse problem (model collapsing toward a constant prediction) was diagnosed and eliminated through a two-phase normalization applied over the real target distribution:
 
-1. **Logarithmic normalization** — compresses the distribution of extreme solar index values.
-2. **Population Z-Score** — standardizes using statistics computed over **1,314 real tensors**:
+1. **Logarithmic normalization**:  compresses the distribution of extreme solar index values.
+2. **Population Z-Score**: standardizes using statistics computed over **1,314 real tensors**:
 
 $$\mu_{pop} = 1.7658 \qquad \sigma_{pop} = 0.3462$$
 
@@ -70,10 +70,10 @@ This transformation guaranteed that the loss gradient never collapsed to zero an
 
 ## Scientific Features
 
-**Explainability — Grad-CAM (XAI)**
-Grad-CAM was implemented by hooking the `stage4` layer. The generated heatmaps empirically demonstrated that the AI focuses its attention surgically **exclusively on active magnetic regions** (sunspots), completely ignoring the space background and instrumental noise. This validates that the model learned real physics, not statistical artifacts.
+### Explainability with Grad-CAM (XAI)
+Grad-CAM was implemented by attaching hooks to the `stage4` layer. The resulting heatmaps empirically demonstrated that the model focuses its attention **primarily on active magnetic regions** (sunspots), while ignoring background space and instrumental noise. This behavior suggests that the model learned physically meaningful patterns associated with solar activity, rather than spurious statistical artifacts.
 
-**Uncertainty Quantification — Monte Carlo Dropout**
+### Uncertainty Quantification through Monte Carlo Dropout
 At inference time, Dropout2d layers are reactivated and N stochastic forward passes are executed to produce a predictive mean and variance. This provides a calibrated uncertainty estimate without retraining.
 
 ---
@@ -92,7 +92,7 @@ At inference time, Dropout2d layers are reactivated and N stochastic forward pas
 NASA JSOC (HMI Level-1.5)
   └─ ingestion/            SunPy/Fido download, exponential-backoff retry
        └─ processing/      FITS → float32 .npy, B+/B− polarity, log + Z-score norm
-            └─ models/     Coronium V3 PRO — training + inference engine
+            └─ models/     Coronium V3 PRO. training + inference engine
                  └─ api/   FastAPI REST  (predict, gradient-cam, benchmarks)
                       └─ auralis-front/   React 18 + TypeScript dashboard
 ```
@@ -142,7 +142,9 @@ cd auralis-front
 npm install && npm run dev
 ```
 
-API: `http://localhost:8000` — Dashboard: `http://localhost:5173`
+API: `http://localhost:8000`
+
+Dashboard: `http://localhost:5173`
 
 ---
 
