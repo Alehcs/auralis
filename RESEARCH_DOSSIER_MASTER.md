@@ -71,7 +71,7 @@ Total model storage: ~7.4 MB
 
 ---
 
-## 2. Data Engineering — Scientific Rigor
+## 2. Data Engineering
 
 ### 2.1 Dataset Volume and Composition
 
@@ -157,21 +157,21 @@ where:
 **Source:** `auralis-back/src/ingestion/massive_ingest_pipeline.py`, Lines 38-87  
 **Source:** `auralis-back/recalculate_scaler.py`
 
-El pipeline de normalización de Coronium V3 PRO aplica tres pasos secuenciales: (1) clipping + reescalado lineal sobre los valores de campo magnético, (2) separación de polaridad en canales independientes, y (3) normalización logarítmica más Z-Score Poblacional sobre el target (Sunspot Index). Esta tercera etapa fue la cura matemática que resolvió el problema de Mode Collapse.
+El pipeline de normalización de Coronium V3 PRO aplica tres pasos secuenciales: (1) clipping + reescalado lineal sobre los valores de campo magnético, (2) separación de polaridad en canales independientes, y (3) normalización logarítmica más Z-Score Poblacional sobre el target (Sunspot Index). Esta tercera etapa permitió manejar matemáticamente el problema de Mode Collapse.
 
-**Paso 1 — Hard Clipping sobre el campo magnético:**
+**Paso 1: Hard Clipping sobre el campo magnético.**
 
 $$
 B_{clipped}(p) = \text{clip}\!\left(B_{raw}(p),\ -B_{clip},\ +B_{clip}\right), \quad B_{clip} = 400.0\ \text{G}
 $$
 
-**Paso 2 — Reescalado lineal:**
+**Paso 2: Reescalado lineal.**
 
 $$
 B_{norm}(p) = \frac{B_{clipped}(p)}{B_{clip}} \in [-1.0,\ +1.0]
 $$
 
-**Paso 3 — Separación de polaridad en doble canal (nuevo en V3):**
+**Paso 3: Separación de polaridad en doble canal (nuevo en V3).**
 
 El tensor de entrada se expande de 1 canal a 2 canales separando la polaridad positiva (B+) y negativa (B−):
 
@@ -182,7 +182,7 @@ $$
 \text{canal}_1 = \max(-B_{norm}(p),\ 0) \quad \text{(campo negativo, invertido)}
 $$
 
-Esto permite al modelo distinguir arquitecturalmente entre flujo magnético entrante y saliente, lo que es físicamente significativo para la predicción de actividad solar.
+Esta separación permite al modelo distinguir entre flujo magnético entrante y saliente, lo que es físicamente significativo para la predicción de actividad solar.
 
 **Normalización de Configuration (campo magnético):**
 
@@ -194,7 +194,7 @@ Esto permite al modelo distinguir arquitecturalmente entre flujo magnético entr
 | Manejo NaN          | Reemplazar con 0.0 | — | `np.nan_to_num(data, nan=0.0)` |
 | Canales de entrada  | **2** (B+, B−) | — | V3 — separación de polaridad |
 
-### 2.4.1 Normalización del Target — Log + Z-Score Poblacional (Cura del Mode Collapse)
+### 2.4.1 Normalización del Target: Log + Z-Score Poblacional.
 
 **Fuente:** `auralis-back/recalculate_scaler.py`  
 **Tensores reales analizados:** 1,314
@@ -203,7 +203,7 @@ El Modo Collapse fue identificado como consecuencia de una distribución del tar
 
 La solución se aplicó en dos fases:
 
-**Fase 1 — Transformación logarítmica:**
+**Fase 1: Transformación logarítmica.**
 
 $$
 SI_{log} = \log(SI + \epsilon), \quad \epsilon = 10^{-6}
@@ -211,7 +211,7 @@ $$
 
 La transformación logarítmica comprime el rango dinámico de la distribución, reduciendo el peso desproporcionado de valores atípicos altos y acercando la distribución a la normalidad.
 
-**Fase 2 — Z-Score Poblacional:**
+**Fase 2: Z-Score Poblacional.**
 
 Los parámetros de estandarización se calcularon sobre **1,314 tensores reales** del conjunto de entrenamiento:
 
@@ -288,13 +288,13 @@ This augmentation strategy is physically motivated: the Sun's magnetic field top
 
 ---
 
-## 3. Architecture Specification — Coronium V3 PRO
+## 3. Architecture Specification: Coronium V3 PRO
 
 ### 3.1 Design Rationale
 
-Coronium V3 PRO es una arquitectura residual ligera diseñada específicamente para regresión sobre magnetogramas HMI/SDO de **doble canal** (B+/B−). La arquitectura incorpora conexiones residuales (skip connections) que permiten un flujo de gradiente estable a través de los bloques convolucionales, elemento crítico para evitar la degradación del gradiente en entrenamiento profundo. Se mantiene bajo el umbral de **500K parámetros totales**, lo que la hace deployable en hardware embebido y en tiempo real sobre Apple Silicon MPS.
+Coronium V3 PRO es una arquitectura residual ligera diseñada específicamente para regresión sobre magnetogramas HMI/SDO de **doble canal** (B+/B−). La arquitectura incorpora conexiones residuales (skip connections) que permiten un flujo de gradiente estable a través de los bloques convolucionales, elemento crítico para evitar la degradación del gradiente en entrenamiento profundo. Se mantiene bajo el umbral de **500K parámetros totales**, lo que la hace desplegable en hardware embebido y en tiempo real sobre Apple Silicon MPS.
 
-La separación de polaridades en canales de entrada independientes (B+, B−) es una innovación física: al permitir que la red procese flujo magnético positivo y negativo por caminos de convolución paralelos, se habilita la detección diferencial de estructuras bipolares (pares de manchas solares) que son la firma más característica de la actividad solar máxima.
+La separación de polaridades en canales de entrada independientes (B+, B−) es una innovación con sustento en la física. Al permitir que la red procese flujo magnético positivo y negativo por caminos de convolución paralelos, se habilita la detección diferencial de estructuras bipolares (pares de manchas solares) que son la firma más característica de la actividad solar máxima.
 
 **Source:** `auralis-back/src/models/train_model.py`
 
@@ -351,9 +351,9 @@ TOTAL PARÁMETROS ENTRENABLES:                                               ~88
 ─────────────────────────────────────────────────────────────────────────────────────
 ```
 
-> **Nota sobre target XAI:** La capa `stage4` es el punto de enganche (hook) para Grad-CAM. El hook se registra sobre el módulo `stage4` antes del MaxPool final, capturando activaciones de forma (B, 96, 64×64) — resolución suficiente para localizar regiones activas individuales en el magnetograma de 512×512.
+> **Nota sobre target XAI:** La capa `stage4` es el punto de enganche (hook) para Grad-CAM. El hook se registra sobre el módulo `stage4` antes del MaxPool final, capturando activaciones de forma: (B, 96, 64×64). Resolución suficiente para localizar regiones activas individuales en el magnetograma de 512×512.
 
-### 3.3 Conexiones Residuales — Rationale
+### 3.3 Conexiones Residuales
 
 Cada uno de los cuatro stages de Coronium V3 PRO incluye una skip connection que proyecta la entrada del bloque directamente a su salida mediante una convolución 1×1 (cuando las dimensiones de canal difieren):
 
@@ -445,7 +445,7 @@ torch.optim.lr_scheduler.ReduceLROnPlateau(
 )
 ```
 
-The scheduler monitors validation loss. After 3 consecutive epochs without improvement, the learning rate is halved:
+The scheduler monitors validation loss. The learning rate is halved after 3 consecutive epochs without improvement:
 
 $$
 \eta_{t+1} = \eta_t \times 0.5
@@ -469,7 +469,7 @@ $$
 
 ## 5. Results and Benchmarking
 
-### 5.1 Final Metrics — Coronium V3 PRO (Production Run — exp_004)
+### 5.1 Final Metrics: Coronium V3 PRO (Production Run — exp_004)
 
 **Source:** `auralis-back/experiments/exp_004_v3pro_final.json`  
 **Evaluación sobre:** 352 muestras hold-out, completamente aisladas del proceso de entrenamiento.
@@ -491,9 +491,9 @@ $$
 
 **Fuente:** `auralis-back/experiments/results_benchmarking.json` + `exp_004`  
 **Run ID:** `benchmarking_baselines` · **Fecha de ejecución:** 2026-04-23  
-**Dataset de referencia:** 1,763 muestras — 1,411 entrenamiento / 352 validación (split 0.20)  
+**Dataset de referencia:** 1,763 muestras. 1,411 entrenamiento / 352 validación (split 0.20)  
 **Protocolo externo:** AdamW, lr=0.001, batch=32, epochs=30, seed=42  
-**Nota de canal:** Baselines operan con entrada de 1 canal — tensor colapsado $|B| = B^+ + B^-$ (suma de los dos canales del dataset dual). Coronium V3 PRO opera sobre los 2 canales separados (B+, B−). Comparación justa: mismos datos, diferente representación de entrada.
+**Nota de canal:** Baselines operan con entrada de 1 canal. Tensor colapsado $|B| = B^+ + B^-$ (suma de los dos canales del dataset dual). Coronium V3 PRO opera sobre los 2 canales separados (B+, B−). Comparación justa: mismos datos, diferente representación de entrada.
 
 | Modelo                     | MAE (físico) | RMSE (físico) | $R^2$     | Parámetros    | Infer. (ms) |
 |----------------------------|-------------|--------------|-----------|---------------|-------------|
@@ -502,7 +502,7 @@ $$
 | VGG-11 (Baseline)          | 0.1079      | 0.1239       | 0.8621    | 9,350,913     | 17.23       |
 | **Coronium V3 PRO**         | **0.3167**  | **0.3596**   | **~0.81** | **~88,313**   | **8.7**     |
 
-> **Nota metodológica.** Los modelos externos (ResNet-18, VGG-11) fueron reentrenados desde cero sobre el mismo corpus HMI/SDO (1,763 muestras) con cabeza de regresión lineal, entrada 1 canal (|B| colapsado). Coronium V3 PRO opera sobre 2 canales separados (B+, B−) y aplica normalización Log + Z-Score adicional en el target — técnica ausente en los baselines. Las métricas de todos los modelos están reportadas en escala física real (% píxeles con |B| > 200 G). Los tiempos de inferencia corresponden a MPS (Apple Silicon), imagen 512×512 por pasada.
+> **Nota metodológica.** Los modelos externos (ResNet-18, VGG-11) fueron reentrenados desde cero sobre el mismo corpus HMI/SDO (1,763 muestras) con cabeza de regresión lineal, entrada 1 canal (|B| colapsado). Coronium V3 PRO opera sobre 2 canales separados (B+, B−) y aplica normalización Log + Z-Score adicional en el target (técnica ausente en los baselines). Las métricas de todos los modelos están reportadas en escala física real (% píxeles con |B| > 200 G). Los tiempos de inferencia corresponden a MPS (Apple Silicon), imagen 512×512 por pasada.
 
 **Posición relativa de Coronium V3 PRO frente a cada baseline:**
 
@@ -512,7 +512,7 @@ $$
 | vs. ResNet-18                      | +319.9%†     | —              | −0.118       |
 | vs. VGG-11                         | +193.5%†     | —              | −0.052       |
 
-> †Coronium V3 PRO no supera a ResNet-18 ni VGG-11 en MAE absoluto en escala física — ambos baselines se benefician de 11M+ parámetros. Sin embargo, Coronium V3 PRO logra **MAPE 5.52% (precisión > 94%)** con solo **~88K parámetros** (~0.8% de ResNet-18) y **latencia 8.7 ms** competitiva. La comparación directa de MAE físico es asimétrica: baselines operan sobre |B| (1 canal, escala cruda); Coronium V3 PRO sobre B+/B− (2 canales, normalización Log+Z-Score). Véase Sección 7 para el análisis de eficiencia paramétrica.
+> †Coronium V3 PRO no supera a ResNet-18 ni VGG-11 en MAE absoluto en escala física, ambos baselines se benefician de 11M+ parámetros. Sin embargo, Coronium V3 PRO logra **MAPE 5.52% (precisión > 94%)** con solo **~88K parámetros** (~0.8% de ResNet-18) y **latencia 8.7 ms** competitiva. La comparación directa de MAE físico es asimétrica: baselines operan sobre |B| (1 canal, escala cruda); Coronium V3 PRO sobre B+/B− (2 canales, normalización Log+Z-Score). Véase Sección 7 para el análisis de eficiencia paramétrica.
 
 ### 5.3 Diagrama de Eficiencia: Error vs. Complejidad
 
@@ -535,7 +535,7 @@ quadrantChart
 
 > **Lectura del diagrama.** Eje X lineal normalizado sobre el rango [0, 11.17M] parámetros. Eje Y = $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$, donde $MAE_{max}=0.3167$ (Coronium V3 PRO, escala física) y $MAE_{min}=0.0755$ (ResNet-18). Coronium V3 PRO ocupa la Zona Óptima (Q1) por su complejidad mínima (~88K parámetros); ResNet-18 y VGG-11 ofrecen mayor precisión absoluta a costo de 100× más parámetros. El valor diferencial de Coronium V3 PRO es la relación eficiencia/tamaño: MAPE 5.52% (precisión > 94%) con el menor footprint del benchmark.
 
-### 5.4 Incremental Experiment Analysis — Ablation Study
+### 5.4 Ablation Study: Incremental Experiment Analysis.
 
 ```
 Ablation Study: Contribution of Each Improvement (V1 → V3 PRO)
@@ -573,7 +573,7 @@ $$
 
 ## 6. Explainability and Confidence Estimation
 
-### 6.1 Grad-CAM Implementation — Validación Empírica XAI
+### 6.1 Grad-CAM Implementation: Validación Empírica XAI
 
 **Source:** `auralis-back/src/models/explain_model.py`  
 **Source:** `auralis-back/src/api/main.py`  
@@ -589,21 +589,21 @@ Gradient-weighted Class Activation Mapping (Grad-CAM) opera sobre la capa `stage
 
 **Algorithm:**
 
-**Step 1 — Hook registration.** Forward and backward hooks are registered on `model.stage4` prior to inference:
+**Step 1: Hook registration.** Forward and backward hooks are registered on `model.stage4` prior to inference:
 
 ```python
 self.target_layer.register_forward_hook(forward_hook)       # captures A^k
 self.target_layer.register_full_backward_hook(backward_hook) # captures ∂L/∂A^k
 ```
 
-**Step 2 — Forward and backward pass.** A single forward pass computes the prediction; a backward pass on the scalar output propagates gradients to `conv4`:
+**Step 2: Forward and backward pass.** A single forward pass computes the prediction; a backward pass on the scalar output propagates gradients to `conv4`:
 
 ```python
 output = self.model(input_tensor)   # forward
 output.backward()                   # backward (target = output, regression)
 ```
 
-**Step 3 — Gradient-based channel weighting.** For each of the $K = 96$ feature map channels, a scalar importance weight $\alpha_k$ is computed via Global Average Pooling of the gradients:
+**Step 3: Gradient-based channel weighting.** For each of the $K = 96$ feature map channels, a scalar importance weight $\alpha_k$ is computed via Global Average Pooling of the gradients:
 
 $$
 \alpha_k = \frac{1}{Z} \sum_{i} \sum_{j} \frac{\partial \hat{y}}{\partial A^k_{ij}}
@@ -611,13 +611,13 @@ $$
 
 where $Z = 64 \times 64 = 4096$ is the spatial extent of the feature maps (hook registered before MaxPool, capturing 64×64 resolution).
 
-**Step 4 — Weighted activation summation and ReLU.** The heatmap is formed as a weighted combination of activations, followed by ReLU to retain only positive contributions:
+**Step 4: Weighted activation summation and ReLU.** The heatmap is formed as a weighted combination of activations, followed by ReLU to retain only positive contributions:
 
 $$
 L^{Grad\text{-}CAM} = \text{ReLU}\left( \sum_{k} \alpha_k A^k \right)
 $$
 
-**Step 5 — Normalization and upsampling.** The resulting $64 \times 64$ heatmap is normalized to $[0, 1]$ and bilinearly upsampled to the input resolution $512 \times 512$ via `scipy.ndimage.zoom`:
+**Step 5: Normalization and upsampling.** The resulting $64 \times 64$ heatmap is normalized to $[0, 1]$ and bilinearly upsampled to the input resolution $512 \times 512$ via `scipy.ndimage.zoom`:
 
 ```python
 heatmap = heatmap / heatmap.max()          # normalize to [0, 1]
@@ -627,7 +627,7 @@ heatmap_full = ndimage_zoom(heatmap, zoom_factor, order=1)   # bilinear
 
 **Hook cleanup** is performed in a `finally` block to prevent memory leaks after each inference call.
 
-### 6.2 Monte Carlo Dropout — Uncertainty Estimation
+### 6.2 Uncertainty Estimation trough Monte Carlo Dropout
 
 **Source:** `auralis-back/src/api/main.py`, Lines 537-552  
 **MC Passes:** 20 stochastic forward passes  
@@ -693,19 +693,19 @@ This reflects the observation that high sunspot index values are rarer in the tr
 
 Coronium V3 PRO constituye un resultado de investigación finalizado y validado en producción, que demuestra la viabilidad de arquitecturas residuales ligeras para predicción de actividad solar a partir de magnetogramas HMI/SDO. Con **~88,313 parámetros entrenables**, el modelo alcanza un **MAE físico = 0.3167** (escala real de % píxeles activos), **MAE Z-Score = 0.1380** (espacio de optimización interno), **MAPE = 5.52% (precisión > 94%)** y un **$R^2 \approx 0.81$** sobre 352 muestras hold-out completamente aisladas.
 
-**El hito técnico central de V3 es la resolución del Mode Collapse** mediante la aplicación de normalización logarítmica más Z-Score Poblacional ($\mu = 1.7658$, $\sigma = 0.3462$, calculados sobre 1,314 tensores reales) al target de entrenamiento. Este refinamiento matemático eliminó el sesgo numérico que llevaba al modelo a predecir la media de la distribución independientemente de la entrada, desbloqueando la capacidad de discriminación real entre niveles de actividad magnética. La convergencia acelerada — Early Stopping en Época 43 frente a las 78 de V2 PRO — corrobora que el modelo aprendió más eficientemente gracias a un gradiente de pérdida bien condicionado.
+**El hito técnico central de V3 es la resolución del Mode Collapse** mediante la aplicación de normalización logarítmica más Z-Score Poblacional ($\mu = 1.7658$, $\sigma = 0.3462$, calculados sobre 1,314 tensores reales) al target de entrenamiento. Este refinamiento matemático eliminó el sesgo numérico que llevaba al modelo a predecir la media de la distribución independientemente de la entrada, desbloqueando la capacidad de discriminación real entre niveles de actividad magnética. La convergencia acelerada (Early Stopping en Época 43 frente a las 78 de V2 PRO) corrobora que el modelo aprendió más eficientemente gracias a un gradiente de pérdida bien condicionado.
 
-La innovación arquitectónica de **entrada de doble canal** (B+/B−) sobre el tensor (2, 512, 512) introduce representación física explícita de la polaridad magnética, permitiendo que la red detecte estructuras bipolares — la firma característica de manchas solares maduras — mediante caminos de convolución paralelos en los cuatro stages residuales.
+La innovación arquitectónica de **entrada de doble canal** (B+/B−) sobre el tensor (2, 512, 512) introduce representación física explícita de la polaridad magnética mediante caminos de convolución paralelos en los cuatro stages residuales. Esta innovación permite que la red detecte estructuras bipolares que son la firma característica de manchas solares maduras.
 
 La validación mediante **Grad-CAM sobre `stage4`** aportó evidencia empírica de explicabilidad: los mapas de calor demuestran que el modelo concentra su atención quirúrgicamente sobre las regiones magnéticas activas e ignora por completo el fondo espacial y el ruido instrumental. Este resultado tiene valor científico independiente: confirma que Coronium V3 PRO no aprendió correlaciones espúreas del pipeline de adquisición, sino física solar real.
 
-**Análisis de eficiencia paramétrica.** El benchmarking externo establece que ResNet-18 (MAE = 0.0755, $R^2 = 0.9276$) y VGG-11 (MAE = 0.1079, $R^2 = 0.8621$) ofrecen mayor precisión absoluta en escala física. Sin embargo, lo logran a un coste desproporcionado: sus **11M+ parámetros** representan más de **100× la capacidad** de Coronium V3 PRO. Coronium V3 PRO alcanza **MAPE 5.52% (precisión > 94%) utilizando solo ~88K parámetros** — menos del 0.8% de ResNet-18 — con un checkpoint de producción `coronium_v3_pro.pth` que ocupa **~367 KB** frente a los decenas de MB de los baselines. Esta ratio de eficiencia es crítica para despliegue en hardware de monitorización espacial con restricciones de almacenamiento, ancho de banda y disipación térmica.
+**Análisis de eficiencia paramétrica.** El benchmarking externo establece que ResNet-18 (MAE = 0.0755, $R^2 = 0.9276$) y VGG-11 (MAE = 0.1079, $R^2 = 0.8621$) ofrecen mayor precisión absoluta en escala física. Sin embargo, lo logran a un coste desproporcionado: sus **11M+ parámetros** representan más de **100× la capacidad** de Coronium V3 PRO. Coronium V3 PRO alcanza **MAPE 5.52% con precisión > 94% utilizando solo ~88K parámetros** (menos del 0.8% de ResNet-18) con un checkpoint de producción `coronium_v3_pro.pth` que ocupa **~367 KB** frente a los decenas de MB de los baselines. Esta ratio de eficiencia es crítica para despliegue en hardware de monitorización espacial con restricciones de almacenamiento, ancho de banda y disipación térmica.
 
-El pipeline completo — desde adquisición FITS en NASA JSOC hasta inferencia REST con Grad-CAM y cuantificación de incertidumbre MC Dropout — es completamente automatizado, reproducible, y opera en producción sobre Apple Silicon MPS. Coronium V3 PRO constituye la implementación de referencia para regresión de datos de magnetogramas HMI/SDO mediante deep learning ligero.
+El pipeline completo, desde adquisición FITS en NASA JSOC hasta inferencia REST con Grad-CAM y cuantificación de incertidumbre MC Dropout, es completamente automatizado, reproducible, y opera en producción sobre Apple Silicon MPS. Coronium V3 PRO constituye la implementación de referencia para regresión de datos de magnetogramas HMI/SDO mediante deep learning ligero.
 
 ---
 
-## APPENDIX A — Source File Reference Index
+## APPENDIX A: Source File Reference Index
 
 ```
 auralis-back/
@@ -750,7 +750,7 @@ auralis-back/
 └── massive_ingest_2000.log             — Log de auditoría de ingesta
 ```
 
-## APPENDIX B — Key Equations Summary
+## APPENDIX B: Key Equations Summary
 
 | Símbolo          | Definición                                                  | Valor (exp_004)       |
 |------------------|-------------------------------------------------------------|-----------------------|
