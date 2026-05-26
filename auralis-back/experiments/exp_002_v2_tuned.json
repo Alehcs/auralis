@@ -1,6 +1,6 @@
 {
   "run_id": "exp_002",
-  "run_name": "Coronium V2 — LR Reducido + Scheduler",
+  "run_name": "Coronium V2 — Reduced LR + Scheduler",
   "date": "2026-02-03T14:31:47Z",
   "model_name": "Coronium V2",
   "weights_file": "coronium_v2_final.pth",
@@ -34,5 +34,5 @@
     "python_version": "3.12.1",
     "os": "macOS 15.4"
   },
-  "notes": "Reducción de LR 10x y scheduler ReduceLROnPlateau mejoran la convergencia. Augmentation activo en train. Dataset ampliado a 1158 muestras con corridas adicionales de ingestión."
+  "notes": "10x learning-rate reduction and ReduceLROnPlateau improved convergence. Augmentation enabled for training. Dataset expanded to 1,158 samples after additional ingestion runs."
 }

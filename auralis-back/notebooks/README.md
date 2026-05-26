@@ -1,117 +1,88 @@
-# Notebook de Exploración y Visualización
+# Exploratory Magnetogram Notebook
 
-## 📓 Archivo: `01_exploracion_y_visualizacion.ipynb`
+## File: `01_exploracion_y_visualizacion.ipynb`
 
-Este notebook proporciona exploración y visualización profesional de los magnetogramas solares descargados para el proyecto Auralis.
+This notebook is a manual inspection tool for raw HMI FITS magnetograms. It is not part of the training or API runtime path, but it is useful when validating newly downloaded data before preprocessing.
 
-## ✅ Contenido del Notebook
+## Notebook Scope
 
-### 1. Carga de Datos
-- Utiliza `sunpy.map.Map` para cargar archivos FITS
-- Detecta automáticamente todos los archivos en `data/raw/`
+### 1. Data Loading
+- Uses `sunpy.map.Map` to load FITS files with WCS metadata.
+- Detects available files under `data/raw/`.
 
-### 2. Inspección de Metadatos
-Extrae información clave como:
-- Instrumento (HMI_FRONT2)
-- Fecha de observación
-- Coordenadas del centro del Sol
-- Resolución espacial (0.5 arcsec/pixel)
+### 2. Metadata Inspection
+Captures instrument, observation timestamp, Sun-center coordinates, and spatial scale. These fields are useful for spotting corrupted or unexpected FITS records before they enter the dataset.
 
-### 3. Análisis Estadístico
-- Valores min/max/media/std del campo magnético
-- Distribución de percentiles
-- Detección de regiones activas (|B| > 200 G)
+### 3. Field Statistics
+- Min, max, mean, and standard deviation of the magnetic field.
+- Percentile distribution for display-range selection.
+- Active-region proxy count using `|B| > 200 G`.
 
-### 4. Visualización Científica
-- Magnetograma con grid heliográfico
-- Colormap `hmimag` especializado
-- Normalización ±200 G para resaltar manchas solares
+### 4. Visualization
+- Magnetogram rendered with the HMI-specific `hmimag` colormap.
+- Heliographic grid overlay for orientation.
+- Display normalization around `+/-200 G`, which highlights active regions without letting extreme pixels dominate the image.
 
-### 5. Histogramas
-- Distribución completa del campo magnético
-- Zoom en rango ±500 G
+### 5. Histograms
+- Full magnetic-field distribution.
+- Zoomed distribution around `+/-500 G`.
 
-## ⚠️ Nota Importante sobre Normalización
+## SunPy Normalization Note
 
-**Si encuentras un error** `Cannot manually specify vmax`, actualiza la celda de visualización (Sección 4) para usar `Normalize`:
+If SunPy raises `Cannot manually specify vmax`, use an explicit `Normalize` object instead of passing `vmin` and `vmax` directly:
 
 ```python
 from matplotlib.colors import Normalize
 
-# En lugar de vmin=-200, vmax=200
 norm = Normalize(vmin=-200, vmax=200)
 
 solar_map.plot(
     axes=ax,
     cmap='hmimag',
-    norm=norm,  # Usar norm en lugar de vmin/vmax
-    title=f'Magnetograma SDO/HMI - {solar_map.date.strftime("%Y-%m-%d %H:%M:%S")} UTC'
+    norm=norm,
+    title=f'SDO/HMI Magnetogram - {solar_map.date.strftime("%Y-%m-%d %H:%M:%S")} UTC'
 )
 ```
 
-## 🚀 Cómo Ejecutarlo
+## Running the Notebook
 
-### Requisitos
+### Requirements
 ```bash
-# Asegúrate de que jupyter esté instalado
 source venv/bin/activate
 pip install jupyter ipykernel
 
-# Opcionalmente, añadir widgets para mejor interactividad
 pip install ipywidgets
 ```
 
-### Ejecutar el Notebook
+### Jupyter
 ```bash
-# Opción 1: JupyterLab (recomendado)
 jupyter lab
 
-# Opción 2: Jupyter Notebook clásico
 jupyter notebook
-
-# Navega a notebooks/01_exploracion_y_visualizacion.ipynb
 ```
 
-### Ejecutar en VS Code
-1. Abre el archivo `.ipynb` en VS Code
-2. Selecciona el kernel de Python del venv
-3. Ejecuta las celdas secuencialmente
+Open `notebooks/01_exploracion_y_visualizacion.ipynb` and select the backend virtual environment as the kernel.
 
-## 📊 Resultados Esperados
+## Expected Local Inputs
 
-✓ **17 archivos FITS** detectados (desde 2026-01-28 hasta 2026-02-09)  
-✓ **Dimensiones**: 4096×4096 píxeles por imagen  
-✓ **Rango de campo magnético**: ±4808 G (valores extremos)  
-✓ **Regiones activas**: ~1.78% de píxeles con |B| > 200 G  
+- FITS files under `data/raw/`.
+- Typical HMI dimensions: `4096 x 4096` pixels.
+- Magnetic field values in Gauss, often with long tails around active regions.
 
-## 🔬 Validación
+## Validation
 
-El script `validate_notebook.py` verifica que el código funciona correctamente:
+Use the terminal validator when you only need to confirm that SunPy can load the local FITS files:
 
 ```bash
 python notebooks/validate_notebook.py
 ```
 
-Resultado esperado:
-```
-✓ Archivos encontrados: 17
-✓ Dimensiones: (4096, 4096)
-📡 Instrumento: HMI_FRONT2
-📊 Min: -4808.40 G, Max: 4808.40 G
-✅ VALIDACIÓN EXITOSA
-```
+## Sample Preview
 
-## 📸 Visualización de Muestra
-
-Puedes generar una imagen PNG de muestra sin ejecutar el notebook completo:
+Generate a PNG preview without running the notebook:
 
 ```bash
 python notebooks/generate_sample_viz.py
 ```
 
-Esto creará `notebooks/magnetogram_sample.png` con la visualización del primer magnetograma.
-
----
-
-**Proyecto**: Auralis - Detección de Manchas Solares  
-**Fecha**: 2026-02-13
+The output is written to `notebooks/magnetogram_sample.png`.
