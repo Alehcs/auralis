@@ -34,5 +34,5 @@
     "python_version": "3.12.1",
     "os": "macOS 15.4"
   },
-  "notes": "Corrida inicial. Sin augmentation, sin scheduler. LR demasiado alto causó oscilaciones en la convergencia. Early stopping activado en época 38."
+  "notes": "Initial run. No augmentation and no scheduler. The learning rate was too high and caused convergence oscillations. Early stopping triggered at epoch 38."
 }

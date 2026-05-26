@@ -1,6 +1,6 @@
 {
   "run_id": "exp_004",
-  "run_name": "Coronium V3 PRO — Producción Final",
+  "run_name": "Coronium V3 PRO — Final V3 Checkpoint",
   "date": "2026-04-16T10:55:00Z",
   "model_name": "Coronium V3 PRO",
   "weights_file": "coronium_v3_final.pth",
@@ -41,7 +41,7 @@
     "rmse_z_space": 0.1473,
     "mae_physical": 0.3167,
     "rmse_physical": 0.3596,
-    "metric_note": "z_space = error en espacio Z-Score normalizado (calculado durante training loop). physical = error en escala real [% píxeles |B|>200G], targets crudos vs preds desnormalizadas con (pred*0.3462)+1.7658. La métrica física es la oficial para reportes externos.",
+    "metric_note": "z_space = error in normalized Z-score space as computed during the training loop. physical = error on the real proxy scale [% pixels |B|>200G], comparing raw targets with predictions denormalized as (pred*0.3462)+1.7658. Physical-space metrics were used for external reporting in this run.",
     "final_mape_pct": 5.52,
     "r2_score": 0.81,
     "best_epoch": 43,
@@ -54,5 +54,5 @@
     "python_version": "3.12.1",
     "os": "macOS 15.4"
   },
-  "notes": "Corrida de producción final. Arquitectura V3ResidualBlock con ECA attention. Dataset ampliado a 1763 muestras (605 nuevas respecto a V2 PRO). Loss WeightedHuberLoss resuelve el sesgo hacia sol quieto. Dropout reducido a 0.2 (mejor generalización sobre dataset ampliado). Optimizer cambiado de Adam a AdamW con weight_decay=1e-5. Early stopping activado en época 43. Pesos guardados en coronium_v3_final.pth y coronium_v3_pro.pth (idénticos)."
+  "notes": "Final run for the first V3 PRO checkpoint. V3ResidualBlock architecture with ECA attention. Dataset expanded to 1,763 samples, adding 605 samples over V2 PRO. WeightedHuberLoss reduced quiet-Sun bias. Dropout was reduced to 0.2 after the dataset expansion. Optimizer changed from Adam to AdamW with weight_decay=1e-5. Early stopping triggered at epoch 43. Weights were saved as coronium_v3_final.pth and coronium_v3_pro.pth; both files are identical."
 }
