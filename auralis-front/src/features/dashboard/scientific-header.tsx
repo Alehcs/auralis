@@ -7,6 +7,12 @@ interface ScientificHeaderProps {
   onMenuClick: () => void;
 }
 
+/**
+ * Dashboard chrome shared by all tabs.
+ *
+ * The clock is a client-side UTC display for operator context. It is not a
+ * backend synchronization timestamp or a live NASA data timestamp.
+ */
 export function ScientificHeader({ onMenuClick }: ScientificHeaderProps) {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -35,7 +41,7 @@ export function ScientificHeader({ onMenuClick }: ScientificHeaderProps) {
       <div className="flex-shrink-0">
         <button onClick={() => navigate('/')} className="text-left group">
           <div className="text-[13px] font-semibold text-white group-hover:text-neutral-200 transition-colors leading-tight">
-            Solar Activity Prediction
+            Solar Activity Analysis
           </div>
           <div className="hidden sm:flex items-center gap-1 text-[11px] text-neutral-500 mt-[1px]">
             <span>Auralis</span>

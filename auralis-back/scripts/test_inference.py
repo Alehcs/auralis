@@ -1,14 +1,7 @@
-"""Sanity Check — Coronium V3 PRO inference test.
+"""Compare high-activity inference between two Coronium V3 PRO checkpoints.
 
-Compares two checkpoints side by side:
-  - best_coronium_v3_pro.pth          (original, sin augmentación dirigida)
-  - best_coronium_v3_pro_augmented.pth (nuevo, con ExtremeAugmentation)
-
-Evalúa TODAS las muestras extremas (sunspot_index > 2.0) del split de
-validación para confirmar si la ExtremeAugmentation redujo el MAE en tormentas.
-
-Run from auralis-back/:
-    python src/models/test_inference.py
+This regression check focuses on validation samples with ``sunspot_index > 2.0``
+to verify whether targeted augmentation improved storm-like cases.
 """
 
 import sys
@@ -23,7 +16,7 @@ from typing import List
 # ---------------------------------------------------------------------------
 # Make src/ importable so train_model resolves without package install
 # ---------------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parent.parent.parent   # auralis-back/
+ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
 sys.path.insert(0, str(ROOT / "src"))
 
 from models.train_model import CoroniumV3             # noqa: E402
@@ -45,7 +38,7 @@ MODEL_AUGMENTED = ROOT / "models" / "best_coronium_v3_pro_augmented.pth"
 DATA_DIR        = ROOT / "data"   / "processed"
 METADATA_CSV    = DATA_DIR / "metadata_processed.csv"
 
-EXTREME_THRESHOLD = 2.0   # muestras con sunspot_index > este valor
+EXTREME_THRESHOLD = 2.0
 
 
 def load_image(data_dir: Path, filename: str) -> np.ndarray:
@@ -94,7 +87,7 @@ def print_table(title: str, checkpoint: str, results: List[dict]) -> float:
     print("=" * len(header))
     print(f"  {title}")
     print(f"  Checkpoint : {checkpoint}")
-    print(f"  Muestras   : {len(results)} extremas (sunspot_index > {EXTREME_THRESHOLD})")
+    print(f"  Samples    : {len(results)} extreme cases (sunspot_index > {EXTREME_THRESHOLD})")
     print("=" * len(header))
     print(header)
     print(divider)
@@ -102,68 +95,58 @@ def print_table(title: str, checkpoint: str, results: List[dict]) -> float:
         print(f"{r['filename']:<{col_w}}  {r['real']:>8.4f}  "
               f"{r['predicted']:>10.4f}  {r['abs_error']:>10.4f}")
     print(divider)
-    print(f"{'MAE en muestras EXTREMAS':>{col_w + 2}}  {'':>8}  {'':>10}  {mae:>10.4f}")
+    print(f"{'MAE on extreme samples':>{col_w + 2}}  {'':>8}  {'':>10}  {mae:>10.4f}")
     print("=" * len(header))
     return mae
 
 
 def main() -> None:
-    # ------------------------------------------------------------------
-    # 1. Cargar split de validación — solo muestras extremas
-    # ------------------------------------------------------------------
+    # The historical split is positional, matching the training script that
+    # produced the two checkpoints being compared here.
     meta      = pd.read_csv(METADATA_CSV)
     val_start = int(len(meta) * 0.8)
     val_meta  = meta.iloc[val_start:].reset_index(drop=True)
     extremes  = val_meta[val_meta["sunspot_index"] > EXTREME_THRESHOLD].reset_index(drop=True)
 
-    logger.info("Val split: %d total | %d extremas (índice > %.1f)",
+    logger.info("Validation split: %d total | %d extreme samples (index > %.1f)",
                 len(val_meta), len(extremes), EXTREME_THRESHOLD)
 
-    # ------------------------------------------------------------------
-    # 2. Modelo original
-    # ------------------------------------------------------------------
     mae_original = None
     if MODEL_ORIGINAL.exists():
-        logger.info("Cargando modelo original: %s", MODEL_ORIGINAL.name)
+        logger.info("Loading original checkpoint: %s", MODEL_ORIGINAL.name)
         model_orig   = load_model(MODEL_ORIGINAL)
         results_orig = run_inference(model_orig, extremes)
         mae_original = print_table(
-            "MODELO ORIGINAL — Sin ExtremeAugmentation",
+            "ORIGINAL MODEL — No ExtremeAugmentation",
             MODEL_ORIGINAL.name, results_orig,
         )
     else:
-        logger.warning("Checkpoint original no encontrado: %s", MODEL_ORIGINAL)
+        logger.warning("Original checkpoint not found: %s", MODEL_ORIGINAL)
 
-    # ------------------------------------------------------------------
-    # 3. Modelo con augmentación dirigida
-    # ------------------------------------------------------------------
     mae_augmented = None
     if MODEL_AUGMENTED.exists():
-        logger.info("Cargando modelo augmented: %s", MODEL_AUGMENTED.name)
+        logger.info("Loading augmented checkpoint: %s", MODEL_AUGMENTED.name)
         model_aug    = load_model(MODEL_AUGMENTED)
         results_aug  = run_inference(model_aug, extremes)
         mae_augmented = print_table(
-            "MODELO AUGMENTED — Con ExtremeAugmentation (umbral 2.0)",
+            "AUGMENTED MODEL — ExtremeAugmentation threshold 2.0",
             MODEL_AUGMENTED.name, results_aug,
         )
     else:
-        logger.warning("Checkpoint augmented no encontrado: %s", MODEL_AUGMENTED)
+        logger.warning("Augmented checkpoint not found: %s", MODEL_AUGMENTED)
 
-    # ------------------------------------------------------------------
-    # 4. Comparativa final
-    # ------------------------------------------------------------------
     if mae_original is not None and mae_augmented is not None:
         delta    = mae_original - mae_augmented
         pct      = delta / mae_original * 100
-        improved = "✅ MEJORA" if delta > 0 else "❌ SIN MEJORA"
+        improved = "IMPROVED" if delta > 0 else "NO IMPROVEMENT"
         print()
-        print("━" * 60)
-        print("  COMPARATIVA FINAL — MAE EN MUESTRAS EXTREMAS")
-        print("━" * 60)
-        print(f"  Original  (sin aug) : {mae_original:.4f}")
-        print(f"  Augmented (con aug) : {mae_augmented:.4f}")
-        print(f"  Diferencia          : {delta:+.4f}  ({pct:+.1f}%)  {improved}")
-        print("━" * 60)
+        print("-" * 60)
+        print("  FINAL COMPARISON — MAE ON EXTREME SAMPLES")
+        print("-" * 60)
+        print(f"  Original  (no aug) : {mae_original:.4f}")
+        print(f"  Augmented (aug)    : {mae_augmented:.4f}")
+        print(f"  Difference         : {delta:+.4f}  ({pct:+.1f}%)  {improved}")
+        print("-" * 60)
         print()
 
 

@@ -1,19 +1,7 @@
-"""Recalculate target_scaler.json from the full processed dataset.
+"""Rebuild target_scaler.json from metadata rows backed by .npy files.
 
-The sunspot_index (target) is not stored inside the .npy image tensors —
-it lives in data/processed/metadata_processed.csv under the column
-'sunspot_index_raw' (the pre-normalisation value). This script:
-
-    1. Discovers all .npy files present in data/processed/.
-    2. Looks up the corresponding sunspot_index_raw in the CSV for each file.
-    3. Computes mean and std over the matched population.
-    4. Overwrites models/target_scaler.json with the new values.
-
-Usage (run from auralis-back/):
-    python recalculate_scaler.py
-    python recalculate_scaler.py --processed-dir data/processed \
-                                  --csv data/processed/metadata_processed.csv \
-                                  --scaler models/target_scaler.json
+This keeps stale CSV rows from influencing target normalization after partial
+dataset rebuilds.
 """
 
 import argparse
@@ -36,6 +24,11 @@ def recalculate_scaler(
     csv_path: str = "data/processed/metadata_processed.csv",
     scaler_path: str = "models/target_scaler.json",
 ) -> None:
+    """Fit the scaler only on metadata rows whose tensors still exist.
+
+    Metadata can contain stale rows after partial rebuilds, so the on-disk
+    tensors define the population. The result overwrites `target_scaler.json`.
+    """
     processed = Path(processed_dir)
     csv_file = Path(csv_path)
     scaler_file = Path(scaler_path)

@@ -8,6 +8,14 @@ import { PredictionChart } from './prediction-chart';
 import { ConfigPanel } from './components/config-panel';
 import { ResearchInsights } from './pages/research-insights';
 
+/**
+ * Main dashboard shell.
+ *
+ * The dashboard is intentionally tab-driven instead of route-driven because the
+ * demo is a single analytical workspace: switching tabs should preserve the
+ * surrounding scientific header/sidebar context while each panel owns its own
+ * data loading lifecycle.
+ */
 export function DashboardPage() {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);

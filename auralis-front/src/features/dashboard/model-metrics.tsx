@@ -15,6 +15,14 @@ import { getStats, getImageList, predictDual } from '@/lib/api';
 import type { SystemStats, PredictionResult } from '@/lib/types';
 import { useLanguage } from '@/lib/i18n/language-context';
 
+/**
+ * Overview panel for promoted model metrics and dataset-derived current state.
+ *
+ * "Current Solar State" is intentionally based on the newest processed `.npy`
+ * file returned by the backend. It should not be described as live NASA
+ * telemetry unless the ingestion layer is changed to support that contract.
+ */
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -130,13 +138,13 @@ export function ModelMetrics() {
   const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch dataset stats
+    // Static promoted-run metrics and dynamic dataset footprint.
     getStats()
       .then(setStats)
       .catch(console.error)
       .finally(() => setStatsLoading(false));
 
-    // Fetch most-recent image and run inference
+    // Latest-file inference drives the current-state card.
     getImageList()
       .then((res) => {
         if (res.images.length === 0) return;
