@@ -1,21 +1,8 @@
-"""Diagnostic visualizer: raw HMI FITS vs. processed dual-channel tensor.
+"""Diagnostic plot for raw FITS data versus processed V3 PRO tensors.
 
-Discovers the first available FITS file under data/raw/, resolves its
-corresponding processed tensor in data/processed/, and renders a side-by-side
-comparison via matplotlib.
-
-Processing recap (prepare_dataset.py):
-    raw [Gauss]  ->  symlog: x' = sign(x)*log(1+|x|)
-                 ->  B+ = ReLU(x')   [ch 0]
-                 ->  B- = ReLU(-x')  [ch 1]
-
-This script reconstructs the signed magnitude for display:
-    |B| = B+ + B-   (both channels are non-negative, sum = |x'|)
-
-Usage
------
-    cd auralis-back/
-    python src/tools/visualize_tensor.py
+The processed tensor stores positive and negative polarity separately. For
+display only, the script reconstructs the symlog-domain magnetic magnitude as
+``|B| = B+ + B-`` and plots it beside the original HMI frame.
 """
 
 import sys

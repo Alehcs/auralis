@@ -1,25 +1,9 @@
 #!/usr/bin/env python3
-"""
-run_external_baselines.py
-=========================
-Benchmarking of external baseline models for solar activity regression.
+"""Train and profile external CNN baselines for the Coronium comparison.
 
-Models evaluated:
-  1. Naive Persistence   — predicts training-set mean for every sample
-  2. ResNet-18           — adapted to 1-channel input and scalar regression
-  3. VGG-11              — adapted to 1-channel input and scalar regression
-
-Protocol:
-  - Dataset : SolarDataset (1,763 magnetograms, 80/20 split, seed=42)
-  - Epochs  : 30
-  - LR      : 0.001  (Adam)
-  - Batch   : 32
-  - Input   : 1 canal colapsado |B| = B+ + B−  (SolarDataset devuelve 2ch; se colapsa aquí)
-
-Output:
-  - experiments/results_benchmarking.json  (MAE, RMSE, R², inference time, # params)
-  - models/baselines/resnet18_baseline.pth
-  - models/baselines/vgg11_baseline.pth
+These models intentionally collapse B+/B- into one ``|B|`` channel because the
+off-the-shelf ResNet/VGG definitions are used as broad reference points, not as
+domain-specific competitors. Results feed the ``/api/benchmark`` endpoint.
 """
 
 import json
@@ -69,25 +53,13 @@ logger = logging.getLogger(__name__)
 # ── Utilities ─────────────────────────────────────────────────────────────────
 
 def set_seed(seed: int) -> None:
-    """Fix global random state for PyTorch and NumPy.
-
-    Args:
-        seed: Integer seed applied to ``torch.manual_seed`` and
-            ``numpy.random.seed`` to ensure deterministic data splits
-            and weight initialisation across benchmark runs.
-    """
+    """Fix random state for reproducible splits and baseline initialisation."""
     torch.manual_seed(seed)
     np.random.seed(seed)
 
 
 def get_device() -> torch.device:
-    """Select the highest-performance available compute device.
-
-    Priority order: Apple MPS (M-series GPU) → CUDA → CPU.
-
-    Returns:
-        A ``torch.device`` instance pointing to the selected backend.
-    """
+    """Select Apple MPS, CUDA, or CPU in that order."""
     if torch.backends.mps.is_available():
         return torch.device("mps")
     if torch.cuda.is_available():
@@ -96,16 +68,7 @@ def get_device() -> torch.device:
 
 
 def build_dataloaders():
-    """Construct stratified train/validation DataLoaders from SolarDataset.
-
-    Applies a deterministic 80/20 split (``VAL_SPLIT``) seeded by ``SEED``
-    to guarantee reproducible dataset partitions across benchmark runs,
-    matching the split used during primary Coronium training.
-
-    Returns:
-        Tuple of ``(train_loader, val_loader, n_train, n_val)`` where loaders
-        are configured with ``BATCH_SIZE`` and the appropriate shuffle policy.
-    """
+    """Create the deterministic 80/20 split used for baseline comparison."""
     dataset = SolarDataset(
         data_dir=str(DATA_DIR),
         metadata_csv=str(METADATA_CSV),
@@ -121,32 +84,12 @@ def build_dataloaders():
 
 
 def count_parameters(model: nn.Module) -> int:
-    """Count the total number of trainable parameters in a module.
-
-    Args:
-        model: Any ``nn.Module`` instance.
-
-    Returns:
-        Sum of ``numel()`` for all parameters with ``requires_grad=True``.
-    """
+    """Count trainable parameters only."""
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
-    """Evaluate a regression model and compute standard error metrics.
-
-    Runs a full pass over ``loader`` in inference mode, then computes Mean
-    Absolute Error, Root Mean Squared Error, and the coefficient of
-    determination (R²) between predictions and ground-truth labels.
-
-    Args:
-        model: Trained ``nn.Module``; placed in eval mode internally.
-        loader: DataLoader yielding ``(image, label)`` batches.
-        device: Compute device for tensor placement.
-
-    Returns:
-        Tuple ``(mae, rmse, r2)`` of Python floats.
-    """
+    """Evaluate a baseline and return MAE, RMSE, and R2 on the validation split."""
     model.eval()
     preds, targets = [], []
     with torch.no_grad():
@@ -167,19 +110,7 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
 
 
 def measure_inference_time(model: nn.Module, device: torch.device) -> float:
-    """Benchmark single-sample inference latency.
-
-    Executes ``INFERENCE_WARMUP`` un-timed passes to saturate JIT caches
-    and device pipelines, then averages ``INFERENCE_RUNS`` timed passes.
-    Input shape matches production magnetograms: ``(1, 1, 512, 512)``.
-
-    Args:
-        model: Trained ``nn.Module`` in eval mode.
-        device: Compute device for tensor placement.
-
-    Returns:
-        Mean inference time in milliseconds per sample.
-    """
+    """Measure warm-start single-sample latency for a 512x512 magnetogram."""
     model.eval()
     dummy = torch.randn(1, 1, 512, 512, device=device)
     with torch.no_grad():
@@ -194,18 +125,7 @@ def measure_inference_time(model: nn.Module, device: torch.device) -> float:
 
 def train(model: nn.Module, train_loader: DataLoader, val_loader: DataLoader,
           device: torch.device) -> None:
-    """Train a model for ``NUM_EPOCHS`` with Adam optimiser and MSE loss.
-
-    Logs validation MAE and R² at epoch 1 and every 10 epochs thereafter,
-    matching the reporting cadence of the primary Coronium training runs
-    to allow direct comparison across experiments.
-
-    Args:
-        model: ``nn.Module`` to optimise; moved to ``device`` in-place.
-        train_loader: DataLoader for the training partition.
-        val_loader: DataLoader for the validation partition.
-        device: Compute device for training.
-    """
+    """Train one baseline with the fixed benchmark protocol."""
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
     criterion = nn.MSELoss()
@@ -235,15 +155,7 @@ def train(model: nn.Module, train_loader: DataLoader, val_loader: DataLoader,
 # ── Model builders ────────────────────────────────────────────────────────────
 
 def build_resnet18() -> nn.Module:
-    """Instantiate ResNet-18 adapted for single-channel scalar regression.
-
-    Replaces the standard 3-channel ``conv1`` with a 1-channel equivalent
-    and substitutes the ImageNet classification head with a single linear
-    unit to produce a continuous sunspot index estimate.
-
-    Returns:
-        Configured ``nn.Module`` with randomly initialised weights.
-    """
+    """Adapt ResNet-18 from RGB classification to one-channel regression."""
     net = models.resnet18(weights=None)
     net.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
     net.fc = nn.Linear(net.fc.in_features, 1)
@@ -251,22 +163,7 @@ def build_resnet18() -> nn.Module:
 
 
 def build_vgg11() -> nn.Module:
-    """Instantiate VGG-11 adapted for single-channel scalar regression.
-
-    Two architectural modifications are applied:
-
-    1. **Input adaptation**: ``features[0]`` is replaced with a 1-channel
-       3×3 convolution to accept HMI magnetograms instead of RGB imagery.
-
-    2. **MPS-compatible pooling**: The default ``AdaptiveAvgPool2d((7, 7))``
-       maps a 16×16 spatial tensor (512 px / 2⁵ maxpools) onto a 7-wide
-       grid (16 % 7 ≠ 0), raising a division error on Apple MPS.
-       Replaced with ``AdaptiveAvgPool2d((1, 1))`` (global average pooling)
-       followed by a lightweight 512 → 256 → 1 regression head.
-
-    Returns:
-        Configured ``nn.Module`` with randomly initialised weights.
-    """
+    """Adapt VGG-11 to one-channel regression with MPS-safe global pooling."""
     net = models.vgg11(weights=None)
     net.features[0] = nn.Conv2d(1, 64, kernel_size=3, padding=1)
     # Implementation Detail: 512 px / 2^5 maxpools = 16 px spatial dim.
@@ -284,23 +181,13 @@ def build_vgg11() -> nn.Module:
 # ── Naive Persistence ─────────────────────────────────────────────────────────
 
 class NaivePersistence:
-    """Lower-bound baseline that predicts the training-set mean unconditionally.
-
-    Provides the theoretical performance floor for regression: any model
-    failing to outperform this baseline on MAE/RMSE has not learned
-    task-relevant features beyond dataset statistics.
-    """
+    """Lower-bound baseline that predicts the training-set mean."""
 
     def __init__(self):
         self.mean: float = 0.0
 
     def fit(self, train_loader: DataLoader) -> None:
-        """Compute and store the training-label mean.
-
-        Args:
-            train_loader: DataLoader for the training partition; labels
-                are expected as tensors of shape ``(N, 1)`` or ``(N,)``.
-        """
+        """Compute the only learned value for the constant baseline."""
         targets = [
             label.item()
             for _, labels in train_loader
@@ -310,15 +197,7 @@ class NaivePersistence:
         logger.info(f"    Training mean: {self.mean:.6f}")
 
     def evaluate(self, val_loader: DataLoader):
-        """Compute regression metrics against constant mean predictions.
-
-        Args:
-            val_loader: DataLoader for the validation partition.
-
-        Returns:
-            Tuple ``(mae, rmse, r2)`` of Python floats. R² is expected to
-            be zero or negative for a well-distributed target distribution.
-        """
+        """Compute metrics against constant mean predictions."""
         targets = [
             label.item()
             for _, labels in val_loader
@@ -332,11 +211,7 @@ class NaivePersistence:
         return mae, rmse, r2
 
     def measure_inference_time(self) -> float:
-        """Benchmark constant-prediction latency over ``INFERENCE_RUNS`` passes.
-
-        Returns:
-            Mean time in milliseconds per prediction (attribute lookup only).
-        """
+        """Measure attribute-read latency for parity with model timing fields."""
         t0 = time.perf_counter()
         for _ in range(INFERENCE_RUNS):
             _ = self.mean
@@ -352,23 +227,7 @@ def _run_or_load(
     val_loader: DataLoader,
     device: torch.device,
 ) -> dict:
-    """Train or restore a model, then evaluate and profile it.
-
-    Checks ``MODELS_DIR / weights_filename`` before training; if the file
-    exists, training is skipped and weights are loaded directly. Allows
-    interrupted benchmark runs to resume without retraining.
-
-    Args:
-        builder: Zero-argument callable returning a fresh ``nn.Module``.
-        weights_filename: Basename (no path) for persisting model weights.
-        train_loader: DataLoader for the training partition.
-        val_loader: DataLoader for the validation partition.
-        device: Compute device for training and inference.
-
-    Returns:
-        Dictionary with keys ``mae``, ``rmse``, ``r2``, ``inference_time_ms``,
-        ``total_parameters``, and ``weights_file``.
-    """
+    """Resume an existing baseline checkpoint or train, then profile it."""
     weights_path = MODELS_DIR / weights_filename
     model = builder()
     n_params = count_parameters(model)
@@ -400,13 +259,7 @@ def _run_or_load(
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    """Execute the full baseline benchmarking pipeline and persist results.
-
-    Orchestrates dataset loading, model training (or weight restoration),
-    evaluation, and inference profiling for three baselines: Naive
-    Persistence, ResNet-18, and VGG-11. Aggregated metrics are written
-    to ``RESULTS_PATH`` as a structured JSON document.
-    """
+    """Run all baselines and persist the JSON consumed by the API."""
     set_seed(SEED)
     device = get_device()
     MODELS_DIR.mkdir(parents=True, exist_ok=True)

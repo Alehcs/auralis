@@ -1,16 +1,13 @@
-"""Inference engine for Coronium V3 PRO.
+"""Legacy FITS inference CLI for older Coronium checkpoints.
 
-Provides a standalone CLI and importable functions for end-to-end prediction
-on raw HMI FITS files: load → preprocess → infer → visualise.
-
-The preprocessing chain must mirror the training pipeline in
-``prepare_dataset`` exactly — NaN fill → bilinear resample → ±400 G clip →
-[-1, 1] normalisation. Any deviation introduces distribution shift between
-training and inference inputs that cannot be detected at runtime.
+This script still uses single-channel clip-and-scale preprocessing. Keep it for
+diagnosing older weights, not as the serving reference for the promoted V3 PRO
+model.
 """
 
 import argparse
 import logging
+import sys
 from pathlib import Path
 from typing import Optional, Tuple
 import warnings
@@ -23,7 +20,9 @@ import torch
 import sunpy.map
 from skimage.transform import resize
 
-from train_model import Coronium, get_device
+ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
+sys.path.insert(0, str(ROOT / "src"))
+from models.train_model import CoroniumV3 as Coronium  # noqa: E402  (Coronium → CoroniumV3)
 
 
 logging.basicConfig(
@@ -39,34 +38,10 @@ def preprocess_fits_image(
     target_size: int = 512,
     clip_value: float = 400.0,
 ) -> Tuple[torch.Tensor, "sunpy.map.Map"]:
-    """Load and normalise a raw HMI FITS file for model inference.
+    """Preprocess a FITS file using the legacy single-channel contract.
 
-    The normalisation chain must be identical to the one applied in
-    ``prepare_dataset.load_and_process_magnetogram`` to avoid distribution
-    shift between training data and inference inputs:
-
-    - NaN fill: off-disk pixels carry NaN in HMI Level-1.5 data because the
-      solar limb mask is applied upstream by JSOC. Replacing with 0 is correct
-      because 0 G is the quiet-Sun background field.
-    - Clip at ±400 G: covers the functional range of plage and network fields
-      while saturating umbral core pixels that represent < 0.1% of the disk
-      area and would otherwise compress the dynamic range of the normalised
-      array. This threshold follows Bobra & Couvidat (2015).
-    - Scale by 1 / clip_value: maps the clipped range linearly to [-1, 1],
-      matching the float32 tensors written by the batch preprocessing pipeline.
-
-    Args:
-        fits_path: Absolute path to an HMI Level-1.5 FITS file.
-        target_size: Square output resolution in pixels. Must match the
-            resolution used during training (default 512).
-        clip_value: Symmetric saturation bound in Gauss (default 400.0).
-
-    Returns:
-        Tuple of:
-            - Tensor of shape (1, 1, H, W), dtype float32, ready for a
-              model forward pass.
-            - ``sunpy.map.Map`` object retaining the original FITS header for
-              downstream visualisation with a heliographic coordinate grid.
+    This path is kept for older checkpoints. Current V3 PRO inference should use
+    the API/ONNX path or the dual-channel preprocessing pipeline.
     """
     logger.info("Preprocessing: %s", fits_path.name)
 
@@ -100,24 +75,7 @@ def load_model(
     model_path: str = "models/coronium_best.pth",
     device: Optional[torch.device] = None,
 ) -> Tuple[Coronium, torch.device]:
-    """Instantiate Coronium and load a saved state dictionary.
-
-    ``model.eval()`` switches BatchNorm layers to use running statistics
-    accumulated during training and disables Dropout2d, giving deterministic
-    output for a fixed input. Monte Carlo Dropout uncertainty estimation
-    requires re-enabling training mode in the calling code before iterating
-    over stochastic forward passes.
-
-    Args:
-        model_path: Path to a ``.pth`` checkpoint written by ``train_model``.
-        device: Target device. Detected automatically if ``None``.
-
-    Returns:
-        Tuple of (loaded Coronium in eval mode, resolved torch.device).
-
-    Raises:
-        FileNotFoundError: If ``model_path`` does not exist on disk.
-    """
+    """Load an older Coronium checkpoint in deterministic eval mode."""
     if device is None:
         device = get_device()
 
@@ -126,6 +84,9 @@ def load_model(
 
     logger.info("Loading checkpoint: %s", model_path)
 
+    # The default dropout value matches the older checkpoints expected by this
+    # script. Current V3 PRO checkpoints use dropout_rate=0.2 and dual-channel
+    # input, so prefer the FastAPI/ONNX path for promoted inference.
     model = Coronium(dropout_rate=0.3)
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
@@ -142,21 +103,7 @@ def predict_sunspot_index(
     image_tensor: torch.Tensor,
     device: torch.device,
 ) -> float:
-    """Run a single deterministic forward pass and return the scalar prediction.
-
-    ``torch.no_grad()`` disables autograd during inference to reduce memory
-    consumption. For Monte Carlo Dropout uncertainty estimation, call this
-    function with ``model.train()`` active and aggregate outputs over N draws
-    to obtain a predictive mean and variance.
-
-    Args:
-        model: Coronium instance in eval mode (or train mode for MC Dropout).
-        image_tensor: Preprocessed tensor of shape (1, 1, H, W).
-        device: Device on which both model and tensor are resident.
-
-    Returns:
-        Predicted sunspot index as a Python float.
-    """
+    """Run one forward pass and return the scalar prediction."""
     image_tensor = image_tensor.to(device)
 
     with torch.no_grad():
@@ -172,22 +119,7 @@ def get_real_sunspot_index(
     filename: str,
     metadata_csv: str = "data/processed/metadata_processed.csv",
 ) -> Optional[float]:
-    """Retrieve the ground-truth sunspot index for a given filename.
-
-    The CSV produced by ``prepare_dataset`` contains one row per processed
-    magnetogram with the sunspot index computed on the raw (pre-normalised)
-    pixel array, so values are in percentage units consistent with the model
-    output scale.
-
-    Args:
-        filename: Stem of the FITS file (without extension), used as the
-            lookup key against the ``filename`` column of the metadata CSV.
-        metadata_csv: Path to the metadata CSV.
-
-    Returns:
-        Ground-truth sunspot index as a float, or ``None`` if the file is
-        absent from the metadata table.
-    """
+    """Look up a sample's ground-truth index in the processed metadata CSV."""
     if not Path(metadata_csv).exists():
         logger.warning("Metadata CSV not found: %s", metadata_csv)
         return None
@@ -211,22 +143,7 @@ def visualize_prediction(
     real_index: Optional[float] = None,
     output_path: str = "reports/figures/prediction_result.png",
 ) -> None:
-    """Render the magnetogram with prediction annotations and save to disk.
-
-    The HMI colormap ('hmimag') uses a diverging red-blue palette centred at
-    0 G, following the SDO/HMI team convention for LOS magnetograms. The
-    display range is clamped to ±200 G to reveal quiet-Sun network structure;
-    this does not affect the model input, which was clipped at ±400 G.
-
-    Args:
-        solar_map: ``sunpy.map.Map`` instance from the original FITS file,
-            used to draw the heliographic coordinate grid.
-        predicted_index: Model output as a Python float.
-        real_index: Ground-truth value for residual annotation; omitted if
-            ``None``.
-        output_path: Filesystem path for the saved PNG (parent created if
-            absent).
-    """
+    """Save a quick diagnostic magnetogram with prediction annotations."""
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
 
     fig = plt.figure(figsize=(12, 10))

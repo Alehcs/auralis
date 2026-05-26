@@ -19,8 +19,8 @@ export function ArchitectureDiagram() {
     },
     {
       icon: LineChart,
-      label: 'Prediction',
-      detail: 'Forecasting'
+      label: 'Inference',
+      detail: 'Current Index'
     }
   ];
 
@@ -59,16 +59,16 @@ export function ArchitectureDiagram() {
         <div className="mt-12 bg-neutral-950 border border-neutral-800 p-6">
           <div className="grid grid-cols-3 gap-6 text-xs font-mono">
             <div className="flex justify-between">
-              <span className="text-neutral-500">Processing Time:</span>
-              <span className="text-white">~2.1s per image</span>
+              <span className="text-neutral-500">ONNX Inference:</span>
+              <span className="text-white">25.11 ms · CPU</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-500">Throughput:</span>
-              <span className="text-white">1,247 records/min</span>
+              <span className="text-neutral-500">Model Size:</span>
+              <span className="text-white">86.6 KB · ONNX</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-500">System Uptime:</span>
-              <span className="text-white">99.87%</span>
+              <span className="text-neutral-500">MAE (log-SI):</span>
+              <span className="text-white">0.1076</span>
             </div>
           </div>
         </div>

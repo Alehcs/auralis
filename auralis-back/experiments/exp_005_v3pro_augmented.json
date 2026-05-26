@@ -1,0 +1,58 @@
+{
+  "run_id": "exp_005",
+  "run_name": "Coronium V3 PRO — ExtremeAugmentation",
+  "date": "2026-05-01T11:03:00Z",
+  "model_name": "Coronium V3 PRO",
+  "weights_file": "best_coronium_v3_pro_augmented.pth",
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "dropout_rate": 0.2,
+    "seed": 42,
+    "batch_size": 32,
+    "optimizer": "AdamW",
+    "scheduler": "ReduceLROnPlateau (patience=3, factor=0.5, min_lr=1e-6)",
+    "max_epochs": 50,
+    "early_stopping_patience": 10,
+    "epochs_run": 24
+  },
+  "architecture": {
+    "model_class": "Coronium V3 PRO",
+    "input_shape": [2, 512, 512],
+    "filter_schedule": [2, 32, 64, 96, 128],
+    "attention": "ECA (Efficient Channel Attention)",
+    "pooling": "GlobalAveragePooling2d",
+    "head": "Dropout(0.3) → Linear(128, 1)",
+    "total_parameters": 206875,
+    "export": "ONNX opset 18 — 86.6 KB"
+  },
+  "dataset": {
+    "total_samples": 1763,
+    "train_samples": 1410,
+    "val_samples": 353,
+    "val_split": 0.2,
+    "split_strategy": "random (train_test_split, random_state=42)",
+    "augmentation": true,
+    "augmentation_ops": ["ExtremeAugmentation (flip + rot90 on SI > 2.0 samples)"],
+    "temporal_coverage": "2011-2025 (Solar Cycles 24-25)"
+  },
+  "metrics": {
+    "final_mae": 0.1076,
+    "final_rmse": 0.1284,
+    "r2_score": 0.8608,
+    "mape_pct": 6.22,
+    "best_epoch": 21,
+    "best_val_loss": 0.1071,
+    "train_val_mae": 0.1071,
+    "onnx_inference_ms": 25.11,
+    "pytorch_inference_ms": 27.90,
+    "onnx_speedup_vs_pytorch_cpu": "1.11x (25.11 ms vs 27.90 ms)",
+    "metric_note": "final_mae/rmse/r2/mape = evaluate_final.py (MC Dropout T=20, model.eval()+Dropout.train(), log-SI, 353 hold-out, random split random_state=42). train_val_mae = training-loop best epoch 21/24."
+  },
+  "environment": {
+    "device": "mps",
+    "framework": "PyTorch 2.2.0 + ONNX Runtime 1.17",
+    "python_version": "3.12.1",
+    "os": "macOS 15.4"
+  },
+  "notes": "Domain-shift fix: random_state=42 split keeps extreme events represented in both sets (max_y_train=2.9788, max_y_val=2.9019). MC Dropout fix: use model.eval()+Dropout.train() instead of model.train(). ExtremeAugmentation applies pixel-perfect flip + rot90 only to extreme samples (SI > 2.0). Early stopping at epoch 24, best checkpoint at epoch 21 (train val_mae: 0.1071, log-SI). LR reduced from 0.001 to 0.0005 at epoch 19 and from 0.0005 to 0.00025 at epoch 23. Exported to ONNX opset 18 with do_constant_folding=True: 86.6 KB, 25.11 ms CPU (1.11x vs PyTorch CPU 27.90 ms)."
+}

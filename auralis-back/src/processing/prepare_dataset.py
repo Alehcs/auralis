@@ -1,34 +1,8 @@
-"""Preprocessing pipeline: HMI FITS -> dual-channel log-scaled NumPy tensors.
+"""Preprocess HMI FITS files into Coronium V3 PRO tensors.
 
-Transforms raw HMI Level-1.5 FITS files downloaded from NASA JSOC into
-float32 NumPy arrays suitable for training Coronium. The normalisation
-protocol is fixed at dataset creation time and must be reproduced exactly
-at inference (see ``predict.preprocess_fits_image``).
-
-Processing steps applied to each magnetogram:
-    1. Load with SunPy to inherit the FITS header coordinate metadata.
-    2. Replace NaN values (off-disk limb mask applied by JSOC) with 0.
-    3. Compute the sunspot proxy index on the raw, pre-resample array to
-       avoid interpolation artefacts inflating the active-pixel count near
-       the detection threshold.
-    4. Resample to 512 x 512 with bilinear anti-aliasing to standardise
-       spatial resolution across the SDO observing baseline (2011-2025),
-       during which the SDO-Sun distance varies by approximately +-3%.
-    5. Apply symmetric logarithmic scaling: x' = sign(x) * log(1 + |x|).
-       This transform compresses extreme umbral flux densities (> 2000 G)
-       without discarding them, preserving roughly 3x more dynamic range
-       than the former +-400 G hard clip while remaining differentiable
-       almost everywhere. The mapping is monotone, sign-preserving, and
-       invertible, so no physical information is destroyed.
-    6. Decompose into two non-negative polarity channels:
-         B+ = ReLU(x')   — positive (leading) polarity flux
-         B- = ReLU(-x')  — negative (trailing) polarity flux
-       Separating polarities into independent channels allows convolutional
-       filters to specialise by polarity sign without relying on negative
-       activations, which is consistent with the bipolar active-region
-       morphology targeted by Coronium.
-    7. Stack channels into a (2, H, W) float32 tensor and serialise as .npy.
-    8. Append a metadata row to the companion CSV.
+The model contract is `(2, 512, 512)`: channel 0 is B+ and channel 1 is B-,
+both derived from the symmetric log-scaled magnetogram. The sunspot proxy is
+computed before resize so interpolation does not change the active-pixel count.
 """
 
 import csv
@@ -53,20 +27,10 @@ warnings.filterwarnings("ignore")
 
 
 def log_scale(x: np.ndarray) -> np.ndarray:
-    """Apply symmetric logarithmic scaling to a magnetogram array.
+    """Apply the sign-preserving log transform used by V3 PRO.
 
-    Implements the transform x' = sign(x) * log(1 + |x|), which maps the
-    unbounded Gauss domain to a compressed real range while preserving sign,
-    monotonicity, and the zero crossing. Unlike hard clipping at +-400 G, this
-    function retains information from strong-field umbral cores (> 2000 G) that
-    are diagnostic of X-class flare precursors, effectively extending the
-    usable dynamic range of the representation by approximately one decade.
-
-    Args:
-        x: Input array in Gauss (any shape, float32 or float64).
-
-    Returns:
-        Transformed array of the same shape and dtype as ``x``.
+    It compresses strong umbral fields without the information loss introduced
+    by the older +/-400 G hard clip.
     """
     return np.sign(x) * np.log1p(np.abs(x))
 
@@ -81,45 +45,6 @@ def load_and_process_magnetogram(
     The sunspot proxy index is computed on the original, pre-resample pixel
     array to avoid double-counting artefacts introduced by bilinear
     interpolation near the 200 G detection threshold.
-
-    Normalisation rationale — V3 PRO logarithmic scaling
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Previous versions clipped the line-of-sight flux density to +-400 G and
-    scaled linearly to [-1, 1] following Bobra & Couvidat (2015). While
-    appropriate for statistical studies of active-region properties, the hard
-    clip permanently discards information from pixels above 400 G — which,
-    in penumbral and umbral regions, can reach 2000–3500 G and carry strong
-    predictive signal for major flare events.
-
-    The V3 PRO pipeline replaces clipping with the symmetric log transform
-    x' = sign(x) * log(1 + |x|). For reference values:
-        |B| = 100 G  ->  x' ≈ 4.62
-        |B| = 400 G  ->  x' ≈ 5.99   (former saturation point)
-        |B| = 2000 G ->  x' ≈ 7.60   (previously clipped, now retained)
-        |B| = 3500 G ->  x' ≈ 8.16   (umbral cores)
-
-    The transformed array is then decomposed into two non-negative polarity
-    channels (B+ and B-) using ReLU. This disentangles leading and trailing
-    polarity lobes of bipolar magnetic regions into separate feature maps,
-    enabling convolutional kernels to specialise by polarity without relying
-    on negative activation values.
-
-    Args:
-        fits_path: Path to an HMI Level-1.5 FITS file.
-        target_size: Square output side length in pixels (default 512).
-        sunspot_threshold: Field strength threshold in Gauss used to classify
-            pixels as magnetically active (default 200.0).
-
-    Returns:
-        Tuple of:
-            - float32 ndarray of shape (2, target_size, target_size).
-              Channel 0 is B+ = ReLU(x'), channel 1 is B- = ReLU(-x').
-            - Metadata dictionary with keys: filename, date, sunspot_index,
-              original_shape, processed_shape, b_pos_max, b_neg_max,
-              mean_b_pos, mean_b_neg.
-
-    Raises:
-        Exception: Propagated from SunPy or skimage on malformed FITS input.
     """
     try:
         solar_map = sunpy.map.Map(str(fits_path))
@@ -176,23 +101,9 @@ def prepare_dataset(
 ) -> List[Dict[str, Any]]:
     """Batch-process all FITS files in ``raw_dir`` and write dual-channel .npy tensors.
 
-    Each output tensor has shape (2, target_size, target_size) where channel 0
-    holds the positive-polarity map B+ and channel 1 holds the negative-polarity
-    map B-, both derived from the symmetric log-scaled magnetogram.
-
     Files are processed in sorted order for reproducibility. Errors on
     individual files are logged and skipped; processing continues to enable
     partial recovery from corrupt or incomplete JSOC downloads.
-
-    Args:
-        raw_dir: Directory containing raw ``.fits`` files.
-        processed_dir: Output directory for ``.npy`` tensors (created if absent).
-        target_size: Square output resolution passed to
-            ``load_and_process_magnetogram``.
-        sunspot_threshold: Active-region detection threshold in Gauss.
-
-    Returns:
-        List of metadata dictionaries, one per successfully processed file.
     """
     processed_path = Path(processed_dir)
     processed_path.mkdir(parents=True, exist_ok=True)
@@ -249,28 +160,9 @@ def normalize_sunspot_targets(
 ) -> Tuple[float, float]:
     """Apply Z-Score standardization to ``sunspot_index`` in-place and persist the scaler.
 
-    Computes the global mean and standard deviation from the full training
-    batch, applies the transform ``y_norm = (y - mean) / std`` to every
-    metadata entry, and writes the two scalar parameters to a JSON file so
-    that evaluation / inference code can invert the transform without
-    re-loading the dataset.
-
     The raw ``sunspot_index`` value is preserved under the key
     ``sunspot_index_raw`` to allow debugging and distribution checks
     after the fact.
-
-    Args:
-        metadata_list: List of metadata dicts produced by ``prepare_dataset``.
-            Modified **in-place**: each dict gains ``sunspot_index_raw`` and
-            its ``sunspot_index`` field is replaced with the normalised value.
-        scaler_path: Destination path for the JSON scaler file
-            (parent directory created if absent).
-
-    Returns:
-        Tuple ``(mean, std)`` computed over the batch.
-
-    Raises:
-        ValueError: If ``metadata_list`` is empty or std is zero (constant target).
     """
     if not metadata_list:
         raise ValueError("metadata_list is empty — cannot fit scaler.")
@@ -305,17 +197,7 @@ def save_metadata_csv(
     metadata_list: List[Dict[str, Any]],
     output_path: str = "data/processed/metadata_processed.csv",
 ) -> None:
-    """Write the metadata list to a CSV file.
-
-    Shape tuples are serialised as strings because CSV does not support
-    compound types; downstream code should parse them with ``ast.literal_eval``
-    if shape comparison is required.
-
-    Args:
-        metadata_list: List of dictionaries returned by ``prepare_dataset``.
-        output_path: Destination path for the CSV file (parent created if
-            absent).
-    """
+    """Write metadata CSV, stringifying shape tuples for portability."""
     if not metadata_list:
         logger.warning("No metadata to write.")
         return
