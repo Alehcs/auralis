@@ -3,16 +3,18 @@ import { CheckCircle } from 'lucide-react';
 export function ProjectDescription() {
   const useCases = [
     'Space weather research and monitoring',
-    'Solar activity forecasting applications',
+    'Solar activity index estimation',
     'ML/AI engineering portfolio demonstration',
     'Data pipeline and MLOps case study'
   ];
 
   const technicalFeatures = [
     { label: 'Dataset Size', value: '1,763 samples' },
-    { label: 'Model Accuracy', value: '94.48%' },
-    { label: 'Prediction Confidence', value: '95% CI · MC Dropout' },
-    { label: 'SDO/HMI Cadence', value: '45s' }
+    { label: 'Accuracy Proxy (100-MAPE)', value: '93.78%' },
+    { label: 'MAE log-SI (MC)', value: '0.1076' },
+    { label: 'ONNX Latency (CPU)', value: '25.11 ms' },
+    { label: 'Inference Confidence', value: '20-pass ONNX' },
+    { label: 'SDO/HMI Cadence', value: '45 s' }
   ];
 
   return (
@@ -26,10 +28,10 @@ export function ProjectDescription() {
           {/* Description */}
           <div className="space-y-4">
             <p className="text-sm text-neutral-300 leading-relaxed">
-              Auralis is an end-to-end machine learning and data engineering system designed to detect and forecast solar activity from NASA SDO/HMI magnetograms.
+              Auralis is an end-to-end machine learning and data engineering system for estimating solar activity from NASA SDO/HMI magnetograms.
             </p>
             <p className="text-sm text-neutral-300 leading-relaxed">
-              The platform processes solar imagery in real-time, identifies active regions using computer vision, and generates short-term forecasts of sunspot activity with confidence intervals.
+              The platform processes local solar imagery, identifies active magnetic regions with computer vision, and reports the current activity index with an uncertainty estimate.
             </p>
             
             <div className="pt-4">
@@ -66,7 +68,7 @@ export function ProjectDescription() {
                 Technology Stack
               </h3>
               <div className="flex flex-wrap gap-2">
-                {['Python', 'PyTorch', 'FastAPI', 'NumPy / SciPy', 'Coronium V3 PRO', 'Grad-CAM', 'React', 'Recharts'].map((tech) => (
+                {['Python', 'PyTorch', 'ONNX Runtime', 'FastAPI', 'NumPy / SciPy', 'Coronium V3 PRO', 'Grad-CAM', 'React', 'Recharts'].map((tech) => (
                   <span key={tech} className="px-2 py-1 bg-neutral-950 border border-neutral-700 text-xs text-neutral-300 font-mono">
                     {tech}
                   </span>

@@ -4,6 +4,20 @@ import { getStats } from '@/lib/api';
 import type { SystemStats } from '@/lib/types';
 import { useLanguage } from '@/lib/i18n/language-context';
 
+/** Colour for R² — green ≥ 0.5, amber ≥ 0, red < 0 (distribution shift). */
+function r2Color(val: number | null): string {
+  if (val === null) return 'bg-neutral-500/20';
+  if (val >= 0.5)  return 'bg-green-500/20';
+  if (val >= 0)    return 'bg-amber-500/20';
+  return                  'bg-red-500/20';
+}
+function r2IconColor(val: number | null): string {
+  if (val === null) return 'text-neutral-400';
+  if (val >= 0.5)  return 'text-green-400';
+  if (val >= 0)    return 'text-amber-400';
+  return                  'text-red-400';
+}
+
 export function GlobalMetrics() {
   const { t } = useLanguage();
   const e = t.experiments;
@@ -14,6 +28,8 @@ export function GlobalMetrics() {
   useEffect(() => {
     getStats().then(setStats).finally(() => setLoading(false));
   }, []);
+
+  const r2Val = stats?.r2_score ?? null;
 
   const CARDS = [
     {
@@ -34,11 +50,11 @@ export function GlobalMetrics() {
     },
     {
       label:     'R²',
-      value:     loading ? '—' : (stats?.r2_score.toFixed(3) ?? '—'),
+      value:     loading ? '—' : (r2Val !== null ? r2Val.toFixed(3) : '—'),
       sub:       e.r2Desc,
       Icon:      BarChart2,
-      iconBg:    'bg-green-500/20',
-      iconColor: 'text-green-400',
+      iconBg:    r2Color(loading ? null : r2Val),
+      iconColor: r2IconColor(loading ? null : r2Val),
     },
   ] as const;
 

@@ -9,5 +9,8 @@ jupyter
 notebook
 torch
 torchvision
+onnx
+onnxruntime
+onnxscript
 streamlit
 plotly

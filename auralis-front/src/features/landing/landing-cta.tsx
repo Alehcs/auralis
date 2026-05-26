@@ -10,10 +10,10 @@ export function LandingCTA({ onEnterDashboard }: LandingCTAProps) {
     <div className="px-6 py-20 bg-neutral-900 border-t border-neutral-800">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-semibold text-white mb-4">
-          Explore the Live Dashboard
+          Explore the Dashboard
         </h2>
         <p className="text-sm text-neutral-400 mb-8 max-w-2xl mx-auto">
-          Access real-time solar activity predictions, magnetogram analysis, model metrics, and complete pipeline monitoring.
+          Inspect local magnetograms, current-index inference, model metrics, and research artifacts from the pipeline.
         </p>
 
         <RippleButton

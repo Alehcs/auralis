@@ -35,15 +35,15 @@ export interface ImageListResponse {
 /**
  * Solar activity classification derived from the predicted sunspot index.
  *
- * Thresholds follow the GOES X-ray scale adapted to the V3 PRO normalised range:
- * - `< 1.6`      → Low  / C-class / #22c55e
- * - `1.6 – <2.0` → Medium / M-class / #f97316
- * - `≥ 2.0`      → High / X-class / #ef4444
+ * Thresholds are calibrated to the promoted V3 PRO ONNX output range:
+ * - `< 1.41`        -> Low    / C-class / #22c55e
+ * - `1.41 - <1.75` -> Medium / M-class / #f97316
+ * - `>= 1.75`      -> High   / X-class / #ef4444
  */
 export interface ClassificationInfo {
     /** "Low" | "Medium" | "High" */
     level: 'Low' | 'Medium' | 'High';
-    /** Human-readable label, e.g. "Bajo / Actividad Normal" */
+    /** Human-readable label, e.g. "Low / Normal Activity" */
     label: string;
     /** GOES flare class letter: "C" | "M" | "X" */
     flare_class: string;
@@ -54,9 +54,9 @@ export interface ClassificationInfo {
 /**
  * Solar activity regression result from a single Coronium inference call.
  *
- * `uncertainty` is the standard deviation across 20 Monte Carlo Dropout
- * stochastic forward passes. `confidence` is a heuristic inversely
- * proportional to the absolute magnitude of `sunspot_index`.
+ * The current ONNX endpoint reports uncertainty as the standard deviation
+ * across 20 input-noise passes. The exported ONNX graph is eval-mode, so this
+ * is not true dropout-based uncertainty.
  */
 export interface PredictionResult {
     /** Predicted sunspot index (continuous, normalised to the training distribution). */
@@ -65,7 +65,7 @@ export interface PredictionResult {
     risk_level: 'Low' | 'Medium' | 'High';
     /** Prediction confidence in `[0.75, 0.99]`; conservative for high-activity events. */
     confidence: number;
-    /** Empirical uncertainty: std-dev of 20 MC Dropout passes. */
+    /** Empirical uncertainty: std-dev of 20 ONNX input-noise passes. */
     uncertainty: number;
     /** Full classification object with label, flare class, and hex colour. */
     classification: ClassificationInfo;
@@ -76,21 +76,22 @@ export interface PredictionResult {
 // ---------------------------------------------------------------------------
 
 /**
- * Dataset-level statistics and frozen training performance metrics.
+ * Dataset-level statistics and frozen evaluation performance metrics.
  *
- * `mae`, `rmse`, and `r2_score` are hardcoded from the final `exp_003`
- * training run and must be updated manually when a new model is promoted.
+ * `mae`, `rmse`, and `r2_score` reflect the promoted Coronium V3 PRO model
+ * (`exp_005` with ExtremeAugmentation). Metrics are reported in log-SI space
+ * from evaluate_final.py using MC Dropout T=20 over 353 hold-out samples.
  */
 export interface SystemStats {
     /** Count of `.npy` files currently in `data/processed/`. */
     total_images: number;
     /** Aggregate disk footprint of all magnetogram files in MiB. */
     disk_usage_mb: number;
-    /** Mean Absolute Error on the `exp_003` validation set. */
+    /** Mean Absolute Error in log-SI space, MC Dropout T=20 eval, 353 hold-out samples. */
     mae: number;
-    /** Root Mean Squared Error on the `exp_003` validation set. */
+    /** Root Mean Squared Error — log-SI space, same evaluation protocol as `mae`. */
     rmse: number;
-    /** Coefficient of determination (R²) on the `exp_003` validation set. */
+    /** R2 on the promoted hold-out split. */
     r2_score: number;
     /** UTC ISO-8601 timestamp of the most recently modified `.npy` file. */
     last_updated: string;
@@ -116,8 +117,12 @@ export interface LogEntry {
 export interface HealthResponse {
     /** Liveness indicator; `"ok"` when the server is operational. */
     status: string;
-    /** Semantic version string of the running API, e.g. `"2.1.0"`. */
+    /** Semantic version string of the running API, e.g. `"3.0.0"`. */
     version: string;
+    /** True when both the PyTorch checkpoint and ONNX session are ready. */
+    model_loaded: boolean;
+    /** Backend selected for PyTorch Grad-CAM work (`mps`, `cuda`, or `cpu`). */
+    device: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -269,14 +274,15 @@ export interface ExperimentEntry {
 // ---------------------------------------------------------------------------
 
 /**
- * Inference result from the dual-channel CoroniumDual endpoint.
+ * Historical response shape for the early AIA/HMI dual-input experiment.
  *
- * Extends {@link PredictionResult} with the active inference mode. When
- * `coronium_v3_dual.pth` weights are unavailable, the backend silently falls
- * back to single-channel inference and sets `dual_channel = false`.
+ * The current `/api/predict-dual/{filename}` endpoint returns `PredictionResult`
+ * and uses the same B+ / B- Coronium V3 PRO model as `/api/predict/{filename}`.
+ * Keep this type only for older branches or saved UI experiments that still
+ * expect an explicit channel descriptor.
  */
 export interface DualChannelPredictionResult extends PredictionResult {
-    /** `true` when CoroniumDual (2-channel) weights were used; `false` on fallback. */
+    /** `true` when a historical dual-input model was used. */
     dual_channel: boolean;
     /** Fixed ordered tuple describing the channel stack. */
     channels: ['hmi_magnetogram', 'aia_193'];

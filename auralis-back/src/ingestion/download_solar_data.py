@@ -1,19 +1,8 @@
-"""Single-date HMI magnetogram downloader via NASA JSOC / SunPy Fido.
+"""Small HMI downloader for manual or recent-window data pulls.
 
-Fetches one HMI Level-1.5 LOS magnetogram per target timestamp from the
-JSOC ``hmi.m_45s`` data series. Each query uses a ±5-minute window around
-the requested time: this guarantees at most one frame is returned at the
-45-second cadence without requiring the caller to know the exact TAI
-timestamp of the nearest exposure.
-
-The ``a.Sample(24*u.hour)`` attribute coarse-grains the JSOC query to
-one result per day, preventing the server from returning the full
-1,920-image/day cadence of the 45-second series when the time window
-spans multiple hours.
-
-Usage::
-
-    python -m src.ingestion.download_solar_data
+Use the massive ingestion pipeline for large date ranges. This module keeps a
+narrow query window around each requested timestamp and fetches only the first
+matching JSOC frame.
 """
 
 import logging
@@ -40,33 +29,11 @@ def fetch_solar_data(
     instrument: str = "hmi",
     physobs: str = "los_magnetic_field",
 ) -> List[str]:
-    """Download one HMI magnetogram per sampling interval between two dates.
+    """Download one HMI magnetogram per sampling interval.
 
-    Iterates over timestamps spaced ``sample_rate`` hours apart from
-    ``start_date`` to ``end_date``. For each timestamp a JSOC Fido query
-    with a ±5-minute window retrieves the nearest available Level-1.5 frame.
-    Only the first result is fetched when multiple files satisfy the query
-    (duplicates are rare at 24-hour intervals but possible during re-ingestion
-    windows after JSOC reprocessing).
-
-    JSOC imposes per-IP rate limits; callers running large date ranges should
-    use ``massive_ingest_pipeline`` instead, which adds exponential-backoff
-    retry and inter-batch sleep.
-
-    Args:
-        start_date: Start of the download window, as ``"YYYY-MM-DD"`` or a
-            ``datetime`` object.
-        end_date: End of the download window (inclusive).
-        sample_rate: Hours between successive target timestamps (default 24).
-        download_dir: Local directory for downloaded FITS files (created if
-            absent).
-        instrument: JSOC instrument identifier (default ``"hmi"``).
-        physobs: Physical observable string passed to ``a.Physobs``
-            (default ``"los_magnetic_field"``).
-
-    Returns:
-        List of absolute path strings for every successfully downloaded file.
-        Files that returned no JSOC results or raised exceptions are omitted.
+    The +/-5 minute query window is wide enough to catch a nearby 45-second HMI
+    frame without pulling a full cadence sequence. Failed timestamps are logged
+    and skipped so ad-hoc runs can continue.
     """
     if isinstance(start_date, str):
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
@@ -134,12 +101,7 @@ def fetch_solar_data(
 
 
 def main() -> None:
-    """Download the past 14 days of daily HMI magnetograms.
-
-    The end date is set two days before the current UTC date because JSOC
-    Level-1.5 processing has an approximate 48-hour latency; querying more
-    recent dates returns empty result sets.
-    """
+    """Download the latest two-week window after JSOC processing latency."""
     end_date = datetime.utcnow() - timedelta(days=2)
     start_date = end_date - timedelta(days=14)
 

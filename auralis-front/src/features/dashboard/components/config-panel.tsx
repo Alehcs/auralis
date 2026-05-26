@@ -52,8 +52,8 @@ export function ConfigPanel() {
 
   const [notif, setNotif] = useState({ highRisk: true, slackFail: true, digest: false });
 
-  const DEVICE    = 'mps (Apple Silicon)';
-  const BATCH     = '16';
+  const DEVICE    = 'ONNX Runtime · CPU (edge)';
+  const BATCH     = '32';
   const PRECISION = 'float32';
   const API_KEY   = 'hk_live_••••••••••••••a3f2';
 

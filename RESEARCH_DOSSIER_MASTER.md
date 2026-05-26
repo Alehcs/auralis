@@ -746,47 +746,71 @@ El pipeline completo — desde adquisición FITS en NASA JSOC hasta inferencia R
 ## APPENDIX A — Source File Reference Index
 
 ```
-auralis-back/
-├── src/
+Auralis/
+├── docs/                                  — Notas de mantenimiento y arquitectura
+│   ├── architecture.md                    — Sistema, contratos de datos, límites front/back
+│   └── backend.md                         — Notas para mantenedores del backend
+├── auralis-back/
+│   ├── src/
+│   │   ├── models/
+│   │   │   └── train_model.py             — Arquitectura Coronium V3 PRO + ExtremeAug, training loop
+│   │   ├── processing/
+│   │   │   ├── prepare_dataset.py         — FITS→NPY pipeline, normalización B+/B−, log(SI)
+│   │   │   └── validate_processed.py      — Validación de calidad de datos
+│   │   ├── ingestion/
+│   │   │   ├── download_solar_data.py     — Ingesta individual HMI
+│   │   │   └── massive_ingest_pipeline.py — Construcción masiva del dataset (1,763 muestras)
+│   │   ├── experiments/
+│   │   │   └── run_external_baselines.py  — Benchmark ResNet-18 / VGG-11
+│   │   ├── api/
+│   │   │   └── main.py                    — FastAPI server, ONNX inference, Grad-CAM, MC Dropout
+│   │   ├── tools/
+│   │   │   └── visualize_tensor.py        — Inspección de tensores .npy
+│   │   └── visualization/
+│   │       └── app.py                     — Streamlit app de visualización (auxiliar)
+│   ├── scripts/                           — Scripts de ejecución (entrenamiento / eval / export)
+│   │   ├── evaluate_final.py              — Evaluación oficial hold-out (353 muestras, MC Dropout T=20)
+│   │   ├── explain_model.py               — Grad-CAM XAI sobre stage4
+│   │   ├── export_to_onnx.py              — Exportación PyTorch → ONNX opset 18 + benchmark
+│   │   ├── plot_final_scatter.py          — Scatter Predicción vs. Real (figura tesis)
+│   │   ├── predict.py                     — CLI de inferencia individual
+│   │   ├── recalculate_scaler.py          — [Auxiliar] cálculo de scaler poblacional (no usado en V3 PRO)
+│   │   ├── extract_test_kit.py            — Preparación de kit de muestras para demo
+│   │   ├── kaggle_auralis_v3pro_dataset_builder.py — Publicación del dataset en Kaggle
+│   │   └── test_inference.py              — Smoke test del pipeline de inferencia
 │   ├── models/
-│   │   ├── train_model.py              — Arquitectura Coronium V3 PRO, training loop, hiperparámetros
-│   │   ├── evaluate_final.py           — Evaluación final sobre hold-out (353 muestras)
-│   │   ├── evaluate_model.py           — Evaluación general del modelo
-│   │   └── explain_model.py            — Grad-CAM XAI sobre stage4
-│   ├── processing/
-│   │   ├── prepare_dataset.py          — FITS→NPY pipeline, normalización B+/B−
-│   │   └── validate_processed.py       — Validación de calidad de datos
-│   ├── ingestion/
-│   │   ├── download_solar_data.py      — Ingesta individual HMI
-│   │   └── massive_ingest_pipeline.py  — Construcción masiva del dataset (1,763 muestras)
-│   └── api/
-│       └── main.py                     — FastAPI server, Grad-CAM (stage4), MC Dropout
-├── tools/
-│   └── recalculate_scaler.py           — Cálculo del Z-Score Poblacional (μ=1.7658, σ=0.3462)
-├── models/
-│   ├── coronium_v1.pth                   — Coronium V1 weights
-│   ├── coronium_best.pth                 — Coronium V1 best epoch
-│   ├── coronium_v2_final.pth             — Coronium V2 final weights
-│   ├── coronium_v2_pro.pth               — Coronium V2 PRO [DEPRECADO]
-│   └── coronium_v3_pro.pth               — Coronium V3 PRO [PRODUCCIÓN ACTIVA]
-├── experiments/
-│   ├── exp_001_v1_baseline.json        — Experiment 001 results
-│   ├── exp_002_v2_tuned.json           — Experiment 002 results
-│   ├── exp_003_v2pro_production.json   — Experiment 003 results
-│   ├── exp_004_v3pro_final.json        — Experiment 004 results
-│   ├── exp_005_v3pro_augmented.json    — Experiment 005 results [PRODUCCIÓN ACTIVA]
-│   └── results_benchmarking.json       — External baselines: Naive/ResNet18/VGG-11
-├── reports/figures/
-│   ├── gradcam_sample.png                              — Mapas de calor Grad-CAM validados
-│   ├── gradcam_v3pro_maxactivity_20240810.png          — Grad-CAM sobre magnetograma máxima actividad (SI=2.978, 2024-08-10)
-│   ├── learning_curve_v3_pro.png                       — Curva de entrenamiento (Early Stop Época 24)
-│   ├── error_scatter.png                               — Scatter predicción vs. real (escala física)
-│   └── mode_collapse_evidence.png                      — Evidencia histórica del Mode Collapse (resuelto)
-├── data/processed/
-│   └── metadata_processed.csv          — Índice de 1,763 muestras curadas
-├── notebooks/
-│   └── 01_exploracion_y_visualizacion.ipynb
-└── massive_ingest_2000.log             — Log de auditoría de ingesta
+│   │   ├── coronium_v1.pth                — Coronium V1 weights
+│   │   ├── coronium_best.pth              — Coronium V1 best epoch
+│   │   ├── coronium_v2_final.pth          — Coronium V2 final weights
+│   │   ├── coronium_v2_pro.pth            — Coronium V2 PRO [DEPRECADO]
+│   │   ├── best_coronium_v3_pro.pth       — V3 PRO original (sin ExtremeAug)
+│   │   ├── best_coronium_v3_pro_augmented.pth — V3 PRO + ExtremeAug [PRODUCCIÓN ACTIVA]
+│   │   ├── best_coronium_v3_pro.onnx      — Export ONNX opset 18, 86.6 KB [EDGE DEPLOYMENT]
+│   │   ├── best_coronium_v3_pro.onnx.data — Pesos externos del ONNX
+│   │   ├── target_scaler.json             — [Auxiliar] scaler μ=1.7658, σ=0.3462 (no usado por el modelo activo)
+│   │   └── split_indices.json             — Índices canónicos del split aleatorio (random_state=42, 1410/353)
+│   ├── experiments/
+│   │   ├── exp_001_v1_baseline.json       — V1 baseline (MAE 0.2847, R² 0.7213)
+│   │   ├── exp_002_v2_tuned.json          — V2 LR+Scheduler (MAE 0.1834, R² 0.8241)
+│   │   ├── exp_003_v2pro_production.json  — V2 PRO (MAE 0.1416, R² 0.8705)
+│   │   ├── exp_004_v3pro_final.json       — V3 PRO base (transición)
+│   │   ├── exp_005_v3pro_augmented.json   — V3 PRO + ExtremeAug [PRODUCCIÓN ACTIVA — MAE 0.1076, R² 0.8608]
+│   │   └── results_benchmarking.json      — External baselines: Naive/ResNet18/VGG-11
+│   ├── reports/
+│   │   ├── results_comparison.csv         — Predicciones vs reales (353 muestras eval)
+│   │   ├── final_coronium_scatter_tesis.png — Figura oficial scatter para tesis (exp_005)
+│   │   ├── r2_diagnostic.png              — Diagnóstico visual del R²
+│   │   └── figures/
+│   │       ├── gradcam_sample.png         — Mapas Grad-CAM validados
+│   │       ├── gradcam_v3pro_maxactivity_20240810.png — Grad-CAM sobre SI=2.978 (2024-08-10)
+│   │       ├── learning_curve_v3_pro.png  — Curva de entrenamiento (Early Stop Época 24)
+│   │       ├── error_scatter.png          — Scatter predicción vs. real
+│   │       └── mode_collapse_evidence.png — Evidencia histórica del Mode Collapse (resuelto)
+│   ├── data/processed/
+│   │   └── metadata_processed.csv         — Índice de 1,763 muestras (target en log-SI)
+│   └── notebooks/
+│       └── 01_exploracion_y_visualizacion.ipynb
+└── auralis-front/                         — Dashboard React 18 + TypeScript + Vite
 ```
 
 ## APPENDIX B — Key Equations Summary
@@ -795,8 +819,8 @@ auralis-back/
 |------------------|-------------------------------------------------------------|-----------------------|
 | $B_{clip}$       | Umbral de clipping del campo magnético                      | 400.0 G               |
 | $B_{thresh}$     | Umbral de detección de campo fuerte                         | 200.0 G               |
-| $\mu_{pop}$      | Media poblacional del log(SI) — 1,314 tensores reales       | **1.7658**            |
-| $\sigma_{pop}$   | Desviación estándar poblacional del log(SI)                 | **0.3462**            |
+| $\mu_{pop}$      | [Auxiliar] media poblacional log(SI) — preservado en `target_scaler.json` (no aplicado por el modelo activo) | 1.7658               |
+| $\sigma_{pop}$   | [Auxiliar] desviación estándar poblacional log(SI) — referencia histórica | 0.3462               |
 | $\eta_0$         | Learning rate inicial                                       | 0.001                 |
 | $\gamma$         | Factor de reducción del LR scheduler                        | 0.5                   |
 | $p_{sched}$      | Paciencia del LR scheduler                                  | **3 épocas**          |

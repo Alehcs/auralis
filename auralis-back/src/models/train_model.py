@@ -1,27 +1,8 @@
-"""Training pipeline for Coronium V3 PRO — dual-channel ECA residual architecture.
+"""Training pipeline for the Coronium V3 PRO regressor.
 
-Coronium is a lightweight CNN regressor trained on HMI/SDO Level-1.5
-magnetograms to predict a proxy sunspot index. V3 PRO introduces Efficient
-Channel Attention (ECA) within residual blocks and a narrower filter schedule
-(16→32→64→96), totalling ~88,313 trainable parameters while preserving the
-resolution-agnostic Global Average Pooling regression head.
-
-The dual-channel input (B+, B-) encodes positive and negative polarity lobes
-separately, enabling convolutional kernels to specialise by polarity sign.
-
-Training protocol:
-    Loss      : WeightedHuberLoss (δ=1.0, α=2.0) + L1 (diagnostic reporting)
-    Optimiser : AdamW, lr=1e-3, weight_decay=1e-5
-    Schedule  : ReduceLROnPlateau (factor=0.5, patience=3, min_lr=1e-6)
-    Stop      : EarlyStopping (patience=10) on validation Weighted Huber Loss
-    Eval      : MC Dropout (T=20 forward passes, dropout active) + mean prediction
-    Aug       : random horizontal/vertical flip, ±10° rotation
-
-Why α=2.0 (vs prior α=0.1):
-    The V3 PRO dataset spans the full Solar Cycle 24 dynamic range where
-    active-region samples (sunspot index > 5 %) achieve a 3× upweight at
-    y=1.0 and a 41× upweight at y=20 %, directly addressing the quiet-Sun
-    dominance bias observed in V2 evaluation curves.
+Coronium predicts the current sunspot proxy index from dual-channel HMI
+magnetograms. V3 PRO keeps the model small for local ONNX inference while adding
+ECA attention and activity-weighted loss to reduce quiet-Sun bias.
 """
 
 import logging
@@ -39,6 +20,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader, Subset
 import torchvision.transforms as transforms
 from tqdm import tqdm
+from sklearn.model_selection import train_test_split
 
 
 logging.basicConfig(
@@ -50,13 +32,10 @@ warnings.filterwarnings("ignore")
 
 
 class SolarAugmentation:
-    """Stochastic augmentation pipeline for HMI magnetogram tensors.
+    """Standard stochastic augmentation for non-extreme training samples.
 
-    Random horizontal and vertical flips are valid because HMI Level-1.5 data
-    has statistically symmetric polarity distributions across the equatorial
-    plane (Hale's law), so hemisphere flips do not introduce polarity bias.
-    Rotation is capped at ±10° to remain within the residual roll-angle
-    uncertainty of the HMI instrument after P-angle correction upstream.
+    Flips and small rotations preserve the visual morphology we need without
+    changing the target index.
     """
 
     def __init__(self) -> None:
@@ -67,47 +46,20 @@ class SolarAugmentation:
         ])
 
     def __call__(self, img: torch.Tensor) -> torch.Tensor:
-        """Apply the composed transforms to a single magnetogram tensor.
-
-        Args:
-            img: Float tensor of shape (2, H, W) — channels B+ and B-.
-
-        Returns:
-            Augmented tensor with identical shape.
-        """
+        """Apply the composed transforms to a single magnetogram tensor."""
         return self.transforms(img)
 
 
 class ExtremeAugmentation:
     """Interpolation-free augmentation for high-activity solar magnetogram samples.
 
-    Applied exclusively to samples whose sunspot_index exceeds ``extreme_threshold``
-    (default 2.0). Uses only isometric transforms that preserve the log-scaled
-    polarity signal exactly:
-
-    - ``torch.flip``   — bitwise pixel reversal along H or W; zero information loss.
-    - ``torch.rot90``  — exact 90°-multiple rotation; no interpolation kernel applied.
-
-    ``torchvision.RandomRotation(degrees=arbitrary)`` is intentionally avoided:
-    bilinear interpolation creates edge artefacts on active-region boundaries and
-    introduces sub-pixel signal mixing in the log-scaled B+/B- channels, which
-    corrupts the polarity gradient information the model relies on for high-index
-    predictions.
-
-    Physical validity (Hale's law): solar bipolar active regions are statistically
-    symmetric under hemisphere reflection and 90°-multiple rotation, so these
-    transforms do not introduce polarity bias into the training distribution.
+    High-index samples are rare and carry sharp polarity boundaries. This path
+    uses only flips and 90-degree rotations so augmentation never interpolates
+    or blurs those boundaries.
     """
 
     def __call__(self, img: torch.Tensor) -> torch.Tensor:
-        """Apply stochastic isometric transforms to a dual-channel magnetogram tensor.
-
-        Args:
-            img: Float tensor of shape (2, H, W) — channels B+ and B-.
-
-        Returns:
-            Augmented tensor with identical shape (no spatial resampling).
-        """
+        """Apply stochastic isometric transforms without resampling pixels."""
         # Horizontal flip along the W axis (p=0.5)
         if torch.rand(1).item() > 0.5:
             img = torch.flip(img, dims=[2])
@@ -127,29 +79,9 @@ class ExtremeAugmentation:
 class SolarDataset(Dataset):
     """PyTorch Dataset wrapper for preprocessed dual-channel HMI magnetogram tensors.
 
-    Each sample is a two-channel float32 array of shape (2, H, W) stored as a
-    ``.npy`` file by ``prepare_dataset``. Channel 0 is B+ = ReLU(log-scaled flux)
-    and channel 1 is B- = ReLU(-log-scaled flux), representing the positive and
-    negative polarity lobes of each bipolar active region independently. The
-    validation subset is constructed from the same class with ``transform=None``
-    to prevent data leakage from stochastic operations.
-
-    V2-compatibility: files generated by the V2 pipeline are single-channel
-    ``(H, W)`` arrays normalised to ``[-1, 1]``. Because that normalisation
-    preserves field sign, the B+/B- polarity split is applied automatically at
-    load time so that V2 and V3 PRO files are handled transparently.
-
-    Args:
-        data_dir: Directory containing ``.npy`` processed magnetogram files.
-        metadata_csv: Path to the CSV produced by ``prepare_dataset``,
-            containing at minimum the columns ``processed_file`` and
-            ``sunspot_index``.
-        transform: Optional callable applied to normal samples (target ≤ threshold).
-            Expected interface: ``Tensor -> Tensor``.
-        extreme_threshold: When set, samples whose ``sunspot_index`` exceeds this
-            value receive ``ExtremeAugmentation`` (interpolation-free isometric
-            transforms) instead of ``transform``. Set to ``None`` for the
-            validation dataset to guarantee immutable validation data.
+    Current samples are `(2, H, W)` arrays with B+ and B- channels. Older
+    single-channel arrays are converted at load time so historical datasets can
+    still be inspected, but new training data should come from `prepare_dataset`.
     """
 
     def __init__(
@@ -184,17 +116,7 @@ class SolarDataset(Dataset):
         return len(self.metadata)
 
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
-        """Return a single (image, target) pair.
-
-        Args:
-            idx: Integer index into the metadata table.
-
-        Returns:
-            Tuple of:
-                - Image tensor of shape (2, 512, 512), dtype float32.
-                  Channel 0: B+ positive polarity map. Channel 1: B- negative polarity map.
-                - Target tensor of shape (1,) containing the sunspot index.
-        """
+        """Return one dual-channel tensor and its scalar sunspot-index target."""
         raw_filename: str = str(self.metadata.iloc[idx]["processed_file"])
         # Legacy rows have original_shape in processed_file due to a column
         # swap in an older version of prepare_dataset. Detect and reconstruct.
@@ -236,67 +158,9 @@ class SolarDataset(Dataset):
 class WeightedHuberLoss(nn.Module):
     """Activity-aware Huber loss for solar magnetogram regression.
 
-    Computes a per-sample Huber loss re-weighted by the magnitude of the
-    target sunspot index:
-
-        L(ŷ, y) = mean_over_batch { (1 + α · |y|) · huber_δ(ŷ, y) }
-
-    where the Huber kernel is:
-
-        huber_δ(ŷ, y) = 0.5 · (ŷ − y)²              if |ŷ − y| ≤ δ
-                         δ · (|ŷ − y| − 0.5 · δ)      otherwise
-
-    Why this loss is superior to MSE for the solar activity bias
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    The sunspot index distribution is strongly right-skewed: the vast majority
-    of HMI observations correspond to quiet-Sun days (index ≈ 0–1 %), while
-    active and X-class-flare-precursor days (index > 5 %) are rare. A plain
-    MSE objective has two compounding failure modes in this regime:
-
-    1. **Quadratic tail sensitivity.** MSE penalises large residuals with
-       squared magnitude, which sounds desirable for active-region accuracy.
-       In practice, a handful of catastrophic quiet-Sun misses (the model
-       predicting spurious activity) can dominate the total gradient and
-       steer weights away from learning active-region morphology — the very
-       task we care about.
-
-    2. **Implicit class imbalance.** Because quiet-Sun samples outnumber
-       active-region samples by ~10:1 in a typical solar-cycle dataset, the
-       MSE gradient is overwhelmingly driven by the majority class. The model
-       learns to minimise residuals on quiet days at the cost of systematic
-       underestimation on active days, producing the characteristic
-       *activity-floor bias* observed in V2/V3 PRO validation curves.
-
-    The Weighted Huber Loss corrects both failure modes simultaneously:
-
-    - **Huber robustness (δ=1.0).** For residuals |r| > δ the gradient is
-      capped at a constant δ rather than growing as 2·r. This prevents
-      the few extreme quiet-Sun mispredictions from overriding active-region
-      gradient signal. For small residuals (|r| ≤ δ) behaviour is identical
-      to MSE, so precision on common cases is unchanged.
-
-    - **Activity-proportional weighting (α·|y|).** Each sample's loss
-      contribution is scaled by (1 + α · |y|). For a quiet-Sun image
-      (y ≈ 0.2 %): weight ≈ 1.02 (essentially unaffected). For a moderate
-      active region (y ≈ 5 %): weight ≈ 1.5. For a major active region
-      (y ≈ 20 %): weight ≈ 3.0. The rare, physically important events
-      therefore contribute proportionally more gradient per sample, directly
-      counteracting the implicit class imbalance without requiring oversampling
-      or class-balanced batching strategies.
-
-    The result is a loss surface where the model is simultaneously *robust*
-    to outlier quiet-Sun predictions and *incentivised* to fit active-region
-    samples accurately — aligned with the physical objective of Coronium.
-
-    Args:
-        delta: Huber transition threshold. Residuals below δ are penalised
-            quadratically; residuals above δ are penalised linearly.
-            Default 1.0 matches the natural scale of the log-normalised
-            sunspot index.
-        alpha: Activity weighting coefficient. Scales the per-sample weight
-            as (1 + α · y). Default 2.0 gives a 3× upweight at y=1.0 and
-            a 41× upweight at y=20 %, covering the full Solar Cycle 24
-            dynamic range without oversampling or class-balanced batching.
+    The target distribution is quiet-Sun heavy, so plain MSE underweights the
+    rare active-region cases. Huber caps outlier gradients, while `(1 + alpha*y)`
+    gives higher-index samples more influence without oversampling.
     """
 
     def __init__(self, delta: float = 1.0, alpha: float = 2.0) -> None:
@@ -305,15 +169,7 @@ class WeightedHuberLoss(nn.Module):
         self.alpha = alpha
 
     def forward(self, y_pred: torch.Tensor, y_true: torch.Tensor) -> torch.Tensor:
-        """Compute the mean weighted Huber loss over a batch.
-
-        Args:
-            y_pred: Predicted sunspot indices, shape (N, 1).
-            y_true: Ground-truth sunspot indices, shape (N, 1).
-
-        Returns:
-            Scalar loss tensor.
-        """
+        """Compute the mean weighted Huber loss over a batch."""
         return weighted_huber_loss(y_pred, y_true, delta=self.delta, alpha=self.alpha)
 
 
@@ -325,32 +181,7 @@ def weighted_huber_loss(
 ) -> torch.Tensor:
     """Activity-proportional Huber loss for solar dynamic-range regression.
 
-    Computes a per-sample Huber loss re-weighted by the magnitude of the
-    target sunspot index:
-
-        weight           = 1.0 + α · y
-        huber_δ(ŷ, y)   = 0.5 · (ŷ − y)²              if |ŷ − y| ≤ δ
-                           δ · (|ŷ − y| − 0.5 · δ)      otherwise
-        L(ŷ, y)         = mean { weight · huber_δ(ŷ, y) }
-
-    Why this loss for the solar dynamic range:
-        The sunspot index distribution is right-skewed (~10:1 quiet-Sun to
-        active-region ratio). Using α=2.0 the weighting scheme scales as:
-        quiet Sun (y≈0.1): weight≈1.2; moderate AR (y≈1.0): weight≈3.0;
-        major AR (y≈20): weight≈41.0. Combined with Huber robustness (δ=1.0),
-        this corrects the *activity-floor bias* of MSE objectives observed
-        in prior versions without requiring oversampling strategies.
-
-    Args:
-        y_pred: Predicted sunspot indices, shape (N, 1).
-        y:      Ground-truth sunspot indices, shape (N, 1). Expected to be
-                non-negative (sunspot index ∈ [0, ∞)).
-        delta:  Huber transition threshold. Residuals below δ are penalised
-                quadratically; residuals above δ are penalised linearly.
-        alpha:  Activity weighting coefficient α in the weight formula.
-
-    Returns:
-        Scalar tensor — mean weighted Huber loss over the batch.
+    Formula: `mean((1 + alpha*y) * huber_delta(y_pred - y))`.
     """
     residual = y_pred - y
     abs_residual = residual.abs()
@@ -367,25 +198,8 @@ def weighted_huber_loss(
 class ECAAttention(nn.Module):
     """Lightweight channel attention via 1-D convolution (Wang et al., 2020).
 
-    ECA replaces the two fully-connected layers of SE-Net with a single 1-D
-    convolution of kernel size k applied to the channel descriptor produced by
-    Global Average Pooling. This reduces attention parameters from 2·C²/r to k
-    (typically 3), making the overhead negligible relative to the backbone.
-
-    Why ECA over SE-Net for Coronium V3 PRO:
-        Solar magnetograms exhibit strong polarity-specific feature correlations
-        across channels (B+ and its derived feature maps co-activate differently
-        from B-). ECA's local cross-channel receptive field captures these
-        inter-channel dependencies with only k parameters, adding ~0.002 % of
-        total parameter count per stage — a far better efficiency trade-off than
-        SE-Net's 2·C²/r overhead, which at C=96 would add ~18 K parameters.
-
-    The adaptive kernel formula k = max(3, 2·⌊log₂(C)/2⌋ + 1) yields k=3 for
-    C ≤ 64 and k=5 for C ∈ {65…256}, keeping the local cross-channel
-    receptive field proportional to the channel count.
-
-    Args:
-        channels: Number of input feature-map channels C.
+    ECA captures local cross-channel dependencies with only a few parameters,
+    which keeps attention affordable for the small ONNX target model.
     """
 
     def __init__(self, channels: int) -> None:
@@ -396,14 +210,7 @@ class ECAAttention(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Apply channel attention weights to the input feature map.
-
-        Args:
-            x: Feature map of shape (N, C, H, W).
-
-        Returns:
-            Channel-recalibrated tensor of identical shape.
-        """
+        """Apply channel attention weights to the input feature map."""
         y = self.avg_pool(x)                         # (N, C, 1, 1)
         y = y.squeeze(-1).transpose(-1, -2)          # (N, 1, C)
         y = self.conv(y)                             # (N, 1, C)
@@ -414,22 +221,9 @@ class ECAAttention(nn.Module):
 class V3ResidualBlock(nn.Module):
     """Residual block with ECA attention for Coronium V3 PRO.
 
-    Main path : Conv3×3 → BN → ReLU → ECAAttention
-    Skip path : Conv1×1 → BN  (only when in_channels ≠ out_channels, else Identity)
-    Output    : ReLU(main + skip) → Dropout2d
-
-    The 1×1 projection in the skip path matches channel dimensions without
-    spatial mixing, preserving identity-shortcut semantics from He et al.
-    (2016). Dropout2d is applied after the residual addition to regularise
-    full feature maps rather than individual activations. When active during
-    Monte Carlo inference, Dropout2d provides calibrated prediction uncertainty
-    over the stochastic ensemble.
-
-    Args:
-        in_channels:  Number of input feature-map channels.
-        out_channels: Number of output feature-map channels.
-        dropout_rate: Spatial dropout probability applied after the block.
-            Also governs MC Dropout uncertainty estimation at inference time.
+    The skip projection only changes channel count; spatial structure is left
+    to the main 3x3 convolution. Dropout2d regularizes whole feature maps and is
+    also the source of MC Dropout uncertainty during validation.
     """
 
     def __init__(
@@ -458,54 +252,17 @@ class V3ResidualBlock(nn.Module):
         self.out_relu = nn.ReLU(inplace=True)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Compute one residual block pass.
-
-        Args:
-            x: Input tensor of shape (N, in_channels, H, W).
-
-        Returns:
-            Output tensor of shape (N, out_channels, H, W).
-        """
+        """Apply convolution, ECA attention, skip connection, and dropout."""
         main = self.eca(self.relu(self.bn(self.conv(x))))
         return self.dropout(self.out_relu(main + self.skip(x)))
 
 
 class CoroniumV3(nn.Module):
-    """Four-stage residual CNN with ECA attention for solar magnetogram regression.
+    """Four-stage residual CNN promoted as the V3 PRO architecture.
 
-    Architecture (V3 PRO — dual-channel, widened schedule):
-        Stage 1 : V3ResidualBlock(2  →  32) → MaxPool2d(2)   512→256
-        Stage 2 : V3ResidualBlock(32 →  64) → MaxPool2d(2)   256→128
-        Stage 3 : V3ResidualBlock(64 →  96) → MaxPool2d(2)   128→ 64
-        Stage 4 : V3ResidualBlock(96 → 128) → MaxPool2d(2)    64→ 32
-        Head    : GlobalAvgPool → Dropout(0.3) → Linear(128, 1)
-
-    Total parameters: ~206,875 (resource budget: 150 K–250 K for ONNX/C++ edge deployment).
-
-    Channel schedule widened from (16→32→64→96) to (32→64→96→128) for
-    increased representational capacity while remaining within the TinyML
-    parameter budget. The wider filters improve discrimination of subtle
-    polarity gradients in active-region magnetograms without requiring a
-    deeper network (which would increase latency on edge hardware).
-
-    A scalar Dropout(p=0.3) is applied after GlobalAvgPool and before the
-    final Linear layer to regularise the 128-dimensional feature vector,
-    complementing the spatial Dropout2d already present in each residual
-    block. This two-level dropout strategy reduces co-adaptation of both
-    spatial feature maps and the aggregated channel descriptor.
-
-    MC Dropout is supported natively: calling ``enable_mc_dropout`` keeps
-    Dropout2d active during inference, enabling T stochastic forward passes
-    for calibrated uncertainty estimation over active-region predictions.
-
-    Input shape:  (N, 2, 512, 512) — dual-channel HMI magnetogram (B+, B-)
-    Output shape: (N, 1)           — predicted sunspot index
-
-    Args:
-        in_channels:  Number of input channels. Must match the channel count
-            produced by ``prepare_dataset`` (default 2 for B+/B-).
-        dropout_rate: Spatial dropout probability passed to every V3ResidualBlock.
-            Also controls MC Dropout uncertainty spread at inference time.
+    The 32/64/96/128 channel schedule is the model shape exported to ONNX. Global
+    average pooling keeps parameter count low and makes the head independent of
+    the input's final spatial size.
     """
 
     def __init__(self, in_channels: int = 2, dropout_rate: float = 0.2) -> None:
@@ -538,15 +295,7 @@ class CoroniumV3(nn.Module):
         self.fc = nn.Linear(128, 1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Compute the regression output for a batch of magnetograms.
-
-        Args:
-            x: Input tensor of shape (N, 2, 512, 512).
-                Channel 0: B+ positive polarity map. Channel 1: B- negative polarity map.
-
-        Returns:
-            Output tensor of shape (N, 1) containing predicted sunspot indices.
-        """
+        """Compute predicted sunspot indices for a batch of B+/B- tensors."""
         # Backbone — four residual stages with spatial downsampling
         x = self.pool1(self.stage1(x))   # (N,  32, 256, 256)
         x = self.pool2(self.stage2(x))   # (N,  64, 128, 128)
@@ -561,17 +310,7 @@ class CoroniumV3(nn.Module):
 
 
 class EarlyStopping:
-    """Halt training when validation loss shows no monotonic improvement.
-
-    The counter increments whenever the current validation loss fails to
-    improve by at least ``min_delta`` over the historical minimum. This
-    prevents unnecessary compute on epochs that no longer reduce
-    generalisation error.
-
-    Args:
-        patience: Number of non-improving epochs before triggering a stop.
-        min_delta: Minimum absolute decrease in loss to count as improvement.
-    """
+    """Stop training after repeated validation-loss stalls."""
 
     def __init__(self, patience: int = 10, min_delta: float = 0.0) -> None:
         self.patience = patience
@@ -581,14 +320,7 @@ class EarlyStopping:
         self.early_stop: bool = False
 
     def __call__(self, val_loss: float) -> bool:
-        """Evaluate the stopping criterion for the current epoch.
-
-        Args:
-            val_loss: Validation loss at the end of the current epoch.
-
-        Returns:
-            ``True`` if training should stop, ``False`` otherwise.
-        """
+        """Return True once the configured patience has been exhausted."""
         if self.best_loss is None:
             self.best_loss = val_loss
         elif val_loss > self.best_loss - self.min_delta:
@@ -607,19 +339,8 @@ def enable_mc_dropout(model: nn.Module) -> None:
 
     Sets the model to eval mode (freezing BatchNorm running statistics) and
     then re-enables all Dropout and Dropout2d layers so that T stochastic
-    forward passes produce a distribution of predictions. This implements
-    the Gal & Ghahramani (2016) approximation to Bayesian inference.
-
-    Why MC Dropout at validation for Coronium V3 PRO:
-        Active-region samples are rare in the validation set. A single
-        deterministic forward pass may confidently mispredict extreme solar
-        events (high sunspot index). By averaging T=20 stochastic passes,
-        the mean prediction is more robust and the per-sample std serves as
-        a calibrated uncertainty proxy — flagging unreliable predictions on
-        edge cases for downstream space-weather alert pipelines.
-
-    Args:
-        model: ``CoroniumV3`` instance. Modified in-place.
+    forward passes produce an uncertainty estimate without corrupting BatchNorm
+    running statistics.
     """
     model.eval()
     for module in model.modules():
@@ -628,15 +349,7 @@ def enable_mc_dropout(model: nn.Module) -> None:
 
 
 def get_device() -> torch.device:
-    """Select the highest-throughput available compute backend.
-
-    CUDA is checked before MPS because NVIDIA data-centre GPUs generally
-    offer higher memory bandwidth for the batch sizes used in training.
-    MPS (Apple Silicon) is the preferred fallback for local development.
-
-    Returns:
-        ``torch.device`` pointing to the selected backend.
-    """
+    """Select the best available compute backend for local training."""
     if torch.cuda.is_available():
         device = torch.device("cuda")
         logger.info("Using CUDA: %s", torch.cuda.get_device_name(0))
@@ -662,20 +375,7 @@ def train_epoch(
     ``WeightedHuberLoss`` drives backpropagation. It combines Huber robustness
     (capping gradient magnitude for large residuals) with activity-proportional
     sample weighting, ensuring that rare high-activity observations receive
-    proportionally more gradient signal than the dominant quiet-Sun majority.
-    MAE is computed in parallel for interpretable diagnostic reporting in
-    physical sunspot-index units.
-
-    Args:
-        model: Network in training mode; Dropout2d layers are active.
-        train_loader: Iterable yielding (image, target) batches.
-        criterion: ``WeightedHuberLoss`` instance for backpropagation.
-        criterion_mae: ``nn.L1Loss`` instance for diagnostic reporting.
-        optimizer: Gradient-based parameter update rule.
-        device: Compute device matched to model and data placement.
-
-    Returns:
-        Tuple (mean_whl, mean_mae) averaged over all batches in the epoch.
+    proportionally more gradient signal. MAE is tracked only for reporting.
     """
     model.train()
     running_whl = 0.0
@@ -713,27 +413,7 @@ def validate_epoch(
     MC Dropout is activated via ``enable_mc_dropout``: BatchNorm layers use
     frozen running statistics while Dropout2d layers remain stochastic.
     ``mc_passes`` independent forward passes are averaged per batch, providing
-    a calibrated ensemble prediction that is more robust on rare high-activity
-    samples than a single deterministic pass. The Weighted Huber Loss is
-    evaluated on the mean MC prediction, preserving the α=2.0 active-region
-    priority of the training objective.
-
-    ``torch.no_grad()`` disables autograd across all passes to avoid
-    accumulating unnecessary gradient tensors in the stochastic ensemble.
-
-    Args:
-        model: Network. MC Dropout mode is applied internally; caller state
-            is restored to eval after the function returns.
-        val_loader: Iterable yielding (image, target) batches.
-        criterion: ``WeightedHuberLoss`` instance (δ=1.0, α=2.0).
-        criterion_mae: ``nn.L1Loss`` instance for diagnostic reporting.
-        device: Compute device matched to model and data placement.
-        mc_passes: Number of stochastic forward passes per batch for the
-            MC Dropout ensemble mean. Higher values reduce variance at the
-            cost of T× inference time.
-
-    Returns:
-        Tuple (mean_whl, mean_mae) averaged over all batches.
+    an ensemble mean for the validation loss.
     """
     enable_mc_dropout(model)
     running_whl = 0.0
@@ -767,28 +447,7 @@ def train_model(
     patience: int = 10,
     device: Optional[torch.device] = None,
 ) -> Dict[str, List[float]]:
-    """Run the full training loop with adaptive LR scheduling and early stopping.
-
-    The learning rate is halved whenever validation Weighted Huber Loss fails
-    to decrease for 3 consecutive epochs (ReduceLROnPlateau), preventing
-    oscillation in flat loss regions. Training terminates early when no
-    improvement is observed for ``patience`` epochs. The best checkpoint
-    (lowest val WHL) is persisted to ``models/coronium_v3_pro.pth`` at each
-    improvement.
-
-    Args:
-        model: Uninitialised Coronium instance.
-        train_loader: DataLoader with augmentation applied.
-        val_loader: DataLoader without augmentation.
-        num_epochs: Upper bound on the number of training epochs.
-        learning_rate: Initial AdamW learning rate (weight_decay=1e-5).
-        patience: EarlyStopping patience in epochs.
-        device: Target compute device. Detected automatically if ``None``.
-
-    Returns:
-        Dictionary with per-epoch lists for keys: 'train_whl', 'val_whl',
-        'train_mae', 'val_mae', 'learning_rate'.
-    """
+    """Train CoroniumV3 with plateau scheduling, early stopping, and checkpointing."""
     if device is None:
         device = get_device()
 
@@ -819,7 +478,7 @@ def train_model(
     logger.info("Loss: weighted_huber_loss  delta=1.0  alpha=2.0  |  Eval: MC Dropout T=20")
     logger.info("=" * 70)
 
-    best_val_whl = float("inf")
+    best_val_mae = float("inf")
 
     for epoch in range(1, num_epochs + 1):
         train_whl, train_mae = train_epoch(
@@ -842,12 +501,15 @@ def train_model(
             epoch, num_epochs, train_whl, val_whl, train_mae, val_mae, current_lr,
         )
 
-        if val_whl < best_val_whl:
-            best_val_whl = val_whl
+        # Save checkpoint on minimum val_mae (direct regression metric),
+        # not val_whl — ensures the saved weights correspond to the best
+        # generalisation in log-SI space rather than the loss landscape.
+        if val_mae < best_val_mae:
+            best_val_mae = val_mae
             Path("models").mkdir(parents=True, exist_ok=True)
             torch.save(model.state_dict(), "models/best_coronium_v3_pro_augmented.pth")
             logger.info(
-                "Checkpoint saved  |  val_whl: %.6f  val_mae: %.4f", val_whl, val_mae
+                "Checkpoint saved  |  val_mae: %.4f  val_whl: %.6f", val_mae, val_whl
             )
 
         scheduler.step(val_whl)
@@ -861,8 +523,8 @@ def train_model(
 
     logger.info("=" * 70)
     logger.info(
-        "Training complete  |  Best val_whl: %.6f  |  Epochs: %d/%d",
-        best_val_whl, len(history["train_whl"]), num_epochs,
+        "Training complete  |  Best val_mae: %.4f  |  Epochs: %d/%d",
+        best_val_mae, len(history["train_whl"]), num_epochs,
     )
     logger.info("=" * 70)
 
@@ -873,17 +535,7 @@ def plot_learning_curve(
     history: Dict[str, List[float]],
     output_path: str = "reports/figures/learning_curve_v3_pro.png",
 ) -> None:
-    """Persist training history as a three-panel figure.
-
-    Panels: (1) Weighted Huber Loss curves for train/validation, (2) MAE
-    curves in sunspot-index units for interpretable error reporting,
-    (3) learning rate schedule on a log scale to expose ReduceLROnPlateau
-    step events.
-
-    Args:
-        history: Dictionary returned by ``train_model``.
-        output_path: Filesystem path for the saved PNG (parent created if absent).
-    """
+    """Persist loss, MAE, and learning-rate history as a diagnostic figure."""
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
 
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 10))
@@ -943,12 +595,33 @@ def main() -> None:
     )
 
     total_size = len(train_dataset_full)
-    val_size = int(total_size * VAL_SPLIT)
-    train_size = total_size - val_size
-
     indices = list(range(total_size))
-    train_dataset = Subset(train_dataset_full, indices[:train_size])
-    val_dataset = Subset(val_dataset_full, indices[train_size:])
+
+    # Shuffle prevents late-cycle extreme events from being concentrated in
+    # validation, while random_state=42 keeps training and evaluation aligned.
+    train_indices, val_indices = train_test_split(
+        indices, test_size=VAL_SPLIT, shuffle=True, random_state=42
+    )
+
+    train_dataset = Subset(train_dataset_full, train_indices)
+    val_dataset   = Subset(val_dataset_full,   val_indices)
+
+    # Both splits must include high-activity events so validation reflects the
+    # range the dashboard can surface.
+    all_targets = train_dataset_full.metadata["sunspot_index"].values
+    max_y_train = all_targets[train_indices].max()
+    max_y_val   = all_targets[val_indices].max()
+    logger.info("Split max y - train: %.4f  |  val: %.4f  (expected > 2.70)", max_y_train, max_y_val)
+    assert max_y_train > 2.70, f"Train split has no extreme events: max_y={max_y_train:.4f}"
+    assert max_y_val   > 2.70, f"Validation split has no extreme events: max_y={max_y_val:.4f}"
+
+    # Persist split indices so evaluation scripts use the exact same hold-out set.
+    import json as _json
+    Path("models").mkdir(parents=True, exist_ok=True)
+    split_path = Path("models/split_indices.json")
+    with open(split_path, "w") as f:
+        _json.dump({"train": train_indices, "val": val_indices, "random_state": 42}, f)
+    logger.info("Split indices saved to %s", split_path)
 
     logger.info("Train: %d samples (augmentation enabled)", len(train_dataset))
     logger.info("Val:   %d samples (augmentation disabled)", len(val_dataset))
@@ -963,7 +636,7 @@ def main() -> None:
         "Reduce filter counts or remove blocks."
     )
     logger.info(
-        "CoroniumV3 PRO — %d parameters (~206,875 expected) ✓  |  input: (2, 512, 512) [B+, B-]",
+        "CoroniumV3 PRO - %d parameters (~206,875 expected)  |  input: (2, 512, 512) [B+, B-]",
         total_params,
     )
 
