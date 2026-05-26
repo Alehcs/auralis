@@ -1,6 +1,6 @@
 {
   "run_id": "exp_003",
-  "run_name": "Coronium V2 PRO — Producción",
+  "run_name": "Coronium V2 PRO — Deployment Candidate",
   "date": "2026-02-15T10:57:19Z",
   "model_name": "Coronium V2 PRO",
   "weights_file": "coronium_v2_pro.pth",
@@ -34,5 +34,5 @@
     "python_version": "3.12.1",
     "os": "macOS 15.4"
   },
-  "notes": "Corrida de producción V2. Dropout aumentado a 0.3 para mayor regularización. Mejor R² alcanzado (0.8705). Reemplazado en producción por Coronium V3 PRO (exp_004). Inferencia a 8.7 ms en MPS."
+  "notes": "V2 deployment candidate. Dropout increased to 0.3 for stronger regularization. Best observed R2 was 0.8705. Replaced by Coronium V3 PRO in exp_004. Inference measured at 8.7 ms on MPS."
 }

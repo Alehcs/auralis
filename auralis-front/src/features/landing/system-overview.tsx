@@ -3,7 +3,7 @@ export function SystemOverview() {
     {
       label: 'Model Architecture',
       value: 'Coronium V3 PRO',
-      detail: 'Custom 4-stage residual CNN, 88K params, dual-channel B+/B−'
+      detail: 'Custom 4-stage residual CNN, ~207K params, dual-channel B+/B− · ONNX 86.6 KB'
     },
     {
       label: 'Data Source',
@@ -12,13 +12,13 @@ export function SystemOverview() {
     },
     {
       label: 'Pipeline Status',
-      value: 'Real-time',
-      detail: 'Continuous inference with 45s cadence'
+      value: 'Local demo',
+      detail: 'Inference runs against the processed dataset on localhost'
     },
     {
-      label: 'Forecast Window',
-      value: '72 hours',
-      detail: 'Sunspot number prediction with 95% CI'
+      label: 'Inference Target',
+      value: 'Current index',
+      detail: 'Estimates the activity index for the selected magnetogram'
     }
   ];
 

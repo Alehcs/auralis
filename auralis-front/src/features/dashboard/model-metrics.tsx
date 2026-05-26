@@ -15,29 +15,39 @@ import { getStats, getImageList, predictDual } from '@/lib/api';
 import type { SystemStats, PredictionResult } from '@/lib/types';
 import { useLanguage } from '@/lib/i18n/language-context';
 
+/**
+ * Overview panel for promoted model metrics and dataset-derived current state.
+ *
+ * "Current Solar State" is intentionally based on the newest processed `.npy`
+ * file returned by the backend. It should not be described as live NASA
+ * telemetry unless the ingestion layer is changed to support that contract.
+ */
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-function RiskBadge({ level, labels }: { level: string; labels: { high: string; medium: string; low: string } }) {
-  if (level === 'High')
-    return (
-      <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-        {labels.high}
-      </span>
-    );
-  if (level === 'Medium')
-    return (
-      <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-        {labels.medium}
-      </span>
-    );
+function RiskBadge({
+  hexColor,
+  label,
+}: {
+  hexColor: string;
+  label: string;
+}) {
   return (
-    <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-[11px] font-medium">
-      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-      {labels.low}
+    <span
+      className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium border"
+      style={{
+        color: hexColor,
+        borderColor: `${hexColor}50`,
+        backgroundColor: `${hexColor}18`,
+      }}
+    >
+      <span
+        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+        style={{ backgroundColor: hexColor }}
+      />
+      {label}
     </span>
   );
 }
@@ -128,13 +138,13 @@ export function ModelMetrics() {
   const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch dataset stats
+    // Static promoted-run metrics and dynamic dataset footprint.
     getStats()
       .then(setStats)
       .catch(console.error)
       .finally(() => setStatsLoading(false));
 
-    // Fetch most-recent image and run inference
+    // Latest-file inference drives the current-state card.
     getImageList()
       .then((res) => {
         if (res.images.length === 0) return;
@@ -146,9 +156,11 @@ export function ModelMetrics() {
   }, []);
 
   // Derived
-  const activityIndex = prediction?.sunspot_index?.toFixed(4) ?? '—';
-  const riskLevel     = prediction?.risk_level ?? 'Low';
-  const confidence    = prediction ? `${(prediction.confidence * 100).toFixed(1)}%` : '—';
+  const activityIndex  = prediction?.sunspot_index?.toFixed(2) ?? '—';
+  const classification = prediction?.classification;
+  const hexColor       = classification?.hex_color ?? '#6b7280';
+  const riskLabel      = classification?.label ?? o.lowRisk;
+  const confidence     = prediction ? `${(prediction.confidence * 100).toFixed(1)}%` : '—';
   const mae           = stats ? stats.mae.toFixed(4) : '—';
   const totalImages   = stats ? stats.total_images.toLocaleString() : '—';
   const diskGb        = stats ? (stats.disk_usage_mb / 1024).toFixed(2) : '—';
@@ -159,7 +171,6 @@ export function ModelMetrics() {
   const diskPct     = Math.min((diskMb / MAX_DISK_MB) * 100, 100);
 
   const statusLabels = { nominal: o.nominal, degraded: o.degraded, offline: o.offline };
-  const riskLabels   = { high: o.highRisk, medium: o.mediumRisk, low: o.lowRisk };
 
   return (
     <div className="space-y-4">
@@ -183,7 +194,10 @@ export function ModelMetrics() {
             </div>
             <div className="flex items-baseline gap-3 mb-2">
               <span className="text-[13px] font-medium text-neutral-300">{o.activityIndex}</span>
-              <span className="text-[42px] font-mono font-bold text-orange-400 leading-none">
+              <span
+                className="text-[42px] font-mono font-bold leading-none"
+                style={{ color: hexColor }}
+              >
                 {statsLoading ? '…' : activityIndex}
               </span>
             </div>
@@ -196,7 +210,7 @@ export function ModelMetrics() {
 
           {/* Right: badges */}
           <div className="flex flex-row sm:flex-col items-start sm:items-end gap-2 flex-shrink-0">
-            <RiskBadge level={riskLevel} labels={riskLabels} />
+            <RiskBadge hexColor={hexColor} label={riskLabel} />
             <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-transparent border border-green-600/50 text-green-400 text-[11px] font-medium">
               <CheckCircle2 className="w-3.5 h-3.5" />
               {o.systemNominal}

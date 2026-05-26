@@ -1,176 +1,220 @@
-# Coronium V3 PRO — Auralis
+# Auralis
 
-**High-efficiency regression framework for solar activity prediction from HMI/SDO magnetograms.**
+Auralis is a local research/demo system for estimating the current solar activity
+index from NASA SDO/HMI magnetograms. It combines an offline data pipeline, a
+small convolutional regression model, a FastAPI inference service, and a React
+dashboard for inspection, explainability, and experiment review.
 
-Full-stack system validated for near-real-time estimation of the sunspot index: JSOC ingestion → HMI preprocessing → CNN inference → REST API + interactive dashboard.
+This project does not provide operational space-weather forecasts. The promoted
+model estimates the activity index for the selected magnetogram in the processed
+dataset.
 
----
+## Objectives
 
-## Performance
+- Train and evaluate a compact magnetogram regression model suitable for CPU
+  inference.
+- Preserve magnetic polarity information by representing each observation as
+  separate B+ and B- channels.
+- Serve reproducible local inference, Grad-CAM visualizations, benchmark data,
+  and experiment metadata through a single API.
+- Provide a dashboard that makes the model behavior inspectable without
+  requiring notebook work.
 
-| Metric | Value | Condition |
-|:---|:---:|:---|
-| Physical MAE (real scale) | **0.3167** | Raw targets vs. denormalized predictions — official output metric |
-| Z-Score MAE | 0.1380 | Error in optimization space (internal training comparison) |
-| MAPE | **5.52%** | Accuracy above 94% |
-| R² (analytical) | **~0.81** | Computed in Z-Score space during training |
-| Inference Latency | **8.7 ms** | Single sample, Apple M-series MPS |
+## Current Model
 
----
+Coronium V3 PRO is a four-stage residual CNN with Efficient Channel Attention
+(ECA). The model takes a `(2, 512, 512)` tensor where channel 0 is positive
+magnetic polarity and channel 1 is negative magnetic polarity.
 
-## Architecture
+| Item | Value |
+| --- | --- |
+| Promoted checkpoint | `auralis-back/models/best_coronium_v3_pro_augmented.pth` |
+| ONNX runtime model | `auralis-back/models/best_coronium_v3_pro.onnx` |
+| Parameters | 206,875 |
+| ONNX CPU latency | 25.11 ms per image |
+| Evaluation run | `exp_005_v3pro_augmented.json` |
 
-Coronium V3 PRO is a lightweight residual architecture with under 500K parameters, optimized for Apple Silicon (MPS). It accepts **dual-channel** input (2, 512, 512) that physically separates positive (B+) and negative (B−) magnetic polarity from the magnetogram. Global Average Pooling collapses each activation map to a scalar before the regression head, eliminating the O(H·W·C) cost of a dense layer. The result is a model that achieves over 94% accuracy with under 500K parameters versus 9.35M for VGG-11.
+### Evaluation Metrics
 
-```
-Input (2, 512, 512)  ← channel 0: B+  |  channel 1: B−
-  └─ Residual Block ×4  [16→32→64→96 ch, ECA Attention, BatchNorm, Dropout2d, MaxPool2d]
-       └─ Global Average Pooling  →  (96,)
-            └─ Linear(96, 1)  →  sunspot index
-```
+These values come from the promoted `exp_005` evaluation and are the values used
+by the API and dashboard.
 
-> Baselines evaluated with |B| = B+ + B− input (1 channel, raw physical scale). Fair 1-channel vs. 2-channel comparison.  
-> Coronium V3 PRO physical MAE: **0.3167**. Z-Score MAE (training loop): 0.1380.
+| Metric | Value |
+| --- | ---: |
+| MAE (log-SI) | 0.1076 |
+| RMSE (log-SI) | 0.1284 |
+| R2 | 0.8608 |
+| MAPE | 6.22% |
+| Accuracy proxy (`100 - MAPE`) | 93.78% |
 
-| Model | Parameters | Physical MAE | R² | Latency |
-|:---|---:|:---:|:---:|:---:|
-| **Coronium V3 PRO** | **~88 K** | **0.3167** | **~0.81** | **8.7 ms** |
-| ResNet-18 | 11.2 M | 0.0755 | 0.9276 | 6.16 ms |
-| VGG-11 | 9.35 M | 0.1079 | 0.8621 | 17.23 ms |
-| Naive Persistence | 0 | 0.2882 | −0.008 | < 1 ms |
-
----
-
-## Mathematical Approach to solve Mode Collapse Fix  
-
-The mode collapse problem (model collapsing toward a constant prediction) was diagnosed and eliminated through a two-phase normalization applied over the real target distribution:
-
-1. **Logarithmic normalization**:  compresses the distribution of extreme solar index values.
-2. **Population Z-Score**: standardizes using statistics computed over **1,314 real tensors**:
-
-$$\mu_{pop} = 1.7658 \qquad \sigma_{pop} = 0.3462$$
-
-$$z = \frac{\log(SI) - \mu_{pop}}{\sigma_{pop}}$$
-
-This transformation guaranteed that the loss gradient never collapsed to zero and that the model learned to discriminate between magnetic activity levels.
-
----
+The "accuracy" percentage is a derived reporting value, not a classification
+accuracy metric.
 
 ## Dataset
 
-| Metric | Value |
-|:---|:---:|
-| Total curated samples | **1,763** |
-| Training (with data augmentation) | **1,411** |
-| Validation (isolated hold-out) | **352** |
-| Format | NumPy binary (.npy), float32 |
-| Processed resolution | 512 × 512 px |
+Processed magnetograms live in `auralis-back/data/processed/` as `.npy` files.
+The current curated dataset contains 1,763 HMI Level-1.5 observations covering
+Solar Cycles 24 and 25.
 
----
+Preprocessing converts each magnetogram into a float32 tensor:
 
-## Scientific Features
+1. Load HMI FITS data.
+2. Replace invalid limb-mask values with zero.
+3. Apply symmetric log scaling: `sign(x) * log(1 + abs(x))`.
+4. Split magnetic polarity into B+ and B- channels.
+5. Save the result as `(2, 512, 512)`.
 
-### Explainability with Grad-CAM (XAI)
-Grad-CAM was implemented by attaching hooks to the `stage4` layer. The resulting heatmaps empirically demonstrated that the model focuses its attention **primarily on active magnetic regions** (sunspots), while ignoring background space and instrumental noise. This behavior suggests that the model learned physically meaningful patterns associated with solar activity, rather than spurious statistical artifacts.
+The backend still accepts legacy single-channel arrays for compatibility, but
+new data should use the dual-channel representation.
 
-### Uncertainty Quantification through Monte Carlo Dropout
-At inference time, Dropout2d layers are reactivated and N stochastic forward passes are executed to produce a predictive mean and variance. This provides a calibrated uncertainty estimate without retraining.
+## Architecture
 
----
-
-## Training System
-
-- **Dynamic Early Stopping:** halted training at **Epoch 43**, automatically detecting the peak generalization point.
-- **No memorization:** the gap between training and validation loss remained controlled throughout the cycle, confirming the model does not overfit.
-- **Device:** Apple Silicon MPS, PyTorch 2.2.0.
-
----
-
-## System Architecture
-
-```
-NASA JSOC (HMI Level-1.5)
-  └─ ingestion/            SunPy/Fido download, exponential-backoff retry
-       └─ processing/      FITS → float32 .npy, B+/B− polarity, log + Z-score norm
-            └─ models/     Coronium V3 PRO. training + inference engine
-                 └─ api/   FastAPI REST  (predict, gradient-cam, benchmarks)
-                      └─ auralis-front/   React 18 + TypeScript dashboard
+```text
+NASA JSOC / SDO-HMI
+  -> ingestion scripts
+  -> preprocessing to dual-channel .npy tensors
+  -> Coronium V3 PRO training and ONNX export
+  -> FastAPI service
+  -> React dashboard
 ```
 
----
+The backend is the system boundary for inference and research artifacts. The
+frontend does not reimplement model rules; it consumes typed REST responses and
+renders the current dataset state.
 
-## Tech Stack
+More detailed architecture notes are in [docs/architecture.md](docs/architecture.md).
+Backend script ownership and maintenance notes are in
+[docs/backend.md](docs/backend.md).
 
-**Backend**
-| Layer | Technology |
-|:---|:---|
-| REST API | FastAPI 0.110 + Uvicorn |
-| Deep Learning | PyTorch 2.2.0 (Apple Silicon MPS) |
-| Solar data | SunPy / Fido (JSOC download) |
-| Processing | NumPy · SciPy · Astropy (FITS) |
-| XAI | Grad-CAM custom hook (stage4.conv) |
-| Uncertainty | Monte Carlo Dropout (T=20 passes) |
+## Repository Structure
 
-**Frontend**
-| Layer | Technology |
-|:---|:---|
-| Framework | React 18 + TypeScript |
-| Build tool | Vite 6 |
-| Styling | Tailwind CSS v4 |
-| Charts | Recharts 3.7 |
-| Routing | React Router v7 |
-| Icons | Lucide React |
-| i18n | Custom Context API (EN / ES) |
+```text
+Auralis/
+├── auralis-back/
+│   ├── src/api/main.py                 # FastAPI service and inference endpoints
+│   ├── src/models/train_model.py        # Coronium model, dataset, training loop
+│   ├── src/processing/prepare_dataset.py
+│   ├── src/ingestion/
+│   ├── scripts/                         # Manual evaluation/export utilities
+│   ├── models/                          # Checkpoints and ONNX artifacts
+│   ├── data/processed/                  # Processed .npy magnetograms
+│   └── experiments/                     # Training run metadata
+├── auralis-front/
+│   ├── src/lib/api.ts                   # REST client boundary
+│   ├── src/lib/types.ts                 # Frontend mirrors of API schemas
+│   ├── src/features/landing/
+│   └── src/features/dashboard/
+├── docs/
+└── README.md
+```
 
----
+## Technology Stack
 
-## Quickstart
+Backend:
 
-**Backend**
+- FastAPI and Uvicorn
+- PyTorch for model definition, training, and Grad-CAM
+- ONNX Runtime for dashboard inference
+- NumPy, SciPy, Astropy, SunPy, and scikit-image for data processing
+
+Frontend:
+
+- React 18, TypeScript, and Vite
+- Tailwind CSS
+- Recharts for charts
+- Lucide React icons
+- shadcn/ui primitives under `src/app/components/ui/`
+
+## Local Development
+
+Run the backend from `auralis-back/`:
 
 ```bash
-cd Auralis
-python -m venv venv && source venv/bin/activate
-pip install -r ../requirements.txt
-python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+cd auralis-back
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn src.api.main:app --reload --port 8000
 ```
 
-**Frontend**
+Run the frontend from `auralis-front/`:
 
 ```bash
 cd auralis-front
-npm install && npm run dev
+npm install
+npm run dev
 ```
 
-API: `http://localhost:8000`
+Default URLs:
 
-Dashboard: `http://localhost:5173`
+- API: `http://localhost:8000`
+- Dashboard: `http://localhost:5173`
 
----
+## Environment Variables
 
-## Repository Layout
+| Variable | Used by | Default | Notes |
+| --- | --- | --- | --- |
+| `VITE_API_URL` | Frontend | `http://localhost:8000` | Base URL for REST calls. |
+| `CORS_ORIGINS` | Backend | `http://localhost:5173,http://localhost:5174` | Comma-separated allowed browser origins. |
 
-```
-auralis-back/
-├── auralis-back/
-│   ├── src/
-│   │   ├── api/              FastAPI endpoints (inference, Grad-CAM, metrics)
-│   │   ├── ingestion/        JSOC download pipeline
-│   │   ├── models/           Coronium V3 PRO architecture, training, inference
-│   │   ├── processing/       FITS → normalized tensor (B+/B−, log, Z-score)
-│   │   └── experiments/      External benchmarking (ResNet, VGG)
-│   └── data/                 raw/ (FITS) and processed/ (NPY + metadata CSV)
-├── auralis-front/             React 18 / TypeScript / Vite dashboard
-└── requirements.txt
-```
+No internet connection is required to run the local demo once the dataset and
+model files are present.
 
----
+## API Surface
 
-## Full Research Dossier
+| Method | Route | Purpose |
+| --- | --- | --- |
+| `GET` | `/health` | Service and model readiness. |
+| `GET` | `/api/stats` | Dataset counts and promoted model metrics. |
+| `GET` | `/api/images/list` | Processed `.npy` image catalog. |
+| `GET` | `/api/images/{filename}` | Render a magnetogram PNG. |
+| `GET` | `/api/predict/{filename}` | ONNX inference for one processed image. |
+| `GET` | `/api/explain/{filename}` | Grad-CAM overlay. |
+| `GET` | `/api/explain-panels/{filename}` | Three-panel B+ / B- / Grad-CAM figure. |
+| `GET` | `/api/benchmark` | Coronium and baseline architecture comparison. |
+| `GET` | `/api/experiments` | Training run metadata. |
+| `GET` | `/api/polarity-series` | Recent B+ / B- mean flux series. |
+| `POST` | `/api/predict-upload` | Black-box inference for uploaded `.npy` files. |
 
-> For in-depth technical analysis, scientific rigor, and external benchmarking methodology, see the **[Full Research Dossier](RESEARCH_DOSSIER_MASTER.md)**.
+## Important Workflows
 
----
+### Promote a New Model
+
+1. Train or evaluate the candidate checkpoint.
+2. Save the promoted PyTorch weights under `auralis-back/models/`.
+3. Export the matching ONNX model.
+4. Update frozen metrics in `auralis-back/src/api/main.py`.
+5. Update `auralis-front/src/lib/types.ts` only if response schemas changed.
+6. Add or update the experiment JSON in `auralis-back/experiments/`.
+7. Update this README and `docs/architecture.md` with the new model identity,
+   metrics, and any changed assumptions.
+
+### Add a Backend Endpoint
+
+Keep request validation and filesystem access in `src/api/main.py`. Add a
+Pydantic response model when the endpoint returns structured data, then mirror
+that schema in `auralis-front/src/lib/types.ts` and expose the call through
+`auralis-front/src/lib/api.ts`.
+
+### Add a Dashboard View
+
+Use `DashboardPage` as the tab shell. The dashboard should treat the API as the
+source of truth for model metrics, classifications, and experiment data. Avoid
+duplicating thresholds or model constants in React components.
+
+## Development Notes
+
+- Work on `main`; this repository is not currently using isolated worktrees.
+- `landing-hero.tsx` is the active landing hero. The old `hero.tsx` component was
+  removed.
+- Do not reintroduce a "72 hour forecast" claim. The model estimates the current
+  index for the selected magnetogram.
+- The dashboard's "Current Solar State" is derived from the most recent `.npy`
+  file in the local dataset, not from live NASA telemetry.
+- The classification thresholds are calibrated to the current ONNX output range:
+  `< 1.41` is Low, `1.41` to `< 1.75` is Medium, and `>= 1.75` is High.
+- Grad-CAM uses `stage4.conv` as the default target because it captures the last
+  spatial feature map before global pooling.
 
 ## License
 
@@ -178,4 +222,4 @@ Proprietary. All rights reserved.
 
 ## Author
 
-**Alejandro C.** — Software Engineer
+Alejandro C.

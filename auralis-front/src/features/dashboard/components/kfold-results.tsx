@@ -7,18 +7,19 @@ interface FoldResult {
   r2: number;
 }
 
+// log-SI space cross-validation — Coronium V3 PRO + ExtremeAugmentation (exp_005)
 const FOLD_DATA: FoldResult[] = [
-  { fold: 1, mae: 0.1389, rmse: 0.1821, r2: 0.8734 },
-  { fold: 2, mae: 0.1452, rmse: 0.1893, r2: 0.8651 },
-  { fold: 3, mae: 0.1418, rmse: 0.1847, r2: 0.8712 },
-  { fold: 4, mae: 0.1401, rmse: 0.1836, r2: 0.8728 },
-  { fold: 5, mae: 0.1421, rmse: 0.1858, r2: 0.8698 },
+  { fold: 1, mae: 0.1031, rmse: 0.1349, r2: 0.8124 },
+  { fold: 2, mae: 0.1048, rmse: 0.1371, r2: 0.8092 },
+  { fold: 3, mae: 0.1018, rmse: 0.1332, r2: 0.8156 },
+  { fold: 4, mae: 0.1025, rmse: 0.1341, r2: 0.8138 },
+  { fold: 5, mae: 0.1008, rmse: 0.1318, r2: 0.8179 },
 ];
 
 const SUMMARY = {
-  mae:  { mean: 0.1416, std: 0.0022 },
-  rmse: { mean: 0.1851, std: 0.0025 },
-  r2:   { mean: 0.8705, std: 0.0029 },
+  mae:  { mean: 0.1026, std: 0.0014 },
+  rmse: { mean: 0.1342, std: 0.0019 },
+  r2:   { mean: 0.8138, std: 0.0030 },
 };
 
 function fmt(n: number) { return n.toFixed(4); }

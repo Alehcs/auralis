@@ -16,9 +16,10 @@ function formatDate(iso: string): string {
   }
 }
 
+// Thresholds in log-SI space: training-loop val_mae ~0.10, evaluate_final ~0.20
 function maeColor(mae: number): string {
-  if (mae < 0.16) return 'text-green-400';
-  if (mae < 0.22) return 'text-yellow-400';
+  if (mae < 0.14) return 'text-green-400';   // excellent (training-loop scope)
+  if (mae < 0.25) return 'text-yellow-400';  // acceptable (evaluate_final scope)
   return 'text-red-400';
 }
 

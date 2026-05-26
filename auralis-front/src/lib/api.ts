@@ -1,7 +1,9 @@
 /**
- * API Client for Auralis Backend.
+ * Typed REST boundary for the Auralis backend.
  *
- * Base URL defaults to http://localhost:8000 (configurable via VITE_API_URL).
+ * Components should call these helpers rather than constructing fetch requests
+ * inline. That keeps endpoint paths, URL encoding, and error handling in one
+ * place when backend schemas change.
  */
 
 import type {
@@ -95,8 +97,11 @@ export function getAiaUrl(filename: string): string {
 }
 
 /**
- * Run CoroniumDual prediction on [Magnetogram, AIA 193Å].
- * Falls back to single-channel inference when dual weights are not yet trained.
+ * Run the compatibility dual endpoint.
+ *
+ * The current backend implementation uses the same Coronium V3 PRO B+ / B-
+ * ONNX path as `/api/predict/{filename}`. The route remains because older UI
+ * panels were wired to `predict-dual`.
  */
 export function predictDual(filename: string): Promise<PredictionResult> {
     return fetchJson<PredictionResult>(
@@ -109,7 +114,7 @@ export function getExperimentMetadata(filename: string): Promise<unknown> {
     return fetchJson<unknown>(`/api/experiments/${encodeURIComponent(filename)}`);
 }
 
-/** Fetch predicted-vs-actual comparison data (352 validation samples). */
+/** Fetch predicted-vs-actual comparison data from the promoted hold-out split. */
 export function getResultsComparison(): Promise<{ real: number; predicted: number; error: number }[]> {
     return fetchJson<{ real: number; predicted: number; error: number }[]>('/api/results-comparison');
 }
@@ -142,4 +147,46 @@ export interface PolarityPoint {
 /** Fetch B+ / B− mean flux time-series for the most recent images. */
 export function getPolaritySeries(limit = 48): Promise<PolarityPoint[]> {
     return fetchJson<PolarityPoint[]>(`/api/polarity-series?limit=${limit}`);
+}
+
+// ---------------------------------------------------------------------------
+// Upload endpoints — Black Box Test (drag & drop .npy)
+// ---------------------------------------------------------------------------
+
+/** Upload a .npy file and get back a blob URL for the rendered magnetogram PNG. */
+export async function uploadImagePreview(file: File): Promise<string> {
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetch(`${API_URL}/api/images-upload`, { method: 'POST', body: form });
+    if (!res.ok) {
+        const detail = await res.text().catch(() => res.statusText);
+        throw new Error(`API ${res.status}: ${detail}`);
+    }
+    const blob = await res.blob();
+    return URL.createObjectURL(blob);
+}
+
+/** Upload a .npy file and run ONNX inference, returning a PredictionResult. */
+export async function predictUpload(file: File): Promise<PredictionResult> {
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetch(`${API_URL}/api/predict-upload`, { method: 'POST', body: form });
+    if (!res.ok) {
+        const detail = await res.text().catch(() => res.statusText);
+        throw new Error(`API ${res.status}: ${detail}`);
+    }
+    return res.json() as Promise<PredictionResult>;
+}
+
+/** Upload a .npy file and get back a blob URL for the 3-panel Grad-CAM PNG. */
+export async function explainPanelsUpload(file: File): Promise<string> {
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetch(`${API_URL}/api/explain-panels-upload`, { method: 'POST', body: form });
+    if (!res.ok) {
+        const detail = await res.text().catch(() => res.statusText);
+        throw new Error(`API ${res.status}: ${detail}`);
+    }
+    const blob = await res.blob();
+    return URL.createObjectURL(blob);
 }

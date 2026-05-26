@@ -1,25 +1,9 @@
-"""Batch ETL pipeline for large-scale HMI magnetogram acquisition.
+"""Historical resumable ETL pipeline for HMI magnetogram acquisition.
 
-Downloads, processes, validates, and persists up to 2,000 HMI Level-1.5
-magnetograms from NASA JSOC into the ``data/processed/`` directory. The
-pipeline is designed to be interrupted and resumed: processed filenames are
-tracked in ``metadata_processed.csv`` and checked before each download to
-prevent duplicate fetches.
-
-Temporal distribution:
-    - 2011-2013 (25 %): Solar Cycle 24 ascending phase and maximum
-      (activity peak ~2013-11), providing high-flux training samples.
-    - 2015-2018 (25 %): Cycle 24 declining phase, intermediate activity.
-    - 2021-2025 (50 %): Cycle 25 ascending phase (peak expected ~2025),
-      oversampled to extend temporal coverage and ensure generalisation to
-      current-cycle magnetogram morphology.
-
-Rate-limiting strategy:
-    JSOC imposes per-IP rate limits that trigger HTTP 429 after
-    approximately 20 requests/minute. A random 2–5 second inter-request
-    pause keeps throughput below ~15 requests/minute with jitter to avoid
-    periodic patterns. A 30–60 second inter-batch pause allows JSOC
-    connection pools to recover between bursts.
+The pipeline is kept as the JSOC download reference for long-running dataset
+builds. It predates the final V3 PRO dual-channel symlog tensors, so new
+training runs should either reuse ``prepare_dataset.py`` after download or
+update ``process_magnetogram`` before mixing these outputs with V3 checkpoints.
 """
 
 import csv
@@ -52,24 +36,10 @@ logger = logging.getLogger(__name__)
 
 
 class Config:
-    """Centralised pipeline parameters.
+    """Centralised knobs for sampling, preprocessing, and JSOC throttling.
 
-    Consolidates all tuneable constants to avoid magic numbers scattered
-    across the pipeline functions. Update ``TOTAL_IMAGES`` and period
-    boundaries here when re-running for a new solar cycle.
-
-    Rate-limit parameters (SLEEP_*, BATCH_SLEEP_*):
-        Derived empirically from JSOC connection logs. SLEEP_MIN=1.5 s is
-        the safe lower bound validated during final ingestion runs; values
-        below 1.5 s consistently trigger 429 responses on sustained bursts
-        > 500 images. BATCH_SLEEP_* reduced to 20–45 s after confirming
-        JSOC pool recovers within that window at BATCH_SIZE=100.
-
-    Retry parameters (MAX_RETRIES, BACKOFF_BASE):
-        Exponential backoff ``2^n + U(0,1)`` seconds is consistent with
-        RFC 6585 recommendations for HTTP 429 retry-after handling.
-        MAX_RETRIES raised to 7 to cover transient JSOC outages without
-        manual restarts.
+    The sleep values are empirical from the final ingestion runs; lowering them
+    tends to produce sustained HTTP 429/503 responses before the batch finishes.
     """
 
     TOTAL_IMAGES: int = 2000
@@ -124,19 +94,11 @@ class Config:
 
 
 def generate_sampling_dates(config: Config) -> List[datetime]:
-    """Draw random dates uniformly from each configured solar-cycle period.
+    """Draw uniformly sampled dates from each configured solar-cycle window.
 
-    Uniform random sampling within each period prevents systematic
-    temporal bias (e.g., preferential sampling of solar minima) that
-    would arise from fixed-interval grids. Dates are drawn independently
-    per period and sorted chronologically before return.
-
-    Args:
-        config: Pipeline configuration instance containing period boundaries
-            and per-period sample counts.
-
-    Returns:
-        Sorted list of ``datetime`` objects with length ``config.TOTAL_IMAGES``.
+    Random sampling avoids the seasonal and cadence artefacts introduced by a
+    fixed interval grid, while the period quotas keep the dataset distribution
+    aligned with the intended cycle coverage.
     """
     logger.info("Generating sampling dates for %d images...", config.TOTAL_IMAGES)
 
@@ -166,22 +128,11 @@ def download_with_retry(
     download_dir: Path,
     config: Config,
 ) -> Optional[Path]:
-    """Fetch the HMI magnetogram nearest to ``date`` with exponential-backoff retry.
+    """Fetch the HMI magnetogram nearest to ``date`` with retry backoff.
 
-    Issues a JSOC Fido query over a 1-hour window starting at ``date``
-    (wider than the ±5-minute window used in the single-shot downloader to
-    account for occasional data gaps in the 45-second series). On HTTP 429
-    or 503 responses, waits ``2^attempt + U(0,1)`` seconds before retrying.
-    Non-rate-limit errors are treated as permanent failures and return ``None``
-    immediately to avoid stalling the batch on corrupt JSOC records.
-
-    Args:
-        date: Target observation date.
-        download_dir: Destination directory for the downloaded FITS file.
-        config: Pipeline configuration supplying retry and sleep parameters.
-
-    Returns:
-        ``Path`` to the downloaded FITS file, or ``None`` on failure.
+    The 1-hour query window tolerates gaps in the 45-second JSOC series. Only
+    rate-limit and service-unavailable failures are retried; other errors are
+    treated as bad records so the batch can continue.
     """
     for attempt in range(config.MAX_RETRIES):
         try:
@@ -226,24 +177,11 @@ def process_magnetogram(
     fits_path: Path,
     config: Config,
 ) -> Tuple[Optional[np.ndarray], Optional[Dict]]:
-    """Load and normalise a single HMI FITS file into a float32 tensor.
+    """Load one FITS file through the legacy single-channel preprocessing path.
 
-    Replicates the normalisation chain defined in ``prepare_dataset`` to
-    ensure consistency between the batch ingestion pipeline and the
-    standalone preprocessing module. The sunspot proxy index is computed
-    before resampling to avoid interpolation artefacts near the 200 G
-    detection threshold (see ``prepare_dataset`` module docstring).
-
-    Args:
-        fits_path: Path to the downloaded HMI Level-1.5 FITS file.
-        config: Pipeline configuration supplying ``TARGET_SIZE``,
-            ``CLIP_VALUE``, and ``SUNSPOT_THRESHOLD``.
-
-    Returns:
-        Tuple of:
-            - float32 ndarray of shape ``(512, 512)`` normalised to ``[-1, 1]``,
-              or ``None`` on error.
-            - Metadata dictionary, or ``None`` on error.
+    The sunspot proxy is measured before resampling so interpolation does not
+    move pixels across the 200 G threshold. Convert these tensors before using
+    them with the current dual-channel CoroniumV3 checkpoint.
     """
     try:
         solar_map = sunpy.map.Map(str(fits_path))
@@ -286,21 +224,7 @@ def process_magnetogram(
 
 
 def validate_npy_file(npy_path: Path) -> bool:
-    """Verify that a serialised tensor is structurally sound.
-
-    Checks three necessary conditions for a valid processed magnetogram:
-    (1) file size > 100 bytes (rules out empty or truncated writes),
-    (2) array shape equals ``(512, 512)`` (matches training pipeline output),
-    (3) all values lie within ``[-1.1, 1.1]`` (10 % tolerance over the
-    nominal ``[-1, 1]`` range to absorb floating-point rounding after
-    the clip-and-scale operation).
-
-    Args:
-        npy_path: Path to the ``.npy`` file to validate.
-
-    Returns:
-        ``True`` if all three conditions pass, ``False`` otherwise.
-    """
+    """Check that a saved legacy tensor is complete and in the expected range."""
     try:
         if not npy_path.exists():
             return False
@@ -324,36 +248,13 @@ def validate_npy_file(npy_path: Path) -> bool:
 
 
 def append_to_csv(metadata: Dict, csv_path: Path) -> None:
-    """Append one metadata row to the CSV, writing the header on first call.
-
-    Uses pandas ``DataFrame.to_csv`` in append mode so each successful
-    magnetogram is persisted immediately. This ensures partial progress is
-    recoverable if the pipeline is interrupted mid-batch.
-
-    Args:
-        metadata: Dictionary with the column set produced by
-            ``process_magnetogram``.
-        csv_path: Destination CSV path (created if absent).
-    """
+    """Persist metadata immediately so interrupted batches can resume."""
     df = pd.DataFrame([metadata])
     df.to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
 
 
 def get_processed_files(csv_path: Path) -> Set[str]:
-    """Return the set of already-processed filenames from the metadata CSV.
-
-    Enables resume-from-checkpoint behaviour: the pipeline checks this set
-    before downloading each file and skips dates whose stem already appears
-    in the CSV.
-
-    Args:
-        csv_path: Path to the metadata CSV written by ``append_to_csv``.
-
-    Returns:
-        Set of filename stems (without extension) that have been processed,
-        or an empty set if the CSV does not exist or lacks a ``filename``
-        column.
-    """
+    """Read processed filename stems used as the resume checkpoint."""
     if not csv_path.exists():
         return set()
     try:
@@ -372,26 +273,11 @@ def process_batch_etl(
     config: Config,
     processed_files: Set[str],
 ) -> Dict[str, int]:
-    """Execute the full Extract-Transform-Load pipeline in batches.
+    """Run download, legacy transform, validation, and cleanup in batches.
 
-    Each batch of ``config.BATCH_SIZE`` dates passes through three sequential
-    phases:
-        1. Download — JSOC Fido fetch with exponential-backoff retry.
-        2. Transform + Validate — normalise to float32, validate shape and range.
-        3. Cleanup — delete raw FITS files to reclaim disk space after
-           successful processing. Raw files are removed regardless of
-           processing outcome to prevent indefinite disk growth.
-
-    Args:
-        dates: Full list of target observation dates to process.
-        config: Pipeline configuration.
-        processed_files: Mutable set of already-processed filename stems,
-            updated in-place as files are successfully persisted.
-
-    Returns:
-        Dictionary with integer counters for keys:
-        ``total``, ``already_processed``, ``downloaded``, ``processed``,
-        ``failed_download``, ``failed_processing``, ``failed_validation``.
+    ``processed_files`` is updated in-place after each successful write. Raw
+    FITS files are removed after processing attempts to keep long runs from
+    exhausting local disk.
     """
     config.RAW_DIR.mkdir(parents=True, exist_ok=True)
     config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
