@@ -22,7 +22,7 @@ export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
     getStats().then(setStats).catch(() => null);
   }, []);
 
-  const accuracyProxy = '93.78%';
+  const accuracyProxy = '93.93%';
   const samples = stats ? `${stats.total_images.toLocaleString()} imgs` : '—';
   const r2 = stats ? `R² ${stats.r2_score.toFixed(2)}` : '—';
 
