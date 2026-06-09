@@ -10,8 +10,8 @@ export function ProjectDescription() {
 
   const technicalFeatures = [
     { label: 'Dataset Size', value: '1,763 samples' },
-    { label: 'Accuracy Proxy (100-MAPE)', value: '93.78%' },
-    { label: 'MAE log-SI (MC)', value: '0.1076' },
+    { label: 'Accuracy Proxy (100-MAPE)', value: '93.93%' },
+    { label: 'MAE log-SI (MC)', value: '0.1048' },
     { label: 'ONNX Latency (CPU)', value: '25.11 ms' },
     { label: 'Inference Confidence', value: '20-pass ONNX' },
     { label: 'SDO/HMI Cadence', value: '45 s' }
