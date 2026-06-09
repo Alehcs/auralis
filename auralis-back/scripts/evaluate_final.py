@@ -43,6 +43,17 @@ VAL_SPLIT    = 0.2
 BATCH_SIZE   = 32
 DROPOUT_RATE = 0.2
 
+# Reproducibility — fix all RNG sources so MC Dropout masks are deterministic.
+# This guarantees that re-running this script yields identical metrics every
+# time, which is required for citation in a thesis / conference proceedings.
+SEED = 42
+torch.manual_seed(SEED)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(SEED)
+if torch.backends.mps.is_available():
+    torch.mps.manual_seed(SEED)
+np.random.seed(SEED)
+
 
 # ---------------------------------------------------------------------------
 # Helpers
