@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+title: "Auralis / Coronium V3 PRO"
+message: "If you use this software or its results, please cite it as below."
+type: software
+authors:
+  - given-names: Alejandro
+    family-names: Cornejo
+abstract: >-
+  Auralis is a full-stack machine-learning pipeline that estimates the current
+  solar activity index from NASA SDO/HMI line-of-sight magnetograms. Its model,
+  Coronium V3 PRO, is a compact four-stage residual CNN with Efficient Channel
+  Attention and a dual-channel (B+ / B-) polarity representation, trained for
+  CPU-deployable regression and exported to ONNX for edge inference.
+version: 3.3.0
+date-released: 2026-05-26
+license: MIT
+keywords:
+  - solar-physics
+  - space-weather
+  - magnetograms
+  - SDO
+  - HMI
+  - deep-learning
+  - convolutional-neural-network
+  - regression
+  - explainable-ai
+  - grad-cam
+  - onnx
+# DOI pending: mint a Zenodo DOI from a tagged GitHub release, then uncomment:
+# doi: 10.5281/zenodo.XXXXXXX
+# identifiers:
+#   - type: doi
+#     value: 10.5281/zenodo.XXXXXXX
+#     description: Archived release on Zenodo

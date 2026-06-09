@@ -31,6 +31,14 @@ def log_scale(x: np.ndarray) -> np.ndarray:
 
     It compresses strong umbral fields without the information loss introduced
     by the older +/-400 G hard clip.
+
+    Args:
+        x: Magnetic field array in Gauss (any shape). May contain negative
+            values; the sign of each element is preserved.
+
+    Returns:
+        An array of the same shape as ``x`` where each element is
+        ``sign(x) * log1p(|x|)``.
     """
     return np.sign(x) * np.log1p(np.abs(x))
 
@@ -45,6 +53,24 @@ def load_and_process_magnetogram(
     The sunspot proxy index is computed on the original, pre-resample pixel
     array to avoid double-counting artefacts introduced by bilinear
     interpolation near the 200 G detection threshold.
+
+    Args:
+        fits_path: Path to a single HMI line-of-sight FITS file.
+        target_size: Edge length, in pixels, of the square output tensor.
+            Defaults to 512.
+        sunspot_threshold: Strong-field cutoff in Gauss for the sunspot proxy
+            index. Defaults to 200.0.
+
+    Returns:
+        A 2-tuple ``(tensor, metadata)`` where ``tensor`` is a
+        ``(2, target_size, target_size)`` float32 array (channel 0 = B+,
+        channel 1 = B-) and ``metadata`` is a dict with keys ``filename``,
+        ``date``, ``sunspot_index``, ``original_shape``, ``processed_shape``,
+        ``b_pos_max``, ``b_neg_max``, ``mean_b_pos``, and ``mean_b_neg``.
+
+    Raises:
+        Exception: Re-raised after logging if SunPy cannot read the FITS file
+            or the array cannot be processed.
     """
     try:
         solar_map = sunpy.map.Map(str(fits_path))
@@ -104,6 +130,21 @@ def prepare_dataset(
     Files are processed in sorted order for reproducibility. Errors on
     individual files are logged and skipped; processing continues to enable
     partial recovery from corrupt or incomplete JSOC downloads.
+
+    Args:
+        raw_dir: Directory containing input ``*.fits`` magnetograms.
+            Defaults to ``"data/raw"``.
+        processed_dir: Output directory for ``.npy`` tensors; created if it
+            does not exist. Defaults to ``"data/processed"``.
+        target_size: Edge length, in pixels, of each square output tensor.
+            Defaults to 512.
+        sunspot_threshold: Strong-field cutoff in Gauss for the sunspot proxy
+            index. Defaults to 200.0.
+
+    Returns:
+        A list of per-file metadata dicts (see
+        :func:`load_and_process_magnetogram`). Empty if ``raw_dir`` contains
+        no FITS files.
     """
     processed_path = Path(processed_dir)
     processed_path.mkdir(parents=True, exist_ok=True)
