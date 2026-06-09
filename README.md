@@ -41,11 +41,11 @@ by the API and dashboard.
 
 | Metric | Value |
 | --- | ---: |
-| MAE (log-SI) | 0.1076 |
-| RMSE (log-SI) | 0.1284 |
-| R2 | 0.8608 |
-| MAPE | 6.22% |
-| Accuracy proxy (`100 - MAPE`) | 93.78% |
+| MAE (log-SI) | 0.1048 |
+| RMSE (log-SI) | 0.1272 |
+| R2 | 0.8634 |
+| MAPE | 6.07% |
+| Accuracy proxy (`100 - MAPE`) | 93.93% |
 
 The "accuracy" percentage is a derived reporting value, not a classification
 accuracy metric.

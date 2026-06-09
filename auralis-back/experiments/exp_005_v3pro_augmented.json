@@ -36,17 +36,18 @@
     "temporal_coverage": "2011-2025 (Solar Cycles 24-25)"
   },
   "metrics": {
-    "final_mae": 0.1076,
-    "final_rmse": 0.1284,
-    "r2_score": 0.8608,
-    "mape_pct": 6.22,
+    "final_mae": 0.1048,
+    "final_rmse": 0.1272,
+    "r2_score": 0.8634,
+    "mape_pct": 6.07,
     "best_epoch": 21,
     "best_val_loss": 0.1071,
     "train_val_mae": 0.1071,
     "onnx_inference_ms": 25.11,
     "pytorch_inference_ms": 27.90,
     "onnx_speedup_vs_pytorch_cpu": "1.11x (25.11 ms vs 27.90 ms)",
-    "metric_note": "final_mae/rmse/r2/mape = evaluate_final.py (MC Dropout T=20, model.eval()+Dropout.train(), log-SI, 353 hold-out, random split random_state=42). train_val_mae = training-loop best epoch 21/24."
+    "evaluation_seed": 42,
+    "metric_note": "final_mae/rmse/r2/mape = evaluate_final.py (MC Dropout T=20, model.eval()+Dropout.train(), log-SI, 353 hold-out, random split random_state=42, evaluation seed=42 for full reproducibility). train_val_mae = training-loop best epoch 21/24."
   },
   "environment": {
     "device": "mps",
@@ -54,5 +55,5 @@
     "python_version": "3.12.1",
     "os": "macOS 15.4"
   },
-  "notes": "Domain-shift fix: random_state=42 split keeps extreme events represented in both sets (max_y_train=2.9788, max_y_val=2.9019). MC Dropout fix: use model.eval()+Dropout.train() instead of model.train(). ExtremeAugmentation applies pixel-perfect flip + rot90 only to extreme samples (SI > 2.0). Early stopping at epoch 24, best checkpoint at epoch 21 (train val_mae: 0.1071, log-SI). LR reduced from 0.001 to 0.0005 at epoch 19 and from 0.0005 to 0.00025 at epoch 23. Exported to ONNX opset 18 with do_constant_folding=True: 86.6 KB, 25.11 ms CPU (1.11x vs PyTorch CPU 27.90 ms)."
+  "notes": "Reproducible eval: torch.manual_seed(42) added to evaluate_final.py so MC Dropout masks are deterministic; metrics in this JSON are the canonical run. Domain-shift fix: random_state=42 split keeps extreme events represented in both sets (max_y_train=2.9788, max_y_val=2.9019). MC Dropout fix: use model.eval()+Dropout.train() instead of model.train(). ExtremeAugmentation applies pixel-perfect flip + rot90 only to extreme samples (SI > 2.0). Early stopping at epoch 24, best checkpoint at epoch 21 (train val_mae: 0.1071, log-SI). LR reduced from 0.001 to 0.0005 at epoch 19 and from 0.0005 to 0.00025 at epoch 23. Exported to ONNX opset 18 with do_constant_folding=True: 86.6 KB, 25.11 ms CPU (1.11x vs PyTorch CPU 27.90 ms)."
 }
