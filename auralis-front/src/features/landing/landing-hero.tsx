@@ -5,9 +5,16 @@ import { getStats } from '@/lib/api';
 import type { SystemStats } from '@/lib/types';
 
 interface LandingHeroProps {
+  /** Invoked when the user clicks the primary CTA; parent swaps to the dashboard view. */
   onEnterDashboard: () => void;
 }
 
+/**
+ * Landing hero section: animated starfield backdrop plus live model stats
+ * (sample count and R²) fetched from the backend `/api/stats` endpoint.
+ *
+ * @param props.onEnterDashboard - Callback fired when the "Enter dashboard" CTA is clicked.
+ */
 export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
   const [stats, setStats] = useState<SystemStats | null>(null);
 

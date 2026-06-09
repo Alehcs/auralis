@@ -216,10 +216,30 @@ duplicating thresholds or model constants in React components.
 - Grad-CAM uses `stage4.conv` as the default target because it captures the last
   spatial feature map before global pooling.
 
+## Citation
+
+If you reference Auralis or its results, please cite the project. Repository
+metadata is provided in [`CITATION.cff`](CITATION.cff) (GitHub renders a
+"Cite this repository" button from it).
+
+```bibtex
+@software{cornejo_auralis_2026,
+  author  = {Cornejo, Alejandro},
+  title   = {{Auralis / Coronium V3 PRO: A residual CNN for solar
+             activity-index regression from dual-channel HMI/SDO magnetograms}},
+  year    = {2026},
+  version = {3.3.0},
+  note    = {DOI pending Zenodo archival}
+}
+```
+
+> A citable DOI will be minted from a tagged GitHub release via Zenodo; the
+> `doi` field in `CITATION.cff` is left commented until then.
+
 ## License
 
-Proprietary. All rights reserved.
+Released under the [MIT License](LICENSE).
 
 ## Author
 
-Alejandro C.
+Alejandro Cornejo
