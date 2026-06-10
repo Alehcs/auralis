@@ -30,6 +30,7 @@ magnetic polarity and channel 1 is negative magnetic polarity.
 | --- | --- |
 | Promoted checkpoint | `auralis-back/models/best_coronium_v3_pro_augmented.pth` |
 | ONNX runtime model | `auralis-back/models/best_coronium_v3_pro.onnx` |
+| ONNX model size | 86.6 KB |
 | Parameters | 206,875 |
 | ONNX CPU latency | 25.11 ms per image |
 | Evaluation run | `exp_005_v3pro_augmented.json` |
@@ -43,12 +44,50 @@ by the API and dashboard.
 | --- | ---: |
 | MAE (log-SI) | 0.1048 |
 | RMSE (log-SI) | 0.1272 |
-| R2 | 0.8634 |
+| R² | 0.8634 |
 | MAPE | 6.07% |
-| Accuracy proxy (`100 - MAPE`) | 93.93% |
+| Accuracy proxy (100 − MAPE) | 93.93% |
 
-The "accuracy" percentage is a derived reporting value, not a classification
-accuracy metric.
+All metrics are evaluated in log-SI space on a 353-magnetogram hold-out split
+(`random_state=42`). The official evaluation protocol uses Monte Carlo Dropout
+(T = 20 stochastic passes, `seed=42`) on the PyTorch checkpoint; see
+`auralis-back/scripts/evaluate_final.py` for the reproducible script.
+
+The accuracy proxy (93.93%) equals 100 − MAPE and is a regression reporting
+convenience. It is not a classification accuracy.
+
+### Benchmark Comparison
+
+Coronium's primary contribution is parameter efficiency. Benchmark comparisons
+are scale-asymmetric: external baselines and Coronium are not always evaluated
+under identical target-space assumptions, so raw MAE ranking should be
+interpreted carefully. The main value of Coronium lies in its dual-polarity
+representation, parameter efficiency, and lightweight deployment readiness.
+
+| Model | Parameters | MAE† | R² |
+| --- | ---: | ---: | ---: |
+| Naive Persistence | 0 | 0.2882 | −0.008 |
+| ResNet-18 | 11,170,753 | 0.0755 | 0.9276 |
+| VGG-11 | 9,350,913 | 0.1079 | 0.8621 |
+| **Coronium V3 PRO** | **206,875** | **0.1048** | **0.8634** |
+
+†Baseline MAEs are reported in their native training scale; Coronium's MAE is
+in log-SI space. The scales are not directly equivalent — treat the MAE column
+as contextual, not a strict ranking. The primary differentiator for Coronium is
+parameter efficiency, dual-polarity representation, reproducibility, and
+lightweight ONNX deployment (86.6 KB, 25.11 ms CPU).
+
+External baselines (ResNet-18, VGG-11) were retrained from scratch on the same
+1,763-sample corpus using a single-channel collapsed input (`|B| = B+ + B−`).
+Coronium V3 PRO uses the full dual-channel `(B+, B−)` representation.
+
+### Dashboard API Uncertainty vs. Official Evaluation
+
+The `/api/predict` endpoint reports an `uncertainty` field derived from
+20 inference passes with small additive Gaussian input noise (σ = 0.005) via
+ONNX Runtime. This is an approximation of instrument read-noise sensitivity, not
+the MC Dropout protocol. The canonical metrics above were produced by the
+offline MC Dropout evaluation in `evaluate_final.py`.
 
 ## Dataset
 
