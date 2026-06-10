@@ -1,16 +1,38 @@
-sunpy[all]
-astropy
-numpy
-matplotlib
-pandas
-scikit-learn
-tqdm
-jupyter
-notebook
-torch
-torchvision
-onnx
-onnxruntime
-onnxscript
-streamlit
-plotly
+# Auralis backend — full training / development environment.
+#
+# This is the source of truth for reproducing training, evaluation, ONNX export,
+# data ingestion, and notebooks. For the lean API/runtime image use
+# requirements.api.txt instead (it omits ingestion-only and dev tooling).
+#
+# Pins are floor versions matching the documented training baseline
+# (PyTorch 2.2.0, Python 3.12; see RESEARCH_DOSSIER_MASTER.md §1.3).
+
+# --- Deep learning ---
+torch>=2.2.0
+torchvision>=0.17.0
+
+# --- ONNX export & runtime ---
+onnx>=1.15.0
+onnxruntime>=1.17.0
+onnxscript>=0.1.0
+
+# --- Numerics & data ---
+numpy>=1.26.0
+pandas>=2.2.0
+scipy>=1.12.0
+scikit-learn>=1.4.0
+matplotlib>=3.8.0
+
+# --- Solar data ingestion / FITS processing ---
+sunpy[all]>=5.1.0
+astropy>=6.0.0
+scikit-image>=0.22.0
+
+# --- Visualization (auxiliary Streamlit/Plotly tooling) ---
+streamlit>=1.31.0
+plotly>=5.19.0
+
+# --- Notebooks & utilities ---
+jupyter>=1.0.0
+notebook>=7.1.0
+tqdm>=4.66.0

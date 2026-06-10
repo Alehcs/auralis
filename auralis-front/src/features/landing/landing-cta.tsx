@@ -2,9 +2,15 @@ import { RippleButton } from '@/components/shared/ripple-button';
 import { ArrowRight } from 'lucide-react';
 
 interface LandingCTAProps {
+  /** Invoked when the user clicks the CTA; parent swaps to the dashboard view. */
   onEnterDashboard: () => void;
 }
 
+/**
+ * Closing call-to-action band on the landing page.
+ *
+ * @param props.onEnterDashboard - Callback fired when the CTA button is clicked.
+ */
 export function LandingCTA({ onEnterDashboard }: LandingCTAProps) {
   return (
     <div className="px-6 py-20 bg-neutral-900 border-t border-neutral-800">

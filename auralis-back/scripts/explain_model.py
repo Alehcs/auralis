@@ -35,6 +35,12 @@ WEIGHTS_PATH = Path("models/best_coronium_v3_pro_augmented.pth")
 DATA_DIR = Path("data/processed")
 OUTPUT_FIGURE = Path("reports/figures/gradcam_sample.png")
 
+# Optional: target a specific sample for the Grad-CAM. Override via env var
+# GRADCAM_SAMPLE (e.g. "hmi.m_45s.2024.08.12_00_01_30_TAI"). If unset or no
+# match, falls back to the first .npy in DATA_DIR (legacy behaviour).
+import os
+TARGET_SAMPLE = os.environ.get("GRADCAM_SAMPLE", "").strip() or None
+
 # Last convolutional stage before global average pooling. Earlier layers keep
 # more spatial detail, but stage4 carries the semantic signal the regressor
 # actually uses for the final index.
@@ -158,7 +164,19 @@ def load_sample(data_dir: Path) -> Tuple[torch.Tensor, np.ndarray, str]:
             "Run src/processing/prepare_dataset.py first."
         )
 
+    # Targeted selection takes precedence over the legacy first-file behaviour.
     sample_path = npy_files[0]
+    if TARGET_SAMPLE:
+        matches = [p for p in npy_files if TARGET_SAMPLE in p.name]
+        if matches:
+            sample_path = matches[0]
+            logger.info("Targeted sample matched: %s", sample_path.name)
+        else:
+            logger.warning(
+                "TARGET_SAMPLE='%s' did not match any file in %s; "
+                "falling back to first file.",
+                TARGET_SAMPLE, data_dir,
+            )
     image = np.load(str(sample_path)).astype(np.float32)
     logger.info(
         "Selected sample: %s | shape=%s | dtype=%s",

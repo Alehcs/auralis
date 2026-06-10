@@ -1015,9 +1015,9 @@ async def get_stats():
     # Promoted-run metrics for exp_005 (best_coronium_v3_pro_augmented.pth).
     # evaluate_final.py: MC Dropout T=20, log-SI space, 353 hold-out samples.
     # The random_state=42 split keeps extreme events represented in both sets.
-    mae_value  = 0.1076   # MAE log-SI, 353 hold-out samples
-    rmse_value = 0.1284   # RMSE log-SI
-    r2_value   = 0.8608   # R²
+    mae_value  = 0.1048   # MAE log-SI, 353 hold-out samples (seed=42, reproducible)
+    rmse_value = 0.1272   # RMSE log-SI
+    r2_value   = 0.8634   # R²
 
     # mtime of the most recently modified .npy as a UTC ISO-8601 timestamp.
     if npy_files:
@@ -1180,9 +1180,9 @@ async def get_benchmark():
     # Promoted-run metrics from exp_005_v3pro_augmented.json.
     # evaluate_final.py: MC Dropout T=20, log-SI space, 353 hold-out samples.
     # The random_state=42 split keeps extreme events represented in both sets.
-    proposed_mae = 0.1076          # MAE log-SI, 353 hold-out samples
-    proposed_rmse = 0.1284         # RMSE log-SI
-    proposed_r2 = 0.8608           # R²
+    proposed_mae = 0.1048          # MAE log-SI, 353 hold-out samples (seed=42, reproducible)
+    proposed_rmse = 0.1272         # RMSE log-SI
+    proposed_r2 = 0.8634           # R²
     proposed_params = 206_875      # Verified with sum(p.numel() for p in model.parameters()).
     proposed_inference_ms = 25.11  # ONNX Runtime CPU — 25.11 ms (1.11× vs PyTorch 27.90 ms)
 

@@ -29,12 +29,15 @@ data/processed/
 !data/sample/
 !data/sample/**
 
-# --- MODELOS DE IA (Archivos pesados > 100MB) ---
+# --- MODELOS DE IA (checkpoints pesados ignorados por defecto) ---
 *.pth
 *.pt
 *.onnx
-# Excepción: modelo final V3 (367 KB, cabe en git)
-!models/helios_v3_final.pth
+# Excepción: artefactos de producción promovidos (pequeños, deben clonarse) ---
+# Coronium V3 PRO + ExtremeAug — checkpoint promovido (~829 KB)
+!models/best_coronium_v3_pro_augmented.pth
+# Grafo ONNX de producción (86.6 KB, opset 18) — su .onnx.data ya se versiona
+!models/best_coronium_v3_pro.onnx
 !models/target_scaler.json
 
 # --- LOGS Y BASES DE DATOS LOCALES ---

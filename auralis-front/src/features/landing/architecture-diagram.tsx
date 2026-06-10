@@ -68,7 +68,7 @@ export function ArchitectureDiagram() {
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-500">MAE (log-SI):</span>
-              <span className="text-white">0.1076</span>
+              <span className="text-white">0.1048</span>
             </div>
           </div>
         </div>

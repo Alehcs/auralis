@@ -38,13 +38,14 @@ a production service with real users.
 
 | Metric | Value |
 | --- | ---: |
-| MAE (log-SI) | 0.1076 |
-| RMSE (log-SI) | 0.1284 |
-| R2 | 0.8608 |
-| MAPE | 6.22% |
-| Accuracy proxy (`100 - MAPE`) | 93.78% |
+| MAE (log-SI) | 0.1048 |
+| RMSE (log-SI) | 0.1272 |
+| R2 | 0.8634 |
+| MAPE | 6.07% |
+| Accuracy proxy (`100 - MAPE`) | 93.93% |
 
-The 93.78% value is the only supported accuracy-style percentage in the UI.
+Evaluated on the 353-magnetogram hold-out (MC Dropout T=20, seed=42). The 93.93%
+value is the only supported accuracy-style percentage in the UI.
 
 ### Dataset
 

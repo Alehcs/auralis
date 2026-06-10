@@ -5,8 +5,8 @@
 **Standard:** IEEE Conference Paper Format  
 **Repository:** Auralis  
 **Dossier Generated:** 2026-04-02  
-**Dossier Updated:** 2026-05-01  
-**Dossier Version:** 3.2.0  
+**Dossier Updated:** 2026-05-26  
+**Dossier Version:** 3.3.0  
 
 ---
 
@@ -41,11 +41,13 @@
 
 | Field             | Value                                                          |
 |-------------------|----------------------------------------------------------------|
-| Commit Hash       | `85d82773`                                                     |
-| Commit Message    | `chore: initialize full stack monorepo structure`              |
-| Commit Date       | 2026-02-15 15:46:54 -0300                                      |
-| Author            | Alejandro                                                      |
 | Branch            | `main`                                                         |
+| Repository State  | v3-pro consolidated — `exp_005` final (V3 PRO + ExtremeAugmentation) |
+| Author            | Alejandro Cornejo                                              |
+
+> The specific promoting commit hash is intentionally omitted: the `exp_005`
+> production state was consolidated across the `v3-pro` branch merge. Run
+> `git log --oneline` for the authoritative commit history.
 
 ### 1.3 Runtime Environment
 
@@ -154,48 +156,46 @@ where:
 | Pixels with |B| > 200 G      | 1.78%         | —      |
 | Active pixel count (sample)  | 299,196       | pixels |
 
-### 2.4 Normalization Parameters — Pipeline Completo (V3)
+### 2.4 Normalization Parameters — Pipeline Completo (V3 PRO)
 
-**Source:** `auralis-back/src/processing/prepare_dataset.py`, Lines 99-104  
-**Source:** `auralis-back/src/ingestion/massive_ingest_pipeline.py`, Lines 38-87  
-**Source:** `auralis-back/recalculate_scaler.py`
+**Source:** `auralis-back/src/processing/prepare_dataset.py` (`log_scale`, `load_and_process_magnetogram`)  
+**Source:** `auralis-back/src/ingestion/massive_ingest_pipeline.py`
 
-El pipeline de normalización de Coronium V3 PRO aplica tres pasos secuenciales: (1) clipping + reescalado lineal sobre los valores de campo magnético, (2) separación de polaridad en canales independientes, y (3) normalización logarítmica más Z-Score Poblacional sobre el target (Sunspot Index). Esta tercera etapa fue la cura matemática que resolvió el problema de Mode Collapse.
+El pipeline de normalización de Coronium V3 PRO aplica dos pasos secuenciales sobre el campo magnético: (1) escalado logarítmico simétrico que preserva el signo, y (2) separación de polaridad en canales independientes. La normalización del target (Sunspot Index) se trata en §2.4.1 y es lo que resolvió el Mode Collapse.
 
-**Paso 1 — Hard Clipping sobre el campo magnético:**
+> **Cambio respecto a V2 (legacy):** versiones anteriores aplicaban hard clipping ±400 G + división lineal por 400 G, lo cual saturaba la información de campos fuertes (umbras de manchas grandes). V3 PRO reemplazó ese esquema por `log1p` simétrico, que comprime las colas sin pérdida de información — verificable en el docstring de `log_scale` (`prepare_dataset.py:30-33`).
 
-$$
-B_{clipped}(p) = \text{clip}\!\left(B_{raw}(p),\ -B_{clip},\ +B_{clip}\right), \quad B_{clip} = 400.0\ \text{G}
-$$
-
-**Paso 2 — Reescalado lineal:**
+**Paso 1 — Escalado logarítmico simétrico (sign-preserving):**
 
 $$
-B_{norm}(p) = \frac{B_{clipped}(p)}{B_{clip}} \in [-1.0,\ +1.0]
+B_{log}(p) = \operatorname{sign}\!\big(B_{raw}(p)\big) \cdot \log\!\big(1 + |B_{raw}(p)|\big)
 $$
 
-**Paso 3 — Separación de polaridad en doble canal (nuevo en V3):**
+Implementado como `np.sign(x) * np.log1p(np.abs(x))`. Comprime el rango dinámico ([-4808, +4808] G en datos crudos) hacia ~[-8.5, +8.5] preservando el signo de la polaridad y la información de campos extremos.
 
-El tensor de entrada se expande de 1 canal a 2 canales separando la polaridad positiva (B+) y negativa (B−):
+**Paso 2 — Separación de polaridad en doble canal (nuevo en V3):**
+
+El tensor escalado se expande de 1 canal a 2 canales separando la polaridad positiva (B+) y negativa (B−):
 
 $$
-\text{canal}_0 = \max(B_{norm}(p),\ 0) \quad \text{(campo positivo)}
+\text{canal}_0 = \max(B_{log}(p),\ 0) \quad \text{(campo positivo, B+)}
 $$
 $$
-\text{canal}_1 = \max(-B_{norm}(p),\ 0) \quad \text{(campo negativo, invertido)}
+\text{canal}_1 = \max(-B_{log}(p),\ 0) \quad \text{(campo negativo invertido, B−)}
 $$
 
-Esto permite al modelo distinguir arquitecturalmente entre flujo magnético entrante y saliente, lo que es físicamente significativo para la predicción de actividad solar.
+Esto permite al modelo distinguir arquitecturalmente entre flujo magnético entrante y saliente, lo que es físicamente significativo para la predicción de actividad solar y para la detección de estructuras bipolares (firma de manchas maduras).
 
-**Normalización de Configuration (campo magnético):**
+**Parámetros de entrada (campo magnético):**
 
-| Parámetro           | Valor    | Unidades | Fuente                     |
-|---------------------|----------|----------|----------------------------|
-| `clip_value`        | 400.0    | G        | `prepare_dataset.py:104`   |
-| `sunspot_threshold` | 200.0    | G        | `prepare_dataset.py:83`    |
-| Rango de salida     | [-1, +1] | —        | División lineal por 400.0 G |
+| Parámetro           | Valor    | Unidades | Fuente                                  |
+|---------------------|----------|----------|-----------------------------------------|
+| Transformación      | `sign(x) · log1p(|x|)` | — | `prepare_dataset.py:35` (`log_scale`) |
+| `sunspot_threshold` | 200.0    | G        | `prepare_dataset.py:41` (cálculo SI proxy) |
+| Rango de salida     | ≈ [0, 8.5] por canal (ambos no-negativos) | — | post-ReLU sobre `log1p` |
 | Manejo NaN          | Reemplazar con 0.0 | — | `np.nan_to_num(data, nan=0.0)` |
-| Canales de entrada  | **2** (B+, B−) | — | V3 — separación de polaridad |
+| Canales de entrada  | **2** (B+, B−) | —    | V3 PRO — separación de polaridad |
+| Dtype final         | float32  | —        | `processed.astype(np.float32)` |
 
 ### 2.4.1 Normalización del Target — Transformación Logarítmica (Cura del Mode Collapse)
 
@@ -211,7 +211,7 @@ $$
 
 La transformación logarítmica comprime el rango dinámico de la distribución, reduciendo el peso desproporcionado de valores atípicos altos y acercando la distribución a la normalidad. El target final entrenable se almacena en `metadata_processed.csv` ya en espacio log-SI, con rango efectivo **[1.22, 2.98]**.
 
-`SolarDataset` lee este valor directamente desde el CSV y lo entrega como tensor escalar al modelo — **no aplica Z-Score adicional** en el pipeline de entrenamiento. La función de pérdida (WeightedHuberLoss + L1Loss) opera nativamente en espacio log-SI, garantizando comparabilidad directa entre `val_mae` del training-loop (0.1071) y la evaluación externa MC Dropout (0.1076).
+`SolarDataset` lee este valor directamente desde el CSV y lo entrega como tensor escalar al modelo — **no aplica Z-Score adicional** en el pipeline de entrenamiento. La función de pérdida (WeightedHuberLoss + L1Loss) opera nativamente en espacio log-SI, garantizando comparabilidad directa entre `val_mae` del training-loop (0.1071) y la evaluación externa MC Dropout (0.1048).
 
 **Parámetros estadísticos del target (espacio log-SI, 1,763 muestras):**
 
@@ -220,7 +220,7 @@ La transformación logarítmica comprime el rango dinámico de la distribución,
 | Media     | ~1.77 | Centro de la distribución log(SI) |
 | Std       | ~0.35 | Dispersión log(SI) |
 | Mínimo    | 1.214 | Sol quieto |
-| Máximo    | 2.990 | Tormentas Clase X (Ciclo 25 máx.) |
+| Máximo    | 2.990 | Alta actividad (Ciclo 25 máx.) |
 | ε         | 10⁻⁶  | Protección contra log(0) |
 
 > **Nota histórica:** En versiones tempranas se exploró una segunda fase de Z-Score Poblacional ($\mu=1.7658$, $\sigma=0.3462$) calculada sobre 1,314 tensores reales — utilidades preservadas en `tools/recalculate_scaler.py` y `models/target_scaler.json`. La iteración final V3 PRO + ExtremeAug demostró que la transformación logarítmica por sí sola era suficiente para resolver el Mode Collapse, por lo que se eliminó la fase Z-Score del training loop activo manteniendo los artefactos de scaler como referencia auxiliar.
@@ -230,38 +230,45 @@ La transformación logarítmica comprime el rango dinámico de la distribución,
 **Source:** `auralis-back/src/processing/prepare_dataset.py`, Lines 42-116
 
 ```
-FITS-to-NPY Processing Pipeline
+FITS-to-NPY Processing Pipeline (V3 PRO)
 ─────────────────────────────────────────────────────────────────────────────
-Step  Operation               Library             Parameters / Notes
+Step  Operation                Library             Parameters / Notes
 ─────────────────────────────────────────────────────────────────────────────
-  1   Load FITS file          SunPy               HMI/SDO, los_magnetic_field
-  2   Extract data array      astropy.io.fits     Native shape: (4096, 4096)
-  3   NaN replacement         numpy               np.nan_to_num(data, nan=0.0)
-  4   Compute Sunspot Index   numpy               SI = (|B| > 200G pixels / total) × 100
-  5   Spatial resampling      skimage.transform   resize(512, 512), mode='reflect',
-                                                  anti_aliasing=True,
-                                                  preserve_range=True
-  6   Hard clipping           numpy               np.clip(data, -400.0, +400.0)
-  7   Linear normalization    numpy               data / 400.0 → [-1.0, +1.0]
-  8   Dtype cast              numpy               astype(float32)
-  9   Save to disk            numpy               np.save(.npy), 512×512×float32
- 10   Log metadata to CSV     pandas              filename, date, sunspot_index,
-                                                  original_shape, processed_shape,
-                                                  min, max, mean
+  1   Load FITS file           SunPy               HMI/SDO, los_magnetic_field
+  2   Extract data array       astropy.io.fits     Native shape: (4096, 4096)
+  3   NaN replacement          numpy               np.nan_to_num(data, nan=0.0)
+  4   Compute Sunspot Index    numpy               SI = (|B_raw| > 200G) / total × 100
+                                                   ← calculado sobre datos RAW
+                                                   (antes de resize y de log)
+  5   Spatial resampling       skimage.transform   resize(512, 512), mode='reflect',
+                                                   anti_aliasing=True, preserve_range=True
+  6   Symmetric log scaling    numpy               x' = sign(x) · log1p(|x|)
+                                                   (`log_scale`, prepare_dataset.py:35)
+  7   Polarity decomposition   numpy               B+ = ReLU(x'),  B− = ReLU(-x')
+  8   Stack dual-channel       numpy               np.stack([B+, B−]) → (2, 512, 512)
+  9   Dtype cast               numpy               astype(float32)
+ 10   Save to disk             numpy               np.save(.npy), (2, 512, 512) float32
+ 11   Log metadata to CSV      pandas              filename, date, sunspot_index,
+                                                   original_shape, processed_shape,
+                                                   b_pos_max, b_neg_max,
+                                                   mean_b_pos, mean_b_neg
 ─────────────────────────────────────────────────────────────────────────────
 Compression ratio (spatial): 4096² → 512² = 64× reduction
-Output file size:             ≈ 1.0 MB per image (float32, uncompressed)
+Output file size:             ≈ 2.0 MB por imagen (2 canales × 512² × float32, sin comprimir)
 ─────────────────────────────────────────────────────────────────────────────
 ```
 
+> **Nota crítica sobre el cálculo del SI proxy (Paso 4):** El Sunspot Index se calcula sobre el array **crudo en resolución nativa** (4096²) **antes** de cualquier resize o transformación. Esto evita artefactos de doble-conteo cerca del umbral 200 G introducidos por la interpolación bilineal del resize (`prepare_dataset.py:44-47`).
+
 **Validation criteria applied post-processing:**
 
-| Check          | Expected Value                | Source                        |
-|----------------|-------------------------------|-------------------------------|
-| Shape          | (512, 512)                    | `validate_processed.py`       |
-| Dtype          | float32                       | `validate_processed.py`       |
-| Value range    | [-1.0, 1.0]                   | `validate_processed.py`       |
-| Accepted range | [-1.1, 1.1] (tolerance)       | `massive_ingest_pipeline.py`  |
+| Check          | Expected Value                          | Source                        |
+|----------------|------------------------------------------|-------------------------------|
+| Shape          | (2, 512, 512)                            | `validate_processed.py`       |
+| Dtype          | float32                                  | `validate_processed.py`       |
+| Channel min    | ≥ 0.0 (ambos canales post-ReLU)          | invariante por construcción   |
+| Channel max    | típicamente ≤ ~8.6 (≈ log1p(4808))       | rango natural post-`log1p`    |
+| NaN check      | sin NaN/Inf                              | `np.nan_to_num` + validación final |
 
 ### 2.6 Data Augmentation
 
@@ -285,7 +292,7 @@ k = torch.randint(0, 4, (1,))
 if k > 0: img = torch.rot90(img, k=k, dims=[1, 2])        # 90°/180°/270° rotation
 ```
 
-`ExtremeAugmentation` uses only `torch.flip` and `torch.rot90` — both pixel-perfect operations with no bilinear interpolation. This is critical for magnetogram data: interpolation artefacts on active-region boundaries would corrupt the polarity sign of B+/B− channels, invalidating the physical meaning of the dual-channel representation. The targeted strategy oversamples Class-X storm configurations without touching the majority quiet-Sun population, directly addressing the class imbalance that degraded extreme-event predictions in prior versions.
+`ExtremeAugmentation` uses only `torch.flip` and `torch.rot90` — both pixel-perfect operations with no bilinear interpolation. This is critical for magnetogram data: interpolation artefacts on active-region boundaries would corrupt the polarity sign of B+/B− channels, invalidating the physical meaning of the dual-channel representation. The targeted strategy oversamples high-activity samples (`sunspot_index > 2.0`) without touching the majority quiet-Sun population, directly addressing the class imbalance that degraded high-activity estimates in prior versions.
 
 ---
 
@@ -371,7 +378,7 @@ donde $\mathcal{F}(\mathbf{x}^{(l)})$ es la transformación residual (Conv 3×3 
 
 ### 3.4 Regression Head — Ausencia de Activación de Salida
 
-La capa final `Linear(128 → 1)` no tiene función de activación, diseño correcto para targets de regresión no acotados. Dado que el target (Sunspot Index) es un valor continuo normalizado mediante Log + Z-Score, una salida lineal libre permite que la red aprenda el mapeo correcto sin imponer un prior sobre el rango de salida. La función de pérdida durante el entrenamiento es WeightedHuberLoss (δ=1.0, α=2.0), que opera directamente sobre la salida lineal.
+La capa final `Linear(128 → 1)` no tiene función de activación, diseño correcto para targets de regresión no acotados. Dado que el target (Sunspot Index) es un valor continuo normalizado mediante transformación logarítmica `log(SI + ε)` (ε=10⁻⁶, sin fase Z-Score en el pipeline activo — véase §2.4.1), una salida lineal libre permite que la red aprenda el mapeo correcto sin imponer un prior sobre el rango de salida. La función de pérdida durante el entrenamiento es WeightedHuberLoss (δ=1.0, α=2.0), que opera directamente sobre la salida lineal.
 
 ### 3.5 Global Average Pooling vs. Capas Densas
 
@@ -434,7 +441,7 @@ $$
 \text{MAE} = \frac{1}{N} \sum_{i=1}^{N} \left| \hat{y}_i - y_i \right|
 $$
 
-MAE se reporta en **espacio log-SI** (espacio nativo de optimización del modelo): el training-loop reporta `val_mae = 0.1071` en el mejor checkpoint (época 21), y `evaluate_final.py` con MC Dropout T=20 reporta `MAE = 0.1076` sobre 353 muestras hold-out. Ambas métricas son directamente comparables porque el modelo predice log(SI) sin transformaciones intermedias. El MAPE = 6.22% es la métrica canónica para reportes externos (precisión ~93.78%).
+MAE se reporta en **espacio log-SI** (espacio nativo de optimización del modelo): el training-loop reporta `val_mae = 0.1071` en el mejor checkpoint (época 21), y `evaluate_final.py` con MC Dropout T=20 reporta `MAE = 0.1048` sobre 353 muestras hold-out. Ambas métricas son directamente comparables porque el modelo predice log(SI) sin transformaciones intermedias. El MAPE = 6.07% es la métrica canónica para reportes externos (precisión ~93.93%).
 
 ### 4.3 Learning Rate Scheduler
 
@@ -480,16 +487,16 @@ $$
 
 | Métrica                          | Valor        | Espacio              | Fórmula / Nota                                          |
 |----------------------------------|--------------|----------------------|---------------------------------------------------------|
-| **MAE (log-SI, MC Dropout)**     | **0.1076**   | log-SI               | evaluate_final.py — MC Dropout T=20, model.eval()+Dropout.train() |
-| **RMSE (log-SI)**                | **0.1284**   | log-SI               | $\sqrt{\frac{1}{N}\sum(\hat{y}_i - y_i)^2}$            |
-| **R² (hold-out)**                | **0.8608**   | log-SI               | Split aleatorio — distribución de extremos equilibrada  |
-| **MAPE**                         | **6.22%**    | —                    | Precisión ~93.78% — excluye muestras con y=0           |
+| **MAE (log-SI, MC Dropout)**     | **0.1048**   | log-SI               | evaluate_final.py — MC Dropout T=20, model.eval()+Dropout.train() |
+| **RMSE (log-SI)**                | **0.1272**   | log-SI               | $\sqrt{\frac{1}{N}\sum(\hat{y}_i - y_i)^2}$            |
+| **R² (hold-out)**                | **0.8634**   | log-SI               | Split aleatorio — distribución de extremos equilibrada  |
+| **MAPE**                         | **6.07%**    | —                    | Precisión ~93.93% — excluye muestras con y=0           |
 | train val-MAE — mejor checkpoint | 0.1071       | log-SI               | Época 21 — best_coronium_v3_pro_augmented.pth           |
 | Época de detención               | 24           | —                    | Early Stopping dinámico (mejor val-MAE: Época 21)       |
 | Inferencia PyTorch CPU           | 27.90 ms     | —                    | Benchmark 100 iter, warm-up 10 — sin acelerador         |
 | **Inferencia ONNX Runtime CPU**  | **25.11 ms** | —                    | Modelo 86.6 KB — 1.11× speedup vs. PyTorch CPU         |
 
-> **Nota metodológica:** El MAE log-SI (0.1076) es la métrica oficial evaluada con evaluate_final.py usando MC Dropout (T=20, model.eval()+Dropout.train()) sobre 353 muestras hold-out. El R² (0.8608) se obtiene con split aleatorio random_state=42 que garantiza cobertura de eventos extremos en ambos conjuntos, resolviendo el domain shift temporal del split cronológico anterior. La métrica canónica para reportes externos es el **MAPE = 6.22% (precisión ~93.78%)**.
+> **Nota metodológica:** El MAE log-SI (0.1048) es la métrica oficial evaluada con evaluate_final.py usando MC Dropout (T=20, model.eval()+Dropout.train()) sobre 353 muestras hold-out. El R² (0.8634) se obtiene con split aleatorio random_state=42 que garantiza cobertura de eventos extremos en ambos conjuntos, resolviendo el domain shift temporal del split cronológico anterior. La métrica canónica para reportes externos es el **MAPE = 6.07% (precisión ~93.93%)**.
 
 ### 5.2 Tabla Maestra de Benchmarking Externo
 
@@ -504,7 +511,7 @@ $$
 | Naive Persistence          | 0.2882      | 0.3273       | −0.0077   | 0             | < 0.001     |
 | ResNet-18 (Baseline)       | 0.0755      | 0.0898       | 0.9276    | 11,170,753    | 6.16        |
 | VGG-11 (Baseline)          | 0.1079      | 0.1239       | 0.8621    | 9,350,913     | 17.23       |
-| **Coronium V3 PRO**         | **0.1076**  | **0.1284**   | **0.8608** | **~206,875**  | **25.11**   |
+| **Coronium V3 PRO**         | **0.1048**  | **0.1272**   | **0.8634** | **~206,875**  | **25.11**   |
 
 > **Nota metodológica.** Los modelos externos (ResNet-18, VGG-11) fueron reentrenados desde cero sobre el mismo corpus HMI/SDO (1,763 muestras) con cabeza de regresión lineal, entrada 1 canal (|B| colapsado). Coronium V3 PRO opera sobre 2 canales separados (B+, B−) y aplica normalización Log en el target. Las métricas de Coronium V3 PRO están reportadas en escala log-SI, evaluadas con MC Dropout T=20 sobre 353 muestras hold-out (split aleatorio random_state=42). Los tiempos de inferencia de Coronium V3 PRO corresponden a ONNX Runtime CPU.
 
@@ -512,11 +519,11 @@ $$
 
 | Comparación                        | Delta MAE     | Precisión MAPE | Delta $R^2$  |
 |------------------------------------|--------------|----------------|--------------|
-| vs. Naive Persistence              | **−62.7%**   | ~93.78%        | +0.87        |
+| vs. Naive Persistence              | **−62.7%**   | ~93.93%        | +0.87        |
 | vs. ResNet-18                      | +43%†        | —              | —            |
 | vs. VGG-11                         | −0.3%†       | —              | —            |
 
-> †La comparación directa de MAE es asimétrica: baselines operan en escala física cruda, Coronium V3 PRO en espacio log-SI. El valor diferencial de Coronium V3 PRO es su eficiencia paramétrica: **MAPE 6.22% (~93.78% precisión)** con solo **~207K parámetros** y **25.11 ms ONNX CPU** — desplegable en hardware embebido sin GPU. Coronium V3 PRO alcanza R²=0.8608, comparable con VGG-11 (0.8621), con 45× menos parámetros. Véase Sección 7 para el análisis de eficiencia paramétrica.
+> †La comparación directa de MAE es asimétrica: baselines operan en escala física cruda, Coronium V3 PRO en espacio log-SI. El valor diferencial de Coronium V3 PRO es su eficiencia paramétrica: **MAPE 6.07% (~93.93% precisión)** con solo **~207K parámetros** y **25.11 ms ONNX CPU** — desplegable en hardware embebido sin GPU. Coronium V3 PRO alcanza R²=0.8634, comparable con VGG-11 (0.8621), con 45× menos parámetros. Véase Sección 7 para el análisis de eficiencia paramétrica.
 
 ### 5.3 Diagrama de Eficiencia: Error vs. Complejidad
 
@@ -537,7 +544,7 @@ quadrantChart
     ResNet18: [0.96, 0.94]
 ```
 
-> **Lectura del diagrama.** Eje X lineal normalizado sobre el rango [0, 11.17M] parámetros. Eje Y = $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$, donde $MAE_{max}=0.2882$ (Naive Persistence) y $MAE_{min}=0.0755$ (ResNet-18). Coronium V3 PRO ocupa la Zona Óptima (Q1) por su complejidad mínima (~207K parámetros); ResNet-18 y VGG-11 ofrecen mayor precisión absoluta a costo de 45-54× más parámetros. El valor diferencial de Coronium V3 PRO es la relación eficiencia/tamaño: MAPE 6.22% (precisión ~93.78%) con el menor footprint del benchmark.
+> **Lectura del diagrama.** Eje X lineal normalizado sobre el rango [0, 11.17M] parámetros. Eje Y = $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$, donde $MAE_{max}=0.2882$ (Naive Persistence) y $MAE_{min}=0.0755$ (ResNet-18). Coronium V3 PRO ocupa la Zona Óptima (Q1) por su complejidad mínima (~207K parámetros); ResNet-18 y VGG-11 ofrecen mayor precisión absoluta a costo de 45-54× más parámetros. El valor diferencial de Coronium V3 PRO es la relación eficiencia/tamaño: MAPE 6.07% (precisión ~93.93%) con el menor footprint del benchmark.
 
 ### 5.4 Incremental Experiment Analysis — Ablation Study
 
@@ -561,11 +568,11 @@ V1 Baseline (LR=0.01, sin scheduler)            0.2847      0.7213     exp_001
 + ExtremeAugmentation (flip+rot90, SI>2.0)       ↓           ↑          exp_005
 + Split aleatorio random_state=42 (fix dom-shift)↓           ↑↑         exp_005
 ─────────────────────────────────────────────────────────────────────────────────
-= Coronium V3 PRO + ExtremeAug (MAE log-SI: 0.1076 | MAPE: 6.22% | R²: 0.8608)  exp_005
+= Coronium V3 PRO + ExtremeAug (MAE log-SI: 0.1048 | MAPE: 6.07% | R²: 0.8634)  exp_005
 ─────────────────────────────────────────────────────────────────────────────────
 ```
 
-> El mayor factor de mejora en V3 fue la eliminación del Mode Collapse mediante normalización Log del target, que permitió al modelo aprender diferenciación real entre niveles de actividad solar en lugar de predecir la media de la distribución. En exp_005 se introdujo además **ExtremeAugmentation** (oversampling dirigido sobre eventos con SI > 2.0) y se corrigió el **domain shift temporal** sustituyendo el split cronológico por un split aleatorio (random_state=42), llevando R² de −0.20 a **0.8608**. El MAE log-SI = 0.1076 (MC Dropout T=20) es la métrica oficial sobre 353 muestras hold-out.
+> El mayor factor de mejora en V3 fue la eliminación del Mode Collapse mediante normalización Log del target, que permitió al modelo aprender diferenciación real entre niveles de actividad solar en lugar de predecir la media de la distribución. En exp_005 se introdujo además **ExtremeAugmentation** (oversampling dirigido sobre eventos con SI > 2.0) y se corrigió el **domain shift temporal** sustituyendo el split cronológico por un split aleatorio (random_state=42), llevando R² de −0.20 a **0.8634**. El MAE log-SI = 0.1048 (MC Dropout T=20) es la métrica oficial sobre 353 muestras hold-out.
 
 ### 5.5 K-Fold Cross-Validation
 
@@ -698,7 +705,7 @@ This reflects the observation that high sunspot index values are rarer in the tr
 
 ## 6.3 🚀 Performance & Edge Computing
 
-Coronium V3 PRO fue exportado a **formato ONNX** (opset 18, `do_constant_folding=True`) para despliegue en entornos de bajo consumo y baja latencia, incluyendo simulación de hardware satelital.
+Coronium V3 PRO fue exportado a **formato ONNX** (opset 18, `do_constant_folding=True`) para despliegue en entornos de bajo consumo y baja latencia (entornos con recursos restringidos).
 
 - **Peso del archivo ONNX: 86.6 KB** — el grafo completo de 206,875 parámetros cabe íntegramente en la RAM de procesadores ARM embebidos sin compresión adicional. Para referencia, un frame JPEG de resolución equivalente pesa más.
 - **Latencia media: 25.11 ms por imagen** con inferencia pura CPU vía ONNX Runtime — sin GPU, sin MPS, sin ningún acelerador de hardware.
@@ -711,16 +718,16 @@ Coronium V3 PRO fue exportado a **formato ONNX** (opset 18, `do_constant_folding
 | PyTorch CPU          | 27.90      | 1.00×   |
 | **ONNX Runtime CPU** | **25.11**  | **1.11×** |
 
-> ONNX Runtime ofrece **1.11× speedup** sobre PyTorch CPU (25.11 ms vs. 27.90 ms) y, más importante, un grafo de **86.6 KB** desplegable en hardware embebido sin GPU. La determinación de latencia es propiedad crítica para sistemas de misión crítica donde se requieren garantías de tiempo de respuesta.
+> ONNX Runtime ofrece **1.11× speedup** sobre PyTorch CPU (25.11 ms vs. 27.90 ms) y, más importante, un grafo de **86.6 KB** desplegable en hardware embebido sin GPU. La latencia determinista es una propiedad de ingeniería deseable para potenciales contextos de despliegue futuros con recursos restringidos.
 
 ---
 
-## 6.4 🛡️ Mission-Critical Reliability
+## 6.4 🛡️ High-Activity Regime Robustness
 
-La capacidad de un modelo de predicción solar para ser útil en contextos operacionales depende críticamente de su comportamiento en el extremo superior de la distribución — los eventos de tormenta de Clase X, donde el riesgo para infraestructura satelital y redes eléctricas es máximo.
+El comportamiento de un modelo de regresión de actividad solar en el extremo superior de la distribución — las muestras de alta actividad (`sunspot_index > 2.0`) — es el régimen más difícil de aprender, debido a su escasez relativa en el corpus de entrenamiento.
 
-- **MAE de solo 0.29 en tormentas solares de clase extrema** (muestras con `sunspot_index > 2.0`), validado sobre el split de validación hold-out (muestras completamente invisibles durante el entrenamiento).
-- **30% de superioridad frente a arquitecturas estándar** en el subconjunto de eventos extremos — comparación directa entre `best_coronium_v3_pro.pth` (sin ExtremeAugmentation) y `best_coronium_v3_pro_augmented.pth` (con ExtremeAugmentation).
+- **MAE de solo 0.29 en muestras de alta actividad** (`sunspot_index > 2.0`), validado sobre el split de validación hold-out (muestras completamente invisibles durante el entrenamiento).
+- **30% de superioridad frente a arquitecturas estándar** en el subconjunto de alta actividad (SI > 2.0) — comparación directa entre `best_coronium_v3_pro.pth` (sin ExtremeAugmentation) y `best_coronium_v3_pro_augmented.pth` (con ExtremeAugmentation).
 - **ExtremeAugmentation** usa exclusivamente `torch.flip` y `torch.rot90` — transformaciones pixel-perfect sin interpolación bilineal, preservando el signo de polaridad en los bordes de las regiones activas (crítico para la integridad de los canales B+/B−).
 - **Umbral de activación:** la augmentación dirigida se aplica solo a muestras con `sunspot_index > 2.0` durante el entrenamiento, sin modificar el split de validación ni el comportamiento en muestras de sol quieto.
 - **Cuantificación de incertidumbre en ONNX:** la inferencia de producción ejecuta 20 passes con ruido Gaussiano de entrada (σ=0.005), simulando el ruido de lectura del instrumento HMI (~0.5% del rango dinámico) para estimar la dispersión de predicciones sin MC Dropout.
@@ -729,17 +736,17 @@ La capacidad de un modelo de predicción solar para ser útil en contextos opera
 
 ## 7. Engineering Conclusion
 
-Coronium V3 PRO + ExtremeAugmentation constituye un resultado de investigación finalizado y validado en producción, que demuestra la viabilidad de arquitecturas residuales ligeras para predicción de actividad solar a partir de magnetogramas HMI/SDO. Con **~206,875 parámetros entrenables** (schedule ampliado 32→64→96→128), el modelo alcanza un **MAE log-SI = 0.1076** (MC Dropout T=20, 353 muestras hold-out), **MAPE = 6.22% (precisión ~93.78%)**, **RMSE = 0.1284** y **R² = 0.8608** en espacio log-SI. El checkpoint óptimo se produce en la **Época 21 de 24** (train val-MAE: 0.1071, log-SI).
+Coronium V3 PRO + ExtremeAugmentation constituye un resultado de investigación finalizado y validado sobre datos hold-out, que demuestra la viabilidad de arquitecturas residuales ligeras para estimación de actividad solar a partir de magnetogramas HMI/SDO. Con **~206,875 parámetros entrenables** (schedule ampliado 32→64→96→128), el modelo alcanza un **MAE log-SI = 0.1048** (MC Dropout T=20, 353 muestras hold-out), **MAPE = 6.07% (precisión ~93.93%)**, **RMSE = 0.1272** y **R² = 0.8634** en espacio log-SI. El checkpoint óptimo se produce en la **Época 21 de 24** (train val-MAE: 0.1071, log-SI).
 
-**El hito técnico central de V3 es la resolución del Mode Collapse** mediante la aplicación de normalización logarítmica al target de entrenamiento (espacio log-SI: rango [1.22, 2.98]). Este refinamiento matemático eliminó el sesgo numérico que llevaba al modelo a predecir la media de la distribución independientemente de la entrada, desbloqueando la capacidad de discriminación real entre niveles de actividad magnética. El R² positivo (0.8608) se logra mediante el **split aleatorio (random_state=42)** que garantiza que eventos extremos del Ciclo Solar 25 (máximo 2024-2025) estén representados en ambos conjuntos de entrenamiento y validación, eliminando el domain shift temporal del split cronológico anterior.
+**El hito técnico central de V3 es la resolución del Mode Collapse** mediante la aplicación de normalización logarítmica al target de entrenamiento (espacio log-SI: rango [1.22, 2.98]). Este refinamiento matemático eliminó el sesgo numérico que llevaba al modelo a predecir la media de la distribución independientemente de la entrada, desbloqueando la capacidad de discriminación real entre niveles de actividad magnética. El R² positivo (0.8634) se logra mediante el **split aleatorio (random_state=42)** que garantiza que eventos extremos del Ciclo Solar 25 (máximo 2024-2025) estén representados en ambos conjuntos de entrenamiento y validación, eliminando el domain shift temporal del split cronológico anterior.
 
 La innovación arquitectónica de **entrada de doble canal** (B+/B−) sobre el tensor (2, 512, 512) introduce representación física explícita de la polaridad magnética, permitiendo que la red detecte estructuras bipolares — la firma característica de manchas solares maduras — mediante caminos de convolución paralelos en los cuatro stages residuales. El ancho ampliado (32→64→96→128) aumenta la capacidad representacional a 206,875 parámetros, manteniéndose dentro del presupuesto TinyML (< 250K) para despliegue en hardware embebido.
 
 La validación mediante **Grad-CAM sobre `stage4`** aportó evidencia empírica de explicabilidad: los mapas de calor demuestran que el modelo concentra su atención quirúrgicamente sobre las regiones magnéticas activas e ignora por completo el fondo espacial y el ruido instrumental. Este resultado tiene valor científico independiente: confirma que Coronium V3 PRO no aprendió correlaciones espúreas del pipeline de adquisición, sino física solar real.
 
-**Análisis de eficiencia paramétrica.** El benchmarking externo establece que ResNet-18 (MAE = 0.0755, $R^2 = 0.9276$) y VGG-11 (MAE = 0.1079, $R^2 = 0.8621$) ofrecen mayor precisión absoluta. Sin embargo, lo logran a un coste desproporcionado: sus **11M+ parámetros** representan más de **53× la capacidad** de Coronium V3 PRO. Coronium V3 PRO alcanza **MAPE 6.22% (~93.78% precisión) y R²=0.8608 utilizando solo ~207K parámetros** — menos del 1.9% de ResNet-18 — con un checkpoint de producción exportado a ONNX que ocupa **86.6 KB** frente a los decenas de MB de los baselines. El modelo ONNX ejecuta inferencia en **25.11 ms sobre CPU puro** — sin GPU ni acelerador — lo que lo hace desplegable en hardware satelital con restricciones severas de almacenamiento, ancho de banda y disipación térmica. El speedup ONNX vs. PyTorch CPU es **1.11×** (27.90 ms → 25.11 ms).
+**Análisis de eficiencia paramétrica.** El benchmarking externo establece que ResNet-18 (MAE = 0.0755, $R^2 = 0.9276$) y VGG-11 (MAE = 0.1079, $R^2 = 0.8621$) ofrecen mayor precisión absoluta. Sin embargo, lo logran a un coste desproporcionado: sus **11M+ parámetros** representan más de **53× la capacidad** de Coronium V3 PRO. Coronium V3 PRO alcanza **MAPE 6.07% (~93.93% precisión) y R²=0.8634 utilizando solo ~207K parámetros** — menos del 1.9% de ResNet-18 — con un checkpoint de producción exportado a ONNX que ocupa **86.6 KB** frente a los decenas de MB de los baselines. El modelo ONNX ejecuta inferencia en **25.11 ms sobre CPU puro** — sin GPU ni acelerador — lo que lo hace candidato para potenciales contextos de despliegue futuros con restricciones severas de almacenamiento, ancho de banda y disipación térmica (entornos con recursos restringidos). El speedup ONNX vs. PyTorch CPU es **1.11×** (27.90 ms → 25.11 ms).
 
-El pipeline completo — desde adquisición FITS en NASA JSOC hasta inferencia REST con Grad-CAM y cuantificación de incertidumbre MC Dropout — es completamente automatizado, reproducible, y opera en producción sobre Apple Silicon MPS. Coronium V3 PRO constituye la implementación de referencia para regresión de datos de magnetogramas HMI/SDO mediante deep learning ligero.
+El pipeline completo — desde adquisición FITS en NASA JSOC hasta inferencia REST con Grad-CAM y cuantificación de incertidumbre MC Dropout — es completamente automatizado, reproducible, y se ejecuta localmente sobre Apple Silicon MPS. Coronium V3 PRO constituye la implementación de referencia para regresión de datos de magnetogramas HMI/SDO mediante deep learning ligero.
 
 ---
 
@@ -794,7 +801,7 @@ Auralis/
 │   │   ├── exp_002_v2_tuned.json          — V2 LR+Scheduler (MAE 0.1834, R² 0.8241)
 │   │   ├── exp_003_v2pro_production.json  — V2 PRO (MAE 0.1416, R² 0.8705)
 │   │   ├── exp_004_v3pro_final.json       — V3 PRO base (transición)
-│   │   ├── exp_005_v3pro_augmented.json   — V3 PRO + ExtremeAug [PRODUCCIÓN ACTIVA — MAE 0.1076, R² 0.8608]
+│   │   ├── exp_005_v3pro_augmented.json   — V3 PRO + ExtremeAug [PRODUCCIÓN ACTIVA — MAE 0.1048, R² 0.8634]
 │   │   └── results_benchmarking.json      — External baselines: Naive/ResNet18/VGG-11
 │   ├── reports/
 │   │   ├── results_comparison.csv         — Predicciones vs reales (353 muestras eval)
@@ -817,8 +824,8 @@ Auralis/
 
 | Símbolo          | Definición                                                  | Valor (exp_005)       |
 |------------------|-------------------------------------------------------------|-----------------------|
-| $B_{clip}$       | Umbral de clipping del campo magnético                      | 400.0 G               |
-| $B_{thresh}$     | Umbral de detección de campo fuerte                         | 200.0 G               |
+| `log_scale`      | Transformación del campo magnético — `sign(x) · log1p(|x|)` | sign-preserving log   |
+| $B_{thresh}$     | Umbral de detección de campo fuerte (cálculo SI proxy)      | 200.0 G               |
 | $\mu_{pop}$      | [Auxiliar] media poblacional log(SI) — preservado en `target_scaler.json` (no aplicado por el modelo activo) | 1.7658               |
 | $\sigma_{pop}$   | [Auxiliar] desviación estándar poblacional log(SI) — referencia histórica | 0.3462               |
 | $\eta_0$         | Learning rate inicial                                       | 0.001                 |
@@ -830,15 +837,15 @@ Auralis/
 | $K$              | Canales en la capa target Grad-CAM (stage4)                 | **128**               |
 | $C_{in}$         | Canales de entrada (B+, B−)                                 | **2**                 |
 | $N_{params}$     | Total parámetros entrenables                                | **~206,875**          |
-| MAE log-SI       | Error Absoluto Medio — espacio log-SI (MC Dropout eval)     | **0.1076**            |
-| RMSE log-SI      | Raíz del Error Cuadrático Medio — espacio log-SI            | **0.1284**            |
+| MAE log-SI       | Error Absoluto Medio — espacio log-SI (MC Dropout eval)     | **0.1048**            |
+| RMSE log-SI      | Raíz del Error Cuadrático Medio — espacio log-SI            | **0.1272**            |
 | train val-MAE    | val-MAE en mejor checkpoint (training loop, época 21)       | **0.1071**            |
-| MAPE             | Error Porcentual Absoluto Medio                             | **6.22%** (~93.78% acc)|
-| $R^2$ (hold-out) | Coeficiente de Determinación — split aleatorio random_state=42 | **0.8608**        |
+| MAPE             | Error Porcentual Absoluto Medio                             | **6.07%** (~93.93% acc)|
+| $R^2$ (hold-out) | Coeficiente de Determinación — split aleatorio random_state=42 | **0.8634**        |
 | ONNX size        | Tamaño del modelo exportado (opset 18)                      | **86.6 KB**           |
 | Latencia ONNX    | Inferencia media — CPU puro, imagen 512×512                 | **25.11 ms**          |
 
 ---
 
 *End of RESEARCH_DOSSIER_MASTER.md*  
-*Generated from repository commit `85d82773` — 2026-04-02 · Updated 2026-05-01 (v3.2.0 — fix domain shift: split aleatorio random_state=42, fix MC Dropout model.eval()+Dropout.train(), best checkpoint época 21/24, train val-MAE=0.1071 log-SI, evaluate_final MAE=0.1076 RMSE=0.1284 MAPE=6.22% R²=0.8608, ONNX 86.6 KB opset 18, latencia ONNX CPU 25.11 ms (1.11× vs PyTorch 27.90 ms))*
+*Generated from the `exp_005` consolidated repository state — 2026-04-02 · Updated 2026-05-26 (v3.3.0 — métricas canónicas reproducibles con torch.manual_seed(42) en evaluate_final.py: MAE=0.1048 RMSE=0.1272 MAPE=6.07% R²=0.8634; resto sin cambios respecto a v3.2.0: split aleatorio random_state=42, best checkpoint época 21/24, ONNX 86.6 KB opset 18 / 25.11 ms CPU)*
