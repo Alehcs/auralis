@@ -94,8 +94,8 @@ ResNet-18 — and supports CPU-only ONNX inference at 25.11 ms per image.
 | Model | Parameters | R² | Deployment note |
 | --- | ---: | ---: | --- |
 | Naive Persistence | 0 | −0.008 | Trivial baseline |
-| VGG-11 | 9,350,913 | 0.8621 | Full GPU inference |
-| ResNet-18 | 11,170,753 | 0.9276 | Full GPU inference |
+| VGG-11 | 9,350,913 | 0.8621 | Large CNN baseline |
+| ResNet-18 | 11,170,753 | 0.9276 | Large CNN baseline |
 | **Coronium V3 PRO** | **206,875** | **0.8634** | **86.6 KB ONNX, CPU-only, 25.11 ms** |
 
 R² is used as the primary visual comparison because MAE values are

@@ -550,15 +550,15 @@ The controlled gap between training and validation curves over the 24 epochs is 
 
 ### 5.3 Efficiency–Accuracy Trade-off
 
-> R² is used as the primary visual comparison metric because MAE values are scale-asymmetric between baselines and Coronium (see the methodological caveat in §5.1); R² is scale-normalised and provides a more comparable measure of explained variance across models.
+> R² is used as the primary visual comparison metric because MAE values are scale-asymmetric between baselines and Coronium (see the methodological caveat in §5.2); R² is scale-normalised and provides a more comparable measure of explained variance across models.
 
 **Figure 1 — Parameter Count Comparison**
 
-![Parameter Count Comparison](reports/figures/parameter_count_comparison.png)
+![Parameter Count Comparison](auralis-back/reports/figures/parameter_count_comparison.png)
 
 **Figure 2 — R² vs. Parameter Count (log scale)**
 
-![R² vs. Parameter Count](reports/figures/r2_vs_parameters.png)
+![R² vs. Parameter Count](auralis-back/reports/figures/r2_vs_parameters.png)
 
 Coronium V3 PRO reaches **R² = 0.8634** with **206,875 parameters** and an **86.6 KB ONNX export**, compared with VGG-11 at R² = 0.8621 using 9,350,913 parameters and ResNet-18 at R² = 0.9276 using 11,170,753 parameters. The model is 45–54× smaller than both baselines while matching VGG-11's explained variance within 0.001 R² units. ResNet-18 achieves higher R² (0.9276) at 54× the parameter cost; that trade-off favours Coronium in resource-constrained deployment contexts where memory, bandwidth, and thermal budgets are limiting factors.
 
