@@ -26,9 +26,8 @@ keywords:
   - explainable-ai
   - grad-cam
   - onnx
-# DOI pending: mint a Zenodo DOI from a tagged GitHub release, then uncomment:
-# doi: 10.5281/zenodo.XXXXXXX
-# identifiers:
-#   - type: doi
-#     value: 10.5281/zenodo.XXXXXXX
-#     description: Archived release on Zenodo
+doi: 10.5281/zenodo.20620546
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20620546
+    description: Archived release on Zenodo

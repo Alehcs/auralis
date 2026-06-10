@@ -1,5 +1,7 @@
 # Auralis
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20620546.svg)](https://doi.org/10.5281/zenodo.20620546)
+
 Auralis is a local research/demo system for estimating the current solar activity
 index from NASA SDO/HMI magnetograms. It combines an offline data pipeline, a
 small convolutional regression model, a FastAPI inference service, and a React
@@ -289,12 +291,12 @@ metadata is provided in [`CITATION.cff`](CITATION.cff) (GitHub renders a
              activity-index regression from dual-channel HMI/SDO magnetograms}},
   year    = {2026},
   version = {3.3.0},
-  note    = {DOI pending Zenodo archival}
+  doi     = {10.5281/zenodo.20620546},
+  url     = {https://doi.org/10.5281/zenodo.20620546}
 }
 ```
 
-> A citable DOI will be minted from a tagged GitHub release via Zenodo; the
-> `doi` field in `CITATION.cff` is left commented until then.
+Archived academic release: https://doi.org/10.5281/zenodo.20620546
 
 ## License
 
