@@ -185,7 +185,7 @@ The V3 PRO normalisation pipeline applies two sequential operations to the raw m
 **Step 1 — Symmetric log scaling (sign-preserving):**
 
 $$
-B_{log}(p) = \operatorname{sign}\!\big(B_{raw}(p)\big) \cdot \log\!\big(1 + |B_{raw}(p)|\big)
+B_{\mathrm{log}}(p) = \mathrm{sign}(B_{\mathrm{raw}}(p)) \cdot \log(1 + |B_{\mathrm{raw}}(p)|)
 $$
 
 Implemented as `np.sign(x) * np.log1p(np.abs(x))`. This compresses the raw dynamic range (approximately [−4808, +4808] G) to approximately [−8.5, +8.5] while preserving polarity sign and retaining information from extreme umbral fields. Prior versions (V1, V2) applied hard clipping at ±400 G followed by linear division, which saturated strong-field information in large umbrae; symmetric log scaling superseded that approach in V3.
@@ -550,22 +550,7 @@ The controlled gap between training and validation curves over the 24 epochs is 
 
 ### 5.3 Efficiency–Accuracy Trade-off
 
-```mermaid
-quadrantChart
-    title Error–Complexity Trade-off (MAE vs. Parameters)
-    x-axis "Low Complexity --> High Complexity"
-    y-axis "High Error --> Low Error / Higher Accuracy"
-    quadrant-1 "Optimal Zone"
-    quadrant-2 "Accurate but Costly"
-    quadrant-3 "Costly and Imprecise"
-    quadrant-4 "Simple but Imprecise"
-    Naive Persistence: [0.02, 0.08]
-    Coronium V3 PRO: [0.05, 0.55]
-    VGG-11: [0.84, 0.82]
-    ResNet18: [0.96, 0.94]
-```
-
-> **Diagram notes.** X-axis: linear normalisation over [0, 11.17M] parameters. Y-axis: $(MAE_{max} - MAE_i) / (MAE_{max} - MAE_{min})$ where $MAE_{max} = 0.2882$ (Naive Persistence) and $MAE_{min} = 0.0755$ (ResNet-18). Coronium V3 PRO occupies the Optimal Zone by virtue of its minimal footprint (~207K parameters, 86.6 KB ONNX). ResNet-18 and VGG-11 offer higher absolute accuracy at 45–54× the parameter cost.
+Coronium V3 PRO sits in the lightweight-and-competitive region of the parameter-accuracy space: at 206,875 parameters it is 45–54× smaller than the VGG-11 and ResNet-18 baselines while incurring only a marginal MAE penalty of 0.001–0.007 log-SI relative to the strongest baseline. A visual quadrant chart is omitted here because the benchmark is scale-asymmetric (baseline MAE values are not evaluated in the same target space as Coronium; see the methodological caveat in §5.1), and a spatial rendering would overstate the precision of those comparisons.
 
 ### 5.4 Incremental Ablation Study (V1 → V3 PRO)
 
@@ -781,7 +766,7 @@ Coronium V3 PRO + ExtremeAugmentation is a completed and validated research arte
 
 The central technical contribution of V3 is the resolution of mode collapse through log normalisation of the training target (log-SI range [1.22, 2.98]). This single mathematical refinement enabled genuine discrimination between activity levels, replacing a failure mode in which the model predicted the distribution mean regardless of input. The positive R² (0.8634) was subsequently unlocked by adopting a random split (`random_state=42`) that ensures Cycle 25 extreme-activity events are represented in both training and validation sets, eliminating the temporal domain shift of the prior chronological split.
 
-The **dual-channel input representation** (B+, B−) introduces explicit physical structure: independent convolutional pathways process positive and outgoing magnetic flux separately, enabling detection of the bipolar signatures characteristic of mature active regions. The widened filter schedule (32→64→96→128) increases representational capacity to 206,875 parameters while remaining within a resource-constrained deployment budget.
+The **dual-channel input representation** (B+, B−) introduces explicit physical structure: independent convolutional pathways process positive and negative magnetic flux separately, enabling detection of the bipolar signatures characteristic of mature active regions. The widened filter schedule (32→64→96→128) increases representational capacity to 206,875 parameters while remaining within a resource-constrained deployment budget.
 
 The external benchmark establishes that ResNet-18 (R² = 0.9276) and VGG-11 (R² = 0.8621) achieve higher absolute accuracy; however, they require 45–54× more parameters and model sizes on the order of tens of megabytes. Coronium V3 PRO reaches **R² = 0.8634 with an ONNX export of 86.6 KB and CPU inference at 25.11 ms**, making it a candidate for potential future deployment in resource-constrained contexts where memory, bandwidth, and thermal budgets are limiting factors.
 
