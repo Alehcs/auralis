@@ -1,6 +1,6 @@
 # Auralis
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20620546.svg)](https://doi.org/10.5281/zenodo.20620546)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20620546-blue)](https://doi.org/10.5281/zenodo.20620546)
 
 Auralis is a local research/demo system for estimating the current solar activity
 index from NASA SDO/HMI magnetograms. It combines an offline data pipeline, a
