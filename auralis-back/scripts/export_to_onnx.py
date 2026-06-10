@@ -58,7 +58,7 @@ def load_pytorch_model(weights_path: Path) -> CoroniumV3:
 
 
 def export_onnx(model: CoroniumV3, onnx_path: Path) -> None:
-    """Trace and export the model graph to ONNX opset 17."""
+    """Trace and export the model graph to ONNX opset 18."""
     dummy_input = torch.zeros(*INPUT_SHAPE)
 
     torch.onnx.export(

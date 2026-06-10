@@ -1,23 +1,12 @@
-# Core API & Backend
-fastapi>=0.109.0
-uvicorn[standard]>=0.27.0
-pydantic>=2.6.0
-
-# Machine Learning & Data Processing
-torch>=2.2.0
-torchvision>=0.17.0
-numpy>=1.26.0
-pandas>=2.2.0
-scipy>=1.12.0
-matplotlib>=3.8.0
-
-# Scientific & Solar Data
-sunpy[net]>=5.1.0
-astropy>=6.0.0
-drms>=0.7.0
-zeep>=4.2.0
-
-# Utilities
-tqdm>=4.66.0
-requests>=2.31.0
-python-multipart>=0.0.9
+# Auralis is a two-part project; Python dependencies live with the backend.
+#
+# This root file is intentionally a pointer, not a dependency list, to avoid a
+# third (and drifting) source of truth. Install from the backend instead:
+#
+#   Full training / evaluation / export / ingestion environment:
+#       pip install -r auralis-back/requirements.txt
+#
+#   Lean API / inference runtime only (what the Docker image uses):
+#       pip install -r auralis-back/requirements.api.txt
+#
+# The frontend (auralis-front/) uses npm; see auralis-front/package.json.

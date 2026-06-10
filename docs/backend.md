@@ -79,7 +79,18 @@ checkpoints on high-activity validation samples. It is a targeted regression
 check for the augmentation strategy.
 
 `src/experiments/run_external_baselines.py` trains/evaluates external baselines
-such as ResNet-18 and VGG-11. The output JSON is consumed by `/api/benchmark`.
+such as ResNet-18 and VGG-11. The output JSON
+(`experiments/results_benchmarking.json`) is consumed by `/api/benchmark`; the
+endpoint's hardcoded fallback values are a static mirror of that file, served
+only when it is absent.
+
+These baselines were produced under their own benchmark protocol (this script's
+`random_split(seed=42)`, 30 epochs), which is a different partition from the
+promoted model's persisted `models/split_indices.json`. The two are therefore
+not strictly evaluated on the same hold-out set. Do not silently recompute the
+baselines to "align" them: only refresh `results_benchmarking.json` when the
+benchmark table is intentionally republished, and update the dossier and the
+`/api/benchmark` fallback in the same change.
 
 ## Explainability
 

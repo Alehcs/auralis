@@ -266,7 +266,7 @@ class ImageListResponse(BaseModel):
 
 class ClassificationInfo(BaseModel):
     level: str        # "Low" | "Medium" | "High"
-    label: str        # human-readable label in Spanish
+    label: str        # human-readable label
     flare_class: str  # "C" | "M" | "X"
     hex_color: str    # "#22c55e" | "#f97316" | "#ef4444"
 
@@ -746,7 +746,7 @@ async def explain(filename: str):
     gradcam = GradCAM(_model, _model.stage4.conv)
     heatmap = gradcam.generate_heatmap(tensor)
 
-    # Bilinear upsample: stage4 spatial dim (32×32) → native resolution (512×512).
+    # Bilinear upsample: stage4.conv spatial dim (64×64) → native resolution (512×512).
     from scipy.ndimage import zoom
     spatial_h = data.shape[1] if data.ndim == 3 else data.shape[0]
     zoom_factor = spatial_h / heatmap.shape[0]
@@ -1079,7 +1079,7 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
     gradcam = GradCAM(_model, _model.stage4.conv)
     heatmap = gradcam.generate_heatmap(grad_tensor)
 
-    # Bilinear upsample: stage4 spatial dim (32×32) → native resolution (512×512).
+    # Bilinear upsample: stage4.conv spatial dim (64×64) → native resolution (512×512).
     spatial_h = data.shape[1] if data.ndim == 3 else data.shape[0]
     zoom_factor = spatial_h / heatmap.shape[0]
     heatmap_full = ndimage_zoom(heatmap, zoom_factor, order=1)
@@ -1186,13 +1186,25 @@ async def get_benchmark():
     proposed_params = 206_875      # Verified with sum(p.numel() for p in model.parameters()).
     proposed_inference_ms = 25.11  # ONNX Runtime CPU — 25.11 ms (1.11× vs PyTorch 27.90 ms)
 
-    # Fallback values used when results_benchmarking.json is absent.
-    baseline_mae = 0.2847
-    baseline_rmse = 0.3412
-    baseline_r2 = 0.7834
-    baseline_params = 11_689_537
-    baseline_inference_ms = 42.3
-    vgg11_model: Optional[ModelBenchmark] = None
+    # Static reference values mirroring the last committed benchmark run
+    # (experiments/results_benchmarking.json — run_external_baselines.py,
+    # seed=42, 30 epochs, 352-sample val split). These are NOT recomputed by
+    # the API; they are served verbatim only when that JSON file is absent, so
+    # the dashboard never reports baseline numbers that disagree with the
+    # benchmark table. Update them only when the benchmark run is republished.
+    baseline_mae = 0.0755          # ResNet-18 MAE
+    baseline_rmse = 0.0898         # ResNet-18 RMSE
+    baseline_r2 = 0.9276           # ResNet-18 R²
+    baseline_params = 11_170_753   # ResNet-18 trainable parameters
+    baseline_inference_ms = 6.16   # ResNet-18 CPU latency (ms)
+    vgg11_model: Optional[ModelBenchmark] = ModelBenchmark(
+        name="VGG-11 (Baseline)",
+        parameters=9_350_913,
+        mae=0.1079,
+        rmse=0.1239,
+        r2_score=0.8621,
+        inference_ms=17.23,
+    )
 
     benchmarking_path = EXPERIMENTS_DIR / "results_benchmarking.json"
     if benchmarking_path.exists():
