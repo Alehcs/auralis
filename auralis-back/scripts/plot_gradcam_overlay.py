@@ -1,12 +1,12 @@
-"""Poster-grade Grad-CAM with the heatmap overlaid on the magnetogram.
+"""Grad-CAM figure with the heatmap overlaid on the magnetogram.
 
 Produces a two-panel figure:
     1. Raw signed magnetogram (B+ − B−), HMI-style grayscale.
     2. Same magnetogram with the Grad-CAM heatmap overlaid (alpha blend).
 
-The overlay layout is far more impactful for posters than the three-panel
-(B+ | B- | heatmap) decomposition because the audience sees, in a single
-view, "what the model looks at" on the actual solar disk.
+This single-overlay layout is an alternative to the three-panel
+(B+ | B- | heatmap) decomposition; it shows the model's spatial attention
+directly on the solar disk in one view.
 
 Run from auralis-back/ (defaults to the high-activity hold-out sample
 2024-08-12, SI≈2.90). Override with the GRADCAM_SAMPLE environment variable.

@@ -49,12 +49,12 @@ def main() -> None:
     ax1.scatter(y_real, y_pred, s=18, alpha=0.55, color="#1f77b4",
                 edgecolor="white", linewidth=0.3)
     ax1.plot([lo, hi], [lo, hi], "k--", linewidth=1.0,
-             label="Identidad y = x")
+             label="Identity y = x")
 
     # 1-σ residual band around the identity line.
     sigma = float(np.std(residuals))
     ax1.fill_between([lo, hi], [lo - sigma, hi - sigma], [lo + sigma, hi + sigma],
-                     color="grey", alpha=0.12, label=f"Banda ±σ ({sigma:.3f})")
+                     color="grey", alpha=0.12, label=f"±σ band ({sigma:.3f})")
 
     ax1.set_xlabel("Real SSN (log-SI)", fontsize=11)
     ax1.set_ylabel("Predicted SSN (log-SI)", fontsize=11)
@@ -74,17 +74,17 @@ def main() -> None:
 
     # ── Panel 2: Residual distribution ───────────────────────────────────────
     ax2.hist(residuals, bins=30, color="#ff7f0e", edgecolor="white", alpha=0.85)
-    ax2.axvline(0.0, color="black", linestyle="-", linewidth=1.0, label="Sin sesgo")
+    ax2.axvline(0.0, color="black", linestyle="-", linewidth=1.0, label="No bias")
     ax2.axvline(float(residuals.mean()), color="red", linestyle="--", linewidth=1.2,
-                label=f"Media residuos = {residuals.mean():+.4f}")
+                label=f"Mean residual = {residuals.mean():+.4f}")
 
-    ax2.set_xlabel("Residuo  (Predicted − Real)  [log-SI]", fontsize=11)
-    ax2.set_ylabel("Frecuencia", fontsize=11)
-    ax2.set_title("Distribución de residuos", fontsize=12, weight="bold")
+    ax2.set_xlabel("Residual  (Predicted − Real)  [log-SI]", fontsize=11)
+    ax2.set_ylabel("Frequency", fontsize=11)
+    ax2.set_title("Residual distribution", fontsize=12, weight="bold")
     ax2.grid(True, alpha=0.3, axis="y")
     ax2.legend(loc="upper right", fontsize=9, frameon=True)
 
-    fig.suptitle("Coronium V3 PRO · Diagnóstico de regresión sobre 353 muestras hold-out",
+    fig.suptitle("Coronium V3 PRO · Regression diagnostics on 353 hold-out samples",
                  fontsize=13, weight="bold")
     fig.tight_layout()
 

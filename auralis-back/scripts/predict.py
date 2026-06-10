@@ -182,7 +182,10 @@ def visualize_prediction(
 def main() -> None:
     """CLI entry point for single-image inference."""
     parser = argparse.ArgumentParser(
-        description="Coronium V3 PRO — sunspot index inference on HMI FITS files"
+        description=(
+            "Legacy single-channel inference on HMI FITS files for older "
+            "Coronium checkpoints. Use the API/ONNX path for the promoted V3 PRO model."
+        )
     )
     parser.add_argument(
         "--image",

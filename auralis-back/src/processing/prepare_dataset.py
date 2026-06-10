@@ -57,9 +57,8 @@ def load_and_process_magnetogram(
     Args:
         fits_path: Path to a single HMI line-of-sight FITS file.
         target_size: Edge length, in pixels, of the square output tensor.
-            Defaults to 512.
         sunspot_threshold: Strong-field cutoff in Gauss for the sunspot proxy
-            index. Defaults to 200.0.
+            index.
 
     Returns:
         A 2-tuple ``(tensor, metadata)`` where ``tensor`` is a
@@ -133,13 +132,11 @@ def prepare_dataset(
 
     Args:
         raw_dir: Directory containing input ``*.fits`` magnetograms.
-            Defaults to ``"data/raw"``.
         processed_dir: Output directory for ``.npy`` tensors; created if it
-            does not exist. Defaults to ``"data/processed"``.
+            does not exist.
         target_size: Edge length, in pixels, of each square output tensor.
-            Defaults to 512.
         sunspot_threshold: Strong-field cutoff in Gauss for the sunspot proxy
-            index. Defaults to 200.0.
+            index.
 
     Returns:
         A list of per-file metadata dicts (see

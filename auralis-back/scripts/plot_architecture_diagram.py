@@ -1,4 +1,4 @@
-"""Generate a poster-ready architecture diagram for Coronium V3 PRO.
+"""Generate the Coronium V3 PRO architecture block diagram.
 
 Produces a block diagram showing the data flow:
     Input (2, 512, 512) dual-channel B+/B-
