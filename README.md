@@ -81,6 +81,27 @@ External baselines (ResNet-18, VGG-11) were retrained from scratch on the same
 1,763-sample corpus using a single-channel collapsed input (`|B| = B+ + B−`).
 Coronium V3 PRO uses the full dual-channel `(B+, B−)` representation.
 
+### Efficiency Profile
+
+Coronium V3 PRO achieves competitive explained variance (R² = 0.8634) with a
+lightweight deployment footprint — 45–54× fewer parameters than VGG-11 and
+ResNet-18 — and supports CPU-only ONNX inference at 25.11 ms per image.
+
+![Parameter Count Comparison](auralis-back/reports/figures/parameter_count_comparison.png)
+
+![R² vs. Parameter Count](auralis-back/reports/figures/r2_vs_parameters.png)
+
+| Model | Parameters | R² | Deployment note |
+| --- | ---: | ---: | --- |
+| Naive Persistence | 0 | −0.008 | Trivial baseline |
+| VGG-11 | 9,350,913 | 0.8621 | Full GPU inference |
+| ResNet-18 | 11,170,753 | 0.9276 | Full GPU inference |
+| **Coronium V3 PRO** | **206,875** | **0.8634** | **86.6 KB ONNX, CPU-only, 25.11 ms** |
+
+R² is used as the primary visual comparison because MAE values are
+scale-asymmetric between baselines and Coronium (see Benchmark Comparison note
+above).
+
 ### Dashboard API Uncertainty vs. Official Evaluation
 
 The `/api/predict` endpoint reports an `uncertainty` field derived from
