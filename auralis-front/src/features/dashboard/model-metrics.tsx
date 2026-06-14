@@ -27,7 +27,7 @@ import { useLanguage } from '@/lib/i18n/language-context';
 // Helpers
 // ---------------------------------------------------------------------------
 
-function RiskBadge({
+function ActivityBadge({
   hexColor,
   label,
 }: {
@@ -159,7 +159,7 @@ export function ModelMetrics() {
   const activityIndex  = prediction?.sunspot_index?.toFixed(2) ?? '—';
   const classification = prediction?.classification;
   const hexColor       = classification?.hex_color ?? '#6b7280';
-  const riskLabel      = classification?.label ?? o.lowRisk;
+  const activityLabel  = classification?.label ?? o.lowRisk;
   const confidence     = prediction ? `${(prediction.confidence * 100).toFixed(1)}%` : '—';
   const mae           = stats ? stats.mae.toFixed(4) : '—';
   const totalImages   = stats ? stats.total_images.toLocaleString() : '—';
@@ -210,7 +210,7 @@ export function ModelMetrics() {
 
           {/* Right: badges */}
           <div className="flex flex-row sm:flex-col items-start sm:items-end gap-2 flex-shrink-0">
-            <RiskBadge hexColor={hexColor} label={riskLabel} />
+            <ActivityBadge hexColor={hexColor} label={activityLabel} />
             <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-transparent border border-green-600/50 text-green-400 text-[11px] font-medium">
               <CheckCircle2 className="w-3.5 h-3.5" />
               {o.systemNominal}
@@ -232,7 +232,7 @@ export function ModelMetrics() {
         <MetricCard
           label={o.processedImages}
           value={totalImages}
-          trend={`live ${o.since2010}`}
+          trend={o.since2010}
           trendUp={!!stats}
           icon={ImageIcon}
           iconBg="bg-blue-500/10 border-blue-500/20"

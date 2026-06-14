@@ -350,7 +350,7 @@ export function MagnetogramPanel() {
             </div>
           </div>
 
-          {/* Risk + Confidence */}
+          {/* Activity band + heuristic confidence */}
           <div className="grid grid-cols-2 gap-3">
             <div
               className="rounded-lg border p-3"
@@ -529,7 +529,7 @@ export function MagnetogramPanel() {
               Black Box Test
             </div>
             <div className="text-[11px] text-neutral-500 mt-0.5">
-              Drag & drop any processed .npy magnetogram — live ONNX inference + Grad-CAM
+              Drag & drop any processed .npy magnetogram — local ONNX inference + Grad-CAM
             </div>
           </div>
           <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
@@ -649,7 +649,7 @@ export function MagnetogramPanel() {
                         {uploadPrediction.sunspot_index?.toFixed(2) ?? '—'}
                       </div>
                       <div className="text-[11px] text-neutral-500 mt-1">
-                        Predicted flare class:{' '}
+                        Activity band:{' '}
                         <span
                           className="font-medium"
                           style={{ color: uploadPrediction.classification?.hex_color ?? '#6b7280' }}
@@ -669,7 +669,7 @@ export function MagnetogramPanel() {
                           backgroundColor: `${uploadPrediction.classification?.hex_color ?? '#6b7280'}18`,
                         }}
                       >
-                        <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">RISK LEVEL</div>
+                        <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">ACTIVITY LEVEL</div>
                         <div
                           className="text-[18px] font-bold font-mono leading-tight"
                           style={{ color: uploadPrediction.classification?.hex_color ?? '#6b7280' }}
@@ -684,7 +684,7 @@ export function MagnetogramPanel() {
                         </div>
                       </div>
                       <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-3">
-                        <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">CONFIDENCE</div>
+                        <div className="text-[9px] text-neutral-500 tracking-[0.14em] mb-1.5">HEURISTIC CONFIDENCE SCORE</div>
                         <div className="text-[20px] font-bold font-mono text-white">
                           {(uploadPrediction.confidence * 100).toFixed(1)}%
                         </div>
@@ -709,7 +709,7 @@ export function MagnetogramPanel() {
                     >
                       <div className="flex items-center gap-2 text-[12px] font-medium">
                         <Eye className="w-4 h-4" />
-                        {uploadGradcamLoading ? 'Computing Grad-CAM…' : 'AI Vision (Grad-CAM)'}
+                        {uploadGradcamLoading ? 'Computing Grad-CAM…' : 'Grad-CAM attribution'}
                       </div>
                       <span className={`text-[11px] font-mono font-bold ${uploadGradcamOn ? 'text-orange-400' : 'text-neutral-600'}`}>
                         {uploadGradcamLoading ? '…' : uploadGradcamOn ? 'ON' : 'OFF'}

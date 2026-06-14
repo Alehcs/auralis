@@ -45,7 +45,7 @@ export interface ClassificationInfo {
     level: 'Low' | 'Medium' | 'High';
     /** Human-readable label, e.g. "Low / Normal Activity" */
     label: string;
-    /** GOES flare class letter: "C" | "M" | "X" */
+    /** Legacy activity-band symbol; not validated against GOES flare classes. */
     flare_class: string;
     /** Hex colour for UI rendering, e.g. "#22c55e" */
     hex_color: string;
@@ -63,11 +63,11 @@ export interface PredictionResult {
     sunspot_index: number;
     /** Three-tier activity level derived from `classification.level`. */
     risk_level: 'Low' | 'Medium' | 'High';
-    /** Prediction confidence in `[0.75, 0.99]`; conservative for high-activity events. */
+    /** Heuristic score in `[0.75, 0.99]`; not a calibrated probability. */
     confidence: number;
     /** Empirical uncertainty: std-dev of 20 ONNX input-noise passes. */
     uncertainty: number;
-    /** Full classification object with label, flare class, and hex colour. */
+    /** Full classification object with label, legacy band symbol, and hex colour. */
     classification: ClassificationInfo;
 }
 

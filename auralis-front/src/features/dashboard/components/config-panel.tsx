@@ -55,7 +55,7 @@ export function ConfigPanel() {
   const DEVICE    = 'ONNX Runtime · CPU (edge)';
   const BATCH     = '32';
   const PRECISION = 'float32';
-  const API_KEY   = 'hk_live_••••••••••••••a3f2';
+  const API_KEY   = 'Not configured';
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -134,7 +134,7 @@ export function ConfigPanel() {
             <span className="text-[13px] font-mono text-neutral-400">{API_KEY}</span>
           </Row>
           <Row label={s.twoFa}>
-            <span className="text-[13px] font-mono text-green-400">{s.enabled}</span>
+            <span className="text-[13px] font-mono text-neutral-400">{s.notApplicable}</span>
           </Row>
         </div>
       </div>

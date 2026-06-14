@@ -273,13 +273,13 @@ def create_gauge_chart(value):
 
 
 def get_risk_level(activity_index):
-    """Map the legacy activity index to coarse UI severity bands."""
+    """Map the legacy activity index to coarse UI activity bands."""
     if activity_index < 100:
         return "LOW", "#2ECC71", "Normal solar activity"
     elif activity_index < 200:
-        return "MODERATE", "#F39C12", "Elevated activity - Monitor systems"
+        return "MODERATE", "#F39C12", "Moderate solar activity"
     else:
-        return "HIGH", "#E74C3C", "Intense activity - Alert protocols active"
+        return "HIGH", "#E74C3C", "High solar activity"
 
 
 # ============================================================================
@@ -424,7 +424,7 @@ def main():
 
             with metric_col2:
                 st.metric(
-                    label="Risk Level",
+                    label="Activity Level",
                     value=risk_level
                 )
 
@@ -437,7 +437,7 @@ def main():
 
             st.write("")
 
-            # Risk alert bar
+            # Activity-band summary
             st.markdown(f"""
             <div style='
                 background: linear-gradient(90deg, {risk_color}40 0%, {risk_color}20 100%);
@@ -449,7 +449,7 @@ def main():
                 <div style='display: flex; align-items: center; gap: 1rem;'>
                     <div>
                         <h4 style='margin: 0; color: {risk_color}; font-size: 1.3rem; font-weight: 700;'>
-                            RISK LEVEL: {risk_level}
+                            ACTIVITY LEVEL: {risk_level}
                         </h4>
                         <p style='margin: 0.3rem 0 0 0; color: #E0E0E0; font-size: 1rem;'>
                             {risk_desc}

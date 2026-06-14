@@ -145,10 +145,11 @@ export function XAIFaithfulness() {
               <p className="text-[12px] text-neutral-400 leading-relaxed border-l-2 border-violet-500/40 pl-4 py-1">
                 The <span className="text-violet-400 font-semibold">Grad-CAM</span> curve drops
                 significantly faster than the{' '}
-                <span className="text-stone-400 font-semibold">random</span> baseline, confirming
-                that the regions identified by the explainability method carry real predictive
-                information. A positive AUC means guided removal degrades predictions more than
-                random removal — quantitative validation of the explanation.{' '}
+                <span className="text-stone-400 font-semibold">random</span> baseline, which
+                suggests that the highlighted regions contribute to this prediction. A positive
+                AUC means guided removal degrades the output more than random removal in this
+                single-image deletion diagnostic; it is a faithfulness indicator, not evidence of
+                causal solar-physics reasoning.{' '}
                 <span className="text-neutral-500 font-mono text-[11px]">
                   Baseline: {data.baseline_prediction.toFixed(4)}
                 </span>

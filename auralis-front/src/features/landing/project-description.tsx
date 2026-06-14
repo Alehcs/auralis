@@ -4,7 +4,7 @@ export function ProjectDescription() {
   const useCases = [
     'Space weather research and monitoring',
     'Solar activity index estimation',
-    'ML/AI engineering portfolio demonstration',
+    'Machine-learning engineering portfolio demonstration',
     'Data pipeline and MLOps case study'
   ];
 
@@ -13,7 +13,7 @@ export function ProjectDescription() {
     { label: 'Accuracy Proxy (100-MAPE)', value: '93.93%' },
     { label: 'MAE log-SI (MC)', value: '0.1048' },
     { label: 'ONNX Latency (CPU)', value: '25.11 ms' },
-    { label: 'Inference Confidence', value: '20-pass ONNX' },
+    { label: 'Uncertainty Diagnostic', value: '20-pass ONNX' },
     { label: 'SDO/HMI Cadence', value: '45 s' }
   ];
 

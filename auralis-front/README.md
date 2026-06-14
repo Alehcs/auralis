@@ -1,11 +1,24 @@
+# Auralis Frontend
 
-  # Diseño interfaz Auralis
+React, TypeScript, Vite, and Tailwind interface for the Auralis research demo.
+The dashboard reads model results and dataset metadata from the FastAPI backend;
+it does not provide operational space-weather forecasts or live NASA telemetry.
 
-  This is a code bundle for Diseño interfaz Auralis. The original project is available at https://www.figma.com/design/gwcxaLgUXR7GJL4uILpSeD/Dise%C3%B1o-interfaz-Auralis.
+## Local Development
 
-  ## Running the code
+```bash
+npm install
+npm run dev
+```
 
-  Run `npm i` to install the dependencies.
+The development server runs at `http://localhost:5173` by default. Set
+`VITE_API_URL` to override the backend URL; otherwise the frontend uses
+`http://localhost:8000`.
 
-  Run `npm run dev` to start the development server.
-  
+## Production Build
+
+```bash
+npm run build
+```
+
+Generated files under `dist/` are intentionally not committed.

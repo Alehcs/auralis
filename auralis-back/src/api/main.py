@@ -267,6 +267,8 @@ class ImageListResponse(BaseModel):
 class ClassificationInfo(BaseModel):
     level: str        # "Low" | "Medium" | "High"
     label: str        # human-readable label
+    # Legacy API field retained for compatibility. Values are activity-band
+    # symbols only and have not been validated against GOES flare classes.
     flare_class: str  # "C" | "M" | "X"
     hex_color: str    # "#22c55e" | "#f97316" | "#ef4444"
 
@@ -413,13 +415,13 @@ def _classify(sunspot_index: float) -> ClassificationInfo:
     if sunspot_index < 1.75:  # noqa: PLR2004
         return ClassificationInfo(
             level="Medium",
-            label="Medium / Moderate Storm",
+            label="Medium / Moderate Activity",
             flare_class="M",
             hex_color="#f97316",
         )
     return ClassificationInfo(
         level="High",
-        label="High / Extreme Risk",
+        label="High / High Activity",
         flare_class="X",
         hex_color="#ef4444",
     )
@@ -1003,7 +1005,7 @@ async def polarity_series(limit: int = 48):
 
 @app.get("/api/stats", response_model=SystemStats)
 async def get_stats():
-    """Return live dataset counts with frozen metrics from the promoted run."""
+    """Return local dataset counts with frozen metrics from the promoted run."""
     if not DATA_DIR.exists():
         raise HTTPException(status_code=500, detail="Data directory not found")
 

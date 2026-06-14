@@ -10,7 +10,7 @@ interface LandingHeroProps {
 }
 
 /**
- * Landing hero section: animated starfield backdrop plus live model stats
+ * Landing hero section: animated starfield backdrop plus model summary statistics.
  * (sample count and R²) fetched from the backend `/api/stats` endpoint.
  *
  * @param props.onEnterDashboard - Callback fired when the "Enter dashboard" CTA is clicked.
