@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import {
   Sun, LayoutDashboard, Activity,
-  Database, FlaskConical, FileText, Settings,
+  Database, FlaskConical, FileText, Settings, Bot,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/language-context';
 
-export type TabId = 'overview' | 'monitoring' | 'pipeline' | 'logs' | 'config' | 'research';
+export type TabId = 'overview' | 'monitoring' | 'pipeline' | 'logs' | 'config' | 'research' | 'agentlab';
 
 interface ScientificSidebarProps {
   activeTab: TabId;
@@ -30,6 +30,7 @@ export function ScientificSidebar({ activeTab, onTabChange, isOpen, onClose }: S
     { icon: Activity,        label: t.nav.monitoring,   id: 'monitoring' },
     { icon: Database,        label: t.nav.pipeline,     id: 'pipeline'   },
     { icon: FlaskConical,    label: t.nav.experiments,  id: 'research'   },
+    { icon: Bot,             label: t.nav.agentLab,     id: 'agentlab'   },
     { icon: FileText,        label: t.nav.logs,         id: 'logs'       },
     { icon: Settings,        label: t.nav.settings,     id: 'config'     },
   ];

@@ -289,6 +289,162 @@ export interface DualChannelPredictionResult extends PredictionResult {
 }
 
 // ---------------------------------------------------------------------------
+// Agent Lab (read-only scientific audit layer)
+// ---------------------------------------------------------------------------
+//
+// These mirror the Pydantic models in `auralis-back/src/agents/schemas.py`.
+// The agents are a read-only audit/decision-support layer: they summarise
+// existing artifacts and recommend data priorities. Nothing here measures or
+// implies real-world model improvement.
+
+/** Activity bin in log-SI space (thresholds 1.41 / 1.75). */
+export type ActivityBin = 'low' | 'medium' | 'high';
+
+/** Advisory severity for an audit finding. */
+export type Severity = 'info' | 'notice' | 'warning';
+
+/** A single observation produced by an agent. */
+export interface AgentFinding {
+    key: string;
+    label: string;
+    detail: string;
+    severity: Severity;
+    /** Optional supporting metrics; keys vary per finding. */
+    evidence: Record<string, number>;
+}
+
+/** An explicit caveat bounding how far a finding can be trusted. */
+export interface AgentLimitation {
+    key: string;
+    detail: string;
+}
+
+/** Common envelope shared by every agent report. */
+export interface AgentReportBase {
+    agent_name: string;
+    summary: string;
+    /** Heuristic audit confidence in [0, 1] — NOT prediction accuracy. */
+    confidence: number;
+    findings: AgentFinding[];
+    limitations: AgentLimitation[];
+    /** ISO-8601 UTC timestamp. */
+    generated_at: string;
+}
+
+/** Count + share for one activity bin. */
+export interface BinStat {
+    count: number;
+    /** Fraction of the parent population in [0, 1]. */
+    share: number;
+}
+
+/** Typed temporal-coverage summary. */
+export interface DateCoverage {
+    first_date: string | null;
+    last_date: string | null;
+    year_min: number | null;
+    year_max: number | null;
+    distinct_years: number;
+}
+
+/** Typed distribution indicators from metadata columns only. */
+export interface OutlierIndicators {
+    sunspot_index_min: number;
+    sunspot_index_max: number;
+    abs_mean_value_max: number | null;
+    samples_high_abs_mean: number;
+}
+
+/** Data Quality Agent report. */
+export interface DataQualityReport extends AgentReportBase {
+    full_distribution: Record<ActivityBin, BinStat>;
+    train_distribution: Record<ActivityBin, BinStat>;
+    val_distribution: Record<ActivityBin, BinStat>;
+    low_activity_underrepresented: boolean;
+    minority_bin: ActivityBin;
+    date_coverage: DateCoverage;
+    outlier_indicators: OutlierIndicators | null;
+}
+
+/** One hold-out sample, used for the top-error tables. */
+export interface ErrorSample {
+    filename: string;
+    date: string | null;
+    real: number;
+    predicted: number;
+    error: number;
+    residual: number;
+    activity_bin: ActivityBin;
+}
+
+/** Error Analysis Agent report. */
+export interface ErrorAnalysisReport extends AgentReportBase {
+    mae_by_bin: Record<ActivityBin, number>;
+    rmse_by_bin: Record<ActivityBin, number>;
+    residual_mean_by_bin: Record<ActivityBin, number>;
+    top_errors: ErrorSample[];
+    tail_extreme_count: number;
+    tail_extreme_mae: number | null;
+    /** True when MAE differs little across bins. */
+    error_is_flat: boolean;
+    mae_spread: number;
+}
+
+/** XAI Review Agent report (Phase 1 — inventory + strategy, no sweep). */
+export interface XAIReviewReport extends AgentReportBase {
+    faithfulness_endpoint_available: boolean;
+    available_assets: string[];
+    sampled_strategy_recommendation: string;
+    /** e.g. "deferred". */
+    sweep_status: string;
+}
+
+/** One candidate active-learning action and its decision-support utility. */
+export interface BanditActionUtility {
+    action_id: string;
+    action_name: string;
+    description: string;
+    /** Heuristic utility from current audit signals — NOT measured gain. */
+    utility: number;
+}
+
+/** One epsilon-greedy bandit round. */
+export interface BanditRound {
+    round_index: number;
+    selected_action: string;
+    is_exploration: boolean;
+    reward: number;
+    /** Heuristic regret vs the best utility, not real-world model gain. */
+    regret: number;
+}
+
+/** Active Learning Agent report (deterministic contextual bandit). */
+export interface ActiveLearningReport extends AgentReportBase {
+    state_vector: Record<string, number>;
+    action_utilities: BanditActionUtility[];
+    rounds: BanditRound[];
+    action_distribution: Record<string, number>;
+    best_recommendation: BanditActionUtility;
+    cumulative_regret: number[];
+    epsilon: number;
+    seed: number;
+    n_rounds: number;
+}
+
+/** Coordinator audit brief combining all four agents. */
+export interface FullAgentReport extends AgentReportBase {
+    dataset_health_summary: string;
+    model_weakness_summary: string;
+    xai_caution_summary: string;
+    active_learning_recommendation: string;
+    recommended_next_steps: string[];
+    data_quality: DataQualityReport;
+    error_analysis: ErrorAnalysisReport;
+    xai_review: XAIReviewReport;
+    active_learning: ActiveLearningReport;
+}
+
+// ---------------------------------------------------------------------------
 // Errors
 // ---------------------------------------------------------------------------
 

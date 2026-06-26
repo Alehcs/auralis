@@ -7,6 +7,7 @@ import { ExecutionLogs } from './execution-logs';
 import { PredictionChart } from './prediction-chart';
 import { ConfigPanel } from './components/config-panel';
 import { ResearchInsights } from './pages/research-insights';
+import { AgentLabPage } from './agent-lab/AgentLabPage';
 
 /**
  * Main dashboard shell.
@@ -54,6 +55,7 @@ export function DashboardPage() {
             {activeTab === 'logs'        && <ExecutionLogs />}
             {activeTab === 'config'      && <ConfigPanel />}
             {activeTab === 'research'    && <ResearchInsights />}
+            {activeTab === 'agentlab'    && <AgentLabPage />}
           </div>
         </div>
       </main>

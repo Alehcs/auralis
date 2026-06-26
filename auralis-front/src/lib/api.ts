@@ -15,6 +15,11 @@ import type {
     BenchmarkResult,
     XAIFaithfulnessResult,
     ExperimentEntry,
+    DataQualityReport,
+    ErrorAnalysisReport,
+    XAIReviewReport,
+    ActiveLearningReport,
+    FullAgentReport,
 } from './types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -189,4 +194,38 @@ export async function explainPanelsUpload(file: File): Promise<string> {
     }
     const blob = await res.blob();
     return URL.createObjectURL(blob);
+}
+
+// ---------------------------------------------------------------------------
+// Agent Lab — read-only scientific audit layer (/api/agents/*)
+// ---------------------------------------------------------------------------
+//
+// The Agent Lab page should prefer getAgentFullReport(): one fetch returns the
+// coordinator brief with all four sub-reports embedded, avoiding duplicated
+// metrics and inconsistent loading states. The individual fetchers are provided
+// for completeness / future per-agent refresh.
+
+/** Coordinator audit brief with all four sub-reports embedded (preferred). */
+export function getAgentFullReport(): Promise<FullAgentReport> {
+    return fetchJson<FullAgentReport>('/api/agents/full-report');
+}
+
+/** Data Quality Agent: dataset composition and balance audit. */
+export function getAgentDataQuality(): Promise<DataQualityReport> {
+    return fetchJson<DataQualityReport>('/api/agents/data-quality');
+}
+
+/** Error Analysis Agent: hold-out error audit by bin + top-error tail. */
+export function getAgentErrorAnalysis(): Promise<ErrorAnalysisReport> {
+    return fetchJson<ErrorAnalysisReport>('/api/agents/error-analysis');
+}
+
+/** XAI Review Agent: XAI inventory + sampled-sweep strategy (no full sweep). */
+export function getAgentXaiReview(): Promise<XAIReviewReport> {
+    return fetchJson<XAIReviewReport>('/api/agents/xai-review');
+}
+
+/** Active Learning Agent: deterministic bandit recommendation (decision-support). */
+export function getAgentActiveLearning(): Promise<ActiveLearningReport> {
+    return fetchJson<ActiveLearningReport>('/api/agents/active-learning');
 }

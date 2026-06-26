@@ -9,10 +9,17 @@ It never reads pixel data and never runs the model.
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .data_loader import ACTIVITY_BINS, AgentDataset, activity_bin
-from .schemas import AgentFinding, AgentLimitation, BinStat, DataQualityReport
+from .schemas import (
+    AgentFinding,
+    AgentLimitation,
+    BinStat,
+    DataQualityReport,
+    DateCoverage,
+    OutlierIndicators,
+)
 
 AGENT_NAME = "Data Quality Agent"
 
@@ -29,30 +36,27 @@ def _minority_bin(counts: Dict[str, int]) -> str:
     return min(ACTIVITY_BINS, key=lambda b: counts[b])
 
 
-def _date_coverage(dataset: AgentDataset) -> Dict[str, str]:
+def _date_coverage(dataset: AgentDataset) -> DateCoverage:
     dates = sorted(
         str(r.get("date") or "")[:10]
         for r in dataset.metadata_rows
         if str(r.get("date") or "").strip()
     )
     if not dates:
-        return {}
-    years = sorted({d[:4] for d in dates if len(d) >= 4})
-    return {
-        "first": dates[0],
-        "last": dates[-1],
-        "year_min": years[0] if years else "",
-        "year_max": years[-1] if years else "",
-        "distinct_years": str(len(years)),
-    }
+        return DateCoverage()
+    years = sorted({int(d[:4]) for d in dates if len(d) >= 4 and d[:4].isdigit()})
+    return DateCoverage(
+        first_date=dates[0],
+        last_date=dates[-1],
+        year_min=years[0] if years else None,
+        year_max=years[-1] if years else None,
+        distinct_years=len(years),
+    )
 
 
-def _outlier_indicators(dataset: AgentDataset) -> Dict[str, float]:
+def _outlier_indicators(dataset: AgentDataset) -> OutlierIndicators:
     """Cheap distribution indicators from existing metadata columns only."""
-    indicators: Dict[str, float] = {}
     si = [float(r["sunspot_index"]) for r in dataset.metadata_rows]
-    indicators["sunspot_index_min"] = round(min(si), 4)
-    indicators["sunspot_index_max"] = round(max(si), 4)
 
     # mean_value / min_value / max_value describe the normalised pixel range of
     # each processed magnetogram. Flag rows whose channel mean drifts far from 0
@@ -63,11 +67,14 @@ def _outlier_indicators(dataset: AgentDataset) -> Dict[str, float]:
             means.append(abs(float(r["mean_value"])))
         except (KeyError, TypeError, ValueError):
             continue
-    if means:
-        thr = 0.01  # |mean| above ~1% of the [-1, 1] range is unusual
-        indicators["abs_mean_value_max"] = round(max(means), 6)
-        indicators["samples_high_abs_mean"] = float(sum(m > thr for m in means))
-    return indicators
+
+    thr = 0.01  # |mean| above ~1% of the [-1, 1] range is unusual
+    return OutlierIndicators(
+        sunspot_index_min=round(min(si), 4),
+        sunspot_index_max=round(max(si), 4),
+        abs_mean_value_max=round(max(means), 6) if means else None,
+        samples_high_abs_mean=sum(m > thr for m in means),
+    )
 
 
 def run_data_quality_agent(dataset: AgentDataset) -> DataQualityReport:
@@ -145,37 +152,36 @@ def run_data_quality_agent(dataset: AgentDataset) -> DataQualityReport:
         )
 
     coverage = _date_coverage(dataset)
-    if coverage:
+    if coverage.first_date:
         findings.append(
             AgentFinding(
                 key="temporal_coverage",
                 label="Temporal coverage",
                 detail=(
-                    f"Samples span {coverage.get('first')} to {coverage.get('last')} "
-                    f"({coverage.get('distinct_years')} distinct years). This window "
+                    f"Samples span {coverage.first_date} to {coverage.last_date} "
+                    f"({coverage.distinct_years} distinct years). This window "
                     "covers Solar Cycles 24-25, which are biased toward active years."
                 ),
                 severity="info",
-                evidence={"distinct_years": float(coverage.get("distinct_years", 0) or 0)},
+                evidence={"distinct_years": float(coverage.distinct_years)},
             )
         )
 
     outliers = _outlier_indicators(dataset)
-    high_abs_mean = outliers.get("samples_high_abs_mean")
-    if high_abs_mean is not None:
-        findings.append(
-            AgentFinding(
-                key="outlier_indicators",
-                label="Pixel-range outlier indicators",
-                detail=(
-                    f"{int(high_abs_mean)} processed magnetograms have an absolute "
-                    "channel mean above 1% of the normalised range; worth a spot "
-                    "check for residual flat-field or polarity imbalance."
-                ),
-                severity="info" if high_abs_mean == 0 else "notice",
-                evidence={"samples_high_abs_mean": high_abs_mean},
-            )
+    high_abs_mean = outliers.samples_high_abs_mean
+    findings.append(
+        AgentFinding(
+            key="outlier_indicators",
+            label="Pixel-range outlier indicators",
+            detail=(
+                f"{high_abs_mean} processed magnetograms have an absolute "
+                "channel mean above 1% of the normalised range; worth a spot "
+                "check for residual flat-field or polarity imbalance."
+            ),
+            severity="info" if high_abs_mean == 0 else "notice",
+            evidence={"samples_high_abs_mean": float(high_abs_mean)},
         )
+    )
 
     limitations = [
         AgentLimitation(

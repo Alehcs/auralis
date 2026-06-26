@@ -82,6 +82,33 @@ class BinStat(BaseModel):
     share: float                      # fraction of the parent population in [0, 1]
 
 
+class DateCoverage(BaseModel):
+    """Typed temporal-coverage summary.
+
+    ``distinct_years`` is an integer count (not a stringified number); the date
+    bounds and year bounds are nullable so an empty corpus serialises cleanly.
+    """
+
+    first_date: Optional[str] = None
+    last_date: Optional[str] = None
+    year_min: Optional[int] = None
+    year_max: Optional[int] = None
+    distinct_years: int = 0
+
+
+class OutlierIndicators(BaseModel):
+    """Typed distribution indicators drawn from existing metadata columns only.
+
+    Counts are integers; magnitudes are floats. Values and semantics are
+    unchanged from the original heterogeneous dict — only the typing is explicit.
+    """
+
+    sunspot_index_min: float
+    sunspot_index_max: float
+    abs_mean_value_max: Optional[float] = None
+    samples_high_abs_mean: int = 0
+
+
 # ---------------------------------------------------------------------------
 # Data Quality Agent
 # ---------------------------------------------------------------------------
@@ -92,8 +119,8 @@ class DataQualityReport(AgentReportBase):
     val_distribution: Dict[str, BinStat]
     low_activity_underrepresented: bool
     minority_bin: str
-    date_coverage: Dict[str, str] = Field(default_factory=dict)
-    outlier_indicators: Dict[str, float] = Field(default_factory=dict)
+    date_coverage: DateCoverage = Field(default_factory=DateCoverage)
+    outlier_indicators: Optional[OutlierIndicators] = None
 
 
 # ---------------------------------------------------------------------------
