@@ -465,6 +465,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Additive, read-only Agent Lab routes (/api/agents/*). Mounted from a separate
+# router module so existing handlers are untouched; the audit layer never
+# modifies the model, artifacts, metrics, or any on-disk data.
+from api.agent_routes import router as agents_router  # noqa: E402
+
+app.include_router(agents_router)
+
 
 @app.exception_handler(Exception)
 async def _unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
