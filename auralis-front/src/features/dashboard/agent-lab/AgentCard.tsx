@@ -2,12 +2,13 @@
  * Shared presentational primitives for the Agent Lab.
  *
  * Everything here is read-only display: card shells, the audit-confidence pill,
- * severity-coded finding/limitation lists, and the global caution badge. Copy is
- * deliberately framed as audit / decision-support, never as model improvement.
+ * severity-coded findings, subtle inline notes, and a collapsed "Method notes"
+ * section. Copy is deliberately framed as audit / decision-support, never as
+ * model improvement.
  */
 
 import type { ReactNode } from 'react';
-import { AlertTriangle, Info, ShieldAlert } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import type { AgentFinding, AgentLimitation, ActivityBin, Severity } from '@/lib/types';
 
 /** Per-bin colours, matching the existing classification palette. */
@@ -24,10 +25,10 @@ export const SPLIT_COLORS = {
   val: '#a78bfa',
 } as const;
 
-const SEVERITY_STYLE: Record<Severity, { dot: string; text: string; Icon: typeof Info }> = {
-  info:    { dot: 'bg-sky-400',   text: 'text-sky-300',    Icon: Info },
-  notice:  { dot: 'bg-amber-400', text: 'text-amber-300',  Icon: ShieldAlert },
-  warning: { dot: 'bg-red-400',   text: 'text-red-300',    Icon: AlertTriangle },
+const SEVERITY_STYLE: Record<Severity, { dot: string; text: string }> = {
+  info:    { dot: 'bg-sky-400',   text: 'text-sky-300' },
+  notice:  { dot: 'bg-amber-400', text: 'text-amber-300' },
+  warning: { dot: 'bg-red-400',   text: 'text-red-300' },
 };
 
 // ---------------------------------------------------------------------------
@@ -66,7 +67,7 @@ export function ConfidenceBadge({ confidence }: { confidence: number }) {
   const pct = Math.round(confidence * 100);
   const tone =
     confidence >= 0.8 ? 'text-green-300 border-green-500/30 bg-green-500/10'
-    : confidence >= 0.6 ? 'text-amber-300 border-amber-500/30 bg-amber-500/10'
+    : confidence >= 0.6 ? 'text-emerald-300 border-emerald-500/25 bg-emerald-500/5'
     : 'text-neutral-300 border-neutral-600 bg-neutral-800';
   return (
     <span
@@ -79,20 +80,24 @@ export function ConfidenceBadge({ confidence }: { confidence: number }) {
 }
 
 // ---------------------------------------------------------------------------
-// Global caution badge
+// Subtle inline caution note (replaces the old full-width amber panels)
 // ---------------------------------------------------------------------------
 
-export function CautionBadge({ text }: { text: string }) {
+/**
+ * A muted one-line note. ``accent`` shows a small amber dot for priority/caution
+ * context without the alarmist full-width yellow box.
+ */
+export function MutedNote({ text, accent = false }: { text: string; accent?: boolean }) {
   return (
-    <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3.5 py-2.5">
-      <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-      <span className="text-[12px] text-amber-200/90 leading-snug">{text}</span>
+    <div className="flex items-center gap-1.5 text-[11px] text-neutral-500 leading-snug">
+      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${accent ? 'bg-amber-400/80' : 'bg-neutral-600'}`} />
+      <span>{text}</span>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Findings & limitations
+// Findings (short key findings)
 // ---------------------------------------------------------------------------
 
 export function FindingsList({ findings }: { findings: AgentFinding[] }) {
@@ -115,19 +120,45 @@ export function FindingsList({ findings }: { findings: AgentFinding[] }) {
   );
 }
 
-export function LimitationsList({ limitations }: { limitations: AgentLimitation[] }) {
-  if (!limitations.length) return null;
+// ---------------------------------------------------------------------------
+// Method notes & limitations — collapsed by default (native <details>)
+// ---------------------------------------------------------------------------
+
+/**
+ * Collapsed disclosure that holds scientific caveats (and optional ``extra``
+ * detail such as a raw asset list) out of the default view without removing
+ * them. Uses the native <details> element — no extra UI library, accessible,
+ * and collapse works even if the chevron animation variant is unavailable.
+ */
+export function MethodNotes({
+  limitations,
+  extra,
+  label = 'Method notes & limitations',
+}: {
+  limitations: AgentLimitation[];
+  extra?: ReactNode;
+  label?: string;
+}) {
+  if (!limitations.length && !extra) return null;
   return (
-    <div className="mt-4 pt-3 border-t border-neutral-800">
-      <div className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono mb-1.5">LIMITATIONS</div>
-      <ul className="space-y-1">
-        {limitations.map((l) => (
-          <li key={l.key} className="text-[11px] text-neutral-500 leading-snug flex gap-1.5">
-            <span className="text-neutral-600">·</span>
-            <span>{l.detail}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <details className="group mt-4 pt-3 border-t border-neutral-800">
+      <summary className="flex items-center gap-1.5 cursor-pointer select-none list-none text-[10px] text-neutral-500 tracking-[0.14em] font-mono hover:text-neutral-300 transition-colors">
+        <ChevronRight className="w-3 h-3 flex-shrink-0 transition-transform group-open:rotate-90" />
+        {label.toUpperCase()}
+      </summary>
+      <div className="mt-2.5 space-y-2.5">
+        {extra}
+        {limitations.length > 0 && (
+          <ul className="space-y-1">
+            {limitations.map((l) => (
+              <li key={l.key} className="text-[11px] text-neutral-500 leading-snug flex gap-1.5">
+                <span className="text-neutral-600">·</span>
+                <span>{l.detail}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </details>
   );
 }

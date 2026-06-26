@@ -8,13 +8,13 @@
  * not prove model improvement.
  */
 
-import { useEffect, useState } from 'react';
-import { AlertTriangle, Database, Activity, Eye, Compass } from 'lucide-react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { AlertTriangle, Compass } from 'lucide-react';
 import { getAgentFullReport } from '@/lib/api';
 import type { FullAgentReport } from '@/lib/types';
 
 import {
-  AgentCard, ConfidenceBadge, CautionBadge, FindingsList, LimitationsList, BIN_COLORS,
+  AgentCard, ConfidenceBadge, MutedNote, MethodNotes, FindingsList, BIN_COLORS,
 } from './AgentCard';
 import { AgentReportPanel } from './AgentReportPanel';
 import { AgentDatasetDistributionChart } from './AgentDatasetDistributionChart';
@@ -23,10 +23,6 @@ import { AgentTopErrorsTable } from './AgentTopErrorsTable';
 import { AgentRewardChart } from './AgentRewardChart';
 import { AgentActionDistribution } from './AgentActionDistribution';
 import { AgentConfidencePanel } from './AgentConfidencePanel';
-
-const PAGE_CAUTION =
-  'Audit layer only — agents do not modify Coronium or prove model improvement. ' +
-  'Read-only analysis; no retraining performed.';
 
 // ---------------------------------------------------------------------------
 // Loading skeleton
@@ -59,6 +55,10 @@ function Chip({ label, value, tone }: { label: string; value: string; tone?: str
   );
 }
 
+function SectionLabel({ children }: { children: ReactNode }) {
+  return <div className="text-[11px] text-neutral-400 font-mono mb-2">{children}</div>;
+}
+
 // ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
@@ -80,15 +80,15 @@ export function AgentLabPage() {
   return (
     <div className="space-y-4">
       {/* ── Header ────────────────────────────────────────────────── */}
-      <div className="space-y-3">
-        <div>
-          <h1 className="text-[20px] font-bold text-white tracking-tight">Auralis Agent Lab</h1>
-          <p className="text-[12.5px] text-neutral-500 mt-1 max-w-3xl leading-snug">
-            Read-only scientific audit agents for dataset quality, model error analysis, XAI review,
-            and active-learning recommendations.
-          </p>
+      <div>
+        <h1 className="text-[20px] font-bold text-white tracking-tight">Auralis Agent Lab</h1>
+        <p className="text-[12.5px] text-neutral-500 mt-1 max-w-3xl leading-snug">
+          Read-only scientific audit agents for dataset quality, model error analysis, XAI review,
+          and active-learning recommendations.
+        </p>
+        <div className="mt-2">
+          <MutedNote text="Audit layer · read-only · no retraining · not measured model improvement." />
         </div>
-        <CautionBadge text={PAGE_CAUTION} />
       </div>
 
       {/* ── Loading ───────────────────────────────────────────────── */}
@@ -134,12 +134,8 @@ export function AgentLabPage() {
               subtitle="Dataset composition and balance audit"
               headerRight={<ConfidenceBadge confidence={report.data_quality.confidence} />}
             >
-              <div className="grid grid-cols-3 gap-2.5 mb-4">
-                <Chip
-                  label="MINORITY BIN"
-                  value={report.data_quality.minority_bin}
-                  tone="capitalize"
-                />
+              <div className="grid grid-cols-3 gap-2.5 mb-3">
+                <Chip label="MINORITY BIN" value={report.data_quality.minority_bin} tone="capitalize" />
                 <Chip
                   label="LOW UNDERREP."
                   value={report.data_quality.low_activity_underrepresented ? 'Yes' : 'No'}
@@ -156,21 +152,21 @@ export function AgentLabPage() {
               </div>
 
               {report.data_quality.low_activity_underrepresented && (
-                <div className="mb-4">
-                  <CautionBadge text="Low activity is the minority class — quiet-Sun / solar-minimum conditions are underrepresented relative to medium/high activity." />
+                <div className="mb-3">
+                  <MutedNote
+                    accent
+                    text="Low activity is the minority class — solar-minimum samples underrepresented vs medium/high."
+                  />
                 </div>
               )}
 
-              <div className="flex items-center gap-2 mb-2">
-                <Database className="w-3.5 h-3.5 text-neutral-500" />
-                <span className="text-[11px] text-neutral-400 font-mono">Activity-bin distribution — full vs train vs validation (share %)</span>
-              </div>
+              <SectionLabel>Activity-bin distribution — full vs train vs validation (share %)</SectionLabel>
               <AgentDatasetDistributionChart report={report.data_quality} />
 
               <div className="mt-4 pt-3 border-t border-neutral-800">
                 <FindingsList findings={report.data_quality.findings} />
               </div>
-              <LimitationsList limitations={report.data_quality.limitations} />
+              <MethodNotes limitations={report.data_quality.limitations} />
             </AgentCard>
 
             {/* Error Analysis Agent */}
@@ -179,20 +175,17 @@ export function AgentLabPage() {
               subtitle="Hold-out error audit by activity bin"
               headerRight={<ConfidenceBadge confidence={report.error_analysis.confidence} />}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <Activity className="w-3.5 h-3.5 text-neutral-500" />
-                <span className="text-[11px] text-neutral-400 font-mono">MAE / RMSE by activity bin (log-SI)</span>
-              </div>
+              <SectionLabel>MAE / RMSE by activity bin (log-SI)</SectionLabel>
               <AgentErrorByBinChart report={report.error_analysis} />
 
               {report.error_analysis.tail_extreme_count > 0 && (
-                <div className="mt-4">
-                  <CautionBadge
+                <div className="mt-3">
+                  <MutedNote
+                    accent
                     text={
-                      `Bin-level MAE is nearly flat, but the weakness concentrates in the SI > 2.0 tail: ` +
-                      `${report.error_analysis.tail_extreme_count} extreme samples, ` +
-                      `tail MAE ${report.error_analysis.tail_extreme_mae?.toFixed(4) ?? '—'}. ` +
-                      `This is a tail/extreme-event weakness, not a generic high-bin failure.`
+                      `Bin MAE is nearly flat · main weakness is the SI > 2.0 tail ` +
+                      `(${report.error_analysis.tail_extreme_count} samples, MAE ` +
+                      `${report.error_analysis.tail_extreme_mae?.toFixed(4) ?? '—'}) — not a generic high-bin failure.`
                     }
                   />
                 </div>
@@ -214,52 +207,63 @@ export function AgentLabPage() {
               <div className="mt-4 pt-3 border-t border-neutral-800">
                 <FindingsList findings={report.error_analysis.findings} />
               </div>
-              <LimitationsList limitations={report.error_analysis.limitations} />
+              <MethodNotes limitations={report.error_analysis.limitations} />
             </AgentCard>
           </div>
 
           {/* 4 — XAI Review Agent */}
           <AgentCard
             title="XAI Review Agent"
-            subtitle="Explainability inventory and sampled-sweep strategy"
+            subtitle="Explainability status and recommended next action"
             headerRight={<ConfidenceBadge confidence={report.xai_review.confidence} />}
           >
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
-              <Chip label="SWEEP STATUS" value={report.xai_review.sweep_status} tone="text-amber-300 capitalize" />
               <Chip
-                label="FAITHFULNESS API"
+                label="XAI"
                 value={report.xai_review.faithfulness_endpoint_available ? 'Available' : 'Absent'}
                 tone={report.xai_review.faithfulness_endpoint_available ? 'text-green-300' : 'text-neutral-400'}
               />
-              <Chip label="XAI ASSETS" value={String(report.xai_review.available_assets.length)} />
+              <Chip label="SWEEP" value={report.xai_review.sweep_status} tone="text-amber-300 capitalize" />
+              <Chip label="ASSETS" value={String(report.xai_review.available_assets.length)} />
               <Chip label="MODE" value="Read-only" />
             </div>
 
-            <div className="mb-4">
-              <CautionBadge text="Grad-CAM is post-hoc and non-causal. It supports inspection, not proof of physical reasoning." />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-3.5">
+                <div className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono mb-1.5">WHAT THIS AGENT CONTRIBUTES</div>
+                <ul className="space-y-1.5 text-[12px] text-neutral-300 leading-snug">
+                  <li className="flex gap-2"><span className="text-neutral-600">·</span>Confirms existing Grad-CAM / faithfulness tooling is available.</li>
+                  <li className="flex gap-2"><span className="text-neutral-600">·</span>Recommends a sampled faithfulness sweep instead of an expensive full sweep.</li>
+                </ul>
+              </div>
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-3.5">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Compass className="w-3.5 h-3.5 text-amber-400/80" />
+                  <span className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono">RECOMMENDED NEXT XAI ACTION</span>
+                </div>
+                <p className="text-[12px] text-neutral-300 leading-snug">{report.xai_review.sampled_strategy_recommendation}</p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 mb-2">
-              <Eye className="w-3.5 h-3.5 text-neutral-500" />
-              <span className="text-[11px] text-neutral-400 font-mono">Available XAI assets</span>
-            </div>
-            <ul className="space-y-1 mb-4">
-              {report.xai_review.available_assets.map((a, i) => (
-                <li key={i} className="text-[11.5px] text-neutral-400 font-mono leading-snug flex gap-2">
-                  <span className="text-neutral-600">›</span>{a}
-                </li>
-              ))}
-            </ul>
-
-            <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-3.5">
-              <div className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono mb-1.5">SAMPLED SWEEP STRATEGY</div>
-              <p className="text-[12px] text-neutral-300 leading-snug">{report.xai_review.sampled_strategy_recommendation}</p>
+            <div className="mt-3">
+              <MutedNote accent text="Grad-CAM is post-hoc saliency · not causal proof of physical reasoning." />
             </div>
 
-            <div className="mt-4 pt-3 border-t border-neutral-800">
-              <FindingsList findings={report.xai_review.findings} />
-            </div>
-            <LimitationsList limitations={report.xai_review.limitations} />
+            <MethodNotes
+              limitations={report.xai_review.limitations}
+              extra={
+                <div>
+                  <div className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono mb-1.5">AVAILABLE XAI ASSETS</div>
+                  <ul className="space-y-1">
+                    {report.xai_review.available_assets.map((a, i) => (
+                      <li key={i} className="text-[11px] text-neutral-500 font-mono leading-snug flex gap-2">
+                        <span className="text-neutral-600">›</span>{a}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              }
+            />
           </AgentCard>
 
           {/* 5 — Active Learning Agent */}
@@ -268,30 +272,30 @@ export function AgentLabPage() {
             subtitle="Deterministic contextual bandit · recommended data priority"
             headerRight={<ConfidenceBadge confidence={report.active_learning.confidence} />}
           >
-            <div className="mb-4">
-              <CautionBadge text="Reward is decision-support utility from current audit signals, not measured model improvement. No retraining performed." />
-            </div>
-
-            {/* Best recommendation banner */}
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3.5 mb-4">
+            {/* Subtle recommended-priority card (amber used only as a small accent) */}
+            <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-3.5 mb-3">
               <div className="flex items-center gap-2 mb-1">
-                <Compass className="w-4 h-4 text-amber-400" />
-                <span className="text-[10px] text-amber-300/80 tracking-[0.14em] font-mono">RECOMMENDED DATA PRIORITY</span>
+                <Compass className="w-3.5 h-3.5 text-amber-400/80" />
+                <span className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono">RECOMMENDED DATA PRIORITY</span>
               </div>
-              <div className="text-[14px] font-semibold text-amber-100">
+              <div className="text-[14px] font-semibold text-white">
                 {report.active_learning.best_recommendation.action_id} · {report.active_learning.best_recommendation.action_name}
               </div>
-              <p className="text-[12px] text-amber-200/80 mt-0.5 leading-snug">
+              <p className="text-[12px] text-neutral-400 mt-0.5 leading-snug">
                 {report.active_learning.best_recommendation.description}
               </p>
-              <div className="text-[11px] text-amber-300/70 font-mono mt-1">
+              <div className="text-[11px] text-neutral-500 font-mono mt-1">
                 heuristic utility {report.active_learning.best_recommendation.utility.toFixed(4)}
               </div>
             </div>
 
+            <div className="mb-4">
+              <MutedNote text="Heuristic decision-support utility · no retraining · not measured model improvement." />
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <div>
-                <div className="text-[11px] text-neutral-400 font-mono mb-2">Decision-support utility per action (A1–A7)</div>
+                <SectionLabel>Decision-support utility per action (A1–A7)</SectionLabel>
                 <AgentRewardChart report={report.active_learning} />
               </div>
               <div>
@@ -300,14 +304,14 @@ export function AgentLabPage() {
             </div>
 
             <div className="mt-5">
-              <div className="text-[11px] text-neutral-400 font-mono mb-2">Audit-need state vector (evidence behind the recommendation)</div>
+              <SectionLabel>Audit-need state vector (evidence behind the recommendation)</SectionLabel>
               <AgentConfidencePanel stateVector={report.active_learning.state_vector} />
             </div>
 
             <div className="mt-4 pt-3 border-t border-neutral-800">
               <FindingsList findings={report.active_learning.findings} />
             </div>
-            <LimitationsList limitations={report.active_learning.limitations} />
+            <MethodNotes limitations={report.active_learning.limitations} />
           </AgentCard>
 
         </div>
