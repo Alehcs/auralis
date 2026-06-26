@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Sun, LayoutDashboard, Activity,
   Database, FlaskConical, FileText, Settings, Bot,
@@ -16,14 +15,6 @@ interface ScientificSidebarProps {
 
 export function ScientificSidebar({ activeTab, onTabChange, isOpen, onClose }: ScientificSidebarProps) {
   const { t } = useLanguage();
-  const [now, setNow] = useState(new Date());
-
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const tickStr = now.toLocaleTimeString('en-GB', { hour12: false });
 
   const NAV_ITEMS: { icon: typeof LayoutDashboard; label: string; id: TabId }[] = [
     { icon: LayoutDashboard, label: t.nav.dashboard,    id: 'overview'   },
@@ -60,7 +51,7 @@ export function ScientificSidebar({ activeTab, onTabChange, isOpen, onClose }: S
       </div>
 
       {/* ── Nav ──────────────────────────────────────────────────── */}
-      <div className="px-3 flex-1">
+      <div className="px-3 flex-1 min-h-0 overflow-y-auto pb-4">
         <div className="text-[9px] text-neutral-600 tracking-[0.18em] px-2.5 mb-2">
           {t.nav.workspace}
         </div>
@@ -86,17 +77,6 @@ export function ScientificSidebar({ activeTab, onTabChange, isOpen, onClose }: S
             );
           })}
         </nav>
-      </div>
-
-      {/* ── Status bar ───────────────────────────────────────────── */}
-      <div className="px-4 py-4 border-t border-neutral-800/60">
-        <div className="flex items-center gap-2">
-          <div className="w-[7px] h-[7px] rounded-full bg-green-500 flex-shrink-0" />
-          <span className="text-[12px] text-neutral-300">{t.nav.pipelineOnline}</span>
-        </div>
-        <div className="text-[10px] text-neutral-600 font-mono mt-1 pl-[15px]">
-          {t.nav.lastTick} {tickStr} · CPU
-        </div>
       </div>
     </aside>
   );
