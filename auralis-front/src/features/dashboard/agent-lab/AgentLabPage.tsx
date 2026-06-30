@@ -20,6 +20,7 @@ import { AgentReportPanel } from './AgentReportPanel';
 import { AgentDatasetDistributionChart } from './AgentDatasetDistributionChart';
 import { AgentErrorByBinChart } from './AgentErrorByBinChart';
 import { AgentTopErrorsTable } from './AgentTopErrorsTable';
+import { AgentDecisionLoop } from './AgentDecisionLoop';
 import { AgentRewardChart } from './AgentRewardChart';
 import { AgentActionDistribution } from './AgentActionDistribution';
 import { AgentConfidencePanel } from './AgentConfidencePanel';
@@ -83,8 +84,8 @@ export function AgentLabPage() {
       <div>
         <h1 className="text-[20px] font-bold text-white tracking-tight">Auralis Agent Lab</h1>
         <p className="text-[12.5px] text-neutral-500 mt-1 max-w-3xl leading-snug">
-          Read-only scientific audit agents for dataset quality, model error analysis, XAI review,
-          and active-learning recommendations.
+          Read-only scientific audit agents for dataset quality, model error analysis, and
+          active-learning recommendations, combined by a coordinator agent.
         </p>
         <div className="mt-2">
           <MutedNote text="Audit layer · read-only · no retraining · not measured model improvement." />
@@ -211,60 +212,8 @@ export function AgentLabPage() {
             </AgentCard>
           </div>
 
-          {/* 4 — XAI Review Agent */}
-          <AgentCard
-            title="XAI Review Agent"
-            subtitle="Explainability status and recommended next action"
-            headerRight={<ConfidenceBadge confidence={report.xai_review.confidence} />}
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
-              <Chip
-                label="XAI"
-                value={report.xai_review.faithfulness_endpoint_available ? 'Available' : 'Absent'}
-                tone={report.xai_review.faithfulness_endpoint_available ? 'text-green-300' : 'text-neutral-400'}
-              />
-              <Chip label="SWEEP" value={report.xai_review.sweep_status} tone="text-amber-300 capitalize" />
-              <Chip label="ASSETS" value={String(report.xai_review.available_assets.length)} />
-              <Chip label="MODE" value="Read-only" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-3.5">
-                <div className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono mb-1.5">WHAT THIS AGENT CONTRIBUTES</div>
-                <ul className="space-y-1.5 text-[12px] text-neutral-300 leading-snug">
-                  <li className="flex gap-2"><span className="text-neutral-600">·</span>Confirms existing Grad-CAM / faithfulness tooling is available.</li>
-                  <li className="flex gap-2"><span className="text-neutral-600">·</span>Recommends a sampled faithfulness sweep instead of an expensive full sweep.</li>
-                </ul>
-              </div>
-              <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-3.5">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Compass className="w-3.5 h-3.5 text-amber-400/80" />
-                  <span className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono">RECOMMENDED NEXT XAI ACTION</span>
-                </div>
-                <p className="text-[12px] text-neutral-300 leading-snug">{report.xai_review.sampled_strategy_recommendation}</p>
-              </div>
-            </div>
-
-            <div className="mt-3">
-              <MutedNote accent text="Grad-CAM is post-hoc saliency · not causal proof of physical reasoning." />
-            </div>
-
-            <MethodNotes
-              limitations={report.xai_review.limitations}
-              extra={
-                <div>
-                  <div className="text-[10px] text-neutral-500 tracking-[0.14em] font-mono mb-1.5">AVAILABLE XAI ASSETS</div>
-                  <ul className="space-y-1">
-                    {report.xai_review.available_assets.map((a, i) => (
-                      <li key={i} className="text-[11px] text-neutral-500 font-mono leading-snug flex gap-2">
-                        <span className="text-neutral-600">›</span>{a}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              }
-            />
-          </AgentCard>
+          {/* 4 — Agent decision loop (explains the contextual bandit pipeline) */}
+          <AgentDecisionLoop report={report.active_learning} />
 
           {/* 5 — Active Learning Agent */}
           <AgentCard
