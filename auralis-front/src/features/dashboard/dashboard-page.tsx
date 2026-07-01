@@ -8,6 +8,7 @@ import { PredictionChart } from './prediction-chart';
 import { ConfigPanel } from './components/config-panel';
 import { ResearchInsights } from './pages/research-insights';
 import { AgentLabPage } from './agent-lab/AgentLabPage';
+import { SolarSimulationPage } from './simulation/SolarSimulationPage';
 
 /**
  * Main dashboard shell.
@@ -56,6 +57,7 @@ export function DashboardPage() {
             {activeTab === 'config'      && <ConfigPanel />}
             {activeTab === 'research'    && <ResearchInsights />}
             {activeTab === 'agentlab'    && <AgentLabPage />}
+            {activeTab === 'simulation'  && <SolarSimulationPage />}
           </div>
         </div>
       </main>
