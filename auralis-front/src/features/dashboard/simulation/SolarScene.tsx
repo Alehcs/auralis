@@ -9,6 +9,13 @@
  *
  * Region/spot placement lives in the sphere's object space so features rotate
  * with the mesh. Activity class only changes visual density/intensity presets.
+ *
+ * Rendering notes: the surface uses domain-warped FBM for plasma-like flow;
+ * per-region effects reuse noise fields precomputed once per fragment so the
+ * region loop stays cheap. The corona is a camera-facing plane with animated
+ * radial wisps plus a fresnel rim shell. Flare-like events combine an arc
+ * (bright at the footpoints), a short-lived spark burst, and a localized
+ * surface brightening fed to the sun shader through the uFlares uniform.
  */
 
 import {
@@ -87,6 +94,7 @@ float fbm(vec3 p){
 `;
 
 const MAX_REGIONS = 16;
+const MAX_FLARES = 4;
 
 const SUN_VERTEX = /* glsl */ `
 varying vec3 vLocal;
@@ -109,6 +117,7 @@ uniform float uBrightness;
 uniform int uRegionCount;
 uniform vec4 uRegions[${MAX_REGIONS}];   // xyz: region center (object space), w: angular radius
 uniform vec4 uRegionAux[${MAX_REGIONS}]; // xyz: east tangent, w: strength
+uniform vec4 uFlares[${MAX_FLARES}];     // xyz: event center, w: surface-brightening envelope
 
 varying vec3 vLocal;
 varying vec3 vViewN;
@@ -117,41 +126,68 @@ ${NOISE_GLSL}
 
 void main(){
   vec3 n = normalize(vLocal);
-  float t = uTime * 0.03 * uTurbulence;
+  float t = uTime * 0.025 * uTurbulence;
   float mu = clamp(dot(normalize(vViewN), vec3(0.0, 0.0, 1.0)), 0.0, 1.0);
 
   // ── Magnetogram mode: grayscale B+/B− polarity patches ──────────
   if (uMagnetogram > 0.5) {
-    float g = 0.5 + 0.045 * snoise(n * 60.0);
+    // Quiet-sun granular speckle (multi-scale, salt-and-pepper look)
+    float g = 0.5
+      + 0.055 * snoise(n * 90.0)
+      + 0.040 * snoise(n * 45.0)
+      + 0.025 * snoise(n * 180.0);
+
+    // Shared noise fields for irregular, fragmented patch interiors
+    float s32 = snoise(n * 32.0);
+    float s50 = snoise(n * 50.0);
+
     for (int i = 0; i < ${MAX_REGIONS}; i++) {
       if (i >= uRegionCount) break;
       vec4 R = uRegions[i];
       vec4 A = uRegionAux[i];
       vec3 tp = normalize(R.xyz + A.xyz * R.w * 0.55);
       vec3 tm = normalize(R.xyz - A.xyz * R.w * 0.55);
-      float s  = R.w * 0.42;
+      float s  = R.w * 0.40;
       float dp = acos(clamp(dot(n, tp), -1.0, 1.0));
       float dm = acos(clamp(dot(n, tm), -1.0, 1.0));
-      float lobe = exp(-pow(dp / s, 2.0)) - exp(-pow(dm / s, 2.0));
-      lobe *= 0.75 + 0.35 * snoise(n * 24.0 + float(i) * 1.7);
-      g += A.w * lobe * 0.9;
+      float shapeP = 1.0 + 0.5 * s32;
+      float shapeM = 1.0 - 0.5 * s32;
+      float lp = exp(-pow(dp * shapeP / s, 2.4)) * (0.65 + 0.55 * s50);
+      float lm = exp(-pow(dm * shapeM / s, 2.4)) * (0.65 - 0.55 * s50 * 0.4);
+      g += A.w * 1.35 * (lp - lm);
     }
     g = clamp(g, 0.0, 1.0);
-    g *= 0.35 + 0.65 * mu;
+    g *= 0.30 + 0.70 * pow(mu, 0.8);
     gl_FragColor = vec4(vec3(g), 1.0);
     return;
   }
 
-  // ── Visual mode: procedural convection + granulation ────────────
-  float cells = fbm(n * 3.5 + vec3(0.0, t, t * 0.6));
-  float gran  = fbm(n * 14.0 - vec3(t * 1.8));
-  float v = 0.55 + 0.45 * cells + 0.25 * gran;
+  // ── Visual mode: domain-warped convection + granulation ─────────
+  vec3 p = n * 3.0;
+  vec2 warp = vec2(
+    fbm(p + vec3(0.0, t, t * 0.7)),
+    fbm(p + vec3(5.2, t * 0.8, 1.3))
+  );
+  float cells = fbm(p * 1.4 + vec3(warp * 0.85, t * 0.5));
+  float gran  = fbm(n * 16.0 + vec3(warp * 0.4, -t * 2.2));
+  float grain = snoise(n * 55.0 + vec3(0.0, 0.0, t * 4.0));
+  float v = 0.52 + 0.40 * cells + 0.22 * gran + 0.06 * grain;
 
-  vec3 c1 = vec3(0.45, 0.08, 0.0);
-  vec3 c2 = vec3(1.0, 0.42, 0.02);
-  vec3 c3 = vec3(1.0, 0.85, 0.45);
-  vec3 col = mix(c1, c2, smoothstep(0.15, 0.75, v));
-  col = mix(col, c3, smoothstep(0.78, 1.15, v));
+  // Layered color ramp: dark red-brown → red → orange → yellow → near-white
+  vec3 cDark = vec3(0.28, 0.05, 0.01);
+  vec3 cRed  = vec3(0.62, 0.13, 0.01);
+  vec3 cOr   = vec3(0.98, 0.42, 0.05);
+  vec3 cYel  = vec3(1.00, 0.83, 0.44);
+  vec3 cHot  = vec3(1.00, 0.96, 0.82);
+  vec3 col = mix(cDark, cRed, smoothstep(0.05, 0.42, v));
+  col = mix(col, cOr,  smoothstep(0.40, 0.72, v));
+  col = mix(col, cYel, smoothstep(0.72, 0.98, v));
+  col = mix(col, cHot, smoothstep(0.98, 1.22, v));
+
+  // Shared noise fields, computed once and reused by every region below
+  float nz26  = snoise(n * 26.0);
+  float tex30 = 0.6 * snoise(n * 30.0) + 0.3 * snoise(n * 61.0);
+  float wob = 1.0 + 0.42 * nz26; // irregular (non-circular) spot boundaries
 
   for (int i = 0; i < ${MAX_REGIONS}; i++) {
     if (i >= uRegionCount) break;
@@ -161,24 +197,49 @@ void main(){
     vec3 tm = normalize(R.xyz - A.xyz * R.w * 0.55);
     float dp = acos(clamp(dot(n, tp), -1.0, 1.0));
     float dm = acos(clamp(dot(n, tm), -1.0, 1.0));
+    float dc = acos(clamp(dot(n, R.xyz), -1.0, 1.0));
+
+    // Slightly darker, redder shading across the whole active zone
+    float zone = exp(-pow(dc / (R.w * 1.6), 2.0));
+    col = mix(col, col * vec3(0.92, 0.74, 0.62), zone * 0.35 * A.w);
 
     if (uShowRegions > 0.5) {
-      float dc = acos(clamp(dot(n, R.xyz), -1.0, 1.0));
-      float fac = exp(-pow(dc / (R.w * 1.1), 2.0))
-                * (0.55 + 0.45 * snoise(n * 20.0 + float(i) * 3.7));
-      col += vec3(1.0, 0.75, 0.35) * fac * 0.55 * A.w;
+      // Plage / faculae: noise-gated mottled brightening hugging the
+      // footpoints instead of a smooth glowing blob
+      float mask = exp(-pow(min(dp, dm) / (R.w * 0.9), 2.0))
+                 + 0.6 * exp(-pow(dc / (R.w * 1.3), 2.0));
+      float plage = mask * smoothstep(0.05, 0.55, tex30) * A.w;
+      col += vec3(1.0, 0.78, 0.42) * plage * 0.5;
     }
+
     if (uShowSpots > 0.5) {
-      float sr = R.w * 0.34 * uSpotScale;
-      float umbra = max(exp(-pow(dp / sr, 3.0)), exp(-pow(dm / sr, 3.0)));
-      float penum = max(exp(-pow(dp / (sr * 1.9), 3.0)), exp(-pow(dm / (sr * 1.9), 3.0)));
-      col = mix(col, col * 0.5, clamp(penum, 0.0, 1.0));
-      col = mix(col, vec3(0.05, 0.015, 0.0), clamp(umbra, 0.0, 1.0));
+      float sr = R.w * 0.30 * uSpotScale;
+      float du = min(dp, dm) * wob;
+      float umbra = exp(-pow(du / (sr * 0.55), 2.6));
+      float penum = exp(-pow(du / (sr * 1.25), 2.2));
+      // Occasional satellite pore beside the leading spot
+      vec3 bt = normalize(cross(R.xyz, A.xyz));
+      vec3 sat = normalize(tp + bt * R.w * 0.5);
+      float dsat = acos(clamp(dot(n, sat), -1.0, 1.0)) * wob;
+      float pore = exp(-pow(dsat / (sr * 0.32), 2.6)) * step(0.35, fract(A.w * 7.31));
+      umbra = max(umbra, pore * 0.9);
+      col = mix(col, col * vec3(0.62, 0.50, 0.42), clamp(penum, 0.0, 1.0) * 0.85);
+      col = mix(col, vec3(0.02, 0.008, 0.002), clamp(umbra, 0.0, 1.0) * 0.97);
     }
   }
 
-  col *= 0.35 + 0.75 * mu;                                // limb darkening
-  col += vec3(1.0, 0.45, 0.1) * pow(1.0 - mu, 2.5) * 0.35; // warm rim
+  // Localized surface brightening while a flare-like event is active
+  for (int i = 0; i < ${MAX_FLARES}; i++) {
+    vec4 F = uFlares[i];
+    if (F.w <= 0.001) continue;
+    float df = acos(clamp(dot(n, F.xyz), -1.0, 1.0));
+    col += vec3(1.0, 0.85, 0.6) * exp(-pow(df / 0.13, 2.0)) * F.w;
+  }
+
+  // Limb darkening + red-shifted limb + thin warm rim
+  col *= 0.32 + 0.68 * pow(mu, 0.7);
+  col = mix(col, col * vec3(1.0, 0.60, 0.35), pow(1.0 - mu, 2.0) * 0.5);
+  col += vec3(1.0, 0.50, 0.15) * pow(1.0 - mu, 3.0) * 0.4;
   col *= uBrightness;
   gl_FragColor = vec4(col, 1.0);
 }
@@ -202,6 +263,74 @@ void main(){
 }
 `;
 
+// Camera-facing corona plane: uneven radial falloff with slow animated wisps.
+const CORONA_VERTEX = /* glsl */ `
+varying vec2 vUv;
+void main(){
+  vUv = uv * 2.0 - 1.0;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+
+const CORONA_FRAGMENT = /* glsl */ `
+uniform float uTime;
+uniform float uStrength;
+varying vec2 vUv;
+
+${NOISE_GLSL}
+
+// Solar disc radius in plane units (sphere r=1 on a 7×7 plane → 1/3.5)
+const float RD = 0.2857;
+
+void main(){
+  float r = length(vUv);
+  if (r < RD * 0.85) discard;
+  float ang = atan(vUv.y, vUv.x) + uTime * 0.015;
+  float streak = fbm(vec3(cos(ang) * 2.4, sin(ang) * 2.4, r * 2.0 - uTime * 0.05));
+  float fall = exp(-(r - RD) * 6.5);
+  float ring = smoothstep(RD * 0.88, RD * 1.02, r);
+  float a = clamp(ring * fall * (0.5 + 0.5 * streak) * uStrength, 0.0, 1.0);
+  vec3 col = mix(vec3(1.0, 0.88, 0.60), vec3(1.0, 0.45, 0.12), clamp((r - RD) * 2.6, 0.0, 1.0));
+  gl_FragColor = vec4(col * a, a);
+}
+`;
+
+// Shared arc shader for loops and flare arcs: brighter and whiter toward the
+// footpoints, dimmer along the apex, so arcs read as anchored to the surface.
+const ARC_VERTEX = /* glsl */ `
+varying vec2 vUv;
+void main(){
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+
+const ARC_FRAGMENT = /* glsl */ `
+uniform vec3 uColor;
+uniform float uOpacity;
+varying vec2 vUv;
+void main(){
+  float ends = pow(abs(vUv.x - 0.5) * 2.0, 1.5);
+  float foot = mix(0.35, 1.0, ends);
+  vec3 col = mix(uColor, vec3(1.0, 0.97, 0.90), ends * 0.55);
+  gl_FragColor = vec4(col, uOpacity * foot);
+}
+`;
+
+function makeArcMaterial(color: number, opacity: number): THREE.ShaderMaterial {
+  return new THREE.ShaderMaterial({
+    vertexShader: ARC_VERTEX,
+    fragmentShader: ARC_FRAGMENT,
+    uniforms: {
+      uColor:   { value: new THREE.Color(color) },
+      uOpacity: { value: opacity },
+    },
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Engine
 // ---------------------------------------------------------------------------
@@ -213,11 +342,21 @@ interface Region {
   strength: number;
 }
 
+type ArcMesh = THREE.Mesh<THREE.TubeGeometry, THREE.ShaderMaterial>;
+
 interface FlareArc {
-  mesh: THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>;
+  mesh: ArcMesh;
+  dir: THREE.Vector3;
   born: number;
   life: number;
   strength: number;
+}
+
+interface SparkBurst {
+  points: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>;
+  vel: Float32Array;
+  born: number;
+  life: number;
 }
 
 interface EngineState {
@@ -225,21 +364,10 @@ interface EngineState {
   sunspots: boolean;
   magneticRegions: boolean;
   magnetogram: boolean;
+  autoRotate: boolean;
 }
 
-function makeGlowSpriteTexture(): THREE.CanvasTexture {
-  const size = 256;
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d')!;
-  const grad = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  grad.addColorStop(0.0, 'rgba(255, 170, 60, 0.55)');
-  grad.addColorStop(0.35, 'rgba(255, 120, 30, 0.22)');
-  grad.addColorStop(1.0, 'rgba(255, 90, 20, 0.0)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, size, size);
-  return new THREE.CanvasTexture(canvas);
-}
+const CAMERA_HOME = new THREE.Vector3(0, 0.35, 3.3);
 
 class SolarEngine {
   private container: HTMLDivElement;
@@ -251,11 +379,13 @@ class SolarEngine {
   private sunMaterial: THREE.ShaderMaterial;
   private glowMaterial: THREE.ShaderMaterial;
   private glowMesh: THREE.Mesh;
-  private glowSprite: THREE.Sprite;
+  private coronaMaterial: THREE.ShaderMaterial;
+  private coronaPlane: THREE.Mesh;
   private loopsGroup = new THREE.Group();
   private flaresGroup = new THREE.Group();
   private regions: Region[] = [];
   private flares: FlareArc[] = [];
+  private sparks: SparkBurst[] = [];
   private state: EngineState;
   private profile: ActivityProfile;
   private rafId: number | null = null;
@@ -281,20 +411,25 @@ class SolarEngine {
     container.appendChild(this.renderer.domElement);
 
     this.camera = new THREE.PerspectiveCamera(
-      42, container.clientWidth / Math.max(container.clientHeight, 1), 0.1, 100,
+      40, container.clientWidth / Math.max(container.clientHeight, 1), 0.1, 100,
     );
-    this.camera.position.set(0, 0.4, 3.1);
+    this.camera.position.copy(CAMERA_HOME);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.08;
+    this.controls.dampingFactor = 0.06;
+    this.controls.rotateSpeed = 0.8;
+    this.controls.zoomSpeed = 0.7;
     this.controls.enablePan = false;
     this.controls.minDistance = 1.7;
-    this.controls.maxDistance = 6.5;
+    this.controls.maxDistance = 7;
+    this.controls.autoRotate = initial.autoRotate;
+    this.controls.autoRotateSpeed = 0.5;
 
     // Sun sphere
     const regionsInit = Array.from({ length: MAX_REGIONS }, () => new THREE.Vector4());
     const auxInit = Array.from({ length: MAX_REGIONS }, () => new THREE.Vector4());
+    const flaresInit = Array.from({ length: MAX_FLARES }, () => new THREE.Vector4());
     this.sunMaterial = new THREE.ShaderMaterial({
       vertexShader: SUN_VERTEX,
       fragmentShader: SUN_FRAGMENT,
@@ -305,10 +440,11 @@ class SolarEngine {
         uShowSpots:   { value: initial.sunspots ? 1 : 0 },
         uShowRegions: { value: initial.magneticRegions ? 1 : 0 },
         uSpotScale:   { value: this.profile.spotScale },
-        uBrightness:  { value: 0.95 + 0.1 * this.profile.glowIntensity },
+        uBrightness:  { value: 0.92 + 0.12 * this.profile.glowIntensity },
         uRegionCount: { value: 0 },
         uRegions:     { value: regionsInit },
         uRegionAux:   { value: auxInit },
+        uFlares:      { value: flaresInit },
       },
     });
     const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 96), this.sunMaterial);
@@ -317,12 +453,12 @@ class SolarEngine {
     this.sunGroup.add(this.flaresGroup);
     this.scene.add(this.sunGroup);
 
-    // Corona: rim shell + soft radial sprite
+    // Corona: fresnel rim shell + camera-facing wispy plane
     this.glowMaterial = new THREE.ShaderMaterial({
       vertexShader: GLOW_VERTEX,
       fragmentShader: GLOW_FRAGMENT,
       uniforms: {
-        uColor:    { value: new THREE.Color(1.0, 0.55, 0.18) },
+        uColor:    { value: new THREE.Color(1.0, 0.52, 0.16) },
         uStrength: { value: this.profile.glowIntensity },
       },
       side: THREE.BackSide,
@@ -333,16 +469,21 @@ class SolarEngine {
     this.glowMesh = new THREE.Mesh(new THREE.SphereGeometry(1.28, 48, 48), this.glowMaterial);
     this.scene.add(this.glowMesh);
 
-    const spriteMat = new THREE.SpriteMaterial({
-      map: makeGlowSpriteTexture(),
+    this.coronaMaterial = new THREE.ShaderMaterial({
+      vertexShader: CORONA_VERTEX,
+      fragmentShader: CORONA_FRAGMENT,
+      uniforms: {
+        uTime:     { value: 0 },
+        uStrength: { value: this.profile.glowIntensity },
+      },
+      transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-      transparent: true,
-      opacity: 0.6 * this.profile.glowIntensity,
+      depthTest: false,
     });
-    this.glowSprite = new THREE.Sprite(spriteMat);
-    this.glowSprite.scale.setScalar(4.6);
-    this.scene.add(this.glowSprite);
+    this.coronaPlane = new THREE.Mesh(new THREE.PlaneGeometry(7, 7), this.coronaMaterial);
+    this.coronaPlane.renderOrder = -1; // always behind the sun disc
+    this.scene.add(this.coronaPlane);
 
     // Faint starfield backdrop
     const starCount = 450;
@@ -408,29 +549,26 @@ class SolarEngine {
 
   private rebuildLoops() {
     for (const child of [...this.loopsGroup.children]) {
-      const mesh = child as THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>;
+      const mesh = child as ArcMesh;
       mesh.geometry.dispose();
       mesh.material.dispose();
       this.loopsGroup.remove(mesh);
     }
-    const loopColor = this.state.magnetogram ? 0xd8d8d8 : 0xffa64d;
+    const loopColor = this.state.magnetogram ? 0xd8d8d8 : 0xff9c4a;
     for (const r of this.regions) {
-      const arcCount = 2;
+      const binormal = r.dir.clone().cross(r.tangent).normalize();
+      const arcCount = 3;
       for (let k = 0; k < arcCount; k++) {
-        const spread = 0.55 + k * 0.35;
+        const spread = 0.45 + k * 0.3;
+        const tilt = (k - 1) * 0.35;
         const tp = r.dir.clone().addScaledVector(r.tangent, r.radius * spread).normalize();
         const tm = r.dir.clone().addScaledVector(r.tangent, -r.radius * spread).normalize();
-        const apex = r.dir.clone().multiplyScalar(1 + r.radius * (1.2 + k * 0.8) * r.strength);
+        const apex = r.dir.clone()
+          .multiplyScalar(1 + r.radius * (1.0 + k * 0.7) * r.strength)
+          .addScaledVector(binormal, r.radius * tilt);
         const curve = new THREE.QuadraticBezierCurve3(tp, apex, tm);
-        const geo = new THREE.TubeGeometry(curve, 24, 0.005, 6);
-        const mat = new THREE.MeshBasicMaterial({
-          color: loopColor,
-          transparent: true,
-          opacity: 0.4,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        });
-        this.loopsGroup.add(new THREE.Mesh(geo, mat));
+        const geo = new THREE.TubeGeometry(curve, 24, 0.0038, 6);
+        this.loopsGroup.add(new THREE.Mesh(geo, makeArcMaterial(loopColor, 0.5)));
       }
     }
     this.loopsGroup.visible = this.state.magneticRegions;
@@ -446,17 +584,43 @@ class SolarEngine {
     const tm = r.dir.clone().addScaledVector(r.tangent, -r.radius * 0.55).normalize();
     const apex = r.dir.clone().multiplyScalar(1 + (0.3 + Math.random() * 0.3) * mul);
     const curve = new THREE.QuadraticBezierCurve3(tp, apex, tm);
-    const geo = new THREE.TubeGeometry(curve, 32, 0.011 * Math.max(mul, 0.5), 8);
-    const mat = new THREE.MeshBasicMaterial({
-      color: this.state.magnetogram ? 0xffffff : 0xffd9a0,
+    const geo = new THREE.TubeGeometry(curve, 32, 0.010 * Math.max(mul, 0.5), 8);
+    const mat = makeArcMaterial(this.state.magnetogram ? 0xffffff : 0xffb066, 0);
+    const mesh = new THREE.Mesh(geo, mat);
+    this.flaresGroup.add(mesh);
+    this.flares.push({
+      mesh, dir: r.dir.clone(), born: this.elapsed, life: 1.8 + 0.6 * mul, strength: mul,
+    });
+    this.spawnSparks(curve.getPoint(0.5), r.dir, mul);
+  }
+
+  private spawnSparks(origin: THREE.Vector3, dir: THREE.Vector3, mul: number) {
+    const count = Math.round(20 + 28 * Math.min(mul, 2));
+    const pos = new Float32Array(count * 3);
+    const vel = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      pos.set([origin.x, origin.y, origin.z], i * 3);
+      const v = new THREE.Vector3()
+        .randomDirection()
+        .multiplyScalar(0.8)
+        .addScaledVector(dir, 0.6)
+        .normalize()
+        .multiplyScalar((0.15 + 0.3 * Math.random()) * Math.max(mul, 0.6));
+      vel.set([v.x, v.y, v.z], i * 3);
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({
+      color: this.state.magnetogram ? 0xffffff : 0xffe0b0,
+      size: 0.018,
       transparent: true,
-      opacity: 0,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
-    const mesh = new THREE.Mesh(geo, mat);
-    this.flaresGroup.add(mesh);
-    this.flares.push({ mesh, born: this.elapsed, life: 1.6 + 0.5 * mul, strength: mul });
+    const points = new THREE.Points(geo, mat);
+    this.flaresGroup.add(points);
+    this.sparks.push({ points, vel, born: this.elapsed, life: 1.1 + 0.4 * Math.min(mul, 2) });
   }
 
   private scheduleNextAutoFlare() {
@@ -464,8 +628,14 @@ class SolarEngine {
     this.nextAutoFlareAt = this.elapsed + (min + Math.random() * (max - min)) / 1000;
   }
 
-  private updateFlares() {
+  private updateEvents(dt: number) {
+    // Arcs: sine envelope on opacity, slight outward growth, footpoint
+    // brightening on the surface via the uFlares uniform.
+    const flareUniform = this.sunMaterial.uniforms.uFlares.value as THREE.Vector4[];
+    for (let i = 0; i < MAX_FLARES; i++) flareUniform[i].set(0, 0, 0, 0);
+
     let pulse = 0;
+    let uniformSlot = 0;
     for (let i = this.flares.length - 1; i >= 0; i--) {
       const f = this.flares[i];
       const t = (this.elapsed - f.born) / f.life;
@@ -477,12 +647,39 @@ class SolarEngine {
         continue;
       }
       const env = Math.sin(Math.PI * t);
-      f.mesh.material.opacity = env * Math.min(0.9, 0.55 + 0.3 * f.strength);
+      f.mesh.material.uniforms.uOpacity.value = env * Math.min(1.0, 0.6 + 0.35 * f.strength);
       f.mesh.scale.setScalar(1 + 0.08 * t);
+      if (uniformSlot < MAX_FLARES) {
+        flareUniform[uniformSlot++].set(f.dir.x, f.dir.y, f.dir.z, env * 0.55 * f.strength);
+      }
       pulse = Math.max(pulse, env * 0.4 * f.strength);
     }
-    const glowBase = this.state.magnetogram ? 0 : this.profile.glowIntensity;
-    this.glowMaterial.uniforms.uStrength.value = glowBase + (this.state.magnetogram ? 0 : pulse);
+
+    // Spark bursts: integrate simple ballistic motion with drag, fade out.
+    for (let i = this.sparks.length - 1; i >= 0; i--) {
+      const s = this.sparks[i];
+      const t = (this.elapsed - s.born) / s.life;
+      if (t >= 1) {
+        s.points.geometry.dispose();
+        s.points.material.dispose();
+        this.flaresGroup.remove(s.points);
+        this.sparks.splice(i, 1);
+        continue;
+      }
+      const posAttr = s.points.geometry.getAttribute('position') as THREE.BufferAttribute;
+      const arr = posAttr.array as Float32Array;
+      const drag = 1 - 0.9 * dt;
+      for (let j = 0; j < arr.length; j++) {
+        arr[j] += s.vel[j] * dt;
+        s.vel[j] *= drag;
+      }
+      posAttr.needsUpdate = true;
+      s.points.material.opacity = Math.pow(1 - t, 1.5) * 0.85;
+    }
+
+    const base = this.state.magnetogram ? 0 : this.profile.glowIntensity;
+    this.glowMaterial.uniforms.uStrength.value = base + (this.state.magnetogram ? 0 : pulse);
+    this.coronaMaterial.uniforms.uStrength.value = base + (this.state.magnetogram ? 0 : pulse * 0.7);
   }
 
   // ── State setters (called from React effects) ────────────────────
@@ -494,7 +691,7 @@ class SolarEngine {
     const u = this.sunMaterial.uniforms;
     u.uTurbulence.value = this.profile.turbulence;
     u.uSpotScale.value = this.profile.spotScale;
-    u.uBrightness.value = 0.95 + 0.1 * this.profile.glowIntensity;
+    u.uBrightness.value = 0.92 + 0.12 * this.profile.glowIntensity;
     this.regenerateRegions();
     this.applyMagnetogramLook();
     this.scheduleNextAutoFlare();
@@ -517,14 +714,25 @@ class SolarEngine {
     this.applyMagnetogramLook();
   }
 
+  setAutoRotate(on: boolean) {
+    this.state.autoRotate = on;
+    this.controls.autoRotate = on;
+  }
+
+  resetView() {
+    this.camera.position.copy(CAMERA_HOME);
+    this.controls.target.set(0, 0, 0);
+    this.controls.update();
+  }
+
   private applyMagnetogramLook() {
     const mag = this.state.magnetogram;
     this.glowMesh.visible = !mag;
-    this.glowSprite.visible = !mag;
-    (this.glowSprite.material as THREE.SpriteMaterial).opacity = 0.6 * this.profile.glowIntensity;
-    const loopColor = mag ? 0xd8d8d8 : 0xffa64d;
+    this.coronaPlane.visible = !mag;
+    const loopColor = mag ? 0xd8d8d8 : 0xff9c4a;
     for (const child of this.loopsGroup.children) {
-      ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).color.setHex(loopColor);
+      const mat = (child as ArcMesh).material;
+      (mat.uniforms.uColor.value as THREE.Color).setHex(loopColor);
     }
   }
 
@@ -540,14 +748,16 @@ class SolarEngine {
       this.lastFrame = now;
       this.elapsed += dt;
 
-      this.sunGroup.rotation.y += dt * 0.07;
+      this.sunGroup.rotation.y += dt * 0.05;
       this.sunMaterial.uniforms.uTime.value = this.elapsed;
+      this.coronaMaterial.uniforms.uTime.value = this.elapsed;
+      this.coronaPlane.quaternion.copy(this.camera.quaternion);
 
       if (this.elapsed >= this.nextAutoFlareAt) {
         this.triggerFlare(false);
         this.scheduleNextAutoFlare();
       }
-      this.updateFlares();
+      this.updateEvents(dt);
 
       this.controls.update();
       this.renderer.render(this.scene, this.camera);
@@ -582,11 +792,7 @@ class SolarEngine {
       if (mesh.geometry) mesh.geometry.dispose();
       const material = (mesh as THREE.Mesh).material as THREE.Material | THREE.Material[] | undefined;
       if (Array.isArray(material)) material.forEach((m) => m.dispose());
-      else if (material) {
-        const tex = (material as THREE.SpriteMaterial).map;
-        if (tex) tex.dispose();
-        material.dispose();
-      }
+      else if (material) material.dispose();
     });
     this.renderer.dispose();
     this.renderer.domElement.remove();
@@ -599,6 +805,7 @@ class SolarEngine {
 
 export interface SolarSceneHandle {
   triggerFlare: () => void;
+  resetView: () => void;
 }
 
 interface SolarSceneProps {
@@ -606,10 +813,11 @@ interface SolarSceneProps {
   sunspots: boolean;
   magneticRegions: boolean;
   magnetogram: boolean;
+  autoRotate: boolean;
 }
 
 export const SolarScene = forwardRef<SolarSceneHandle, SolarSceneProps>(function SolarScene(
-  { activity, sunspots, magneticRegions, magnetogram },
+  { activity, sunspots, magneticRegions, magnetogram, autoRotate },
   ref,
 ) {
   const { t } = useLanguage();
@@ -623,7 +831,7 @@ export const SolarScene = forwardRef<SolarSceneHandle, SolarSceneProps>(function
     let engine: SolarEngine | null = null;
     try {
       engine = new SolarEngine(container, {
-        activity, sunspots, magneticRegions, magnetogram,
+        activity, sunspots, magneticRegions, magnetogram, autoRotate,
       });
       engineRef.current = engine;
     } catch {
@@ -641,9 +849,11 @@ export const SolarScene = forwardRef<SolarSceneHandle, SolarSceneProps>(function
   useEffect(() => { engineRef.current?.setSunspots(sunspots); }, [sunspots]);
   useEffect(() => { engineRef.current?.setMagneticRegions(magneticRegions); }, [magneticRegions]);
   useEffect(() => { engineRef.current?.setMagnetogram(magnetogram); }, [magnetogram]);
+  useEffect(() => { engineRef.current?.setAutoRotate(autoRotate); }, [autoRotate]);
 
   useImperativeHandle(ref, () => ({
     triggerFlare: () => engineRef.current?.triggerFlare(true),
+    resetView: () => engineRef.current?.resetView(),
   }), []);
 
   if (webglFailed) {

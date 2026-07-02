@@ -74,10 +74,10 @@ export function SimulationControls({
               <button
                 key={id}
                 onClick={() => onActivityChange(id)}
-                className={`px-2 py-3 rounded-xl border text-center transition-colors ${
+                className={`px-2 py-3 rounded-xl border text-center transition-all duration-150 active:scale-[0.97] ${
                   active
                     ? style.active
-                    : 'bg-neutral-800/40 border-neutral-700/50 text-neutral-400 hover:border-neutral-600'
+                    : 'bg-neutral-800/40 border-neutral-700/50 text-neutral-400 hover:border-neutral-600 hover:bg-neutral-800/70'
                 }`}
               >
                 <div className="flex items-center justify-center gap-1.5">
@@ -94,7 +94,7 @@ export function SimulationControls({
       {/* ── Manual flare-like event ──────────────────────────────── */}
       <button
         onClick={onTriggerFlare}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-orange-500/40 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20 transition-colors"
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-orange-500/40 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20 hover:border-orange-500/60 active:scale-[0.98] transition-all duration-150"
       >
         <Zap className="w-4 h-4" />
         <span className="text-[13px] font-semibold">{s.triggerEvent}</span>

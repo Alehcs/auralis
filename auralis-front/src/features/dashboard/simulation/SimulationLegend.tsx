@@ -47,6 +47,17 @@ export function SimulationLegend({ magnetogram }: { magnetogram: boolean }) {
             label={s.legendNeutral}
             desc={s.legendNeutralDesc}
           />
+          <div className="pt-1">
+            <div
+              className="h-2 rounded-full border border-neutral-700"
+              style={{ background: 'linear-gradient(90deg, #000 0%, #808080 50%, #fff 100%)' }}
+            />
+            <div className="flex justify-between mt-1 text-[9px] text-neutral-500 font-mono">
+              <span>B−</span>
+              <span>0</span>
+              <span>B+</span>
+            </div>
+          </div>
           <div className="pt-2 border-t border-neutral-800">
             <p className="text-[10px] text-neutral-500 leading-snug">{s.magnetogramDisclaimer}</p>
           </div>

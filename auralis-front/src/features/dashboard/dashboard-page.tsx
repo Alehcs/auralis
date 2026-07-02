@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { ScientificSidebar, type TabId } from './scientific-sidebar';
 import { ScientificHeader } from './scientific-header';
 import { MagnetogramPanel } from './magnetogram-panel';
@@ -8,7 +8,18 @@ import { PredictionChart } from './prediction-chart';
 import { ConfigPanel } from './components/config-panel';
 import { ResearchInsights } from './pages/research-insights';
 import { AgentLabPage } from './agent-lab/AgentLabPage';
-import { SolarSimulationPage } from './simulation/SolarSimulationPage';
+
+// Lazy-loaded so Three.js stays out of the main bundle; only visitors of the
+// Simulation tab pay for it.
+const SolarSimulationPage = lazy(() =>
+  import('./simulation/SolarSimulationPage').then((m) => ({ default: m.SolarSimulationPage })),
+);
+
+function SimulationFallback() {
+  return (
+    <div className="bg-neutral-900 border border-neutral-800 rounded-xl h-[480px] animate-pulse" />
+  );
+}
 
 /**
  * Main dashboard shell.
@@ -57,7 +68,11 @@ export function DashboardPage() {
             {activeTab === 'config'      && <ConfigPanel />}
             {activeTab === 'research'    && <ResearchInsights />}
             {activeTab === 'agentlab'    && <AgentLabPage />}
-            {activeTab === 'simulation'  && <SolarSimulationPage />}
+            {activeTab === 'simulation'  && (
+              <Suspense fallback={<SimulationFallback />}>
+                <SolarSimulationPage />
+              </Suspense>
+            )}
           </div>
         </div>
       </main>
