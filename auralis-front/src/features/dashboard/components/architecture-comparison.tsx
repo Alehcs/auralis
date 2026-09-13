@@ -94,6 +94,7 @@ export function ModelComparisonChart() {
       </div>
 
       <div className="p-5">
+        <p className="text-[11px] text-amber-300/80 mb-3">Historical V3 / ResNet18 / VGG11 · different splits and protocols; no controlled ranking or V3.1 comparison. MAE/RMSE in SI pp; parameter counts in the table.</p>
         {loading && (
           <div className="flex items-center justify-center h-60 text-neutral-600 text-sm">{e.loading}</div>
         )}
@@ -131,7 +132,7 @@ export function ModelComparisonChart() {
                   <Tooltip content={<TooltipWithParams />} cursor={{ fill: '#ffffff08' }} />
                   <Bar dataKey="mae" name="mae" fill="#f59e0b" radius={[0, 2, 2, 0]} maxBarSize={12} />
                   <Bar dataKey="rmse" name="rmse" fill="#38bdf8" radius={[0, 2, 2, 0]} maxBarSize={12} />
-                  <Bar dataKey="params_norm" name="params" fill="#a78bfa" radius={[0, 2, 2, 0]} maxBarSize={12} />
+
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -146,10 +147,7 @@ export function ModelComparisonChart() {
                 <span className="w-2.5 h-2.5 rounded-sm bg-sky-400 inline-block" />
                 <span className="text-[10px] text-neutral-500 font-mono">rmse</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-violet-400 inline-block" />
-                <span className="text-[10px] text-neutral-500 font-mono">params</span>
-              </div>
+
             </div>
           </>
         )}
@@ -169,7 +167,7 @@ export function ModelComparisonTable() {
 
   const rows = data
     ? [
-      { m: data.proposed, highlight: true },
+      { m: data.proposed, highlight: false },
       ...(data.vgg11 ? [{ m: data.vgg11, highlight: false }] : []),
       { m: data.baseline, highlight: false },
     ]
@@ -182,6 +180,7 @@ export function ModelComparisonTable() {
       <div className="px-5 py-4 border-b border-neutral-800 flex items-start justify-between">
         <div>
           <div className="text-[15px] font-semibold text-white">{e.modelTable}</div>
+          <p className="text-[11px] text-amber-300/80 mt-1">Historical results · different splits · no evidence of V3.1 performance. Errors: SI pp.</p>
         </div>
         <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
           {count} {e.candidates}

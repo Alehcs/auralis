@@ -1,0 +1,70 @@
+- complementary:
+  - generic: Auralis
+  - generic: SOLAR INTELLIGENCE
+  - generic: WORKSPACE
+  - navigation:
+    - button "Dashboard":
+      - generic: Dashboard
+    - button "Monitoring" [active]:
+      - generic: Monitoring
+    - button "Data Pipeline":
+      - generic: Data Pipeline
+    - button "Experiments":
+      - generic: Experiments
+    - button "Agent Lab":
+      - generic: Agent Lab
+    - button "Simulation":
+      - generic: Simulation
+    - button "Logs":
+      - generic: Logs
+    - button "Settings":
+      - generic: Settings
+- main:
+  - button "Solar Activity Analysis Auralis › SDO-HMI":
+    - generic: Solar Activity Analysis
+    - generic: Auralis
+    - generic: ›
+    - generic: SDO-HMI
+  - generic: "Observation:"
+  - combobox:
+    - option "2026-04-06T00:00:53.000Z" [selected]
+    - option "2025-11-19T00:00:53.000Z"
+    - option "2024-11-11T00:00:53.000Z"
+    - option "2024-08-09T00:00:53.000Z"
+    - option "2023-06-12T00:00:53.000Z"
+    - option "2023-05-20T00:00:53.000Z"
+    - option "2021-08-04T00:00:53.000Z"
+    - option "2018-04-19T00:00:53.000Z"
+    - option "2017-07-07T00:00:53.000Z"
+    - option "2016-11-12T00:00:54.000Z"
+    - option "2016-03-29T00:00:54.000Z"
+  - text: DEMO KIT
+  - button "Normal SI 1.22":
+    - text: Normal
+    - generic: SI 1.22
+  - generic: Magnetogram
+  - generic: HMI · B LOS · 2026-04-06T00:00:53.000Z
+  - generic: HMI
+  - img "SDO/HMI Magnetogram"
+  - generic: EUV 193Å
+  - generic: Synthetic HMI proxy · not observed EUV
+  - generic: DEMO
+  - img "Synthetic HMI visualization; not AIA data"
+  - generic: Prediction
+  - generic: 2026-04-06T00:00:53.000Z
+  - generic: GUARDADO
+  - generic: SOLAR ACTIVITY INDEX
+  - generic: "1.56"
+  - generic: "Activity band: M (internal)"
+  - generic: ACTIVITY LEVEL
+  - generic: M
+  - generic: Medium / Moderate Activity
+  - generic: HEURISTIC CONFIDENCE SCORE
+  - generic: —
+  - generic: Model
+  - generic: Coronium V3.1 · v3.1
+  - button "Grad-CAM attribution NO GUARDADO" [disabled]:
+    - text: Grad-CAM attribution
+    - generic: NO GUARDADO
+  - paragraph: 11 observaciones guardadas · análisis de archivos no disponible.
+  - generic "About the data"

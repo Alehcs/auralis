@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090b10"><meta name="description" content="Cinco estados HMI, contexto SRS de NOAA 12975 y eventos GOES históricos independientes; Coronium estima SI actual, sin predicción de llamaradas. Exploración Unity y Needle en web y AR."><title>Auralis · Sol y AR</title><style>
+/* Presentation-only cleanup; existing controller bindings and AR overlay stay intact. */
+#timeline .science-inspector:not(:has(.event-kind)),
+#timeline .time-note-real,
+#timeline .context-source:has(> a),
+body[data-phase="6"] .load-line:has(#retry[hidden]) { display: none; }
+</style></head>
+<body data-phase="6">
+<header class="topbar"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">◉</span>AURALIS<span class="brand-divider"></span><span class="brand-sub">SOLAR LAB</span></a><span class="phase-tag">FASE 07.5 <span>NOAA 12975</span></span></header>
+<main>
+  <div class="page-heading"><div><p class="eyebrow">EXPLORADOR SOLAR</p><h1>El Sol y su contexto histórico.</h1></div><div class="observation-date"><span class="live-dot"></span><div><strong id="header-date">Cargando observación…</strong><span>Archivo SDO / HMI · registro UTC</span></div></div></div>
+  <section class="temporal-panel" aria-label="Evolución temporal"><h2>24–30 marzo · cinco estados HMI de disco completo</h2><div class="science-legend" aria-label="Naturaleza de la información"><span>Observación real · HMI / SRS</span><span>Resultado de Coronium · SI</span><span>Recreación visual · Sol 3D</span><span>Evento histórico externo · GOES</span></div><div id="timeline"></div></section>
+  <div class="workspace">
+    <section class="scene-panel" aria-label="Exploración solar">
+      <div class="scene-top" hidden><span id="view-kind" class="tag">ILUSTRACIÓN</span><span id="scene-side">RECREACIÓN 360°</span></div>
+      <div id="viewport" aria-label="Escena Unity: arrastra para orbitar; rueda o pellizca para acercar"></div>
+      <div class="scene-overlay" hidden><h2 id="layer-title">Atmósfera solar · recreación</h2><p id="layer-description">Superficie continua inspirada en imágenes solares. Recreación visual en toda la esfera.</p></div>
+      <div class="load-line"><span id="load-status" role="status">Verificando datos y exportación Unity…</span><button id="retry" hidden>Reintentar</button></div>
+      <div class="layer-bar" role="group" aria-label="Capa de visualización"><button data-layer="solar" aria-pressed="true" disabled><span>☀</span> Vista solar</button><button data-layer="magnetogram" aria-pressed="false" disabled>Magnetograma</button><button data-layer="bplus" aria-pressed="false" disabled>B+</button><button data-layer="bminus" aria-pressed="false" disabled>B−</button></div>
+      <div id="display-tools" class="display-tools" hidden><label for="contrast">Contraste visual <select id="contrast"><option value="1">1× · original</option><option value="4" selected>4× · detalle</option><option value="12">12× · campo débil</option></select></label><span id="display-note"></span></div><div class="view-controls"><span class="gesture-note">Arrastra para rotar · pellizca para acercar</span><button id="zoom-out" aria-label="Alejar" disabled>−</button><button id="zoom-in" aria-label="Acercar" disabled>+</button><button id="reset" disabled>↺ Restablecer</button><button id="plasma" aria-pressed="true">Pausar superficie</button><button id="surface-reset" disabled>Congelar en t=0</button><button id="auto" aria-pressed="false" disabled>Giro automático</button></div>
+    </section>
+    <aside class="science-panel" aria-label="Información científica">
+      <div class="panel-heading"><p class="eyebrow">ESTADO OBSERVADO</p><span class="instrument-tag">HMI · 512²</span></div>
+      <span id="hero-label" class="instrument-tag" hidden>ESTADO HERO · 29 MARZO</span><h2 id="state-date">—</h2><p id="utc-time" class="mono muted">— UTC</p>
+      <div class="metric"><div><span class="metric-label">SI conservado</span><span class="metric-category">OBSERVACIÓN</span></div><p><strong id="target-si">—</strong><span>%</span></p><small>Disco completo: píxeles originales con |B<sub>LOS</sub>| &gt; 200 G.</small></div>
+      <div class="metric prediction"><div><span class="metric-label" id="model-name">Coronium V3.1</span><span class="metric-category">RESULTADO DE CORONIUM</span></div><p><strong id="prediction-si">—</strong><span>%</span></p><small>ONNX · CPU · eval · una pasada determinista</small><div class="difference">Estimación − SI conservado <strong id="delta-si">— pp</strong></div></div>
+      <div class="reference-heading"><h3>Referencia 2D</h3><span id="reference-name">Campo firmado</span></div>
+      <figure class="reference"><img id="reference-image" width="512" height="512" alt="Referencia bidimensional del magnetograma, misma orientación que la matriz local"><figcaption>Fila 0 arriba · sin recorte ni espejo</figcaption></figure>
+      <div class="legend"><div class="legend-gradient"></div><div><span id="legend-min">−1 · B−</span><span id="legend-mid">0</span><span id="legend-max">+1 · B+</span></div></div>
+      <p id="legend-description" class="small" hidden>x = clip(resize(B<sub>LOS</sub>), −400, 400) / 400. Escala normalizada, sin unidades.</p>
+      
+    </aside>
+  </div>
+  
+  
+  
+  <section class="ar-section" aria-labelledby="ar-title">
+    <h2 id="ar-title"><a id="ios-launch">Explora en AR</a></h2>
+    <div class="qr-block">
+      <canvas id="qr" aria-label="QR para abrir este estado en el teléfono"></canvas>
+      <strong>Continúa en tu teléfono</strong>
+      <a id="share-url"></a>
+    </div>
+  </section>
+  <!-- Internal DOM bindings retained for the existing viewer and dashboard bridge. -->
+  <div hidden inert aria-hidden="true">
+    <span id="state-id"></span>
+    <span id="observation-id"></span>
+    <span id="filename"></span>
+    <span id="tai-time"></span>
+    <span id="protocol"></span>
+    <span id="channel-means"></span>
+    <span id="region"></span>
+    <span id="capability"></span>
+    <output id="scale-value"></output>
+    <input id="scale" type="range" min="0.4" max="1.5" step="0.1" value="1" disabled>
+    <span id="placement"></span>
+    <button id="quicklook"></button>
+    <span id="share-note"></span>
+    <button id="sample" disabled></button>
+    <pre id="sample-result"></pre>
+    <input id="device">
+    <input id="browser">
+    <select id="outcome"><option value="not_tested">No probado</option></select>
+    <textarea id="observations"></textarea>
+    <button id="download"></button>
+    <pre id="diagnostics"></pre>
+    <button id="release" disabled></button>
+  </div>
+</main>
+<script type="module" src="/src/phase5/main.ts"></script><script type="module">if(import.meta.env.DEV && new URLSearchParams(location.search).has('capture')) import('/dev/phase72-capture.mjs');</script><script type="module" src="/src/dashboard-integration.ts"></script></body></html>

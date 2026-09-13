@@ -1,0 +1,1001 @@
+[
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-24/magnetogram",
+          "sha256": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-24/bplus",
+          "sha256": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-24/bminus",
+          "sha256": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-24/solar",
+          "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-24",
+        "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621",
+        "sourceSha256": "68dc2c3623c8a8be43afbb383846d8e91f8053876c11f4c5a8c89d222e6743b4",
+        "disk": {
+          "cx": 254.52896925442693,
+          "cy": 255.61954700927532,
+          "radius": 251.86649148061207,
+          "edge_residual_p95_px": 0.6691667877682816,
+          "edge_residual_max_px": 0.9368520376172285,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-24",
+      "observationId": "hmi-2022-03-24-observation",
+      "recordUTC": "2022-03-24T00:00:53.000Z",
+      "SI": 1.679617166519165,
+      "prediction": 1.4705196619033813,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 0,
+      "pendingStateIndex": 0,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 0,
+      "contextStateId": "hmi-2022-03-24",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 990,
+      "gpuTextures": 2,
+      "gpuGeometries": 2,
+      "retainedEvents": 6,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-24",
+      "solarTo": "hmi-2022-03-24",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta · 24 mar\n\nPrimer estado seleccionado. Ubicación SRS: N13E63.\n\nNo hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta · 24 marPrimer estado seleccionado. Ubicación SRS: N13E63.No hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.Validez SRS, alcance regional y fuentesÁrea catalogada: 160 millonésimas del hemisferio solar.SRS válido 24 mar 00:00:00 UTC · emitido 24 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220324SRS.txt · línea 122975 N13E63   078  0160 Dao  11   05 BetaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.105719+00:00SHA-256 9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91dFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-25/magnetogram",
+          "sha256": "9bbd98bb9fb5e6a79782c30503bf0a7c636350870812b1950d4617e0ca8700cd",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-25/bplus",
+          "sha256": "867abc0bba41e6a060b29d93edb28f5af59e615d737f1508688957c8f42996ea",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-25/bminus",
+          "sha256": "91f5b6811746c3c658d89b5e8b2cd070f6aad0c0a34b7f3a6eb7e6eb39bee827",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-25/solar",
+          "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-25",
+        "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20",
+        "sourceSha256": "0649eb73df8aca13f850e5cc3c1fe0cfa3db1eab712f491ca10cfe5946d05e72",
+        "disk": {
+          "cx": 254.52720364531197,
+          "cy": 255.62194198603584,
+          "radius": 251.79280886475968,
+          "edge_residual_p95_px": 0.670592718300344,
+          "edge_residual_max_px": 0.9521477503010374,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-25",
+      "observationId": "hmi-2022-03-25-observation",
+      "recordUTC": "2022-03-25T00:00:53.000Z",
+      "SI": 1.7170906066894531,
+      "prediction": 1.4772802591323853,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 1,
+      "pendingStateIndex": 1,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 1,
+      "contextStateId": "hmi-2022-03-25",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 991,
+      "gpuTextures": 2,
+      "gpuGeometries": 2,
+      "retainedEvents": 6,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-24",
+      "solarTo": "hmi-2022-03-25",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta · 25 mar\n\nMisma clasificación que el estado anterior. Ubicación SRS: N14E55.\n\nNo hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta · 25 marMisma clasificación que el estado anterior. Ubicación SRS: N14E55.No hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.Validez SRS, alcance regional y fuentesÁrea catalogada: 160 millonésimas del hemisferio solar.SRS válido 25 mar 00:00:00 UTC · emitido 25 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220325SRS.txt · línea 122975 N14E55   075  0160 Cao  09   05 BetaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.073474+00:00SHA-256 a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ffFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-28/magnetogram",
+          "sha256": "539d98f85bdfcd49ec6ef50cb0dcc0ea4d19e240d50a4598239076bd17a85362",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-28/bplus",
+          "sha256": "38eb840365b0adda2058c3bfc7440401481db3f47caf3581b7f3df520a5e7fc3",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-28/bminus",
+          "sha256": "3f76df3a0bb1074d8660b303c2987a5fc0adce3f1da9890974fcfee582a7421a",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-28/solar",
+          "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-28",
+        "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb",
+        "sourceSha256": "298dded8370696077ce460c2f432cc21d0470b66e572c706d37ef2ba4f353e9f",
+        "disk": {
+          "cx": 254.50860013077295,
+          "cy": 255.65263943470632,
+          "radius": 251.57971199023845,
+          "edge_residual_p95_px": 0.7077043586413183,
+          "edge_residual_max_px": 0.9827919155342215,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-28",
+      "observationId": "hmi-2022-03-28-observation",
+      "recordUTC": "2022-03-28T00:00:53.000Z",
+      "SI": 1.947987079620361,
+      "prediction": 1.6562585830688477,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 2,
+      "pendingStateIndex": 2,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 2,
+      "contextStateId": "hmi-2022-03-28",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1051,
+      "gpuTextures": 4,
+      "gpuGeometries": 2,
+      "retainedEvents": 10,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-25",
+      "solarTo": "hmi-2022-03-28",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta · 28 mar\n\nMisma clasificación que el estado anterior. Ubicación SRS: N12E05.\n\nEventos posteriores a este HMI: M4.0 (28 mar 11:29:00 UTC) · M1.1 (28 mar 20:59:00 UTC).\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta · 28 marMisma clasificación que el estado anterior. Ubicación SRS: N12E05.Eventos posteriores a este HMI: M4.0 (28 mar 11:29:00 UTC) · M1.1 (28 mar 20:59:00 UTC).Validez SRS, alcance regional y fuentesÁrea catalogada: 50 millonésimas del hemisferio solar.SRS válido 28 mar 00:00:00 UTC · emitido 28 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220328SRS.txt · línea 122975 N12E05   085  0050 Csi  09   22 BetaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.106934+00:00SHA-256 e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2bFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-29/magnetogram",
+          "sha256": "c6b7fc316ce64e3239a23c46a5a1b68e39126cfb97f7ecd50c1d6a3f5b1443f4",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-29/bplus",
+          "sha256": "6854e78dff106af70c99221d807a70cdfb89901c67a88204a6f4a258bc9e51fc",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-29/bminus",
+          "sha256": "36c1e93f66cbe761b5ff3acc72c67f9f7fb604342569790981c9c4e2ab08f897",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-29/solar",
+          "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-29",
+        "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+        "sourceSha256": "cb5a199a4483ea0bb9b4f62053c99f2c7ea035d35b5ecc1ac767987d953503c5",
+        "disk": {
+          "cx": 254.5109428240573,
+          "cy": 255.67528695892747,
+          "radius": 251.48984611569568,
+          "edge_residual_p95_px": 0.7459766796541486,
+          "edge_residual_max_px": 1.0005784744417952,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-29",
+      "observationId": "hmi-2022-03-29-observation",
+      "recordUTC": "2022-03-29T00:00:53.000Z",
+      "SI": 2.057671546936035,
+      "prediction": 1.6834452152252197,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 3,
+      "pendingStateIndex": 3,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 3,
+      "contextStateId": "hmi-2022-03-29",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta-Gamma",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1081,
+      "gpuTextures": 5,
+      "gpuGeometries": 2,
+      "retainedEvents": 12,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-28",
+      "solarTo": "hmi-2022-03-29",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta-Gamma · 29 mar\n\nCambio catalogado: Beta → Beta-Gamma. Ubicación SRS: N13W12.\n\nEventos posteriores a este HMI: M2.2 (29 mar 01:11:00 UTC) · M1.6 (29 mar 21:52:00 UTC).\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta-Gamma · 29 marCambio catalogado: Beta → Beta-Gamma. Ubicación SRS: N13W12.Eventos posteriores a este HMI: M2.2 (29 mar 01:11:00 UTC) · M1.6 (29 mar 21:52:00 UTC).Validez SRS, alcance regional y fuentesÁrea catalogada: 210 millonésimas del hemisferio solar.SRS válido 29 mar 00:00:00 UTC · emitido 29 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220329SRS.txt · línea 122975 N13W12   089  0210 Dac  10   26 Beta-GammaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.563029+00:00SHA-256 e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225cFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-30/magnetogram",
+          "sha256": "c4023b47f96d90dedbfdc10b25af5c2d274b5766367fc2cef910b0c1d86dd129",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-30/bplus",
+          "sha256": "461d08bc83c4e795bec68179f2f8b96dce7bf0ac13c364bf3e518bc66d583ccb",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-30/bminus",
+          "sha256": "bcbe13b75bd1918955f5addc37063f84626e1f9087865a51206bb635719fc2d2",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-30/solar",
+          "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-30",
+        "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+        "sourceSha256": "f64b967b6f71e816e31dbf38bd576baddbb2e34c4db0b29eec24c254c7567366",
+        "disk": {
+          "cx": 254.50768522017657,
+          "cy": 255.69330306004736,
+          "radius": 251.42193580149495,
+          "edge_residual_p95_px": 0.7240023597810236,
+          "edge_residual_max_px": 0.9353162529279473,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-30",
+      "observationId": "hmi-2022-03-30-observation",
+      "recordUTC": "2022-03-30T00:00:53.000Z",
+      "SI": 2.050173282623291,
+      "prediction": 1.7126761674880981,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 4,
+      "pendingStateIndex": 4,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 4,
+      "contextStateId": "hmi-2022-03-30",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta-Gamma-Delta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1111,
+      "gpuTextures": 6,
+      "gpuGeometries": 2,
+      "retainedEvents": 14,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-29",
+      "solarTo": "hmi-2022-03-30",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta-Gamma-Delta · 30 mar\n\nCambio catalogado: Beta-Gamma → Beta-Gamma-Delta. Ubicación SRS: N13W25.\n\nEventos posteriores a este HMI: X1.3 (30 mar 17:37:00 UTC) · M9.6 (31 mar 18:35:00 UTC).\n\nX1.3: 17 h 36 min 07 s después de este HMI; fuera del magnetograma.\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta-Gamma-Delta · 30 marCambio catalogado: Beta-Gamma → Beta-Gamma-Delta. Ubicación SRS: N13W25.Eventos posteriores a este HMI: X1.3 (30 mar 17:37:00 UTC) · M9.6 (31 mar 18:35:00 UTC).X1.3: 17 h 36 min 07 s después de este HMI; fuera del magnetograma.Validez SRS, alcance regional y fuentesÁrea catalogada: 300 millonésimas del hemisferio solar.SRS válido 30 mar 00:00:00 UTC · emitido 30 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220330SRS.txt · línea 122975 N13W25   087  0300 Dhc  10   30 Beta-Gamma-DeltaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.548083+00:00SHA-256 d6f1477902dfed7836f11db7bd728264d7d4d6dd020bdcae27c332fb08ea5969Fuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-29/magnetogram",
+          "sha256": "c6b7fc316ce64e3239a23c46a5a1b68e39126cfb97f7ecd50c1d6a3f5b1443f4",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-29/bplus",
+          "sha256": "6854e78dff106af70c99221d807a70cdfb89901c67a88204a6f4a258bc9e51fc",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-29/bminus",
+          "sha256": "36c1e93f66cbe761b5ff3acc72c67f9f7fb604342569790981c9c4e2ab08f897",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-29/solar",
+          "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-29",
+        "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+        "sourceSha256": "cb5a199a4483ea0bb9b4f62053c99f2c7ea035d35b5ecc1ac767987d953503c5",
+        "disk": {
+          "cx": 254.5109428240573,
+          "cy": 255.67528695892747,
+          "radius": 251.48984611569568,
+          "edge_residual_p95_px": 0.7459766796541486,
+          "edge_residual_max_px": 1.0005784744417952,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-29",
+      "observationId": "hmi-2022-03-29-observation",
+      "recordUTC": "2022-03-29T00:00:53.000Z",
+      "SI": 2.057671546936035,
+      "prediction": 1.6834452152252197,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 3,
+      "pendingStateIndex": 3,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 5,
+      "contextStateId": "hmi-2022-03-29",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta-Gamma",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1141,
+      "gpuTextures": 6,
+      "gpuGeometries": 2,
+      "retainedEvents": 16,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-30",
+      "solarTo": "hmi-2022-03-29",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta-Gamma · 29 mar\n\nCambio catalogado: Beta → Beta-Gamma. Ubicación SRS: N13W12.\n\nEventos posteriores a este HMI: M2.2 (29 mar 01:11:00 UTC) · M1.6 (29 mar 21:52:00 UTC).\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta-Gamma · 29 marCambio catalogado: Beta → Beta-Gamma. Ubicación SRS: N13W12.Eventos posteriores a este HMI: M2.2 (29 mar 01:11:00 UTC) · M1.6 (29 mar 21:52:00 UTC).Validez SRS, alcance regional y fuentesÁrea catalogada: 210 millonésimas del hemisferio solar.SRS válido 29 mar 00:00:00 UTC · emitido 29 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220329SRS.txt · línea 122975 N13W12   089  0210 Dac  10   26 Beta-GammaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.563029+00:00SHA-256 e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225cFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-28/magnetogram",
+          "sha256": "539d98f85bdfcd49ec6ef50cb0dcc0ea4d19e240d50a4598239076bd17a85362",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-28/bplus",
+          "sha256": "38eb840365b0adda2058c3bfc7440401481db3f47caf3581b7f3df520a5e7fc3",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-28/bminus",
+          "sha256": "3f76df3a0bb1074d8660b303c2987a5fc0adce3f1da9890974fcfee582a7421a",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-28/solar",
+          "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-28",
+        "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb",
+        "sourceSha256": "298dded8370696077ce460c2f432cc21d0470b66e572c706d37ef2ba4f353e9f",
+        "disk": {
+          "cx": 254.50860013077295,
+          "cy": 255.65263943470632,
+          "radius": 251.57971199023845,
+          "edge_residual_p95_px": 0.7077043586413183,
+          "edge_residual_max_px": 0.9827919155342215,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-28",
+      "observationId": "hmi-2022-03-28-observation",
+      "recordUTC": "2022-03-28T00:00:53.000Z",
+      "SI": 1.947987079620361,
+      "prediction": 1.6562585830688477,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 2,
+      "pendingStateIndex": 2,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 6,
+      "contextStateId": "hmi-2022-03-28",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1172,
+      "gpuTextures": 6,
+      "gpuGeometries": 2,
+      "retainedEvents": 18,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-29",
+      "solarTo": "hmi-2022-03-28",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta · 28 mar\n\nMisma clasificación que el estado anterior. Ubicación SRS: N12E05.\n\nEventos posteriores a este HMI: M4.0 (28 mar 11:29:00 UTC) · M1.1 (28 mar 20:59:00 UTC).\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta · 28 marMisma clasificación que el estado anterior. Ubicación SRS: N12E05.Eventos posteriores a este HMI: M4.0 (28 mar 11:29:00 UTC) · M1.1 (28 mar 20:59:00 UTC).Validez SRS, alcance regional y fuentesÁrea catalogada: 50 millonésimas del hemisferio solar.SRS válido 28 mar 00:00:00 UTC · emitido 28 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220328SRS.txt · línea 122975 N12E05   085  0050 Csi  09   22 BetaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.106934+00:00SHA-256 e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2bFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-25/magnetogram",
+          "sha256": "9bbd98bb9fb5e6a79782c30503bf0a7c636350870812b1950d4617e0ca8700cd",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-25/bplus",
+          "sha256": "867abc0bba41e6a060b29d93edb28f5af59e615d737f1508688957c8f42996ea",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-25/bminus",
+          "sha256": "91f5b6811746c3c658d89b5e8b2cd070f6aad0c0a34b7f3a6eb7e6eb39bee827",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-25/solar",
+          "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-25",
+        "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20",
+        "sourceSha256": "0649eb73df8aca13f850e5cc3c1fe0cfa3db1eab712f491ca10cfe5946d05e72",
+        "disk": {
+          "cx": 254.52720364531197,
+          "cy": 255.62194198603584,
+          "radius": 251.79280886475968,
+          "edge_residual_p95_px": 0.670592718300344,
+          "edge_residual_max_px": 0.9521477503010374,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-25",
+      "observationId": "hmi-2022-03-25-observation",
+      "recordUTC": "2022-03-25T00:00:53.000Z",
+      "SI": 1.7170906066894531,
+      "prediction": 1.4772802591323853,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 1,
+      "pendingStateIndex": 1,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 7,
+      "contextStateId": "hmi-2022-03-25",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1202,
+      "gpuTextures": 6,
+      "gpuGeometries": 2,
+      "retainedEvents": 20,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-28",
+      "solarTo": "hmi-2022-03-25",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta · 25 mar\n\nMisma clasificación que el estado anterior. Ubicación SRS: N14E55.\n\nNo hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta · 25 marMisma clasificación que el estado anterior. Ubicación SRS: N14E55.No hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.Validez SRS, alcance regional y fuentesÁrea catalogada: 160 millonésimas del hemisferio solar.SRS válido 25 mar 00:00:00 UTC · emitido 25 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220325SRS.txt · línea 122975 N14E55   075  0160 Cao  09   05 BetaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.073474+00:00SHA-256 a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ffFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  },
+  {
+    "diagnostics": {
+      "build": "phase7-v1",
+      "engine": "5.1.12",
+      "source": "unity-glb-loaded",
+      "errors": [],
+      "physicalValidation": "not_tested",
+      "placementCount": 0,
+      "layer": "solar",
+      "immersiveAR": false,
+      "secureContext": true,
+      "activeMaps": {
+        "magnetogram": {
+          "name": "hmi-2022-03-24/magnetogram",
+          "sha256": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027",
+          "flipY": false
+        },
+        "bplus": {
+          "name": "hmi-2022-03-24/bplus",
+          "sha256": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3",
+          "flipY": false
+        },
+        "bminus": {
+          "name": "hmi-2022-03-24/bminus",
+          "sha256": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755",
+          "flipY": false
+        },
+        "solar": {
+          "name": "hmi-2022-03-24/solar",
+          "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621",
+          "flipY": false
+        }
+      },
+      "solarActivity": {
+        "id": "hmi-2022-03-24",
+        "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621",
+        "sourceSha256": "68dc2c3623c8a8be43afbb383846d8e91f8053876c11f4c5a8c89d222e6743b4",
+        "disk": {
+          "cx": 254.52896925442693,
+          "cy": 255.61954700927532,
+          "radius": 251.86649148061207,
+          "edge_residual_p95_px": 0.6691667877682816,
+          "edge_residual_max_px": 0.9368520376172285,
+          "method": "circle_fit_zero_exterior_filled_support"
+        }
+      },
+      "magnetogramFile": "hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "stateId": "hmi-2022-03-24",
+      "observationId": "hmi-2022-03-24-observation",
+      "recordUTC": "2022-03-24T00:00:53.000Z",
+      "SI": 1.679617166519165,
+      "prediction": 1.4705196619033813,
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "displayGain": 1,
+      "illustrativeMotion": false,
+      "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "historicalEventCount": 6,
+      "stateIndex": 0,
+      "pendingStateIndex": 0,
+      "playing": false,
+      "playDirection": 1,
+      "transitioning": false,
+      "cachedTextures": 20,
+      "temporalChanges": 8,
+      "contextStateId": "hmi-2022-03-24",
+      "selectedEventId": null,
+      "selectedEventPeak": null,
+      "contextMagneticType": "Beta",
+      "contextManifestVerified": true,
+      "scale": 1,
+      "autoRotate": false,
+      "readyMs": 251,
+      "exportHashVerified": true,
+      "exportEvidence": {
+        "unityVersion": "6000.3.17f1",
+        "exporterVersion": "5.1.12",
+        "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+        "scene": "Assets/Scenes/Phase5Solar.unity",
+        "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+        "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+        "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+        "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+        "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+        "bytes": 6206672
+      },
+      "status": "ready",
+      "illustrativeTime": 0,
+      "drawCalls": 2,
+      "triangles": 24578,
+      "renderFrames": 1232,
+      "gpuTextures": 6,
+      "gpuGeometries": 2,
+      "retainedEvents": 22,
+      "pixelRatio": 1,
+      "cameraPosition": [
+        2.4492935982947064e-16,
+        0.49999999999999967,
+        -2
+      ],
+      "cameraDistance": 2,
+      "orbitEnabled": true,
+      "canvasAttached": true,
+      "engineElements": 1,
+      "solarFrom": "hmi-2022-03-25",
+      "solarTo": "hmi-2022-03-24",
+      "solarMix": 1
+    },
+    "web": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS\n\nNOAA 12975 / HARP 8088 · Beta · 24 mar\n\nPrimer estado seleccionado. Ubicación SRS: N13E63.\n\nNo hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.\n\nValidez SRS, alcance regional y fuentes",
+    "ar": "OBSERVACIÓN REAL · CONTEXTO REGIONAL SRSNOAA 12975 / HARP 8088 · Beta · 24 marPrimer estado seleccionado. Ubicación SRS: N13E63.No hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.Validez SRS, alcance regional y fuentesÁrea catalogada: 160 millonésimas del hemisferio solar.SRS válido 24 mar 00:00:00 UTC · emitido 24 mar 00:30:00 UTC. HMI 00:00:53 UTC.HARP 8088 comparte asociación de catálogo con NOAA 12976, 12977 y 12984; no es una máscara exclusiva. SRS no está registrado en píxeles. SI y mapas abarcan el disco completo.Fuente conservada · 20220324SRS.txt · línea 122975 N13E63   078  0160 Dao  11   05 BetaAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:23.105719+00:00SHA-256 9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91dFuente conservada · harp_mapping_attempt_0.txtAbrir snapshot de Fase 2Consulta original: 2026-09-06T13:43:10.529394+00:00SHA-256 e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f"
+  }
+]

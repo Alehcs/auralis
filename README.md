@@ -1,5 +1,11 @@
 # Auralis
 
+> **Phase 1.7:** [Scientific audit and conclusions](docs/phase17.md) · [Versioned metrics and 13 publication figures](auralis-back/reports/phase17_coronium_v3_1/analysis_v2/report.md) · [Inventory](docs/phase17_inventory.md).
+
+> **Active model: Coronium V3.1.** [Phase 1.6 promotion and verification](docs/phase16.md) records the clean checkpoint, ONNX, hashes and separate MC/serving metrics. Coronium V3 remains historical.
+
+> **Phase 1 scientific correction:** [Audited contract and reproducibility report](docs/phase1.md) supersedes historical input/target and validation claims below. The local checkpoint uses clip400 polarity inputs and raw SI pixel percentages, without log or Z-score. The old split shares 145 observations; its metrics do not establish independent generalization. Original artifacts remain preserved.
+
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20620546-blue)](https://doi.org/10.5281/zenodo.20620546)
 
 Auralis is a local research/demo system for estimating the current solar activity
@@ -24,43 +30,41 @@ dataset.
 
 ## Current Model
 
-Coronium V3 PRO is a four-stage residual CNN with Efficient Channel Attention
-(ECA). The model takes a `(2, 512, 512)` tensor where channel 0 is positive
-magnetic polarity and channel 1 is negative magnetic polarity.
+Coronium V3.1 uses the unchanged four-stage `CoroniumV3` residual CNN with
+Efficient Channel Attention (206,875 parameters) and the clean Phase 1.5 weights.
+Input is float32 `(2, 512, 512)`: `[max(x,0), max(-x,0)]`, where
+`x = clip(resize(B_LOS), -400, 400) / 400`. Output is raw SI pixel percentage.
 
 | Item | Value |
 | --- | --- |
-| Promoted checkpoint | `auralis-back/models/best_coronium_v3_pro_augmented.pth` |
-| ONNX runtime model | `auralis-back/models/best_coronium_v3_pro.onnx` |
-| ONNX model size | 86.6 KB |
-| Parameters | 206,875 |
-| ONNX CPU latency | 25.11 ms per image |
-| Evaluation run | `exp_005_v3pro_augmented.json` |
+| Promoted checkpoint | `auralis-back/models/best_coronium_v3_1.pth` |
+| ONNX runtime model | `auralis-back/models/best_coronium_v3_1.onnx` |
+| ONNX model size | 835,234 bytes, self-contained; dynamic batch, opset 18 |
+| Release manifest | `auralis-back/models/coronium_v3_1_manifest.json` |
+| Versioned metrics | `auralis-back/models/coronium_v3_1_metrics.json` |
+| Source run | Phase 1.5 `20260905T132456995672Z`, best epoch 40 |
 
-### Evaluation Metrics
+### V3.1 Evaluation Metrics
 
-These values come from the promoted `exp_005` evaluation and are the values used
-by the API and dashboard.
+| Metric | Official MC Dropout T=20 | Deterministic ONNX/API protocol |
+| --- | ---: | ---: |
+| MAE (SI percentage points) | 0.10155762 | 0.20408340 |
+| RMSE (SI percentage points) | 0.12337954 | 0.25823317 |
+| R² | 0.87529664 | 0.45371922 |
+| MAPE | 5.98702505% | 10.49751499% |
 
-| Metric | Value |
-| --- | ---: |
-| MAE (log-SI) | 0.1048 |
-| RMSE (log-SI) | 0.1272 |
-| R² | 0.8634 |
-| MAPE | 6.07% |
-| Accuracy proxy (100 − MAPE) | 93.93% |
+Both use the same 263 unique validation observations, with zero train/validation
+observation overlap. Validation was used for checkpoint selection and early
+stopping: this is not an untouched test or temporal generalization result.
+Official MC metrics come unchanged from Phase 1.5 (seed 42, batch 32, MPS).
+Serving metrics use one unperturbed eval-mode pass, before API rounding to four
+decimals. Their lower performance is recorded explicitly; ONNX matches PyTorch
+eval mode within `atol=rtol=1e-5` on all 263 observations.
+`/api/stats` identifies both protocols separately; the scatter uses V3.1 MC data.
 
-All metrics are evaluated in log-SI space on a 353-magnetogram hold-out split
-(`random_state=42`). The official evaluation protocol uses Monte Carlo Dropout
-(T = 20 stochastic passes, `seed=42`) on the PyTorch checkpoint; see
-`auralis-back/scripts/evaluate_final.py` for the reproducible script.
+### Historical V3 Benchmark Comparison
 
-The accuracy proxy (93.93%) equals 100 − MAPE and is a regression reporting
-convenience. It is not a classification accuracy.
-
-### Benchmark Comparison
-
-Coronium's primary contribution is parameter efficiency. Benchmark comparisons
+This section and its figures preserve historical V3 results, including contaminated validation; they are not V3.1 performance or a clean ranking. Coronium's primary contribution is parameter efficiency. Benchmark comparisons
 are scale-asymmetric: external baselines and Coronium are not always evaluated
 under identical target-space assumptions, so raw MAE ranking should be
 interpreted carefully. The main value of Coronium lies in its dual-polarity
@@ -74,16 +78,16 @@ representation, parameter efficiency, and lightweight deployment readiness.
 | **Coronium V3 PRO** | **206,875** | **0.1048** | **0.8634** |
 
 †Baseline MAEs are reported in their native training scale; Coronium's MAE is
-in log-SI space. The scales are not directly equivalent — treat the MAE column
+in raw SI percentage points (historical log-SI labels were incorrect). The protocols are not directly equivalent — treat the MAE column
 as contextual, not a strict ranking. The primary differentiator for Coronium is
 parameter efficiency, dual-polarity representation, reproducibility, and
-lightweight ONNX deployment (86.6 KB, 25.11 ms CPU).
+historical deployment (86.6 KB graph excludes external weights; 25.11 ms is an old timing result, not V3.1 latency).
 
 External baselines (ResNet-18, VGG-11) were retrained from scratch on the same
 1,763-sample corpus using a single-channel collapsed input (`|B| = B+ + B−`).
 Coronium V3 PRO uses the full dual-channel `(B+, B−)` representation.
 
-### Efficiency Profile
+### Historical V3 Efficiency Profile
 
 Coronium V3 PRO achieves competitive explained variance (R² = 0.8634) with a
 lightweight deployment footprint — 45–54× fewer parameters than VGG-11 and
@@ -98,31 +102,30 @@ ResNet-18 — and supports CPU-only ONNX inference at 25.11 ms per image.
 | Naive Persistence | 0 | −0.008 | Trivial baseline |
 | VGG-11 | 9,350,913 | 0.8621 | Large CNN baseline |
 | ResNet-18 | 11,170,753 | 0.9276 | Large CNN baseline |
-| **Coronium V3 PRO** | **206,875** | **0.8634** | **86.6 KB ONNX, CPU-only, 25.11 ms** |
+| **Coronium V3 PRO** | **206,875** | **0.8634** | **Historical graph only, external weights required; old timing 25.11 ms** |
 
-R² is used as the primary visual comparison because MAE values are
-scale-asymmetric between baselines and Coronium (see Benchmark Comparison note
-above).
+These preserved figures are historical illustrations. R² does not make different validation splits comparable; neither chart establishes a controlled ranking or V3.1 generalization.
 
 ### Dashboard API Uncertainty vs. Official Evaluation
 
 The `/api/predict` endpoint reports an `uncertainty` field derived from
 20 inference passes with small additive Gaussian input noise (σ = 0.005) via
-ONNX Runtime. This is an approximation of instrument read-noise sensitivity, not
-the MC Dropout protocol. The canonical metrics above were produced by the
+ONNX Runtime. The primary prediction is a separate unperturbed deterministic pass.
+The noise spread is a synthetic sensitivity heuristic without instrument calibration,
+not the MC Dropout protocol. The canonical metrics above were produced by the
 offline MC Dropout evaluation in `evaluate_final.py`.
 
 ## Dataset
 
 Processed magnetograms live in `auralis-back/data/processed/` as `.npy` files.
-The current curated dataset contains 1,763 HMI Level-1.5 observations covering
-Solar Cycles 24 and 25.
+The local CSV contains 1,763 rows representing 1,314 unique files, covering
+2016-02-03 through 2026-04-12.
 
 Preprocessing converts each magnetogram into a float32 tensor:
 
 1. Load HMI FITS data.
 2. Replace invalid limb-mask values with zero.
-3. Apply symmetric log scaling: `sign(x) * log(1 + abs(x))`.
+3. Resize to 512², clip to ±400 G and divide by 400; no input logarithm.
 4. Split magnetic polarity into B+ and B- channels.
 5. Save the result as `(2, 512, 512)`.
 
@@ -135,7 +138,7 @@ new data should use the dual-channel representation.
 NASA JSOC / SDO-HMI
   -> ingestion scripts
   -> preprocessing to dual-channel .npy tensors
-  -> Coronium V3 PRO training and ONNX export
+  -> Coronium V3.1 checkpoint and ONNX export
   -> FastAPI service
   -> React dashboard
 ```
@@ -245,7 +248,7 @@ model files are present.
 1. Train or evaluate the candidate checkpoint.
 2. Save the promoted PyTorch weights under `auralis-back/models/`.
 3. Export the matching ONNX model.
-4. Update frozen metrics in `auralis-back/src/api/main.py`.
+4. Write versioned metrics and hashes; update `src/models/active_model.py`.
 5. Update `auralis-front/src/lib/types.ts` only if response schemas changed.
 6. Add or update the experiment JSON in `auralis-back/experiments/`.
 7. Update this README and `docs/architecture.md` with the new model identity,
@@ -273,7 +276,7 @@ duplicating thresholds or model constants in React components.
   index for the selected magnetogram.
 - The dashboard's "Current Solar State" is derived from the most recent `.npy`
   file in the local dataset, not from live NASA telemetry.
-- The classification thresholds are calibrated to the current ONNX output range:
+- Historical demo thresholds are retained, without V3.1 or GOES calibration:
   `< 1.41` is Low, `1.41` to `< 1.75` is Medium, and `>= 1.75` is High.
 - Grad-CAM uses `stage4.conv` as the default target because it captures the last
   spatial feature map before global pooling.

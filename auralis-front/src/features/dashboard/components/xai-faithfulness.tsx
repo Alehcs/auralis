@@ -1,3 +1,4 @@
+import { IS_FROZEN_DEMO } from '@/lib/frozen-demo';
 import { useState, useEffect } from 'react';
 import {
   AreaChart,
@@ -54,14 +55,13 @@ function AUCBadge({ score, labels }: {
   score: number;
   labels: { aucLabel: string; high: string; moderate: string; low: string };
 }) {
-  const pct   = Math.round(score * 100);
-  const color = score > 0.15 ? 'text-violet-400' : score > 0.05 ? 'text-sky-400' : 'text-neutral-400';
-  const label = score > 0.15 ? labels.high : score > 0.05 ? labels.moderate : labels.low;
+  const color = 'text-violet-400';
+  const label = score > 0 ? 'Random − guided > 0' : score < 0 ? 'Random − guided < 0' : 'Random − guided = 0';
   return (
     <div className="bg-neutral-800/60 border border-neutral-700/50 rounded-xl px-5 py-4 flex flex-col items-center gap-1 flex-shrink-0">
       <span className="text-[9px] text-neutral-500 font-mono tracking-[0.15em]">{labels.aucLabel}</span>
       <span className={`text-[28px] font-bold font-mono leading-none ${color}`}>
-        {pct > 0 ? '+' : ''}{pct}%
+        {score > 0 ? '+' : ''}{score.toFixed(4)}
       </span>
       <span className={`text-[10px] font-mono ${color}`}>{label}</span>
     </div>
@@ -81,6 +81,7 @@ export function XAIFaithfulness() {
   const [error,   setError]   = useState<string | null>(null);
 
   useEffect(() => {
+    if (IS_FROZEN_DEMO) { setLoading(false); return; }
     getXAIFaithfulness()
       .then(setData)
       .catch((err) => setError(err.message))
@@ -121,6 +122,7 @@ export function XAIFaithfulness() {
       </div>
 
       <div className="p-5 space-y-5">
+        {IS_FROZEN_DEMO && <p className="text-sm text-neutral-400">Sin curva XAI guardada.</p>}
 
         {/* Loading */}
         {loading && (
@@ -143,15 +145,12 @@ export function XAIFaithfulness() {
             <div className="flex items-start gap-4">
               <AUCBadge score={data.auc_score} labels={aucLabels} />
               <p className="text-[12px] text-neutral-400 leading-relaxed border-l-2 border-violet-500/40 pl-4 py-1">
-                The <span className="text-violet-400 font-semibold">Grad-CAM</span> curve drops
-                significantly faster than the{' '}
-                <span className="text-stone-400 font-semibold">random</span> baseline, which
-                suggests that the highlighted regions contribute to this prediction. A positive
-                AUC means guided removal degrades the output more than random removal in this
-                single-image deletion diagnostic; it is a faithfulness indicator, not evidence of
-                causal solar-physics reasoning.{' '}
+                Coronium V3.1 · deterministic PyTorch eval. The score is the mean normalized
+                random-minus-guided output gap over the deletion curve. Its sign describes this
+                image only; no significance test, calibrated fidelity threshold or causal physics
+                claim is available. Zero masking can create inputs outside the training distribution.{' '}
                 <span className="text-neutral-500 font-mono text-[11px]">
-                  Baseline: {data.baseline_prediction.toFixed(4)}
+                  Unmasked prediction: {data.baseline_prediction.toFixed(4)} SI %
                 </span>
               </p>
             </div>
@@ -188,7 +187,8 @@ export function XAIFaithfulness() {
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(v: number) => v.toFixed(1)}
-                    width={34}
+                    width={48}
+                    label={{ value: 'Output / unmasked output', angle: -90, position: 'insideLeft', fill: '#737373', fontSize: 9 }}
                   />
                   <Tooltip
                     content={(props) => (
@@ -200,7 +200,7 @@ export function XAIFaithfulness() {
                   />
                   <ReferenceLine y={1} stroke="#404040" strokeDasharray="4 4" />
                   <Area
-                    type="monotone"
+                    type="linear"
                     dataKey={KEY_RANDOM}
                     stroke={COLOR_RANDOM}
                     strokeWidth={1.5}
@@ -210,7 +210,7 @@ export function XAIFaithfulness() {
                     activeDot={{ r: 3, fill: COLOR_RANDOM }}
                   />
                   <Area
-                    type="monotone"
+                    type="linear"
                     dataKey={KEY_GRADCAM}
                     stroke={COLOR_GRADCAM}
                     strokeWidth={2}
@@ -226,7 +226,7 @@ export function XAIFaithfulness() {
             <div className="flex items-center gap-5 px-1">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-sm bg-violet-500 inline-block" />
-                <span className="text-[10px] text-neutral-500 font-mono">{e.gradcam} (conv4 / stage4)</span>
+                <span className="text-[10px] text-neutral-500 font-mono">{e.gradcam} (stage4.conv)</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-sm bg-stone-500 inline-block" />

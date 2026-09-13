@@ -1,0 +1,192 @@
+[
+  {
+    "ONNX": 1.4705196619033811,
+    "SI": 1.679617166519165,
+    "arSelected": [
+      "AR: Seleccionar 2022-03-24"
+    ],
+    "arcades": "hmi-2022-03-24",
+    "build": "phase75-v2",
+    "cachedTextures": 20,
+    "errors": [],
+    "groups": 9,
+    "guide": "hmi-2022-03-24",
+    "maps": {
+      "bminus": {
+        "flipY": false,
+        "name": "hmi-2022-03-24/bminus",
+        "sha256": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755"
+      },
+      "bplus": {
+        "flipY": false,
+        "name": "hmi-2022-03-24/bplus",
+        "sha256": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3"
+      },
+      "magnetogram": {
+        "flipY": false,
+        "name": "hmi-2022-03-24/magnetogram",
+        "sha256": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027"
+      },
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-24/solar",
+        "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621"
+      }
+    },
+    "shader": "anchored-hmi-v75-2",
+    "state": "hmi-2022-03-24",
+    "status": "ready"
+  },
+  {
+    "ONNX": 1.4772802591323853,
+    "SI": 1.7170906066894531,
+    "arSelected": [
+      "AR: Seleccionar 2022-03-25"
+    ],
+    "arcades": "hmi-2022-03-25",
+    "build": "phase75-v2",
+    "cachedTextures": 20,
+    "errors": [],
+    "groups": 8,
+    "guide": "hmi-2022-03-25",
+    "maps": {
+      "bminus": {
+        "flipY": false,
+        "name": "hmi-2022-03-25/bminus",
+        "sha256": "91f5b6811746c3c658d89b5e8b2cd070f6aad0c0a34b7f3a6eb7e6eb39bee827"
+      },
+      "bplus": {
+        "flipY": false,
+        "name": "hmi-2022-03-25/bplus",
+        "sha256": "867abc0bba41e6a060b29d93edb28f5af59e615d737f1508688957c8f42996ea"
+      },
+      "magnetogram": {
+        "flipY": false,
+        "name": "hmi-2022-03-25/magnetogram",
+        "sha256": "9bbd98bb9fb5e6a79782c30503bf0a7c636350870812b1950d4617e0ca8700cd"
+      },
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-25/solar",
+        "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20"
+      }
+    },
+    "shader": "anchored-hmi-v75-2",
+    "state": "hmi-2022-03-25",
+    "status": "ready"
+  },
+  {
+    "ONNX": 1.6562585830688477,
+    "SI": 1.947987079620361,
+    "arSelected": [
+      "AR: Seleccionar 2022-03-28"
+    ],
+    "arcades": "hmi-2022-03-28",
+    "build": "phase75-v2",
+    "cachedTextures": 20,
+    "errors": [],
+    "groups": 12,
+    "guide": "hmi-2022-03-28",
+    "maps": {
+      "bminus": {
+        "flipY": false,
+        "name": "hmi-2022-03-28/bminus",
+        "sha256": "3f76df3a0bb1074d8660b303c2987a5fc0adce3f1da9890974fcfee582a7421a"
+      },
+      "bplus": {
+        "flipY": false,
+        "name": "hmi-2022-03-28/bplus",
+        "sha256": "38eb840365b0adda2058c3bfc7440401481db3f47caf3581b7f3df520a5e7fc3"
+      },
+      "magnetogram": {
+        "flipY": false,
+        "name": "hmi-2022-03-28/magnetogram",
+        "sha256": "539d98f85bdfcd49ec6ef50cb0dcc0ea4d19e240d50a4598239076bd17a85362"
+      },
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-28/solar",
+        "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb"
+      }
+    },
+    "shader": "anchored-hmi-v75-2",
+    "state": "hmi-2022-03-28",
+    "status": "ready"
+  },
+  {
+    "ONNX": 1.6834452152252195,
+    "SI": 2.057671546936035,
+    "arSelected": [
+      "AR: Seleccionar 2022-03-29"
+    ],
+    "arcades": "hmi-2022-03-29",
+    "build": "phase75-v2",
+    "cachedTextures": 20,
+    "errors": [],
+    "groups": 12,
+    "guide": "hmi-2022-03-29",
+    "maps": {
+      "bminus": {
+        "flipY": false,
+        "name": "hmi-2022-03-29/bminus",
+        "sha256": "36c1e93f66cbe761b5ff3acc72c67f9f7fb604342569790981c9c4e2ab08f897"
+      },
+      "bplus": {
+        "flipY": false,
+        "name": "hmi-2022-03-29/bplus",
+        "sha256": "6854e78dff106af70c99221d807a70cdfb89901c67a88204a6f4a258bc9e51fc"
+      },
+      "magnetogram": {
+        "flipY": false,
+        "name": "hmi-2022-03-29/magnetogram",
+        "sha256": "c6b7fc316ce64e3239a23c46a5a1b68e39126cfb97f7ecd50c1d6a3f5b1443f4"
+      },
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-29/solar",
+        "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277"
+      }
+    },
+    "shader": "anchored-hmi-v75-2",
+    "state": "hmi-2022-03-29",
+    "status": "ready"
+  },
+  {
+    "ONNX": 1.712676167488098,
+    "SI": 2.050173282623291,
+    "arSelected": [
+      "AR: Seleccionar 2022-03-30"
+    ],
+    "arcades": "hmi-2022-03-30",
+    "build": "phase75-v2",
+    "cachedTextures": 20,
+    "errors": [],
+    "groups": 12,
+    "guide": "hmi-2022-03-30",
+    "maps": {
+      "bminus": {
+        "flipY": false,
+        "name": "hmi-2022-03-30/bminus",
+        "sha256": "bcbe13b75bd1918955f5addc37063f84626e1f9087865a51206bb635719fc2d2"
+      },
+      "bplus": {
+        "flipY": false,
+        "name": "hmi-2022-03-30/bplus",
+        "sha256": "461d08bc83c4e795bec68179f2f8b96dce7bf0ac13c364bf3e518bc66d583ccb"
+      },
+      "magnetogram": {
+        "flipY": false,
+        "name": "hmi-2022-03-30/magnetogram",
+        "sha256": "c4023b47f96d90dedbfdc10b25af5c2d274b5766367fc2cef910b0c1d86dd129"
+      },
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-30/solar",
+        "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8"
+      }
+    },
+    "shader": "anchored-hmi-v75-2",
+    "state": "hmi-2022-03-30",
+    "status": "ready"
+  }
+]

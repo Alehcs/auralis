@@ -1,0 +1,422 @@
+{
+  "schema_version": "auralis.phase7.v1",
+  "contract_sha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+  "sequence_sha256": "57c875f1a19eee539f5c491103b319c35c40fc7a7d185b6a1332ab23d2dab055",
+  "states": [
+    {
+      "id": "hmi-2022-03-24",
+      "record_utc": "2022-03-24T00:00:53.000Z",
+      "region_context": {
+        "noaa": 12975,
+        "harp": 8088,
+        "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+        "harp_noaa_lifetime_mapping": [
+          12975,
+          12976,
+          12977,
+          12984
+        ],
+        "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+        "location": {
+          "reported": "N13E63",
+          "coordinate_system": "SRS_heliographic_cardinal_text",
+          "valid_utc": "2022-03-24T00:00:00Z",
+          "issued_utc": "2022-03-24T00:30:00Z",
+          "source_ref": "reports/phase2_historical_case/sources/20220324SRS.txt",
+          "source_line": 12,
+          "raw_line": "2975 N13E63   078  0160 Dao  11   05 Beta",
+          "pixel_position": null
+        },
+        "magnetic_type": "Beta",
+        "area_millionths_solar_hemisphere": 160.0,
+        "other_noaa_regions": [
+          12974
+        ],
+        "wcs": null,
+        "region_mask": null,
+        "magnetic_field_3d": null
+      }
+    },
+    {
+      "id": "hmi-2022-03-25",
+      "record_utc": "2022-03-25T00:00:53.000Z",
+      "region_context": {
+        "noaa": 12975,
+        "harp": 8088,
+        "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+        "harp_noaa_lifetime_mapping": [
+          12975,
+          12976,
+          12977,
+          12984
+        ],
+        "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+        "location": {
+          "reported": "N14E55",
+          "coordinate_system": "SRS_heliographic_cardinal_text",
+          "valid_utc": "2022-03-25T00:00:00Z",
+          "issued_utc": "2022-03-25T00:30:00Z",
+          "source_ref": "reports/phase2_historical_case/sources/20220325SRS.txt",
+          "source_line": 12,
+          "raw_line": "2975 N14E55   075  0160 Cao  09   05 Beta",
+          "pixel_position": null
+        },
+        "magnetic_type": "Beta",
+        "area_millionths_solar_hemisphere": 160.0,
+        "other_noaa_regions": [
+          12974,
+          12976
+        ],
+        "wcs": null,
+        "region_mask": null,
+        "magnetic_field_3d": null
+      }
+    },
+    {
+      "id": "hmi-2022-03-28",
+      "record_utc": "2022-03-28T00:00:53.000Z",
+      "region_context": {
+        "noaa": 12975,
+        "harp": 8088,
+        "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+        "harp_noaa_lifetime_mapping": [
+          12975,
+          12976,
+          12977,
+          12984
+        ],
+        "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+        "location": {
+          "reported": "N12E05",
+          "coordinate_system": "SRS_heliographic_cardinal_text",
+          "valid_utc": "2022-03-28T00:00:00Z",
+          "issued_utc": "2022-03-28T00:30:00Z",
+          "source_ref": "reports/phase2_historical_case/sources/20220328SRS.txt",
+          "source_line": 12,
+          "raw_line": "2975 N12E05   085  0050 Csi  09   22 Beta",
+          "pixel_position": null
+        },
+        "magnetic_type": "Beta",
+        "area_millionths_solar_hemisphere": 50.0,
+        "other_noaa_regions": [
+          12974,
+          12976,
+          12977,
+          12978
+        ],
+        "wcs": null,
+        "region_mask": null,
+        "magnetic_field_3d": null
+      }
+    },
+    {
+      "id": "hmi-2022-03-29",
+      "record_utc": "2022-03-29T00:00:53.000Z",
+      "region_context": {
+        "noaa": 12975,
+        "harp": 8088,
+        "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+        "harp_noaa_lifetime_mapping": [
+          12975,
+          12976,
+          12977,
+          12984
+        ],
+        "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+        "location": {
+          "reported": "N13W12",
+          "coordinate_system": "SRS_heliographic_cardinal_text",
+          "valid_utc": "2022-03-29T00:00:00Z",
+          "issued_utc": "2022-03-29T00:30:00Z",
+          "source_ref": "reports/phase2_historical_case/sources/20220329SRS.txt",
+          "source_line": 12,
+          "raw_line": "2975 N13W12   089  0210 Dac  10   26 Beta-Gamma",
+          "pixel_position": null
+        },
+        "magnetic_type": "Beta-Gamma",
+        "area_millionths_solar_hemisphere": 210.0,
+        "other_noaa_regions": [
+          12974,
+          12976,
+          12977,
+          12978,
+          12979,
+          12980
+        ],
+        "wcs": null,
+        "region_mask": null,
+        "magnetic_field_3d": null
+      }
+    },
+    {
+      "id": "hmi-2022-03-30",
+      "record_utc": "2022-03-30T00:00:53.000Z",
+      "region_context": {
+        "noaa": 12975,
+        "harp": 8088,
+        "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+        "harp_noaa_lifetime_mapping": [
+          12975,
+          12976,
+          12977,
+          12984
+        ],
+        "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+        "location": {
+          "reported": "N13W25",
+          "coordinate_system": "SRS_heliographic_cardinal_text",
+          "valid_utc": "2022-03-30T00:00:00Z",
+          "issued_utc": "2022-03-30T00:30:00Z",
+          "source_ref": "reports/phase2_historical_case/sources/20220330SRS.txt",
+          "source_line": 12,
+          "raw_line": "2975 N13W25   087  0300 Dhc  10   30 Beta-Gamma-Delta",
+          "pixel_position": null
+        },
+        "magnetic_type": "Beta-Gamma-Delta",
+        "area_millionths_solar_hemisphere": 300.0,
+        "other_noaa_regions": [
+          12974,
+          12976,
+          12977,
+          12978,
+          12979,
+          12980
+        ],
+        "wcs": null,
+        "region_mask": null,
+        "magnetic_field_3d": null
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "20220328_3390",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M4.0",
+      "satellite": "G16",
+      "start_utc": "2022-03-28T10:58:00Z",
+      "peak_utc": "2022-03-28T11:29:00Z",
+      "end_utc": "2022-03-28T11:45:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220328events.txt",
+      "source_line": 40,
+      "raw_line": "3390 +     1058   1129      1145  G16  5   XRA  1-8A      M4.0    4.4E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-28",
+        "following_state_id": "hmi-2022-03-29",
+        "seconds_after_preceding_state": 41287,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220328_3570",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M1.1",
+      "satellite": "G16",
+      "start_utc": "2022-03-28T20:49:00Z",
+      "peak_utc": "2022-03-28T20:59:00Z",
+      "end_utc": "2022-03-28T21:09:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220328events.txt",
+      "source_line": 100,
+      "raw_line": "3570 +     2049   2059      2109  G16  5   XRA  1-8A      M1.1    1.1E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-28",
+        "following_state_id": "hmi-2022-03-29",
+        "seconds_after_preceding_state": 75487,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220329_3630",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M2.2",
+      "satellite": "G16",
+      "start_utc": "2022-03-29T00:57:00Z",
+      "peak_utc": "2022-03-29T01:11:00Z",
+      "end_utc": "2022-03-29T01:26:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220329events.txt",
+      "source_line": 19,
+      "raw_line": "3630 +     0057   0111      0126  G16  5   XRA  1-8A      M2.2    2.5E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-29",
+        "following_state_id": "hmi-2022-03-30",
+        "seconds_after_preceding_state": 4207,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220329_3990",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M1.6",
+      "satellite": "G16",
+      "start_utc": "2022-03-29T21:43:00Z",
+      "peak_utc": "2022-03-29T21:52:00Z",
+      "end_utc": "2022-03-29T21:57:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220329events.txt",
+      "source_line": 125,
+      "raw_line": "3990 +     2143   2152      2157  G16  5   XRA  1-8A      M1.6    6.3E-03   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-29",
+        "following_state_id": "hmi-2022-03-30",
+        "seconds_after_preceding_state": 78667,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220330_4220",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "X1.3",
+      "satellite": "G16",
+      "start_utc": "2022-03-30T17:21:00Z",
+      "peak_utc": "2022-03-30T17:37:00Z",
+      "end_utc": "2022-03-30T17:46:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220330events.txt",
+      "source_line": 61,
+      "raw_line": "4220 +     1721   1737      1746  G16  5   XRA  1-8A      X1.3    9.6E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "after_last_state",
+        "preceding_state_id": "hmi-2022-03-30",
+        "following_state_id": null,
+        "seconds_after_preceding_state": 63367,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220331_4520",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M9.6",
+      "satellite": "G16",
+      "start_utc": "2022-03-31T18:17:00Z",
+      "peak_utc": "2022-03-31T18:35:00Z",
+      "end_utc": "2022-03-31T18:45:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220331events.txt",
+      "source_line": 67,
+      "raw_line": "4520 +     1817   1835      1845  G16  5   XRA  1-8A      M9.6    7.6E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "after_last_state",
+        "preceding_state_id": "hmi-2022-03-30",
+        "following_state_id": null,
+        "seconds_after_preceding_state": 153247,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    }
+  ],
+  "sources": [
+    {
+      "id": "reports/phase2_historical_case/sources/20220324SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220324SRS.txt",
+      "sha256": "9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91d",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220324SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.105719+00:00",
+      "snapshot_url": "/phase7/sources/20220324SRS.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+      "path": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+      "sha256": "e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f",
+      "url": "http://jsoc.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt",
+      "retrieved_utc": "2026-09-06T13:43:10.529394+00:00",
+      "snapshot_url": "/phase7/sources/harp_mapping_attempt_0.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220325SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220325SRS.txt",
+      "sha256": "a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ff",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220325SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.073474+00:00",
+      "snapshot_url": "/phase7/sources/20220325SRS.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220328SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220328SRS.txt",
+      "sha256": "e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2b",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220328SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.106934+00:00",
+      "snapshot_url": "/phase7/sources/20220328SRS.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220329SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220329SRS.txt",
+      "sha256": "e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225c",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220329SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.563029+00:00",
+      "snapshot_url": "/phase7/sources/20220329SRS.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220330SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220330SRS.txt",
+      "sha256": "d6f1477902dfed7836f11db7bd728264d7d4d6dd020bdcae27c332fb08ea5969",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220330SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.548083+00:00",
+      "snapshot_url": "/phase7/sources/20220330SRS.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220328events.txt",
+      "path": "reports/phase2_historical_case/sources/20220328events.txt",
+      "sha256": "afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220328events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.147577+00:00",
+      "snapshot_url": "/phase7/sources/20220328events.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220329events.txt",
+      "path": "reports/phase2_historical_case/sources/20220329events.txt",
+      "sha256": "ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220329events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.581352+00:00",
+      "snapshot_url": "/phase7/sources/20220329events.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220330events.txt",
+      "path": "reports/phase2_historical_case/sources/20220330events.txt",
+      "sha256": "c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220330events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.543779+00:00",
+      "snapshot_url": "/phase7/sources/20220330events.txt"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220331events.txt",
+      "path": "reports/phase2_historical_case/sources/20220331events.txt",
+      "sha256": "8f10d524d36da91c5c8c3028da87e5314fe8c61d16e7a2912ec990be4636a318",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220331events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.620653+00:00",
+      "snapshot_url": "/phase7/sources/20220331events.txt"
+    }
+  ],
+  "event_catalog_scope": "Six selected Phase 2 NOAA 12975 M/X events; not exhaustive; includes post-sequence context.",
+  "timeline_basis": "UTC; HMI record time and independent GOES peak time",
+  "generator_sha256": "e7474101f483cc67c557f21c8bcc0b188e8ea029308d07d66fc890a1b5e6aea9"
+}

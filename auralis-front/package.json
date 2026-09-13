@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "predev": "npm --prefix ../prototypes/phase4-unity-needle/web run build",
+    "prebuild": "npm --prefix ../prototypes/phase4-unity-needle/web run build"
   },
   "dependencies": {
     "@popperjs/core": "2.11.8",

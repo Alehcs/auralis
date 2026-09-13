@@ -1,0 +1,270 @@
+{
+  "PRUEBA-MOVIL.md": {
+    "bytes": 1959,
+    "sha256": "99256beae19502a26857f4d7c77f2e7119002040621610a0d186b0b7784ff64f"
+  },
+  "build-artifacts.json": {
+    "bytes": 4446,
+    "sha256": "78fd1f9b79e6d330924775b03af2c914e50b6f662a2abb4d4c507acded5030c0"
+  },
+  "deployment.json": {
+    "bytes": 760,
+    "sha256": "ed07c26f3d5b20442e27e00534b5304371193e815646b8fa2448f905f91b7322"
+  },
+  "desktop-render-sample-build-a.json": {
+    "bytes": 364,
+    "sha256": "e068fd7d4346856cf5b0bb8c914f76ab5db5f8f4bef4f24d714564969cec4d40"
+  },
+  "desktop-render-sample.json": {
+    "bytes": 362,
+    "sha256": "7d173f0c8043512ec4e3a5b637e710c07ea1df752f5fbe46836c88313e7c2474"
+  },
+  "module-verification.json": {
+    "bytes": 2104,
+    "sha256": "d1742ef12a3c24daa95db816cc14dce621a45a40df320beb5ac96b5616e1cde8"
+  },
+  "modules.json": {
+    "bytes": 2232,
+    "sha256": "4ab2a29c257191e9ad8d46136bfd5eb1b2069b1dc447247e1b58798b5c658255"
+  },
+  "phase42-real-unity-source.zip": {
+    "bytes": 133828,
+    "sha256": "3b9171812d280a001511c4a51a2697160bb7ccd6a444ab6f0ad1a3c4be6f9646"
+  },
+  "phase42-real-web-build.zip": {
+    "bytes": 3294132,
+    "sha256": "66472669fecc43d09cf6682ceb09f717c367ad5a680b02028b6574a8ad12b0cc"
+  },
+  "public-diagnostic.json": {
+    "bytes": 942,
+    "sha256": "5a72c3fd5e90643bbcbb85cf9cf9eecc590e660d293695a4377fc5b13d480bac"
+  },
+  "public-http-verification.json": {
+    "bytes": 13621,
+    "sha256": "635448a6ed1ed71700b7f08f925d4d34e5c645f1447183b390435df78a501890"
+  },
+  "public-reload-fixed.json": {
+    "bytes": 271,
+    "sha256": "72d4b0658a3a1501481fcaa02372bb6387700b90eea22f8a20ad83e33d8c83e3"
+  },
+  "public-reload-timeout.txt": {
+    "bytes": 2603,
+    "sha256": "98bf5b6731db4fe41e9ec93a3420d58cb50d04254b018ca8d00daf9824eeeb98"
+  },
+  "public-unity.png": {
+    "bytes": 24981,
+    "sha256": "42d8b600db5109f77325bf06ec2ece88a75743846b524ef7275c99a2526aa066"
+  },
+  "qr-decoded.txt": {
+    "bytes": 345,
+    "sha256": "efec55e0a9ff4215f2a6ccb8ff55bf8bfb5beb6bb33073d15ac4b8fa0328b2c6"
+  },
+  "qr-unity-ios.png": {
+    "bytes": 6277,
+    "sha256": "9490c3fb3202850c0068a46f11aefebcfde2ffbe6c1f4b723099fb004edab184"
+  },
+  "qr-unity-public.png": {
+    "bytes": 4783,
+    "sha256": "5626093094d93912c185c1b5663472430448bc51fe7a9e4662c08c49075ee968"
+  },
+  "scene-structure.json": {
+    "bytes": 470,
+    "sha256": "c52290005ad50f3a3351fd7d81e708c250ea95b07eecee7e8fde30d1e7fb7bc5"
+  },
+  "sources/unity/Assets/Editor/Auralis.Phase4.Editor.asmdef": {
+    "bytes": 244,
+    "sha256": "88f0d47920bfed61d3f3a6492e1b30713c9058d4c183774cfd275714bbb5cb36"
+  },
+  "sources/unity/Assets/Editor/Auralis.Phase4.Editor.asmdef.meta": {
+    "bytes": 166,
+    "sha256": "3f4af50ca70287fcd1d07ed5f4690e3f514c831a98c4a47d992f7110fb3e3195"
+  },
+  "sources/unity/Assets/Editor/Phase4Probe.cs": {
+    "bytes": 6591,
+    "sha256": "22dba799b1e0d2b2e94c80b1a8a4bf1184f454a074c0fed1f28720bdacbb6dec"
+  },
+  "sources/unity/Assets/Editor/Phase4Probe.cs.meta": {
+    "bytes": 59,
+    "sha256": "1530924b53612df5b70c895493cd7c72ff431c33842e7eaec88563a191a1f26b"
+  },
+  "sources/unity/Assets/Editor.meta": {
+    "bytes": 172,
+    "sha256": "81b452d1fc6b1aee36a174addbf367b0c78c86515220fd17ae9d0f85ccd36b1d"
+  },
+  "sources/unity/Assets/Materials/Probe.mat": {
+    "bytes": 2213,
+    "sha256": "6685f45461f1e06e977ecc65f4f131562078edcff05df8ca2b15f550ebf20e0a"
+  },
+  "sources/unity/Assets/Materials/Probe.mat.meta": {
+    "bytes": 188,
+    "sha256": "690f0a78c645ec87d81e288afe19acd24ca9331d09b506f40aef4a9cf56db20e"
+  },
+  "sources/unity/Assets/Materials.meta": {
+    "bytes": 172,
+    "sha256": "05479a25cfb87e5eb848cc2bccceb228bbfa9acc232cdca7e5d20f896f38fc82"
+  },
+  "sources/unity/Assets/Resources/UnityGLTFSettings.asset": {
+    "bytes": 1501,
+    "sha256": "6be6087452e713e00d1d69d3bb842b0fcc6b5c1215dd8083fed0518bde895b4c"
+  },
+  "sources/unity/Assets/Resources/UnityGLTFSettings.asset.meta": {
+    "bytes": 182,
+    "sha256": "002b443f2cc924fb918ed00f4e97987c0c490f6dd9fa5ed337d37a73c9683cd0"
+  },
+  "sources/unity/Assets/Resources.meta": {
+    "bytes": 172,
+    "sha256": "103edf1669bf7dfbd94b6aef7615688d373f5a7e694454490861cde60d9e7e83"
+  },
+  "sources/unity/Assets/Scenes/Phase4Probe.unity": {
+    "bytes": 15079,
+    "sha256": "d7106430ddf0cf833f332ee7d8e95e5557467f08b5fbd945de8c73c410c6522f"
+  },
+  "sources/unity/Assets/Scenes/Phase4Probe.unity.meta": {
+    "bytes": 155,
+    "sha256": "9f9d465fbaf399edcabcd507504929a4b72deee7966b27ad82c5002b112fe0ea"
+  },
+  "sources/unity/Assets/Scenes.meta": {
+    "bytes": 172,
+    "sha256": "818c242a7f4854296d752e82030ca23abd3c39ca05614540a42841b809709de0"
+  },
+  "sources/unity/Packages/packages-lock.json": {
+    "bytes": 8191,
+    "sha256": "28035d2b4bee438a29af3252b537087369ce028a06158bdf20cb7dbb22408684"
+  },
+  "sources/unity/ProjectSettings/AudioManager.asset": {
+    "bytes": 523,
+    "sha256": "9543c41dbfc7d3951217c4dd9481ed026eb8e529b85ecf4463969a0fea747729"
+  },
+  "sources/unity/ProjectSettings/ClusterInputManager.asset": {
+    "bytes": 114,
+    "sha256": "40e65dd214bf254955d2c8829ca8ce2130fd3510485560ce012e9a1ddd93e623"
+  },
+  "sources/unity/ProjectSettings/DynamicsManager.asset": {
+    "bytes": 1553,
+    "sha256": "fb36e677f7de32325bede8462e7e3eaf0be86ca374216d2907886fce7cb1d488"
+  },
+  "sources/unity/ProjectSettings/EditorBuildSettings.asset": {
+    "bytes": 190,
+    "sha256": "41bc588f6ecc03944687d496f024917cabb061e21c148a6471b74581df14f908"
+  },
+  "sources/unity/ProjectSettings/EditorSettings.asset": {
+    "bytes": 1603,
+    "sha256": "06753c21648950aee0013b70f79a9035ac52aec6204d44cc2ac55a84034ad9ca"
+  },
+  "sources/unity/ProjectSettings/GraphicsSettings.asset": {
+    "bytes": 2433,
+    "sha256": "40de98f4d46d02fb08e268ad3a722a00eed7289f4ef6d2e759984b1b4a85d2af"
+  },
+  "sources/unity/ProjectSettings/InputManager.asset": {
+    "bytes": 9754,
+    "sha256": "60c83ae48e29a782141f99032eb38e803d18475124ff5224fbd1fd81b233f051"
+  },
+  "sources/unity/ProjectSettings/MemorySettings.asset": {
+    "bytes": 1192,
+    "sha256": "1e8379a461b10ae09f3f696911088c16875d63e87ed5f2d95df9e1892703f9fd"
+  },
+  "sources/unity/ProjectSettings/MultiplayerManager.asset": {
+    "bytes": 232,
+    "sha256": "ce4075d7a7dd8ac7ffe55de2427692c63f90dae398208bd80cec0f27cbe09f4b"
+  },
+  "sources/unity/ProjectSettings/NavMeshAreas.asset": {
+    "bytes": 1361,
+    "sha256": "7ebbf8f53b8033104e1878b95ca07a28d0954092d81c220f14196a42f651e658"
+  },
+  "sources/unity/ProjectSettings/NeedleExporterSceneData.asset": {
+    "bytes": 587,
+    "sha256": "cbcfd32940a637a7deb21c1c3d546a932431db236f0ca9a05e848dfd07e320f5"
+  },
+  "sources/unity/ProjectSettings/Physics2DSettings.asset": {
+    "bytes": 1862,
+    "sha256": "1cfc0c8fbceec604fd7cd2a06c04ff05dddee6335b75c92b0f5715ad80ba9490"
+  },
+  "sources/unity/ProjectSettings/PresetManager.asset": {
+    "bytes": 146,
+    "sha256": "29c125923fe6e29f90190d4fce1c82d660e7051546e2c9d02908d18c9cf2436c"
+  },
+  "sources/unity/ProjectSettings/ProjectSettings.asset": {
+    "bytes": 24133,
+    "sha256": "b04f410bd842ba25f6c34cc309038bfa9d4f758a709fa65370b12a1cd8bcc344"
+  },
+  "sources/unity/ProjectSettings/ProjectVersion.txt": {
+    "bytes": 85,
+    "sha256": "e2800d2bef343af729f23b62f11a40811d38b46ae04a437780923c335a76f810"
+  },
+  "sources/unity/ProjectSettings/QualitySettings.asset": {
+    "bytes": 9802,
+    "sha256": "f1f893b1be47ad2442f58338dd7c860dc1986bb317e2f5bb31084454ffabbf4c"
+  },
+  "sources/unity/ProjectSettings/SceneTemplateSettings.json": {
+    "bytes": 3535,
+    "sha256": "bb9098b3bfcde78d93e264b96f7b77b5430e64e8c57a7aad7f5a5d9c3945e16a"
+  },
+  "sources/unity/ProjectSettings/ShaderGraphSettings.asset": {
+    "bytes": 633,
+    "sha256": "6fead5a816c4eed70f224d5472340ecf1ea0b4de4f87d5926bb17fa10ffb3dc9"
+  },
+  "sources/unity/ProjectSettings/TagManager.asset": {
+    "bytes": 411,
+    "sha256": "da4b5eefc927f8b91bcf9e56a186d2b852f49d9cbe91d466638d26c79d6a83ce"
+  },
+  "sources/unity/ProjectSettings/TimeManager.asset": {
+    "bytes": 305,
+    "sha256": "3396f52fdc16d445024e01d7a2d99db6f0a37569d1d73c0302e9ffb857d90287"
+  },
+  "sources/unity/ProjectSettings/UnityConnectSettings.asset": {
+    "bytes": 1063,
+    "sha256": "11251dae0356b6f43dd2c67bb511f6b7ecda4e5de425186bba3297e6f3dc1c6f"
+  },
+  "sources/unity/ProjectSettings/VFXManager.asset": {
+    "bytes": 525,
+    "sha256": "2973a6af930e142f62cde00076beda8a3cc3a66d9bfcde7a58ba7d4be2251c26"
+  },
+  "sources/unity/ProjectSettings/VersionControlSettings.asset": {
+    "bytes": 172,
+    "sha256": "e199cdfa6a8f2bf33cfd47e549198f13e3eb2a5099e908fdb4e0f14d939ccc6b"
+  },
+  "unity-camera.png": {
+    "bytes": 11188,
+    "sha256": "8e0d0ce5fe78613f205fd99f990e2a2d287a5b6aa6bd1633b7cc3916ab02a5a2"
+  },
+  "unity-export-20260909T165756Z.log": {
+    "bytes": 316148,
+    "sha256": "6d0bfc4815225b607a455f80654197366640bbf9908bf651126c5a8e82e97832"
+  },
+  "unity-export-20260909T165849Z.log": {
+    "bytes": 73553,
+    "sha256": "81735ab93b22cbcdb03bf9189c6b0fe0bc354eac7793e11f8f954d180e2ea3b0"
+  },
+  "unity-export-20260909T165913Z.log": {
+    "bytes": 813627,
+    "sha256": "5d5b6f66d244043deefe5111850d080a0c8d2a44b62e87b16d37bc08463681ec"
+  },
+  "unity-export-20260909T170054Z.log": {
+    "bytes": 44201,
+    "sha256": "94a119ec9d26e070f0948d73bda3ab3b5dd5e052ffe4fb383d1e724c4090d8f6"
+  },
+  "unity-export.log": {
+    "bytes": 6252,
+    "sha256": "270662bb4df86070df0613bbeaafb3fdb336ee12a4833af32f79e8d6ceae4557"
+  },
+  "verification.json": {
+    "bytes": 1335,
+    "sha256": "86827a937c531a926c5f818e5dfddfeff1555669f6825b1f0214ea403aef8156"
+  },
+  "web-controls.png": {
+    "bytes": 58081,
+    "sha256": "a25c2d8928ceb0d33de7570a2dc62ec04e63064cd226d93a732b670df49c5adf"
+  },
+  "web-initial.png": {
+    "bytes": 53075,
+    "sha256": "bf9af10b6b85a6d1bc418d0d9e41dfad5528828bf7dd291d8cf606b05fb31ccd"
+  },
+  "web-interaction.json": {
+    "bytes": 3054,
+    "sha256": "aee1b0a93481d35609f5d226b2237a3286a47ab6b467e4b64bbece457695c7c2"
+  },
+  "web-orbit.png": {
+    "bytes": 55128,
+    "sha256": "5480640e22852423417f904badabbed177eaa44b0ebe750269bf27f0bcc48a63"
+  }
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "path": "auralis-front/src/features/dashboard/dashboard-page.tsx",
+    "before": "6e9592b76c0000830a4445535310546733438751cd7bc29f8e1720172e1f99be",
+    "after": "3aac91e13e4bb39d1f64eddd2062d9f2ded51a20442db5dfc02013e5f2023f22"
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/simulation/SolarTwinPanel.tsx",
+    "before": null,
+    "after": "f939e8d0b83510ec7255c1319473f12922b78d2d26c1a7431edb899bbdc62963"
+  },
+  {
+    "path": "auralis-front/build/solar-viewer.mjs",
+    "before": null,
+    "after": "65e5d4d63479962b1238c7f69f0a6ce8fabf3449b5a35fcc9c57a90eb21acf3b"
+  },
+  {
+    "path": "auralis-front/vite.config.ts",
+    "before": "08891303b933f24b4fb1b28d50827d65af92d791839fb29a12fa6cab9fe14d52",
+    "after": "e300f04836efd89d7422166cbccbd8c9cd226e6689cf54d35e98bf395539a755"
+  },
+  {
+    "path": "auralis-front/package.json",
+    "before": "d1307b92442399088746dd537b2861a64d1c13301f5c433edb6cce9e21711f3c",
+    "after": "6c65ed26e2ddd1d400079526f7ca0c9c8e009fe15f0c676f46b6ddb1137d0b0b"
+  },
+  {
+    "path": "prototypes/phase4-unity-needle/web/phase6/index.html",
+    "before": "81fbd65e0eb69afd2a64e89657db7643195ef93a3e9c574a20beb5b203b7a745",
+    "after": "661db837e892f8c66a62a9944772e5f7025e57cc998ea7a728015fe85f7a7bd3"
+  },
+  {
+    "path": "prototypes/phase4-unity-needle/web/src/dashboard-integration.ts",
+    "before": null,
+    "after": "f50d29c4ce02f52411090d8b36e3243640bade399d9576ae0f2cd7264a8a70d7"
+  },
+  {
+    "path": "docs/solar-integration.md",
+    "before": null,
+    "after": "d0c641b581e49940068a3eb3ad515f0c8ec94a3b48294055b51c44691ca7798d"
+  },
+  {
+    "path": "AGENTS.md",
+    "before": "a968199bf9d5040bce86da3a3d36aa55df07c39c9bfe49962843e2238b0cdf48",
+    "after": "2a8d24bdc952eacd5a007b40ccc9015857ca2c59adec17174fc30524450a20ac"
+  }
+]

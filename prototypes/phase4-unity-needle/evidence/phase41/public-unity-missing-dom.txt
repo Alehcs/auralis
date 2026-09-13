@@ -1,0 +1,45 @@
+- banner:
+  - generic: AURALIS / LAB
+  - generic: FASE 4.1 · VALIDACIÓN
+- main:
+  - heading "Un objeto. Tres entornos." [level=1]
+  - paragraph: Arrastra para orbitar · rueda o pellizca para acercar
+  - status: "No se pudo completar la prueba: No existe un GLB Unity válido en esta publicación."
+  - complementary:
+    - paragraph: CONTROLES DE PRUEBA
+    - heading "Cubo · 20 cm" [level=2]
+    - paragraph: Objeto mínimo para comprobar interacción y colocación en el entorno.
+    - paragraph: "Modo Unity: carga únicamente el GLB real con su evidencia de exportación."
+    - button "Cambiar color" [disabled]
+    - button "Girar 45°" [disabled]
+    - text: Escala
+    - status: 1.0×
+    - slider "Escala" [disabled]: "1"
+    - button "Restablecer objeto" [disabled]
+    - separator
+    - heading "Probar en tu espacio" [level=2]
+    - status: Este navegador no ofrece AR inmersiva. Puedes explorar el objeto en 3D.
+    - paragraph: "AR: mueve el teléfono hasta ver la retícula, toca para colocar; usa uno o dos dedos para ajustar. El menú de la escena ofrece la entrada AR disponible."
+    - status: Sin sesión AR.
+    - paragraph:
+      - text: "iPhone: Safari → botón AR → Needle Go → cámara. Si el botón no abre la tarjeta,"
+      - link "abrir Needle Go":
+        - /url: https://appclip.needle.tools/ar?url=https%3A%2F%2Fauralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site%2F%3Fscene%3Dunity
+      - text: . Quick Look es un visor separado y no conserva estos controles.
+    - separator
+    - generic "Abrir en otro dispositivo / QR"
+    - generic "Prueba móvil de 30 segundos"
+    - paragraph: Mide primero en 3D. Al colocar en AR se inicia otra muestra automáticamente. Sal de AR y descarga el registro. No envía datos a un servidor.
+    - button "Medir 30 s de render" [disabled]
+    - generic: Sin medición.
+    - generic: Teléfono, sistema y navegador
+    - textbox "Teléfono, sistema y navegador":
+      - /placeholder: Ej. iPhone 15 Pro, iOS…, Safari
+    - generic: Red y caché
+    - textbox "Red y caché":
+      - /placeholder: Ej. Wi-Fi, primera apertura
+    - generic: Resultado observado
+    - textbox "Resultado observado":
+      - /placeholder: QR, cámara, retícula, colocación, deriva, calor, salida/reentrada; aprobado/falló/no probado.
+    - generic "Diagnóstico técnico"
+- contentinfo: Escena técnica aislada · Sin datos solares · Unity → Needle pendiente de ejecutar en el editor.

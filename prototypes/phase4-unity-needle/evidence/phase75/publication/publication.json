@@ -1,0 +1,36 @@
+{
+  "version": {
+    "id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c~appgver_f5165f4c42c08191abc03e2c154a6102",
+    "project_id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c",
+    "version_number": 12,
+    "source": {
+      "commit_sha": "8dabe0d3b6767d9408250ad13361f27c6352f8ac"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_000000000b94820eadf610724f8595a7",
+      "content_hash": "sha256:a8a762bd44441cc3034aa1daaeeb6db77631d56bdb11b38abb29293ef3469f2b",
+      "size_bytes": 42403840,
+      "file_count": 74
+    },
+    "screenshot_url": null,
+    "deployment_id": null
+  },
+  "deployment": {
+    "id": "appgdep_6aa585006cfc819192fe63f5dab4cb21",
+    "project_id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c",
+    "title": "Auralis · Prueba técnica Fase 4",
+    "version_id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c~appgver_f5165f4c42c08191abc03e2c154a6102",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://auralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site",
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6a9dbce56b108191af6d13c5cdd1428c",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-09-12T17:00:04.151847+00:00"
+  },
+  "requested_for": "Open the approved Phase 7.5 v2 visualization on the user's iPhone",
+  "public_route": "https://auralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site/phase6/",
+  "verification": "Native Sites deployment succeeded; existing local QA reused. Physical iPhone/AR remains untested."
+}

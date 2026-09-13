@@ -1,0 +1,24 @@
+{
+  "source": {
+    "src/phase5/main.ts": "778684b7b18a2b826d784afda2c6078f8e4cf027b4fd6f035403b01bff4ee3b0",
+    "src/phase5/visual-materials.ts": "4b6c9633bed62263e33c5b2614012ac9da5bc09e0a1da0b7c1d133b77428c8f3",
+    "src/phase6/surface-shader.ts": "806eea573757b0874d87dda7f3a3962122a3142e0e7659e640a3e639c6ceac31",
+    "tests/phase71.test.mjs": "225a071829755126e7c47c0bf305c4a6de3e31e2aa4fc8c5650f671ae5bc4be0",
+    "dev/phase71-capture.mjs": "280d45cfb0449b63aff6f56078cf56295f649d759975f76f4c9ffa9deb5dcd62"
+  },
+  "video": "9a55f31772fc95238c8333f985838923dd751d7f42e22c927c348b9dc5d0b2b3",
+  "tests": {
+    "command": "npm test",
+    "passed": 25,
+    "failed": 0
+  },
+  "build": {
+    "command": "node /Users/alejandro/.codex/plugins/cache/openai-bundled/sites/0.1.66/scripts/build-site.mjs",
+    "passed": true
+  },
+  "releaseRetry": "passed",
+  "historicalPlaybackEndpoints": "passed",
+  "visualAcceptance": "pending_user_review",
+  "physicalAR": "not_tested",
+  "publication": "not_performed"
+}

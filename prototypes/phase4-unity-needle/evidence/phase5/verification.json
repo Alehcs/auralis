@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "unity_export": {
+    "unityVersion": "6000.3.17f1",
+    "exporterVersion": "5.1.12",
+    "timestampUtc": "2026-09-09T17:46:14.8707320Z",
+    "scene": "Assets/Scenes/Phase5Solar.unity",
+    "sha256": "a0473d35c351e5ec15c75c284ae2ea34e6ed103a597449935e7419189d47f619",
+    "sceneSha256": "a63f2cf066f4c2ec78fb40b7039af57e7a92190130e929f61c338377c39f5550",
+    "authoringSha256": "6f40b7e2ec545fb5d0b2099e329dcd186afbd4f131ea7f986bbe7af912c096a9",
+    "stateSha256": "0b410e8483e5aedd1784fcb5c658a396442ed9450fe55b519e8126f9b8ca567a",
+    "solarTextureSha256": "9d23056fac4d7c460f6b7215bcab66381162ce06f31289fb3662a55a2495653f",
+    "bytes": 2482256
+  },
+  "self_contained_glb": true,
+  "scientific_layers": {
+    "magnetogram": {
+      "embedded_png_exact": true,
+      "max_pixel_difference": 0,
+      "opaque": true,
+      "front_uv_orientation_preserved": true
+    },
+    "bplus": {
+      "embedded_png_exact": true,
+      "max_pixel_difference": 0,
+      "opaque": true,
+      "front_uv_orientation_preserved": true
+    },
+    "bminus": {
+      "embedded_png_exact": true,
+      "max_pixel_difference": 0,
+      "opaque": true,
+      "front_uv_orientation_preserved": true
+    }
+  },
+  "source_reference_only_2d": true,
+  "illustrative_solar_front": true,
+  "unobserved_back_label": true,
+  "protected_files_unchanged": 1959,
+  "protected_changes": [],
+  "allowed_unity_registry_change": "only new Phase5 scene registration; previous content hash preserved",
+  "state_id": "hmi-2022-03-24",
+  "model": "Coronium V3.1",
+  "physical_mobile_ar": "not_tested"
+}

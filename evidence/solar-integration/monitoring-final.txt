@@ -1,0 +1,121 @@
+ption "2016-08-18T00:00:54.000Z"
+    - option "2016-08-17T00:00:54.000Z"
+    - option "2016-08-13T00:00:54.000Z"
+    - option "2016-08-07T00:00:54.000Z"
+    - option "2016-08-06T00:00:54.000Z"
+    - option "2016-08-02T00:00:54.000Z"
+    - option "2016-08-01T00:00:54.000Z"
+    - option "2016-07-30T00:00:54.000Z"
+    - option "2016-07-29T00:00:54.000Z"
+    - option "2016-07-27T00:00:54.000Z"
+    - option "2016-07-24T00:00:54.000Z"
+    - option "2016-07-22T00:00:54.000Z"
+    - option "2016-07-21T00:00:54.000Z"
+    - option "2016-07-18T00:00:54.000Z"
+    - option "2016-07-17T00:00:54.000Z"
+    - option "2016-07-10T00:00:54.000Z"
+    - option "2016-07-07T00:00:54.000Z"
+    - option "2016-07-06T00:00:54.000Z"
+    - option "2016-07-05T00:00:54.000Z"
+    - option "2016-06-29T00:00:54.000Z"
+    - option "2016-06-28T00:00:54.000Z"
+    - option "2016-06-25T00:00:54.000Z"
+    - option "2016-06-21T00:00:54.000Z"
+    - option "2016-06-19T00:00:54.000Z"
+    - option "2016-06-16T00:00:54.000Z"
+    - option "2016-06-15T00:00:54.000Z"
+    - option "2016-06-13T00:00:54.000Z"
+    - option "2016-06-11T00:00:54.000Z"
+    - option "2016-06-09T00:00:54.000Z"
+    - option "2016-06-07T00:00:54.000Z"
+    - option "2016-06-05T00:00:54.000Z"
+    - option "2016-06-02T00:00:54.000Z"
+    - option "2016-06-01T00:00:54.000Z"
+    - option "2016-05-22T00:00:54.000Z"
+    - option "2016-05-21T00:00:54.000Z"
+    - option "2016-05-20T00:00:54.000Z"
+    - option "2016-05-19T00:00:54.000Z"
+    - option "2016-05-18T00:00:54.000Z"
+    - option "2016-05-17T00:00:54.000Z"
+    - option "2016-05-13T00:00:54.000Z"
+    - option "2016-05-08T00:00:54.000Z"
+    - option "2016-05-05T00:00:54.000Z"
+    - option "2016-05-01T00:00:54.000Z"
+    - option "2016-04-26T00:00:54.000Z"
+    - option "2016-04-25T00:00:54.000Z"
+    - option "2016-04-23T00:00:54.000Z"
+    - option "2016-04-22T00:00:54.000Z"
+    - option "2016-04-18T00:00:54.000Z"
+    - option "2016-04-15T00:00:54.000Z"
+    - option "2016-04-12T00:00:54.000Z"
+    - option "2016-04-11T00:00:54.000Z"
+    - option "2016-04-07T00:00:54.000Z"
+    - option "2016-04-06T00:00:54.000Z"
+    - option "2016-04-05T00:00:54.000Z"
+    - option "2016-04-04T00:00:54.000Z"
+    - option "2016-04-02T00:00:54.000Z"
+    - option "2016-03-31T00:00:54.000Z"
+    - option "2016-03-30T00:00:54.000Z"
+    - option "2016-03-29T00:00:54.000Z"
+    - option "2016-03-26T00:00:54.000Z"
+    - option "2016-03-25T00:00:54.000Z"
+    - option "2016-03-23T00:00:54.000Z"
+    - option "2016-03-20T00:00:54.000Z"
+    - option "2016-03-16T00:00:54.000Z"
+    - option "2016-03-10T00:00:54.000Z"
+    - option "2016-03-09T00:00:54.000Z"
+    - option "2016-03-03T00:00:54.000Z"
+    - option "2016-03-02T00:00:54.000Z"
+    - option "2016-03-01T00:00:54.000Z"
+    - option "2016-02-29T00:00:54.000Z"
+    - option "2016-02-28T00:00:54.000Z"
+    - option "2016-02-23T00:00:54.000Z"
+    - option "2016-02-21T00:00:54.000Z"
+    - option "2016-02-20T00:00:54.000Z"
+    - option "2016-02-19T00:00:54.000Z"
+    - option "2016-02-17T00:00:54.000Z"
+    - option "2016-02-14T00:00:54.000Z"
+    - option "2016-02-12T00:00:54.000Z"
+    - option "2016-02-10T00:00:54.000Z"
+    - option "2016-02-08T00:00:54.000Z"
+    - option "2016-02-06T00:00:54.000Z"
+    - option "2016-02-03T00:00:54.000Z"
+  - text: DEMO KIT
+  - button "Normal SI 1.22":
+    - text: Normal
+    - generic: SI 1.22
+  - button "Moderate SI 1.85":
+    - text: Moderate
+    - generic: SI 1.85
+  - button "Extreme SI 2.76":
+    - text: Extreme
+    - generic: SI 2.76
+  - generic: Magnetogram
+  - generic: HMI · B LOS · 2026-04-12T00:00:53.000Z
+  - generic: HMI
+  - img "SDO/HMI Magnetogram"
+  - generic: EUV 193Å
+  - generic: Synthetic HMI proxy · not observed EUV
+  - generic: DEMO
+  - img "Synthetic HMI visualization; not AIA data"
+  - generic: Prediction
+  - generic: 2026-04-12T00:00:53.000Z
+  - generic: LOCAL DATA
+  - generic: SOLAR ACTIVITY INDEX
+  - generic: "1.46"
+  - generic: "Activity band: M (internal)"
+  - generic: ACTIVITY LEVEL
+  - generic: M
+  - generic: Medium / Moderate Activity
+  - generic: HEURISTIC CONFIDENCE SCORE
+  - generic: 99.0%
+  - generic: Model
+  - generic: Coronium V3.1 · v3.1
+  - button "Grad-CAM attribution OFF":
+    - text: Grad-CAM attribution
+    - generic: "OFF"
+  - text: Black Box Test
+  - generic: Drag & drop any processed .npy magnetogram — local ONNX inference + Grad-CAM
+  - generic: OPEN
+  - paragraph: Drop a .npy magnetogram here
+  - paragraph: or click to browse · float32 · (2, 512, 512) or (512, 512)

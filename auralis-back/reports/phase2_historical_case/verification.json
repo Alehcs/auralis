@@ -1,0 +1,25 @@
+{
+  "unique_observations": 1314,
+  "csv_rows": 1763,
+  "duplicates": 449,
+  "candidates": 35,
+  "five_state_windows_up_to_10_days": 953,
+  "selected_states": 5,
+  "frozen_comparison_count": 13,
+  "frozen_max_abs_diff": 2.220446049250313e-16,
+  "deterministic_repeat_identical": true,
+  "source_hashes_verified": true,
+  "selected_region_present_in_all_srs": true,
+  "event_anchors_verified_against_noaa": true,
+  "all_local_arrays_validated": true,
+  "all_local_files_have_metadata": true,
+  "no_new_magnetograms": true,
+  "raw_fits_files": 0,
+  "date_range": [
+    "2016-02-03",
+    "2026-04-12"
+  ],
+  "selected_net_si_change_pp": 0.370556116104126,
+  "selected_relative_change_percent": 22.061939082943873,
+  "selected_prediction_net_change_pp": 0.2421565055847168
+}

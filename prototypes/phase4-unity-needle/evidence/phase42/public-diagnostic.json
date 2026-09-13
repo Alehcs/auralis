@@ -1,0 +1,37 @@
+{
+  "source": "unity-glb-loaded",
+  "build": "phase4.2-20260909-b",
+  "unityEditorExecuted": true,
+  "exportHashVerified": true,
+  "exportEvidence": {
+    "unityVersion": "6000.3.17f1",
+    "exporterVersion": "5.1.12",
+    "timestampUtc": "2026-09-09T17:00:59.9602080Z",
+    "scene": "Assets/Scenes/Phase4Probe.unity",
+    "sha256": "92ce99f4e279eaf47110ddaee595e0c52daa566d806bb05204f9e458fe9d413b",
+    "bytes": 73316
+  },
+  "arRootPresent": true,
+  "readyMs": 4956,
+  "rafSamples": 600,
+  "rafMedianMs": 8.3,
+  "rafP95Ms": 8.8,
+  "drawCalls": 1,
+  "triangles": 12,
+  "pixelRatio": 1.5,
+  "immersiveAR": false,
+  "placementCount": 0,
+  "cameraPosition": [
+    -0.5000000000000008,
+    0.40000000000000047,
+    -0.7000000000000011
+  ],
+  "orbitEnabled": true,
+  "orbitConnected": true,
+  "orbitInputEnabled": false,
+  "needleCameraActive": true,
+  "pointerDowns": 0,
+  "colorIndex": 1,
+  "objectScale": 1,
+  "rotationY": 0.7853981633974483
+}

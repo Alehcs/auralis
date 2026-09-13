@@ -4,6 +4,7 @@ This regression check focuses on validation samples with ``sunspot_index > 2.0``
 to verify whether targeted augmentation improved storm-like cases.
 """
 
+import json
 import sys
 import logging
 from pathlib import Path
@@ -20,6 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
 sys.path.insert(0, str(ROOT / "src"))
 
 from models.train_model import CoroniumV3             # noqa: E402
+from processing.model_input import prepare_model_input
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -42,12 +44,7 @@ EXTREME_THRESHOLD = 2.0
 
 
 def load_image(data_dir: Path, filename: str) -> np.ndarray:
-    img = np.load(str(data_dir / filename))
-    if img.ndim == 2:
-        b_pos = np.maximum(0.0, img)
-        b_neg = np.maximum(0.0, -img)
-        img = np.stack([b_pos, b_neg], axis=0).astype(np.float32)
-    return img.astype(np.float32)
+    return prepare_model_input(np.load(data_dir / filename, allow_pickle=False))
 
 
 def load_model(path: Path) -> CoroniumV3:
@@ -101,11 +98,10 @@ def print_table(title: str, checkpoint: str, results: List[dict]) -> float:
 
 
 def main() -> None:
-    # The historical split is positional, matching the training script that
-    # produced the two checkpoints being compared here.
-    meta      = pd.read_csv(METADATA_CSV)
-    val_start = int(len(meta) * 0.8)
-    val_meta  = meta.iloc[val_start:].reset_index(drop=True)
+    logger.warning("Historical diagnostic only: contaminated validation, not evidence of generalization")
+    meta = pd.read_csv(METADATA_CSV)
+    split = json.loads((ROOT / "models/split_indices.json").read_text())
+    val_meta = meta.iloc[split["val"]].reset_index(drop=True)
     extremes  = val_meta[val_meta["sunspot_index"] > EXTREME_THRESHOLD].reset_index(drop=True)
 
     logger.info("Validation split: %d total | %d extreme samples (index > %.1f)",

@@ -1,0 +1,18 @@
+{
+  "build": "phase71-v2",
+  "checks": {
+    "tests": 0,
+    "build": 0,
+    "protected": 0
+  },
+  "five_states_guides_match": true,
+  "five_states_frozen": true,
+  "final_SI_decline": true,
+  "same_state_frozen_image_max_RGB_difference": 0,
+  "scientific_map_image_max_RGB_difference": 0,
+  "scientific_map_clock_frozen": true,
+  "release_cleared_cache_canvas": true,
+  "retry_one_engine_20_textures": true,
+  "physical_AR": "not_tested",
+  "published": false
+}

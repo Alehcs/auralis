@@ -1,0 +1,83 @@
+--- approved/src/phase5/main.ts
++++ motion-v2/src/phase5/main.ts
+@@ -23,7 +23,7 @@
+ const abort = new AbortController();
+ const events:Record<string,unknown>[]=[];
+ const samples:Record<string,unknown>[]=[];
+-const diag:Record<string,unknown>={build:isTemporal?'phase75-v1':'phase5-visual-polish-v1',engine:'5.1.12',source:'waiting-for-real-unity',errors:[],physicalValidation:'not_tested',placementCount:0,layer:'solar'};
++const diag:Record<string,unknown>={build:isTemporal?'phase75-v2':'phase5-visual-polish-v1',engine:'5.1.12',source:'waiting-for-real-unity',errors:[],physicalValidation:'not_tested',placementCount:0,layer:'solar'};
+ const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ let context:Context|undefined, object:Object3D|undefined, orbit:OrbitControls|undefined;
+ let element:HTMLElement|undefined, removePlaced:(()=>void)|undefined;
+@@ -202,7 +202,7 @@
+   ctx.post_render_callbacks.push(()=>{
+     const now=performance.now(),info=ctx.renderer.info;
+     if(sample&&lastFrame!==info.render.frame){const mode=ctx.renderer.xr.isPresenting?'xr':'web3d';if(mode!==sample.mode)stopSample('interrupted-mode-change');else if(info.render.calls>0)sample.times.push(now);}lastFrame=info.render.frame;
+-    if(now-lastStats>500){lastStats=now;Object.assign(diag,{status:'ready',layer,scale,autoRotate:automatic,illustrativeTime:visualTime,illustrativeMotion:plasma,...(isTemporal?{surfaceSeed:SURFACE_SEED,surfaceVisible,surfaceGuideState:data.state.id,surfaceGuideMaps:[visual?.guidePlus.value?.name,visual?.guideMinus.value?.name],surfaceShader:visual?.guidePlus.value?'anchored-hmi-v75':null}:{}),drawCalls:info.render.calls,triangles:info.render.triangles,renderFrames:info.render.frame,gpuTextures:info.memory.textures,gpuGeometries:info.memory.geometries,retainedEvents:events.length,pixelRatio:ctx.renderer.getPixelRatio(),cameraPosition:ctx.mainCamera.position.toArray(),cameraDistance:ctx.mainCamera.position.distanceTo(rootPosition),orbitEnabled:!!orbit?.controls?.enabled,canvasAttached:ctx.renderer.domElement.isConnected,engineElements:document.querySelectorAll('needle-engine').length});$('diagnostics').textContent=JSON.stringify(diag,null,2);}
++    if(now-lastStats>500){lastStats=now;Object.assign(diag,{status:'ready',layer,scale,autoRotate:automatic,illustrativeTime:visualTime,illustrativeMotion:plasma,...(isTemporal?{surfaceSeed:SURFACE_SEED,surfaceVisible,surfaceGuideState:data.state.id,surfaceGuideMaps:[visual?.guidePlus.value?.name,visual?.guideMinus.value?.name],surfaceShader:visual?.guidePlus.value?'anchored-hmi-v75-2':null}:{}),drawCalls:info.render.calls,triangles:info.render.triangles,renderFrames:info.render.frame,gpuTextures:info.memory.textures,gpuGeometries:info.memory.geometries,retainedEvents:events.length,pixelRatio:ctx.renderer.getPixelRatio(),cameraPosition:ctx.mainCamera.position.toArray(),cameraDistance:ctx.mainCamera.position.distanceTo(rootPosition),orbitEnabled:!!orbit?.controls?.enabled,canvasAttached:ctx.renderer.domElement.isConnected,engineElements:document.querySelectorAll('needle-engine').length});$('diagnostics').textContent=JSON.stringify(diag,null,2);}
+   });
+   temporal?.activate();scientific?.setEnabled(true);if(temporal&&visual){const texture=temporal.bundles[temporal.index].textures.get('solar')!;visual.solarFrom.value=texture;visual.solarTo.value=texture;}showLayer(layer);setScale(scale);setAutomatic(false);buttons(true);diag.source='unity-glb-loaded';diag.readyMs=Math.round(performance.now()-started);diag.exportHashVerified=true;diag.exportEvidence=evidence;
+   $('load-status').textContent='Unity → Needle · escena y recursos verificados';clearTimeout(timer);$('retry').hidden=true;record('ready');
+--- approved/src/phase5/visual-materials.ts
++++ motion-v2/src/phase5/visual-materials.ts
+@@ -49,7 +49,7 @@
+     for(const material of Array.isArray(o.material)?o.material:[o.material]) {
+       if(solar&&temporal)decoration.value=(material as Material&{map:Texture}).map;
+       material.toneMapped=false;
+-      material.customProgramCacheKey=()=>solar?(temporal?'auralis-solar-motion-v75':'auralis-solar-polish-v1'):'auralis-data-display-'+o.name;
++      material.customProgramCacheKey=()=>solar?(temporal?'auralis-solar-motion-v75-2':'auralis-solar-polish-v1'):'auralis-data-display-'+o.name;
+       material.onBeforeCompile=(shader:Parameters<Material['onBeforeCompile']>[0])=>{
+         shader.uniforms.uIllustrationTime=time;shader.uniforms.uDisplayGain=gain;shader.uniforms.uStateFade=fade;
+         shader.fragmentShader='uniform float uStateFade;\n'+shader.fragmentShader;
+--- approved/src/phase6/surface-shader.ts
++++ motion-v2/src/phase6/surface-shader.ts
+@@ -61,7 +61,9 @@
+   vec3 anchoredRatio=clamp((diffuseColor.rgb+.002)/(original+.002),vec3(.018),vec3(2.3));
+   float dark=1.0-smoothstep(.15,.9,dot(anchoredRatio,vec3(.2126,.7152,.0722)));
+   float rate=mix(.09,.16,solarNoise(n.yzx*11.0+vec3(uSurfaceSeed)));
+-  float t=uIllustrationTime*rate;
++  // Only the presentation rate changes; t=0 and all spatial formulas stay exact.
++  float motionTime=uIllustrationTime*1.65;
++  float t=motionTime*rate;
+   vec3 flow=vec3(solarNoise(n*9.0+vec3(t,7.3,3.1)),solarNoise(n.yzx*11.0+vec3(5.7,t*.81,19.1)),solarNoise(n.zxy*8.0+vec3(3.1,1.7,t*.73)))-.5;
+   vec3 p=n*28.0+flow*.85;
+   vec3 warp=vec3(solarFbm(p),solarFbm(p.yzx+13.1),solarNoise(p.zxy+8.7));
+@@ -89,7 +91,7 @@
+     float phase=angle*23.0+solarNoise(n*45.0)*1.9;
+     float ridge=pow(.5+.5*sin(phase),10.0);
+     ridge=mix(.15,ridge,1.0-smoothstep(.8,3.5,fwidth(phase)));
+-    float current=.65+.35*solarNoise(n*84.0+vec3(uIllustrationTime*.20,float(i),0));
++    float current=.65+.35*solarNoise(n*84.0+vec3(motionTime*.20,float(i),0));
+     arcadeLight+=mask*ridge*current;
+   }
+   arcadeLight=min(1.6,arcadeLight)*front;
+--- approved/src/phase6/activity-loops.ts
++++ motion-v2/src/phase6/activity-loops.ts
+@@ -71,11 +71,12 @@
+       attribute vec3 aTangent; attribute float aPhase;
+       uniform float uTime; varying vec2 vUv; varying float vPhase;
+       void main(){
++        float motionTime=uTime*1.65;
+         vUv=uv;vPhase=aPhase;
+         float arc=sin(uv.x*3.14159265);
+         vec3 n=normalize(position);
+         // Bounded sub-strand sway vanishes at both fixed HMI anchors.
+-        vec3 pos=position+n*(.00065*arc*sin(uv.x*9.0-uTime*.38+aPhase));
++        vec3 pos=position+n*(.00065*arc*sin(uv.x*9.0-motionTime*.38+aPhase));
+         vec4 mv=modelViewMatrix*vec4(pos,1.0);
+         vec3 tangent=normalize(mat3(modelViewMatrix)*aTangent);
+         vec3 across=normalize(cross(tangent,normalize(-mv.xyz)));
+@@ -86,10 +87,11 @@
+     fragmentShader:/* glsl */`
+       uniform float uTime; uniform float uFade; varying vec2 vUv; varying float vPhase;
+       void main(){
++        float motionTime=uTime*1.65;
+         float crossSection=.40*exp(-vUv.y*vUv.y*12.0)+.12*exp(-vUv.y*vUv.y*2.0);
+         float ends=.35+.65*pow(sin(vUv.x*3.14159265),.32);
+-        float flow=.64+.36*sin(vUv.x*16.0-uTime*.9+vPhase);
+-        float fine=.85+.15*sin(vUv.x*43.0-uTime*.6+vPhase*2.0);
++        float flow=.64+.36*sin(vUv.x*16.0-motionTime*.9+vPhase);
++        float fine=.85+.15*sin(vUv.x*43.0-motionTime*.6+vPhase*2.0);
+         float alpha=crossSection*ends*flow*fine*.62*uFade;
+         gl_FragColor=vec4(mix(vec3(1.0,.48,.09),vec3(1.0,.91,.50),flow),alpha);
+       }`});

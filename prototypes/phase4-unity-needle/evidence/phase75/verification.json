@@ -1,0 +1,192 @@
+{
+  "protected_files_unchanged": 2061,
+  "pairs": {
+    "full": "same HMI29, camera, scale, scientific values, DPR and presentation clock",
+    "close": "same HMI29, camera, scale, scientific values, DPR and presentation clock",
+    "motion": "same HMI29, camera, scale, scientific values, DPR and presentation clock"
+  },
+  "exact_pixels": {
+    "baseline identity": true,
+    "final identity after restoration": true,
+    "return 24": true,
+    "return 25": true,
+    "return 28": true,
+    "return 29": true,
+    "return 30": true,
+    "magnetogram frozen": true,
+    "magnetogram unchanged from 7.4": true,
+    "bplus frozen": true,
+    "bplus unchanged from 7.4": true,
+    "bminus frozen": true,
+    "bminus unchanged from 7.4": true,
+    "before motion pause": true,
+    "after motion pause": true,
+    "surface paused": true
+  },
+  "physical_ar": "not_tested",
+  "visual_acceptance": "user_review",
+  "HMI_signed_supports": {
+    "24": {
+      "regions": 9,
+      "strands": 126,
+      "triangles": 38690,
+      "draw_calls": 4
+    },
+    "25": {
+      "regions": 8,
+      "strands": 112,
+      "triangles": 37122,
+      "draw_calls": 4
+    },
+    "28": {
+      "regions": 12,
+      "strands": 168,
+      "triangles": 43394,
+      "draw_calls": 4
+    },
+    "29": {
+      "regions": 12,
+      "strands": 168,
+      "triangles": 43394,
+      "draw_calls": 4
+    },
+    "30": {
+      "regions": 12,
+      "strands": 168,
+      "triangles": 43394,
+      "draw_calls": 4
+    }
+  },
+  "controls": "forward/back, event, surface pause, zoom, scale, orbit, release/retry passed",
+  "responsive": {
+    "requested": {
+      "width": 393,
+      "height": 852
+    },
+    "actual": {
+      "height": 852,
+      "scrollWidth": 393,
+      "width": 393
+    },
+    "states": [
+      {
+        "state": "hmi-2022-03-24",
+        "arcades": "hmi-2022-03-24",
+        "cache": 20,
+        "errors": []
+      },
+      {
+        "state": "hmi-2022-03-25",
+        "arcades": "hmi-2022-03-25",
+        "cache": 20,
+        "errors": []
+      },
+      {
+        "state": "hmi-2022-03-28",
+        "arcades": "hmi-2022-03-28",
+        "cache": 20,
+        "errors": []
+      },
+      {
+        "state": "hmi-2022-03-29",
+        "arcades": "hmi-2022-03-29",
+        "cache": 20,
+        "errors": []
+      },
+      {
+        "state": "hmi-2022-03-30",
+        "arcades": "hmi-2022-03-30",
+        "cache": 20,
+        "errors": []
+      }
+    ]
+  },
+  "AR_DOM": "real shared controls exercised in desktop DOM; not a physical XR session",
+  "before_performance": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase74-v1",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-29",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.4492935982947064e-16,
+      0.5000000000000001,
+      -2
+    ],
+    "frames": 1800,
+    "durationMs": 30001,
+    "renderHz": 59.998000066664446,
+    "medianIntervalMs": 16.69999998807907,
+    "p95IntervalMs": 18.599999994039536,
+    "intervalsOver50ms": 0,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "after_performance": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase75-v1",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-29",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.4492935982947064e-16,
+      0.5000000000000001,
+      -2
+    ],
+    "frames": 1795,
+    "durationMs": 30001.899999976158,
+    "renderHz": 59.82954412891938,
+    "medianIntervalMs": 16.69999998807907,
+    "p95IntervalMs": 18.69999998807907,
+    "intervalsOver50ms": 2,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "unchanged_shaders": {
+    "IllustrativeSphere": true,
+    "Layer_magnetogram": true,
+    "Layer_bplus": true,
+    "Layer_bminus": true
+  },
+  "temporary_instrumentation_removed": true,
+  "video": {
+    "duration": "9.000000",
+    "size": "4024260"
+  },
+  "after_performance_additional": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase75-v1",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-29",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.449293598292194e-16,
+      0.5000000000000001,
+      -1.9999999999979483
+    ],
+    "frames": 1800,
+    "durationMs": 30000.59999999404,
+    "renderHz": 59.99880002401144,
+    "medianIntervalMs": 16.69999998807907,
+    "p95IntervalMs": 18.69999998807907,
+    "intervalsOver50ms": 0,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "video_playback": {
+    "currentTime": 9,
+    "duration": 9,
+    "ended": true,
+    "error": null,
+    "height": 946,
+    "readyState": 4,
+    "width": 2412
+  },
+  "final_browser_errors": [],
+  "tests": 26,
+  "build": "passed",
+  "passed": true
+}

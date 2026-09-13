@@ -1,0 +1,14 @@
+{
+  "unity/Assets/Editor/Phase5Solar.cs": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+  "unity/Assets/Scenes/Phase5Solar.unity": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+  "web/src/phase5/main.ts": "603f40dee7d3cc31d22e71acedf0d39bdaa47ccec95c968fc254b18be2bc75b9",
+  "web/src/phase5/visual-materials.ts": "aab6120c42ae02d364486a9296978e15127bf95b457795b9da948504fea6590c",
+  "web/src/phase5/style.css": "31a97960b0dffff5d39ccd14569b9a5d9bff3306d6cea2ee5112a963389bc25c",
+  "web/phase5/index.html": "e9601bd3f26a111c746d26277a1956e13d1d43e5135afa97c3a89ca5f53b3a3b",
+  "web/public/phase5/export-evidence.json": "ea4f0847359aebd97761e509df98dfec5b395e0a53b4d70b0fef75f55decb0b2",
+  "web/public/phase5/state.json": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+  "scripts/build-phase5-assets.py": "be80f4cf04c7a064e29a4b81e77836458c304e380e674706ff60f58effda5c41",
+  "scripts/verify-phase5.py": "6a2fe58bb12ea80fa1c380effc15db617ff511e7c35bee27560b4e25dd3ad7f6",
+  "scripts/audit-phase5-public.py": "9dfdab679219d06b7069c47d6ca50fe1287edb4bdf8ac9b929daa507fa53aee8",
+  "scripts/prepare-phase5.sh": "213b7a3031ecf94e6e5a153d345a26858fe52ab2a54caf77d12e70c4d58b1b90"
+}

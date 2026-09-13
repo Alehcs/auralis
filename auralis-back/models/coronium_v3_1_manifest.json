@@ -1,0 +1,56 @@
+{
+  "model_name": "Coronium V3.1",
+  "model_version": "3.1",
+  "status": "promoted",
+  "created_utc": "2026-09-06T03:00:15.388906+00:00",
+  "source_run": "experiments/phase15_runs/20260905T132456995672Z",
+  "best_epoch": 40,
+  "parameters": 206875,
+  "input_contract": "hmi-clip400-polarity-v1",
+  "target_contract": "strong-field-pixel-percent-200G-v1",
+  "onnx_export": {
+    "opset": 18,
+    "mode": "eval",
+    "dynamic_batch": true,
+    "external_data": false,
+    "bytes": 835234
+  },
+  "artifacts_sha256": {
+    "models/best_coronium_v3_1.pth": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+    "models/best_coronium_v3_1.onnx": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+    "models/coronium_v3_1_metrics.json": "ab15d2acece7c7b820a106d4472a7e651abdd2900c0fc027f4e7b6e2adb01d92",
+    "reports/phase16_coronium_v3_1/coronium_v3_1_mc_results_comparison.csv": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "reports/phase16_coronium_v3_1/coronium_v3_1_mc_predictions.csv": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "reports/phase16_coronium_v3_1/coronium_v3_1_deterministic_predictions.csv": "34ab84d025e5dcb246cec57a33760ae2c4a23c51bc94dd4e64e977a49ae008f3"
+  },
+  "sources_sha256": {
+    "experiments/phase15_runs/20260905T132456995672Z/best.pth": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+    "experiments/phase15_runs/20260905T132456995672Z/manifest.json": "5450c338971d270a05ab96413c283796fa6c5c034c45da4435e7013c0d3017f6",
+    "experiments/phase15_runs/20260905T132456995672Z/verification.json": "c721dae15df829d045d8a7e6117eb2fc50155b8236197f7cf103f4f08add8132",
+    "experiments/phase15_runs/20260905T132456995672Z/phase15_protocol.json": "dc6a4343ea35faafcfdc362d0b835c3c7c26c2884d6ad62e2dcb19bff1fda20a",
+    "experiments/phase15_runs/20260905T132456995672Z/environment.json": "2ba9812e77cfdc3718c32810ed23b8ad4b9569e6cc42f01a6c72fb7580106551",
+    "experiments/phase15_runs/20260905T132456995672Z/history.json": "23a538648d369aa8e3e6e206d7a66732b4379576e729f3513502416c2dd8337b",
+    "experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_v1/manifest.json": "799860f619443f832e4dec8e3989364dcaaf3c0fa339fdd06bde091066c5d20c",
+    "experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_v1/predictions.csv": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "models/split_indices_phase1_v1.json": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+    "data/processed/metadata_processed.csv": "baedaf612234239f044b9240a1e6426e0ac3cc5064a995cda8050eb9db84e11f",
+    "src/models/train_model.py": "f984d1ee319a115ebf9112ef4687c8690c0282d0a5d1c1b5fc410a74b00dbe1e",
+    "src/processing/model_input.py": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+    "scripts/promote_coronium_v3_1.py": "8a80d18faa6144a7d0dd9758eeedf4ccf38c1df4ce8f0dffd26b40fd3092c44b",
+    "scripts/export_to_onnx.py": "97a19c7e4ec12e1979ff6440f5f06827cca2d42f057b340332a72bc374b45dca"
+  },
+  "environment": {
+    "python": "3.12.7",
+    "torch": "2.11.0",
+    "onnxruntime": "1.25.1",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "export_parity": {
+    "observations": 263,
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "max_abs_difference": 1.1920928955078125e-06,
+    "dynamic_batch_2": "passed"
+  },
+  "preserved_artifacts": 127
+}

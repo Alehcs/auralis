@@ -1,0 +1,12 @@
+{
+  "mode": "web3d",
+  "status": "completed",
+  "layer": "solar",
+  "frames": 1788,
+  "durationMs": 30001,
+  "renderHz": 59.598013399553345,
+  "medianIntervalMs": 16.69999998807907,
+  "p95IntervalMs": 17.400000005960464,
+  "intervalsOver50ms": 0,
+  "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+}

@@ -1,0 +1,2 @@
+PENDIENTE: instalar y activar Unity 6.3 LTS en Unity Hub.
+Si ya existe otra versión 6000.3, definir UNITY_EDITOR con su ejecutable.

@@ -1,0 +1,15 @@
+{
+  "previous_hero": "hmi-2022-03-24",
+  "record_utc": "2022-03-24T00:00:53.000Z",
+  "evidence": [
+    "evidence/phase71/revision4/before-full.json",
+    "evidence/phase71/revision4/after-full.json",
+    "evidence/phase71/revision4/before-close.json",
+    "evidence/phase71/revision4/after-close.json"
+  ],
+  "previous_initial_index": 0,
+  "selected_hero": "hmi-2022-03-29",
+  "selected_record_utc": "2022-03-29T00:00:53.000Z",
+  "reason": "Preferred by user; broader frontal group of magnetic concentrations in equal-camera revision4 images. 30 March has no separate material polish.",
+  "scope": "Shared temporal material; scientific source data unchanged."
+}

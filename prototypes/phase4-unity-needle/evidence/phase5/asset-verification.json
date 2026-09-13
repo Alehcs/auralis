@@ -1,0 +1,56 @@
+{
+  "state_id": "hmi-2022-03-24",
+  "source_hash_verified": true,
+  "shape": [
+    512,
+    512
+  ],
+  "channel_means": [
+    0.0062681349526047415,
+    0.005543777343080284
+  ],
+  "channels_match_contract": true,
+  "reconstruction_exact": true,
+  "png_pixels_match_all_262144_positions": true,
+  "witnesses": [
+    {
+      "row": 157,
+      "column": 28,
+      "x": 1.0,
+      "magnetogram": 255,
+      "bplus": 255,
+      "bminus": 0
+    },
+    {
+      "row": 188,
+      "column": 462,
+      "x": -1.0,
+      "magnetogram": 0,
+      "bplus": 0,
+      "bminus": 255
+    },
+    {
+      "row": 123,
+      "column": 317,
+      "x": 0.025292836129665375,
+      "magnetogram": 131,
+      "bplus": 6,
+      "bminus": 0
+    },
+    {
+      "row": 381,
+      "column": 114,
+      "x": 0.0033350461162626743,
+      "magnetogram": 128,
+      "bplus": 1,
+      "bminus": 0
+    }
+  ],
+  "output_hashes": {
+    "magnetogram.png": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027",
+    "bplus.png": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3",
+    "bminus.png": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755",
+    "no-data-label.png": "032c4c5cfa39718262e5dc95e7d58093adc6ff027e7fc6685db0396e6ca85bf4",
+    "state.json": "0b410e8483e5aedd1784fcb5c658a396442ed9450fe55b519e8126f9b8ca567a"
+  }
+}

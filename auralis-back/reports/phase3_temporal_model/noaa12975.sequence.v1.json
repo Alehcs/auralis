@@ -1,0 +1,1005 @@
+{
+  "schema_version": "1.0.0",
+  "sequence_id": "noaa12975-20220324-20220330-v1",
+  "title": "NOAA 12975 context / full-disk HMI historical SI",
+  "path_base": "auralis-back",
+  "scope": "full_disk_SI_with_regional_catalog_context",
+  "independent_test": false,
+  "event_catalog_scope": "Six selected Phase 2 NOAA 12975 M/X events; not exhaustive; includes post-sequence context.",
+  "model": {
+    "id": "coronium-3.1",
+    "name": "Coronium V3.1",
+    "version": "3.1",
+    "manifest_ref": "models/coronium_v3_1_manifest.json",
+    "checkpoint_ref": "models/best_coronium_v3_1.pth",
+    "onnx_ref": "models/best_coronium_v3_1.onnx"
+  },
+  "preprocessing": {
+    "id": "hmi-clip400-polarity-v1",
+    "version": "1",
+    "source_ref": "src/processing/model_input.py",
+    "stored_input": "clip(resize(B_LOS),-400,400)/400",
+    "input_transform": "[max(x,0),max(-x,0)]",
+    "target_contract": "strong-field-pixel-percent-200G-v1",
+    "target_transform": "none",
+    "target_definition": "100 * count(abs(original B_LOS)>200 G) / original_pixel_count"
+  },
+  "states": [
+    {
+      "id": "hmi-2022-03-24",
+      "order": 1,
+      "observation": {
+        "id": "hmi-2022-03-24-observation",
+        "kind": "observational",
+        "scope": "full_disk",
+        "magnetogram": {
+          "artifact_ref": "data/processed/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+          "filename": "hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+          "shape": [
+            512,
+            512
+          ],
+          "dtype": "float32",
+          "unit": "dimensionless_clip400"
+        },
+        "time": {
+          "record_tai": "2022-03-24T00:01:30",
+          "record_utc": "2022-03-24T00:00:53.000Z",
+          "source": "filename_record_time",
+          "exposure_utc": null,
+          "csv_date_unknown_scale": "2022-03-24 00:00:28.900"
+        },
+        "region_context": {
+          "noaa": 12975,
+          "harp": 8088,
+          "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+          "harp_noaa_lifetime_mapping": [
+            12975,
+            12976,
+            12977,
+            12984
+          ],
+          "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+          "location": {
+            "reported": "N13E63",
+            "coordinate_system": "SRS_heliographic_cardinal_text",
+            "valid_utc": "2022-03-24T00:00:00Z",
+            "issued_utc": "2022-03-24T00:30:00Z",
+            "source_ref": "reports/phase2_historical_case/sources/20220324SRS.txt",
+            "source_line": 12,
+            "raw_line": "2975 N13E63   078  0160 Dao  11   05 Beta",
+            "pixel_position": null
+          },
+          "magnetic_type": "Beta",
+          "area_millionths_solar_hemisphere": 160.0,
+          "other_noaa_regions": [
+            12974
+          ],
+          "wcs": null,
+          "region_mask": null,
+          "magnetic_field_3d": null
+        },
+        "target_si": {
+          "value": 1.679617166519165,
+          "unit": "percent_original_full_disk_pixels",
+          "contract": "strong-field-pixel-percent-200G-v1",
+          "provenance": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy",
+          "source_ref": "data/processed/metadata_processed.csv",
+          "metadata_row_indices": [
+            807,
+            808
+          ]
+        },
+        "split": "train",
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "source_csv_row_1based": 1
+      },
+      "coronium_results": {
+        "kind": "model_inference",
+        "model_ref": "coronium-3.1",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "prediction_si": 1.4705196619033813,
+        "unit": "SI_percentage_points",
+        "api_display_4dp": 1.4705,
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "grad_cam": {
+          "status": "not_available",
+          "artifact_ref": null,
+          "reason": "No frozen Grad-CAM artifact with matching state/model provenance was found; not generated in Phase 3.",
+          "interpretation": "Model attribution, not a region mask, probability, magnetic field or flare measurement."
+        }
+      },
+      "derived": {
+        "kind": "observation_derived",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "polarity": {
+          "unit": "dimensionless_clip400",
+          "scope": "full_512x512_array",
+          "shape": [
+            2,
+            512,
+            512
+          ],
+          "channel_order": [
+            "B_plus",
+            "B_minus_magnitude"
+          ],
+          "recipe": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)",
+          "b_plus_mean": 0.0062681349526047415,
+          "b_minus_magnitude_mean": 0.005543777343080284,
+          "channel_storage": "reconstruct_from_magnetogram",
+          "physical_flux": null
+        },
+        "delta_target_si_pp": null,
+        "gap_seconds": null
+      },
+      "visual": {
+        "kind": "visual_only",
+        "assets": [],
+        "spatial_registration": "unavailable",
+        "interpolation": "none"
+      }
+    },
+    {
+      "id": "hmi-2022-03-25",
+      "order": 2,
+      "observation": {
+        "id": "hmi-2022-03-25-observation",
+        "kind": "observational",
+        "scope": "full_disk",
+        "magnetogram": {
+          "artifact_ref": "data/processed/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+          "filename": "hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+          "shape": [
+            512,
+            512
+          ],
+          "dtype": "float32",
+          "unit": "dimensionless_clip400"
+        },
+        "time": {
+          "record_tai": "2022-03-25T00:01:30",
+          "record_utc": "2022-03-25T00:00:53.000Z",
+          "source": "filename_record_time",
+          "exposure_utc": null,
+          "csv_date_unknown_scale": "2022-03-25 00:00:29.000"
+        },
+        "region_context": {
+          "noaa": 12975,
+          "harp": 8088,
+          "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+          "harp_noaa_lifetime_mapping": [
+            12975,
+            12976,
+            12977,
+            12984
+          ],
+          "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+          "location": {
+            "reported": "N14E55",
+            "coordinate_system": "SRS_heliographic_cardinal_text",
+            "valid_utc": "2022-03-25T00:00:00Z",
+            "issued_utc": "2022-03-25T00:30:00Z",
+            "source_ref": "reports/phase2_historical_case/sources/20220325SRS.txt",
+            "source_line": 12,
+            "raw_line": "2975 N14E55   075  0160 Cao  09   05 Beta",
+            "pixel_position": null
+          },
+          "magnetic_type": "Beta",
+          "area_millionths_solar_hemisphere": 160.0,
+          "other_noaa_regions": [
+            12974,
+            12976
+          ],
+          "wcs": null,
+          "region_mask": null,
+          "magnetic_field_3d": null
+        },
+        "target_si": {
+          "value": 1.7170906066894531,
+          "unit": "percent_original_full_disk_pixels",
+          "contract": "strong-field-pixel-percent-200G-v1",
+          "provenance": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy",
+          "source_ref": "data/processed/metadata_processed.csv",
+          "metadata_row_indices": [
+            809
+          ]
+        },
+        "split": "train",
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "source_csv_row_1based": 2
+      },
+      "coronium_results": {
+        "kind": "model_inference",
+        "model_ref": "coronium-3.1",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "prediction_si": 1.4772802591323853,
+        "unit": "SI_percentage_points",
+        "api_display_4dp": 1.4773,
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "grad_cam": {
+          "status": "not_available",
+          "artifact_ref": null,
+          "reason": "No frozen Grad-CAM artifact with matching state/model provenance was found; not generated in Phase 3.",
+          "interpretation": "Model attribution, not a region mask, probability, magnetic field or flare measurement."
+        }
+      },
+      "derived": {
+        "kind": "observation_derived",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "polarity": {
+          "unit": "dimensionless_clip400",
+          "scope": "full_512x512_array",
+          "shape": [
+            2,
+            512,
+            512
+          ],
+          "channel_order": [
+            "B_plus",
+            "B_minus_magnitude"
+          ],
+          "recipe": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)",
+          "b_plus_mean": 0.006235762151152218,
+          "b_minus_magnitude_mean": 0.005921201975936138,
+          "channel_storage": "reconstruct_from_magnetogram",
+          "physical_flux": null
+        },
+        "delta_target_si_pp": 0.037473440170288086,
+        "gap_seconds": 86400
+      },
+      "visual": {
+        "kind": "visual_only",
+        "assets": [],
+        "spatial_registration": "unavailable",
+        "interpolation": "none"
+      }
+    },
+    {
+      "id": "hmi-2022-03-28",
+      "order": 3,
+      "observation": {
+        "id": "hmi-2022-03-28-observation",
+        "kind": "observational",
+        "scope": "full_disk",
+        "magnetogram": {
+          "artifact_ref": "data/processed/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+          "filename": "hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+          "shape": [
+            512,
+            512
+          ],
+          "dtype": "float32",
+          "unit": "dimensionless_clip400"
+        },
+        "time": {
+          "record_tai": "2022-03-28T00:01:30",
+          "record_utc": "2022-03-28T00:00:53.000Z",
+          "source": "filename_record_time",
+          "exposure_utc": null,
+          "csv_date_unknown_scale": "2022-03-28 00:00:29.500"
+        },
+        "region_context": {
+          "noaa": 12975,
+          "harp": 8088,
+          "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+          "harp_noaa_lifetime_mapping": [
+            12975,
+            12976,
+            12977,
+            12984
+          ],
+          "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+          "location": {
+            "reported": "N12E05",
+            "coordinate_system": "SRS_heliographic_cardinal_text",
+            "valid_utc": "2022-03-28T00:00:00Z",
+            "issued_utc": "2022-03-28T00:30:00Z",
+            "source_ref": "reports/phase2_historical_case/sources/20220328SRS.txt",
+            "source_line": 12,
+            "raw_line": "2975 N12E05   085  0050 Csi  09   22 Beta",
+            "pixel_position": null
+          },
+          "magnetic_type": "Beta",
+          "area_millionths_solar_hemisphere": 50.0,
+          "other_noaa_regions": [
+            12974,
+            12976,
+            12977,
+            12978
+          ],
+          "wcs": null,
+          "region_mask": null,
+          "magnetic_field_3d": null
+        },
+        "target_si": {
+          "value": 1.947987079620361,
+          "unit": "percent_original_full_disk_pixels",
+          "contract": "strong-field-pixel-percent-200G-v1",
+          "provenance": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy",
+          "source_ref": "data/processed/metadata_processed.csv",
+          "metadata_row_indices": [
+            810
+          ]
+        },
+        "split": "selection_validation",
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "source_csv_row_1based": 3
+      },
+      "coronium_results": {
+        "kind": "model_inference",
+        "model_ref": "coronium-3.1",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "prediction_si": 1.6562585830688477,
+        "unit": "SI_percentage_points",
+        "api_display_4dp": 1.6563,
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "grad_cam": {
+          "status": "not_available",
+          "artifact_ref": null,
+          "reason": "No frozen Grad-CAM artifact with matching state/model provenance was found; not generated in Phase 3.",
+          "interpretation": "Model attribution, not a region mask, probability, magnetic field or flare measurement."
+        }
+      },
+      "derived": {
+        "kind": "observation_derived",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "polarity": {
+          "unit": "dimensionless_clip400",
+          "scope": "full_512x512_array",
+          "shape": [
+            2,
+            512,
+            512
+          ],
+          "channel_order": [
+            "B_plus",
+            "B_minus_magnitude"
+          ],
+          "recipe": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)",
+          "b_plus_mean": 0.007608640984100997,
+          "b_minus_magnitude_mean": 0.007773590685873131,
+          "channel_storage": "reconstruct_from_magnetogram",
+          "physical_flux": null
+        },
+        "delta_target_si_pp": 0.23089647293090798,
+        "gap_seconds": 259200
+      },
+      "visual": {
+        "kind": "visual_only",
+        "assets": [],
+        "spatial_registration": "unavailable",
+        "interpolation": "none"
+      }
+    },
+    {
+      "id": "hmi-2022-03-29",
+      "order": 4,
+      "observation": {
+        "id": "hmi-2022-03-29-observation",
+        "kind": "observational",
+        "scope": "full_disk",
+        "magnetogram": {
+          "artifact_ref": "data/processed/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+          "filename": "hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+          "shape": [
+            512,
+            512
+          ],
+          "dtype": "float32",
+          "unit": "dimensionless_clip400"
+        },
+        "time": {
+          "record_tai": "2022-03-29T00:01:30",
+          "record_utc": "2022-03-29T00:00:53.000Z",
+          "source": "filename_record_time",
+          "exposure_utc": null,
+          "csv_date_unknown_scale": "2022-03-29 00:00:29.600"
+        },
+        "region_context": {
+          "noaa": 12975,
+          "harp": 8088,
+          "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+          "harp_noaa_lifetime_mapping": [
+            12975,
+            12976,
+            12977,
+            12984
+          ],
+          "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+          "location": {
+            "reported": "N13W12",
+            "coordinate_system": "SRS_heliographic_cardinal_text",
+            "valid_utc": "2022-03-29T00:00:00Z",
+            "issued_utc": "2022-03-29T00:30:00Z",
+            "source_ref": "reports/phase2_historical_case/sources/20220329SRS.txt",
+            "source_line": 12,
+            "raw_line": "2975 N13W12   089  0210 Dac  10   26 Beta-Gamma",
+            "pixel_position": null
+          },
+          "magnetic_type": "Beta-Gamma",
+          "area_millionths_solar_hemisphere": 210.0,
+          "other_noaa_regions": [
+            12974,
+            12976,
+            12977,
+            12978,
+            12979,
+            12980
+          ],
+          "wcs": null,
+          "region_mask": null,
+          "magnetic_field_3d": null
+        },
+        "target_si": {
+          "value": 2.057671546936035,
+          "unit": "percent_original_full_disk_pixels",
+          "contract": "strong-field-pixel-percent-200G-v1",
+          "provenance": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy",
+          "source_ref": "data/processed/metadata_processed.csv",
+          "metadata_row_indices": [
+            811,
+            812
+          ]
+        },
+        "split": "train",
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "source_csv_row_1based": 4
+      },
+      "coronium_results": {
+        "kind": "model_inference",
+        "model_ref": "coronium-3.1",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "prediction_si": 1.6834452152252197,
+        "unit": "SI_percentage_points",
+        "api_display_4dp": 1.6834,
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "grad_cam": {
+          "status": "not_available",
+          "artifact_ref": null,
+          "reason": "No frozen Grad-CAM artifact with matching state/model provenance was found; not generated in Phase 3.",
+          "interpretation": "Model attribution, not a region mask, probability, magnetic field or flare measurement."
+        }
+      },
+      "derived": {
+        "kind": "observation_derived",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "polarity": {
+          "unit": "dimensionless_clip400",
+          "scope": "full_512x512_array",
+          "shape": [
+            2,
+            512,
+            512
+          ],
+          "channel_order": [
+            "B_plus",
+            "B_minus_magnitude"
+          ],
+          "recipe": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)",
+          "b_plus_mean": 0.008250998468878298,
+          "b_minus_magnitude_mean": 0.008527068185061213,
+          "channel_storage": "reconstruct_from_magnetogram",
+          "physical_flux": null
+        },
+        "delta_target_si_pp": 0.10968446731567405,
+        "gap_seconds": 86400
+      },
+      "visual": {
+        "kind": "visual_only",
+        "assets": [],
+        "spatial_registration": "unavailable",
+        "interpolation": "none"
+      }
+    },
+    {
+      "id": "hmi-2022-03-30",
+      "order": 5,
+      "observation": {
+        "id": "hmi-2022-03-30-observation",
+        "kind": "observational",
+        "scope": "full_disk",
+        "magnetogram": {
+          "artifact_ref": "data/processed/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+          "filename": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+          "shape": [
+            512,
+            512
+          ],
+          "dtype": "float32",
+          "unit": "dimensionless_clip400"
+        },
+        "time": {
+          "record_tai": "2022-03-30T00:01:30",
+          "record_utc": "2022-03-30T00:00:53.000Z",
+          "source": "filename_record_time",
+          "exposure_utc": null,
+          "csv_date_unknown_scale": "2022-03-30 00:00:29.700"
+        },
+        "region_context": {
+          "noaa": 12975,
+          "harp": 8088,
+          "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+          "harp_noaa_lifetime_mapping": [
+            12975,
+            12976,
+            12977,
+            12984
+          ],
+          "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+          "location": {
+            "reported": "N13W25",
+            "coordinate_system": "SRS_heliographic_cardinal_text",
+            "valid_utc": "2022-03-30T00:00:00Z",
+            "issued_utc": "2022-03-30T00:30:00Z",
+            "source_ref": "reports/phase2_historical_case/sources/20220330SRS.txt",
+            "source_line": 12,
+            "raw_line": "2975 N13W25   087  0300 Dhc  10   30 Beta-Gamma-Delta",
+            "pixel_position": null
+          },
+          "magnetic_type": "Beta-Gamma-Delta",
+          "area_millionths_solar_hemisphere": 300.0,
+          "other_noaa_regions": [
+            12974,
+            12976,
+            12977,
+            12978,
+            12979,
+            12980
+          ],
+          "wcs": null,
+          "region_mask": null,
+          "magnetic_field_3d": null
+        },
+        "target_si": {
+          "value": 2.050173282623291,
+          "unit": "percent_original_full_disk_pixels",
+          "contract": "strong-field-pixel-percent-200G-v1",
+          "provenance": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy",
+          "source_ref": "data/processed/metadata_processed.csv",
+          "metadata_row_indices": [
+            813,
+            814
+          ]
+        },
+        "split": "train",
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "source_csv_row_1based": 5
+      },
+      "coronium_results": {
+        "kind": "model_inference",
+        "model_ref": "coronium-3.1",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "prediction_si": 1.7126761674880981,
+        "unit": "SI_percentage_points",
+        "api_display_4dp": 1.7127,
+        "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+        "grad_cam": {
+          "status": "not_available",
+          "artifact_ref": null,
+          "reason": "No frozen Grad-CAM artifact with matching state/model provenance was found; not generated in Phase 3.",
+          "interpretation": "Model attribution, not a region mask, probability, magnetic field or flare measurement."
+        }
+      },
+      "derived": {
+        "kind": "observation_derived",
+        "preprocessing_ref": "hmi-clip400-polarity-v1",
+        "polarity": {
+          "unit": "dimensionless_clip400",
+          "scope": "full_512x512_array",
+          "shape": [
+            2,
+            512,
+            512
+          ],
+          "channel_order": [
+            "B_plus",
+            "B_minus_magnitude"
+          ],
+          "recipe": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)",
+          "b_plus_mean": 0.008448413642669924,
+          "b_minus_magnitude_mean": 0.008786901321152028,
+          "channel_storage": "reconstruct_from_magnetogram",
+          "physical_flux": null
+        },
+        "delta_target_si_pp": -0.007498264312744141,
+        "gap_seconds": 86400
+      },
+      "visual": {
+        "kind": "visual_only",
+        "assets": [],
+        "spatial_registration": "unavailable",
+        "interpolation": "none"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "20220328_3390",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M4.0",
+      "satellite": "G16",
+      "start_utc": "2022-03-28T10:58:00Z",
+      "peak_utc": "2022-03-28T11:29:00Z",
+      "end_utc": "2022-03-28T11:45:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220328events.txt",
+      "source_line": 40,
+      "raw_line": "3390 +     1058   1129      1145  G16  5   XRA  1-8A      M4.0    4.4E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-28",
+        "following_state_id": "hmi-2022-03-29",
+        "seconds_after_preceding_state": 41287,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220328_3570",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M1.1",
+      "satellite": "G16",
+      "start_utc": "2022-03-28T20:49:00Z",
+      "peak_utc": "2022-03-28T20:59:00Z",
+      "end_utc": "2022-03-28T21:09:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220328events.txt",
+      "source_line": 100,
+      "raw_line": "3570 +     2049   2059      2109  G16  5   XRA  1-8A      M1.1    1.1E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-28",
+        "following_state_id": "hmi-2022-03-29",
+        "seconds_after_preceding_state": 75487,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220329_3630",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M2.2",
+      "satellite": "G16",
+      "start_utc": "2022-03-29T00:57:00Z",
+      "peak_utc": "2022-03-29T01:11:00Z",
+      "end_utc": "2022-03-29T01:26:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220329events.txt",
+      "source_line": 19,
+      "raw_line": "3630 +     0057   0111      0126  G16  5   XRA  1-8A      M2.2    2.5E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-29",
+        "following_state_id": "hmi-2022-03-30",
+        "seconds_after_preceding_state": 4207,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220329_3990",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M1.6",
+      "satellite": "G16",
+      "start_utc": "2022-03-29T21:43:00Z",
+      "peak_utc": "2022-03-29T21:52:00Z",
+      "end_utc": "2022-03-29T21:57:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220329events.txt",
+      "source_line": 125,
+      "raw_line": "3990 +     2143   2152      2157  G16  5   XRA  1-8A      M1.6    6.3E-03   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "between_states",
+        "preceding_state_id": "hmi-2022-03-29",
+        "following_state_id": "hmi-2022-03-30",
+        "seconds_after_preceding_state": 78667,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220330_4220",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "X1.3",
+      "satellite": "G16",
+      "start_utc": "2022-03-30T17:21:00Z",
+      "peak_utc": "2022-03-30T17:37:00Z",
+      "end_utc": "2022-03-30T17:46:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220330events.txt",
+      "source_line": 61,
+      "raw_line": "4220 +     1721   1737      1746  G16  5   XRA  1-8A      X1.3    9.6E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "after_last_state",
+        "preceding_state_id": "hmi-2022-03-30",
+        "following_state_id": null,
+        "seconds_after_preceding_state": 63367,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    },
+    {
+      "id": "20220331_4520",
+      "kind": "observational_event",
+      "type": "GOES_XRA_1_8A",
+      "noaa": 12975,
+      "goes_class": "M9.6",
+      "satellite": "G16",
+      "start_utc": "2022-03-31T18:17:00Z",
+      "peak_utc": "2022-03-31T18:35:00Z",
+      "end_utc": "2022-03-31T18:45:00Z",
+      "source_ref": "reports/phase2_historical_case/sources/20220331events.txt",
+      "source_line": 67,
+      "raw_line": "4520 +     1817   1835      1845  G16  5   XRA  1-8A      M9.6    7.6E-02   2975",
+      "catalog_ref": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "temporal_relation": {
+        "basis": "peak_utc",
+        "placement": "after_last_state",
+        "preceding_state_id": "hmi-2022-03-30",
+        "following_state_id": null,
+        "seconds_after_preceding_state": 153247,
+        "captured_by_state_id": null
+      },
+      "association": "NOAA_catalog_region_context_not_model_prediction"
+    }
+  ],
+  "optional_reserve": {
+    "enabled": false,
+    "date": "2022-04-01",
+    "magnetogram_ref": "data/processed/hmi.m_45s.2022.04.01_00_01_30_TAI.magnetogram_processed.npy",
+    "record_tai": "2022-04-01T00:01:30",
+    "record_utc": "2022-04-01T00:00:53.000Z",
+    "source_ref": "reports/phase2_historical_case/candidates.csv",
+    "reason": "Optional existing observation only; not a sixth state or an event boundary."
+  },
+  "limitations": [
+    "No original FITS, exposure time, WCS, HARP masks or certified pixel orientation.",
+    "SRS coordinates describe the regional catalog at its own valid time, not registered image pixels.",
+    "HARP 8088 is a lifetime association shared with NOAA 12976, 12977 and 12984.",
+    "SI labels are stored original measurements; cannot be recovered exactly from resized/clipped arrays.",
+    "B+/B- are nonnegative normalized channel magnitudes, not regional or deprojected magnetic flux.",
+    "Four training states and one selection-validation state; no independent temporal validation.",
+    "Irregular sampling; no observed state at the X1.3 event and no validated physical interpolation.",
+    "Coronium estimates current full-disk SI; it does not predict GOES flares or future activity."
+  ],
+  "artifacts": [
+    {
+      "id": "contracts/temporal-sequence-v1.schema.json",
+      "path": "contracts/temporal-sequence-v1.schema.json",
+      "sha256": "1b55b42d8cbd5b3fccf86aea493603fdb5ed43d0939f61c75a37b9fdea5b2ccc",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "68dc2c3623c8a8be43afbb383846d8e91f8053876c11f4c5a8c89d222e6743b4",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "0649eb73df8aca13f850e5cc3c1fe0cfa3db1eab712f491ca10cfe5946d05e72",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "298dded8370696077ce460c2f432cc21d0470b66e572c706d37ef2ba4f353e9f",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "cb5a199a4483ea0bb9b4f62053c99f2c7ea035d35b5ecc1ac767987d953503c5",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "f64b967b6f71e816e31dbf38bd576baddbb2e34c4db0b29eec24c254c7567366",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/hmi.m_45s.2022.04.01_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.04.01_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "82c59af48d4341bce008c23ef699675ef598fc426703bcb71c8747b288c62a24",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/metadata_processed.csv",
+      "path": "data/processed/metadata_processed.csv",
+      "sha256": "baedaf612234239f044b9240a1e6426e0ac3cc5064a995cda8050eb9db84e11f",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/best_coronium_v3_1.onnx",
+      "path": "models/best_coronium_v3_1.onnx",
+      "sha256": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/best_coronium_v3_1.pth",
+      "path": "models/best_coronium_v3_1.pth",
+      "sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/coronium_v3_1_manifest.json",
+      "path": "models/coronium_v3_1_manifest.json",
+      "sha256": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/split_indices_phase1_v1.json",
+      "path": "models/split_indices_phase1_v1.json",
+      "sha256": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "reports/phase2_historical_case/candidates.csv",
+      "path": "reports/phase2_historical_case/candidates.csv",
+      "sha256": "eaaf899c18043e25ed0b69bd165e932cb268f2c4aa4ee4370c55fb5504c9488c",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "path": "reports/phase2_historical_case/cataloged_mx_events.csv",
+      "sha256": "93dd83704329ae32f71fd3b022ae670c3fa0b5d738a4dcf763ef9745fae9e2c7",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "reports/phase2_historical_case/manifest.json",
+      "path": "reports/phase2_historical_case/manifest.json",
+      "sha256": "a1d26fdfdc825f102848e26fff661599d521dc822ec49e8a15814e2610d52bc1",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "reports/phase2_historical_case/recommended_sequence.csv",
+      "path": "reports/phase2_historical_case/recommended_sequence.csv",
+      "sha256": "4b0035bbdf11228c84c3efc85fe24fcd055893ad473f635a77e4c315dd201619",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220324SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220324SRS.txt",
+      "sha256": "9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91d",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220324SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.105719+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220325SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220325SRS.txt",
+      "sha256": "a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ff",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220325SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.073474+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220328SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220328SRS.txt",
+      "sha256": "e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2b",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220328SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.106934+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220328events.txt",
+      "path": "reports/phase2_historical_case/sources/20220328events.txt",
+      "sha256": "afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220328events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.147577+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220329SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220329SRS.txt",
+      "sha256": "e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225c",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220329SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.563029+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220329events.txt",
+      "path": "reports/phase2_historical_case/sources/20220329events.txt",
+      "sha256": "ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220329events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.581352+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220330SRS.txt",
+      "path": "reports/phase2_historical_case/sources/20220330SRS.txt",
+      "sha256": "d6f1477902dfed7836f11db7bd728264d7d4d6dd020bdcae27c332fb08ea5969",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220330SRS.txt",
+      "retrieved_utc": "2026-09-06T13:40:23.548083+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220330events.txt",
+      "path": "reports/phase2_historical_case/sources/20220330events.txt",
+      "sha256": "c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220330events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.543779+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/20220331events.txt",
+      "path": "reports/phase2_historical_case/sources/20220331events.txt",
+      "sha256": "8f10d524d36da91c5c8c3028da87e5314fe8c61d16e7a2912ec990be4636a318",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220331events.txt",
+      "retrieved_utc": "2026-09-06T13:40:25.620653+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+      "path": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+      "sha256": "e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f",
+      "url": "http://jsoc.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt",
+      "retrieved_utc": "2026-09-06T13:43:10.529394+00:00"
+    },
+    {
+      "id": "reports/phase2_historical_case/sources/retrieval_manifest.json",
+      "path": "reports/phase2_historical_case/sources/retrieval_manifest.json",
+      "sha256": "fad95d9beff53e2ea4545f0f7ce2a0ce555fadd3ed116e239fcbedfbaf34395c",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "scripts/build_phase3_temporal.py",
+      "path": "scripts/build_phase3_temporal.py",
+      "sha256": "7f66e00ebc626a2eb593ba9d61cb404a6f6d9bae0ee68128d21d2a524d2e94fd",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "scripts/select_phase2_history.py",
+      "path": "scripts/select_phase2_history.py",
+      "sha256": "6d8aafbb0dda20199ea22d32c6c0bbaad9568e5b3eb445c131d254898f57620e",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "src/processing/model_input.py",
+      "path": "src/processing/model_input.py",
+      "sha256": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "src/processing/observation_time.py",
+      "path": "src/processing/observation_time.py",
+      "sha256": "0e118e06e0e7aac2d6742f2e3e1728de080c8e4b7991e7649d73348e01ea5e75",
+      "url": null,
+      "retrieved_utc": null
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "scopedRegistries": [{"name":"Needle","url":"https://packages.needle.tools","scopes":["com.needle","org.khronos"]}],
+  "dependencies": {
+    "com.needle.engine-exporter":"5.1.12",
+    "com.unity.modules.physics":"1.0.0",
+    "com.unity.modules.imgui":"1.0.0",
+    "com.unity.modules.jsonserialize":"1.0.0"
+  }
+}

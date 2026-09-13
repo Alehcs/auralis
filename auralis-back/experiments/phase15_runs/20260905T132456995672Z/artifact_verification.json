@@ -1,0 +1,16 @@
+{
+  "before": {
+    "historical_artifacts_preserved": true,
+    "npy_hashes_verified": 1314,
+    "train_observations": 1051,
+    "validation_observations": 263,
+    "observation_overlap": 0
+  },
+  "after": {
+    "historical_artifacts_preserved": true,
+    "npy_hashes_verified": 1314,
+    "train_observations": 1051,
+    "validation_observations": 263,
+    "observation_overlap": 0
+  }
+}

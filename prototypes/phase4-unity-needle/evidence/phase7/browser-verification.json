@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "state_selections": 9,
+  "events_preserving_HMI": 6,
+  "mobile_layer_checks": 20,
+  "play_both_directions": true,
+  "physical_AR_tested": false
+}

@@ -1,0 +1,90 @@
+[
+  {
+    "name": "01_target_prediction",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "02_residuals",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "03_residual_distribution",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "04_absolute_error_distribution",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "05_activity_band_errors",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "06_training_validation",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "07_protocol_difference",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "08_clean_baseline",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "09_largest_error_cases",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "10_error_by_record_year",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  {
+    "name": "11_latency",
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  }
+]

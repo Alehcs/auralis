@@ -1,0 +1,1565 @@
+{
+  "model_name": "Coronium V3.1",
+  "model_version": "3.1",
+  "measured_utc": "2026-09-06T03:22:40.125678+00:00",
+  "checkpoint_sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+  "onnx_sha256": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+  "environment": {
+    "python": "3.12.7 (main, Jan 27 2026, 21:01:07) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "executable": "/Users/alejandro/.pyenv/versions/3.12.7/bin/python3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "processor": null,
+    "memory_bytes": null,
+    "logical_cpus": 10,
+    "torch": "2.11.0",
+    "onnxruntime": "1.25.1",
+    "numpy": "1.26.4",
+    "pandas": "3.0.2",
+    "matplotlib": "3.10.8",
+    "torch_threads": 4,
+    "torch_interop_threads": 1,
+    "mps_available": false
+  },
+  "providers": [
+    "CPUExecutionProvider"
+  ],
+  "batch_size": 1,
+  "shape": [
+    1,
+    2,
+    512,
+    512
+  ],
+  "dtype": "float32",
+  "warmup_per_protocol": 10,
+  "runs_per_protocol": 60,
+  "seed": 42,
+  "ort_intra_threads": 4,
+  "ort_inter_threads": 1,
+  "ort_execution": "ORT_SEQUENTIAL",
+  "ort_graph_optimization": "ORT_ENABLE_ALL (default)",
+  "scope": "CPU synchronous forward + scalar extraction; inputs resident in memory; excludes loading, preprocessing, startup, HTTP, cache and API noise diagnostic",
+  "mc_note": "CPU MC T=20 batch=1 timing workload only; accuracy report uses archived MPS batch=32 evaluation, not these timing outputs",
+  "sample_selection": "9 evenly spaced target order statistics; protocol order shuffled per round seed=42",
+  "samples": [
+    {
+      "source_row": 148,
+      "processed_file": "hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 1.2203633785247803
+    },
+    {
+      "source_row": 285,
+      "processed_file": "hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 1.3710319995880127
+    },
+    {
+      "source_row": 681,
+      "processed_file": "hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 1.4354884624481201
+    },
+    {
+      "source_row": 411,
+      "processed_file": "hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 1.5239477157592773
+    },
+    {
+      "source_row": 1654,
+      "processed_file": "hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 1.690751314163208
+    },
+    {
+      "source_row": 1043,
+      "processed_file": "hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 1.8853724002838135
+    },
+    {
+      "source_row": 1060,
+      "processed_file": "hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 2.018076181411743
+    },
+    {
+      "source_row": 1376,
+      "processed_file": "hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 2.206796407699585
+    },
+    {
+      "source_row": 1312,
+      "processed_file": "hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy",
+      "target_si": 2.949613332748413
+    }
+  ],
+  "raw_measurements": [
+    {
+      "repeat": 0,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 638.837792,
+      "prediction_si": 1.4157310724258423
+    },
+    {
+      "repeat": 0,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 30.973375,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 0,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 25.771709,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 1,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 24.498584,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 1,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 643.713083,
+      "prediction_si": 1.4579479694366455
+    },
+    {
+      "repeat": 1,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 31.226291,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 2,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 30.552959,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 2,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 641.636667,
+      "prediction_si": 1.365614652633667
+    },
+    {
+      "repeat": 2,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 24.08775,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 3,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 642.765166,
+      "prediction_si": 1.424356460571289
+    },
+    {
+      "repeat": 3,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 25.0635,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 3,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 31.805584,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 4,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 641.708208,
+      "prediction_si": 1.806766152381897
+    },
+    {
+      "repeat": 4,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 24.254333,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 4,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 30.24175,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 5,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 24.111041,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 5,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 638.5295,
+      "prediction_si": 1.8282829523086548
+    },
+    {
+      "repeat": 5,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 30.130625,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 6,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1060,
+      "latency_ms": 640.004166,
+      "prediction_si": 2.0781044960021973
+    },
+    {
+      "repeat": 6,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 31.257792,
+      "prediction_si": 1.7557220458984375
+    },
+    {
+      "repeat": 6,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 24.056042,
+      "prediction_si": 1.755721926689148
+    },
+    {
+      "repeat": 7,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 30.899125,
+      "prediction_si": 1.9020700454711914
+    },
+    {
+      "repeat": 7,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 23.6335,
+      "prediction_si": 1.9020698070526123
+    },
+    {
+      "repeat": 7,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1376,
+      "latency_ms": 641.828875,
+      "prediction_si": 2.225548267364502
+    },
+    {
+      "repeat": 8,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 24.447084,
+      "prediction_si": 2.2511801719665527
+    },
+    {
+      "repeat": 8,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1312,
+      "latency_ms": 628.449334,
+      "prediction_si": 2.8827483654022217
+    },
+    {
+      "repeat": 8,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 30.229666,
+      "prediction_si": 2.2511813640594482
+    },
+    {
+      "repeat": 9,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 30.114084,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 9,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 24.239875,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 9,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 642.212542,
+      "prediction_si": 1.4201551675796509
+    },
+    {
+      "repeat": 10,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 633.334542,
+      "prediction_si": 1.4572889804840088
+    },
+    {
+      "repeat": 10,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 24.219541,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 10,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 30.001208,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 11,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 24.286916,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 11,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 633.975459,
+      "prediction_si": 1.3537997007369995
+    },
+    {
+      "repeat": 11,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 29.961,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 12,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 30.451833,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 12,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 24.363542,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 12,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 635.201875,
+      "prediction_si": 1.3395776748657227
+    },
+    {
+      "repeat": 13,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 31.972708,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 13,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 24.577291,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 13,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 628.133791,
+      "prediction_si": 1.8134641647338867
+    },
+    {
+      "repeat": 14,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 30.94175,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 14,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 24.220167,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 14,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 638.229792,
+      "prediction_si": 1.7889840602874756
+    },
+    {
+      "repeat": 15,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 31.2145,
+      "prediction_si": 1.7557220458984375
+    },
+    {
+      "repeat": 15,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1060,
+      "latency_ms": 648.889417,
+      "prediction_si": 2.0676989555358887
+    },
+    {
+      "repeat": 15,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 24.531084,
+      "prediction_si": 1.755721926689148
+    },
+    {
+      "repeat": 16,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 25.614917,
+      "prediction_si": 1.9020698070526123
+    },
+    {
+      "repeat": 16,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1376,
+      "latency_ms": 639.863459,
+      "prediction_si": 2.2291293144226074
+    },
+    {
+      "repeat": 16,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 30.899375,
+      "prediction_si": 1.9020700454711914
+    },
+    {
+      "repeat": 17,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 24.683875,
+      "prediction_si": 2.2511801719665527
+    },
+    {
+      "repeat": 17,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 31.651291,
+      "prediction_si": 2.2511813640594482
+    },
+    {
+      "repeat": 17,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1312,
+      "latency_ms": 640.76675,
+      "prediction_si": 2.6378273963928223
+    },
+    {
+      "repeat": 18,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 640.427708,
+      "prediction_si": 1.4385024309158325
+    },
+    {
+      "repeat": 18,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 24.315875,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 18,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 31.331083,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 19,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 640.8335,
+      "prediction_si": 1.4377663135528564
+    },
+    {
+      "repeat": 19,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 30.637834,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 19,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 24.766667,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 20,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 31.475458,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 20,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 633.82875,
+      "prediction_si": 1.4147683382034302
+    },
+    {
+      "repeat": 20,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 24.547459,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 21,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 24.603,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 21,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 644.033959,
+      "prediction_si": 1.4379061460494995
+    },
+    {
+      "repeat": 21,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 30.1015,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 22,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 30.050417,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 22,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 638.526417,
+      "prediction_si": 1.834164023399353
+    },
+    {
+      "repeat": 22,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 25.448375,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 23,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 31.19425,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 23,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 641.768708,
+      "prediction_si": 1.8501672744750977
+    },
+    {
+      "repeat": 23,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 24.375583,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 24,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 23.428041,
+      "prediction_si": 1.755721926689148
+    },
+    {
+      "repeat": 24,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 30.892875,
+      "prediction_si": 1.7557220458984375
+    },
+    {
+      "repeat": 24,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1060,
+      "latency_ms": 641.973125,
+      "prediction_si": 1.995849609375
+    },
+    {
+      "repeat": 25,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 24.237,
+      "prediction_si": 1.9020698070526123
+    },
+    {
+      "repeat": 25,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 31.312667,
+      "prediction_si": 1.9020700454711914
+    },
+    {
+      "repeat": 25,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1376,
+      "latency_ms": 637.159208,
+      "prediction_si": 2.3058323860168457
+    },
+    {
+      "repeat": 26,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1312,
+      "latency_ms": 639.140667,
+      "prediction_si": 2.8712410926818848
+    },
+    {
+      "repeat": 26,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 24.445292,
+      "prediction_si": 2.2511801719665527
+    },
+    {
+      "repeat": 26,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 31.074,
+      "prediction_si": 2.2511813640594482
+    },
+    {
+      "repeat": 27,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 31.765041,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 27,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 23.88775,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 27,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 634.494792,
+      "prediction_si": 1.4370006322860718
+    },
+    {
+      "repeat": 28,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 643.81525,
+      "prediction_si": 1.455341100692749
+    },
+    {
+      "repeat": 28,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 30.544292,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 28,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 24.429416,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 29,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 634.721708,
+      "prediction_si": 1.3141647577285767
+    },
+    {
+      "repeat": 29,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 30.02825,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 29,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 24.357875,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 30,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 24.377166,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 30,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 635.8195,
+      "prediction_si": 1.4097061157226562
+    },
+    {
+      "repeat": 30,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 31.031708,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 31,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 638.150375,
+      "prediction_si": 1.792149305343628
+    },
+    {
+      "repeat": 31,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 24.626208,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 31,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 30.959917,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 32,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 24.126375,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 32,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 31.105417,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 32,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 644.714791,
+      "prediction_si": 1.9093459844589233
+    },
+    {
+      "repeat": 33,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1060,
+      "latency_ms": 636.524666,
+      "prediction_si": 2.1254165172576904
+    },
+    {
+      "repeat": 33,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 30.100834,
+      "prediction_si": 1.7557220458984375
+    },
+    {
+      "repeat": 33,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 25.472292,
+      "prediction_si": 1.755721926689148
+    },
+    {
+      "repeat": 34,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 24.955792,
+      "prediction_si": 1.9020698070526123
+    },
+    {
+      "repeat": 34,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1376,
+      "latency_ms": 634.950458,
+      "prediction_si": 2.337847948074341
+    },
+    {
+      "repeat": 34,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 30.206667,
+      "prediction_si": 1.9020700454711914
+    },
+    {
+      "repeat": 35,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 30.320916,
+      "prediction_si": 2.2511813640594482
+    },
+    {
+      "repeat": 35,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1312,
+      "latency_ms": 634.151292,
+      "prediction_si": 2.7633538246154785
+    },
+    {
+      "repeat": 35,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 25.005292,
+      "prediction_si": 2.2511801719665527
+    },
+    {
+      "repeat": 36,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 31.40425,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 36,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 640.433375,
+      "prediction_si": 1.433448076248169
+    },
+    {
+      "repeat": 36,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 24.221042,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 37,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 641.689583,
+      "prediction_si": 1.42232346534729
+    },
+    {
+      "repeat": 37,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 23.966292,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 37,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 30.424875,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 38,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 644.018084,
+      "prediction_si": 1.3987815380096436
+    },
+    {
+      "repeat": 38,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 31.579583,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 38,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 25.32175,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 39,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 25.387625,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 39,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 635.53325,
+      "prediction_si": 1.453897476196289
+    },
+    {
+      "repeat": 39,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 30.323209,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 40,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 24.397625,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 40,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 30.412458,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 40,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 702.104291,
+      "prediction_si": 1.8178684711456299
+    },
+    {
+      "repeat": 41,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 24.426834,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 41,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 637.683,
+      "prediction_si": 1.7455527782440186
+    },
+    {
+      "repeat": 41,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 31.164166,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 42,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 25.177083,
+      "prediction_si": 1.755721926689148
+    },
+    {
+      "repeat": 42,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1060,
+      "latency_ms": 636.33125,
+      "prediction_si": 2.0560219287872314
+    },
+    {
+      "repeat": 42,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 31.369625,
+      "prediction_si": 1.7557220458984375
+    },
+    {
+      "repeat": 43,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 24.271208,
+      "prediction_si": 1.9020698070526123
+    },
+    {
+      "repeat": 43,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1376,
+      "latency_ms": 642.277541,
+      "prediction_si": 2.3838629722595215
+    },
+    {
+      "repeat": 43,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 31.558375,
+      "prediction_si": 1.9020700454711914
+    },
+    {
+      "repeat": 44,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 24.771625,
+      "prediction_si": 2.2511801719665527
+    },
+    {
+      "repeat": 44,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1312,
+      "latency_ms": 636.917792,
+      "prediction_si": 2.7078585624694824
+    },
+    {
+      "repeat": 44,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 31.41775,
+      "prediction_si": 2.2511813640594482
+    },
+    {
+      "repeat": 45,
+      "order": 0,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 631.916333,
+      "prediction_si": 1.4613348245620728
+    },
+    {
+      "repeat": 45,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 24.444916,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 45,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 31.121959,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 46,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 31.3995,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 46,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 24.075833,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 46,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 642.169375,
+      "prediction_si": 1.469482183456421
+    },
+    {
+      "repeat": 47,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 24.071959,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 47,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 30.518083,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 47,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 634.330709,
+      "prediction_si": 1.3851120471954346
+    },
+    {
+      "repeat": 48,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 30.582125,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 48,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 24.971792,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 48,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 639.966667,
+      "prediction_si": 1.434648871421814
+    },
+    {
+      "repeat": 49,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 25.448375,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 49,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 31.668208,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 49,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 645.193791,
+      "prediction_si": 1.775017499923706
+    },
+    {
+      "repeat": 50,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 24.499667,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 50,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 30.70925,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 50,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 630.488333,
+      "prediction_si": 1.742952585220337
+    },
+    {
+      "repeat": 51,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 24.712667,
+      "prediction_si": 1.755721926689148
+    },
+    {
+      "repeat": 51,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1060,
+      "latency_ms": 639.174625,
+      "prediction_si": 2.00669527053833
+    },
+    {
+      "repeat": 51,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1060,
+      "latency_ms": 30.473625,
+      "prediction_si": 1.7557220458984375
+    },
+    {
+      "repeat": 52,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 30.338334,
+      "prediction_si": 1.9020700454711914
+    },
+    {
+      "repeat": 52,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1376,
+      "latency_ms": 24.015917,
+      "prediction_si": 1.9020698070526123
+    },
+    {
+      "repeat": 52,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1376,
+      "latency_ms": 643.723375,
+      "prediction_si": 2.2404427528381348
+    },
+    {
+      "repeat": 53,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 23.267208,
+      "prediction_si": 2.2511801719665527
+    },
+    {
+      "repeat": 53,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1312,
+      "latency_ms": 31.047042,
+      "prediction_si": 2.2511813640594482
+    },
+    {
+      "repeat": 53,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1312,
+      "latency_ms": 649.551417,
+      "prediction_si": 2.8372304439544678
+    },
+    {
+      "repeat": 54,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 30.570875,
+      "prediction_si": 1.3675583600997925
+    },
+    {
+      "repeat": 54,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 148,
+      "latency_ms": 642.796916,
+      "prediction_si": 1.3838173151016235
+    },
+    {
+      "repeat": 54,
+      "order": 2,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 148,
+      "latency_ms": 24.726,
+      "prediction_si": 1.3675587177276611
+    },
+    {
+      "repeat": 55,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 24.563041,
+      "prediction_si": 1.3815205097198486
+    },
+    {
+      "repeat": 55,
+      "order": 1,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 285,
+      "latency_ms": 31.04275,
+      "prediction_si": 1.381520390510559
+    },
+    {
+      "repeat": 55,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 285,
+      "latency_ms": 644.436375,
+      "prediction_si": 1.4742025136947632
+    },
+    {
+      "repeat": 56,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 30.401916,
+      "prediction_si": 1.362546682357788
+    },
+    {
+      "repeat": 56,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 681,
+      "latency_ms": 25.897958,
+      "prediction_si": 1.3625465631484985
+    },
+    {
+      "repeat": 56,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 681,
+      "latency_ms": 637.898208,
+      "prediction_si": 1.3839932680130005
+    },
+    {
+      "repeat": 57,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 24.238041,
+      "prediction_si": 1.3533458709716797
+    },
+    {
+      "repeat": 57,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 411,
+      "latency_ms": 637.142875,
+      "prediction_si": 1.352563738822937
+    },
+    {
+      "repeat": 57,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 411,
+      "latency_ms": 31.159375,
+      "prediction_si": 1.3533456325531006
+    },
+    {
+      "repeat": 58,
+      "order": 0,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 23.92125,
+      "prediction_si": 1.5464715957641602
+    },
+    {
+      "repeat": 58,
+      "order": 1,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1654,
+      "latency_ms": 641.146584,
+      "prediction_si": 1.8220224380493164
+    },
+    {
+      "repeat": 58,
+      "order": 2,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1654,
+      "latency_ms": 30.85575,
+      "prediction_si": 1.546472191810608
+    },
+    {
+      "repeat": 59,
+      "order": 0,
+      "protocol": "pytorch_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 30.434209,
+      "prediction_si": 1.6098971366882324
+    },
+    {
+      "repeat": 59,
+      "order": 1,
+      "protocol": "onnx_eval_cpu",
+      "source_row": 1043,
+      "latency_ms": 25.454333,
+      "prediction_si": 1.6098963022232056
+    },
+    {
+      "repeat": 59,
+      "order": 2,
+      "protocol": "pytorch_mc20_cpu",
+      "source_row": 1043,
+      "latency_ms": 642.921416,
+      "prediction_si": 1.814542531967163
+    }
+  ],
+  "summary": {
+    "onnx_eval_cpu": {
+      "n": 60,
+      "mean_ms": 24.53860416666667,
+      "std_ms": 0.5526607089988613,
+      "median_ms": 24.437165999999998,
+      "p90_ms": 25.448375,
+      "p95_ms": 25.47942325,
+      "min_ms": 23.267208,
+      "max_ms": 25.897958
+    },
+    "pytorch_eval_cpu": {
+      "n": 60,
+      "mean_ms": 30.843922233333334,
+      "std_ms": 0.5373069644507383,
+      "median_ms": 30.899250000000002,
+      "p90_ms": 31.5604958,
+      "p95_ms": 31.67304965,
+      "min_ms": 29.961,
+      "max_ms": 31.972708
+    },
+    "pytorch_mc20_cpu": {
+      "n": 60,
+      "mean_ms": 640.2160076166666,
+      "std_ms": 9.263133866811675,
+      "median_ms": 639.915063,
+      "p90_ms": 644.0742006,
+      "p95_ms": 645.3785723,
+      "min_ms": 628.133791,
+      "max_ms": 702.104291
+    }
+  }
+}

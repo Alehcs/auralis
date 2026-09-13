@@ -1,0 +1,12 @@
+{
+  "mode": "web3d",
+  "status": "completed",
+  "frames": 1786,
+  "durationMs": 30001.20000000298,
+  "renderHz": 59.53095209524361,
+  "medianIntervalMs": 16.69999998807907,
+  "p95IntervalMs": 17.5,
+  "intervalsOver50ms": 0,
+  "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality",
+  "source": "unity-glb-loaded"
+}

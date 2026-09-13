@@ -1,0 +1,15 @@
+{
+  "web_files": {
+    "src/phase5/main.ts": "127327cc69bd5cd1e672bb2a201aa10afc8779595863d5a2f498fdaadce8eba6",
+    "src/phase5/visual-materials.ts": "cb43a4b59ab999c2cbf34ad2b2d295381dfa06ae0327c10ceb5bb863daebea67",
+    "src/phase6/temporal.ts": "6999245fd4fa0d337d0a31caeef0fe7f43e9a0af8eeffa2cbd71f2cf7f12aebb",
+    "phase6/index.html": "3097c808996304cb22e15347a785839fb6753d9bb5263b6abb0c48aa9e825d54",
+    "src/phase6/surface-motion.mjs": "00d328cc458ef7d3c608107975bd602fb0d1b4fbfaf6bfd89b179ba76fbe5c4b",
+    "src/phase6/surface-shader.ts": "af53d88ef7236c98bc0d77e22bd648e641118a041fc813ccd55a75fb83e8174a",
+    "tests/phase71.test.mjs": "225a071829755126e7c47c0bf305c4a6de3e31e2aa4fc8c5650f671ae5bc4be0",
+    "dev/phase71-capture.mjs": "8bb360bf4da5d8f2401a56f18216d1c100cff928698afea925144b8be7af15fe"
+  },
+  "video_sha256": "bbe22396aae88d632bb08fac8b1bd295bee5b1af4b5773f1523706c2b84b487f",
+  "publication": "not performed; no commit or push",
+  "physicalAR": "not tested"
+}

@@ -1,0 +1,2 @@
+prototypes/phase4-unity-needle/evidence/phase42/qr-unity-public.png	https://auralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site/?scene=unity
+prototypes/phase4-unity-needle/evidence/phase42/qr-unity-ios.png	https://appclip.needle.tools/ar?url=https%3A%2F%2Fauralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site%2F%3Fscene%3Dunity

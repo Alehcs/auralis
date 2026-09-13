@@ -1,0 +1,154 @@
+- banner:
+  - link "AURALIS SOLAR LAB":
+    - /url: ./
+    - generic: ◉
+    - text: AURALIS
+    - generic: SOLAR LAB
+  - generic: FASE 07.5 NOAA 12975
+- main:
+  - paragraph: EXPLORADOR SOLAR
+  - heading "El Sol y su contexto histórico." [level=1]
+  - strong: 25-03-2022
+  - generic: Archivo SDO / HMI · registro UTC
+  - region "Evolución temporal":
+    - heading "24–30 marzo · cinco estados HMI de disco completo" [level=2]
+    - generic "Naturaleza de la información":
+      - generic: Observación real · HMI / SRS
+      - generic: Resultado de Coronium · SI
+      - generic: Recreación visual · Sol 3D
+      - generic: Evento histórico externo · GOES
+    - button "Anterior"
+    - button "Reproducir"
+    - button "Siguiente"
+    - text: Dirección
+    - combobox "Dirección":
+      - option "Adelante" [selected]
+      - option "Atrás"
+    - strong: 2 / 5
+    - generic "Timeline UTC; desliza horizontalmente":
+      - generic: Sin más magnetogramas
+      - generic: OBSERVACIONES HMI · 00:00:53 UTC
+      - button "Seleccionar 2022-03-24": 24 mar · β
+      - button "Seleccionar 2022-03-25" [pressed]: 25 mar · β
+      - button "Seleccionar 2022-03-28": 28 mar · β
+      - button "Seleccionar 2022-03-29": 29 mar · βγ
+      - button "Seleccionar 2022-03-30": 30 mar · βγδ
+      - generic: EVENTOS GOES · MARCA EN EL PICO UTC
+      - button "Evento M4.0 · 28 mar 11:29:00 UTC":
+        - strong: ◆ M4.0
+        - generic: 28 mar 11:29
+      - button "Evento M1.1 · 28 mar 20:59:00 UTC":
+        - strong: ◆ M1.1
+        - generic: 28 mar 20:59
+      - button "Evento M2.2 · 29 mar 01:11:00 UTC":
+        - strong: ◆ M2.2
+        - generic: 29 mar 01:11
+      - button "Evento M1.6 · 29 mar 21:52:00 UTC":
+        - strong: ◆ M1.6
+        - generic: 29 mar 21:52
+      - button "Evento X1.3 · 30 mar 17:37:00 UTC":
+        - strong: ◆ X1.3
+        - generic: 30 mar 17:37
+      - button "Evento M9.6 · 31 mar 18:35:00 UTC":
+        - strong: ◆ M9.6
+        - generic: 31 mar 18:35
+    - paragraph: UTC proporcional · desliza la escala. Cinco magnetogramas y seis eventos externos seleccionados; catálogo no exhaustivo. Play recorre solo los estados HMI; 2 s por estado y fundido gráfico.
+    - text: Evento histórico
+    - combobox "Elegir evento histórico":
+      - option "Selecciona un evento" [selected]
+      - option "M4.0 · 28 mar 11:29:00 UTC"
+      - option "M1.1 · 28 mar 20:59:00 UTC"
+      - option "M2.2 · 29 mar 01:11:00 UTC"
+      - option "M1.6 · 29 mar 21:52:00 UTC"
+      - option "X1.3 · 30 mar 17:37:00 UTC"
+      - option "M9.6 · 31 mar 18:35:00 UTC"
+    - region "Contexto científico seleccionado":
+      - paragraph: OBSERVACIÓN REAL · CONTEXTO REGIONAL SRS
+      - heading "NOAA 12975 / HARP 8088 · Beta · 25 mar" [level=3]
+      - paragraph: "Misma clasificación que el estado anterior. Ubicación SRS: N14E55."
+      - paragraph: No hay eventos seleccionados en el intervalo hasta el siguiente HMI; no significa ausencia de actividad.
+      - generic "Validez SRS, alcance regional y fuentes"
+  - region "Exploración solar":
+    - generic: RECREACIÓN GUIADA POR HMI
+    - generic: "FRENTE: HMI PROYECTADO · DORSO: RECREACIÓN"
+    - 'generic "Escena Unity: arrastra para orbitar; rueda o pellizca para acercar"':
+      - application "Needle Engine 3D scene":
+        - region "3D Needle Engine scene":
+          - status
+        - img "3D rendering"
+    - heading "Actividad magnética · recreación 3D" [level=2]
+    - paragraph: Distribución guiada por HMI · superficie y arcos de plasma ilustrativos, inspirados en SDO/AIA. No reconstruyen la corona ni el campo 3D real. Núcleos magnéticos recreados; dorso sin observación HMI.
+    - status: Unity → Needle · escena y recursos verificados
+    - group "Capa de visualización":
+      - button "☀ Vista solar" [pressed]
+      - button "Magnetograma"
+      - button "B+"
+      - button "B−"
+    - generic: Arrastra para rotar · pellizca para acercar
+    - button "Alejar": −
+    - button "Acercar": +
+    - button "↺ Restablecer"
+    - button "Pausar superficie" [pressed]
+    - button "Congelar en t=0"
+    - button "Giro automático"
+    - paragraph: Movimiento ilustrativo; estados magnéticos basados en observaciones HMI. La animación no cambia la fecha ni representa una medición continua del plasma o una simulación física. La timeline cambia datos y superficie a la vez; transición solo gráfica.
+  - complementary "Información científica":
+    - paragraph: ESTADO OBSERVADO
+    - generic: HMI · 512²
+    - heading "25 de marzo de 2022" [level=2]
+    - paragraph: 00:00:53 UTC
+    - generic: SI conservado
+    - generic: OBSERVACIÓN
+    - paragraph:
+      - strong: 1,717091
+      - text: "%"
+    - text: "Disco completo: píxeles originales con |B"
+    - subscript: LOS
+    - text: "| > 200 G."
+    - generic: Coronium V3.1
+    - generic: RESULTADO DE CORONIUM
+    - paragraph:
+      - strong: 1,477280
+      - text: "%"
+    - generic: ONNX · CPU · eval · una pasada determinista
+    - text: Estimación − SI conservado
+    - strong: "-0,239810 pp"
+    - paragraph: Estimación del SI actual; no pronóstico. Observación de entrenamiento. Esta secuencia no es una prueba temporal independiente.
+    - heading "Referencia 2D" [level=3]
+    - generic: Campo firmado
+    - figure "Fila 0 arriba · sin recorte ni espejo":
+      - img "Campo firmado; fila 0 arriba, columnas conservadas"
+      - generic: Fila 0 arriba · sin recorte ni espejo
+    - generic: −1 · B−
+    - generic: "0"
+    - generic: +1 · B+
+    - paragraph:
+      - text: x = clip(resize(B
+      - subscript: LOS
+      - text: ), −400, 400) / 400. Escala normalizada, sin unidades.
+    - generic "Identidad y límites científicos"
+  - region "Explora este estado en AR.":
+    - paragraph: DEL NAVEGADOR A TU ESPACIO
+    - heading "Explora este estado en AR." [level=2]
+    - status: Este navegador no ofrece AR inmersiva. Puedes explorar el objeto en 3D.
+    - paragraph: Abre AR en el menú del visor, busca una superficie y toca para colocar. El Sol mide 84 cm a escala 1×; es una escala de demostración.
+    - text: Escala del objeto
+    - status: 1,0×
+    - slider "Escala del objeto": "1"
+    - paragraph: El gesto de escala de AR es independiente; comprueba el tamaño tras colocar.
+    - status: Sin sesión AR. La exploración 3D está disponible.
+    - paragraph: "iPhone: Safari → Needle Go (App Clip), sin WebXR nativo. Quick Look abre una instantánea de la superficie seleccionada, sin animación superficial, timeline, fundido ni controles web. WebXR y Needle Go usan el material web; su funcionamiento en este teléfono está pendiente de prueba física."
+    - generic "QR para abrir este estado en el teléfono"
+    - strong: Continúa en tu teléfono
+    - link "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-25":
+      - /url: http://127.0.0.1:4184/phase6/?state=hmi-2022-03-25
+    - paragraph: "Vista local: este QR no abre el Mac desde tu teléfono."
+  - generic "Prueba física y registro de este dispositivo"
+  - option "No probado" [selected]
+  - option "Funcionó en este dispositivo"
+  - option "Parcial"
+  - option "Falló"
+  - generic "Verificación técnica"
+- contentinfo:
+  - generic: AURALIS · GEMELO SOLAR / FASE 07.5
+  - generic: Observación · estimación · ilustración, distinguidas.

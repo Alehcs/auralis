@@ -1,4 +1,8 @@
-# RESEARCH DOSSIER
+# RESEARCH DOSSIER — HISTORICAL V3 ARCHIVE
+
+> **Phase 1.7 audit:** This dossier is retained as a historical record, not a valid V3.1 thesis source. Its log-SI, independent hold-out, 86.6 KB full-model and accuracy/generalization claims are superseded. Use [the V3.1 audit](docs/phase17.md) and [versioned figures](auralis-back/reports/phase17_coronium_v3_1/analysis_v2/report.md). The historical graph size excludes external weights; historical timings are not current measurements.
+
+> **Phase 1 scientific correction:** [Audited contract and reproducibility report](docs/phase1.md) supersedes historical input/target and validation claims below. The local checkpoint uses clip400 polarity inputs and raw SI pixel percentages, without log or Z-score. The old split shares 145 observations; its metrics do not establish independent generalization. Original artifacts remain preserved.
 ## Coronium V3 PRO: A Residual Convolutional Neural Network for Solar Magnetic Activity Index Estimation from Dual-Channel HMI/SDO Magnetograms
 
 **Classification:** Technical Research Report  
@@ -8,7 +12,7 @@
 **Dossier Updated:** 2026-05-26  
 **Dossier Version:** 3.3.0  
 
-> This is the primary research dossier for the Auralis project, intended for academic and international review. It documents all technical content, equations, metrics, and reproducibility details for Coronium V3 PRO.
+> This is the archived V3 research dossier, preserved for provenance; it must not be cited as current validated performance. It documents all technical content, equations, metrics, and reproducibility details for Coronium V3 PRO.
 
 ---
 

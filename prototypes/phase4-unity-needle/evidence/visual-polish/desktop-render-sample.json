@@ -1,0 +1,13 @@
+{
+  "mode": "web3d",
+  "status": "completed",
+  "layer": "solar",
+  "frames": 897,
+  "durationMs": 30001.80000001192,
+  "renderHz": 29.89820610762166,
+  "medianIntervalMs": 33.30000001192093,
+  "p95IntervalMs": 33.900000005960464,
+  "intervalsOver50ms": 0,
+  "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality",
+  "conditions": "Desktop Mac in-app browser; 1440x1000 CSS; pixel ratio 1; solar mode with plasma animation enabled throughout; no mobile inference."
+}

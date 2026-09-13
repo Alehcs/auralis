@@ -1,0 +1,25 @@
+{
+  "generator": "Needle Engine Unity Integration 5.1.12",
+  "components": [
+    "Camera",
+    "Light",
+    "MeshRenderer",
+    "OrbitControls",
+    "WebARSessionRoot"
+  ],
+  "cube_scale": [
+    0.2,
+    0.2,
+    0.2
+  ],
+  "cube_translation": [
+    0.0,
+    0.1,
+    0.0
+  ],
+  "mesh_count": 1,
+  "triangles": 12,
+  "glb_sha256": "92ce99f4e279eaf47110ddaee595e0c52daa566d806bb05204f9e458fe9d413b",
+  "required_structure_passed": true,
+  "physical_ar_verified": false
+}

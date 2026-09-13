@@ -1,0 +1,2514 @@
+[
+  {
+    "path": "AGENTS.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0c4ad091470b551ef46bd1ecd60483abb5013a8fae94fa401fa0034f458e52df",
+    "sha256_after": "0e2fae1b9f12cf0f9a2d4654f2e274e1ca11e70c3b3b266917123692bf13c0ee",
+    "changed": true
+  },
+  {
+    "path": "README.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "ca89b74124b940a52452bd4363a98a8c157e10026c6764b93a1be5a4e85f10dd",
+    "sha256_after": "c49d5c6c754caa4901003a506d623793306e7f1d8ff4af4cb71819cebbf8707e",
+    "changed": true
+  },
+  {
+    "path": "RESEARCH_DOSSIER_MASTER.md",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Contenía etiquetas de versión, log-SI/SSN, hold-out o cifras sin respaldo vigente; corregido o señalado como archivo histórico.",
+    "sha256_before": "c049ab31b0995a189ae313a4c545b010153519b226dcaa5ff67535f6a3d1cc85",
+    "sha256_after": "95057b51ecda30916c690bad3e02b23e9480e66d0a917e4349cab766670ae96e",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/experiments/exp_001_v1_baseline.json",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "f9a0032e213d976ee0d6c7a704f99222c34793e8f9de87a2d3bd8ba3ca760f6c",
+    "sha256_after": "f9a0032e213d976ee0d6c7a704f99222c34793e8f9de87a2d3bd8ba3ca760f6c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/exp_002_v2_tuned.json",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "ba186e53a1e978771aa4a24f8a4f45d11e3305d2cbcf57f657b2b427cf1cbce5",
+    "sha256_after": "ba186e53a1e978771aa4a24f8a4f45d11e3305d2cbcf57f657b2b427cf1cbce5",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/exp_003_v2pro_production.json",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "933b6532be54635bc5f79988a845775d21a2c462627f1b747e7f9122b3c68f27",
+    "sha256_after": "933b6532be54635bc5f79988a845775d21a2c462627f1b747e7f9122b3c68f27",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/exp_004_v3pro_final.json",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "cb11daed65fe02fd0fce9e762631ff4fc30f7ac60e74a999eb295c86b7a0bce6",
+    "sha256_after": "cb11daed65fe02fd0fce9e762631ff4fc30f7ac60e74a999eb295c86b7a0bce6",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/exp_005_v3pro_augmented.json",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "37ea86194dd811e4a6c31bf4c439b50be36b066afefba8c5433bd929160136bb",
+    "sha256_after": "37ea86194dd811e4a6c31bf4c439b50be36b066afefba8c5433bd929160136bb",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/artifact_verification.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "568defcbf2610647f253c2dbfdb60d7bdb70ae656a46b54198b44b7e4843b436",
+    "sha256_after": "568defcbf2610647f253c2dbfdb60d7bdb70ae656a46b54198b44b7e4843b436",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/best.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+    "sha256_after": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/environment.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "2ba9812e77cfdc3718c32810ed23b8ad4b9569e6cc42f01a6c72fb7580106551",
+    "sha256_after": "2ba9812e77cfdc3718c32810ed23b8ad4b9569e6cc42f01a6c72fb7580106551",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0001.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "75bd5b4ac8ee25f87a22aa63caf4ad8d0cfe42dbbb0649405636816f16ea2521",
+    "sha256_after": "75bd5b4ac8ee25f87a22aa63caf4ad8d0cfe42dbbb0649405636816f16ea2521",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0002.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8ac4f1403879a04f198f0e09b84b9aad6996d252a51d8e6a934ab60e32f1e1fb",
+    "sha256_after": "8ac4f1403879a04f198f0e09b84b9aad6996d252a51d8e6a934ab60e32f1e1fb",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0003.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "6cbabd987a32fd1bde37001233397628bb74b33803e70fd055beb6fe207a36ad",
+    "sha256_after": "6cbabd987a32fd1bde37001233397628bb74b33803e70fd055beb6fe207a36ad",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0004.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "ce6017526d99954cae8a9beaa0d2617bb626e53d0419972629574da54cff22c5",
+    "sha256_after": "ce6017526d99954cae8a9beaa0d2617bb626e53d0419972629574da54cff22c5",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0005.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "3f7115d0df5fc4af5035679bb4ddccf0bd5fb7d08c53e0b40e5ee47eab9943b4",
+    "sha256_after": "3f7115d0df5fc4af5035679bb4ddccf0bd5fb7d08c53e0b40e5ee47eab9943b4",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0009.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "1c0fb5753427508f8f85202039475a3f6ed359f8d43680679005f6cc60173e6d",
+    "sha256_after": "1c0fb5753427508f8f85202039475a3f6ed359f8d43680679005f6cc60173e6d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0011.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "df4022b5b9da993c00a0d2372522b2611c97110b3001d12be174b8fb5086b158",
+    "sha256_after": "df4022b5b9da993c00a0d2372522b2611c97110b3001d12be174b8fb5086b158",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0019.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8e09b17a090163164bdf5ad5e947e13414ddcd603d7f0f6399ce037e3dd4d2f3",
+    "sha256_after": "8e09b17a090163164bdf5ad5e947e13414ddcd603d7f0f6399ce037e3dd4d2f3",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0020.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "3810b0299678821f3d1846d6e60bd4a12eb1cb6464454c9b69ad3b0117f3c367",
+    "sha256_after": "3810b0299678821f3d1846d6e60bd4a12eb1cb6464454c9b69ad3b0117f3c367",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0022.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c855c6d5c716975709e973642f9cc623b075749e34ee05ef85f0015223b16cf2",
+    "sha256_after": "c855c6d5c716975709e973642f9cc623b075749e34ee05ef85f0015223b16cf2",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0027.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "6e9cae8f15373b2aca3a214f637290f0203d6255573140594ae0c91744fa75aa",
+    "sha256_after": "6e9cae8f15373b2aca3a214f637290f0203d6255573140594ae0c91744fa75aa",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0028.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "65be8639a68f9b6f0cad4dae6a94261d660dd4bf3909dafa67cd3af80aea1eb1",
+    "sha256_after": "65be8639a68f9b6f0cad4dae6a94261d660dd4bf3909dafa67cd3af80aea1eb1",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/best_epoch_0040.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "a51375762e0fe580bf0081d774fbe443980a5c3f1545b2310bcf7a8e0c2200df",
+    "sha256_after": "a51375762e0fe580bf0081d774fbe443980a5c3f1545b2310bcf7a8e0c2200df",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0001.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8cf460035c79c9435158072a604e7dadff6a2ab1a4f9b965c7b26d3722465f6e",
+    "sha256_after": "8cf460035c79c9435158072a604e7dadff6a2ab1a4f9b965c7b26d3722465f6e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0002.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "74680e0aef76ac5f0635399ad9814b5c5281d56e7c5ae34ce0da9767b6953b73",
+    "sha256_after": "74680e0aef76ac5f0635399ad9814b5c5281d56e7c5ae34ce0da9767b6953b73",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0003.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "97b6249a871013d3bc63698265386356108d8b6cc731b7c074d31d35229f7afc",
+    "sha256_after": "97b6249a871013d3bc63698265386356108d8b6cc731b7c074d31d35229f7afc",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0004.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "225b6caf69c9d95ff51074d06f180a447387d8a5d523086172ac9bdc13106d6d",
+    "sha256_after": "225b6caf69c9d95ff51074d06f180a447387d8a5d523086172ac9bdc13106d6d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0005.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "006baf024b74e95fe2ca6540f75b783b647e75b8e59e87ed3de31382245ed1fe",
+    "sha256_after": "006baf024b74e95fe2ca6540f75b783b647e75b8e59e87ed3de31382245ed1fe",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0006.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "5246942582322b028af607ec0014be8b66040a831d2d2e33833cf3367694d35a",
+    "sha256_after": "5246942582322b028af607ec0014be8b66040a831d2d2e33833cf3367694d35a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0007.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "30c4394d5324c2599194f7b2abcd17c4b7a534f83fd62d791abf4113503b649f",
+    "sha256_after": "30c4394d5324c2599194f7b2abcd17c4b7a534f83fd62d791abf4113503b649f",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0008.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "27725caab3ec643d42d88e277c4b8c6228cb4dea429ed3a69b9f85e545f215fe",
+    "sha256_after": "27725caab3ec643d42d88e277c4b8c6228cb4dea429ed3a69b9f85e545f215fe",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0009.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "e1491de2fe01bf33d37a22252b4a0ee7616b0c8e316cbec681e15d1098c44ad8",
+    "sha256_after": "e1491de2fe01bf33d37a22252b4a0ee7616b0c8e316cbec681e15d1098c44ad8",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0010.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "e48e5b3d7d66d97b5b7ee3ded64fce64f64913ae50d218d88c78ae247038396e",
+    "sha256_after": "e48e5b3d7d66d97b5b7ee3ded64fce64f64913ae50d218d88c78ae247038396e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0011.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "1fd7487cadfe4a1ab6184771192e83d57f28998889dc55dd6f8a533ff423eb00",
+    "sha256_after": "1fd7487cadfe4a1ab6184771192e83d57f28998889dc55dd6f8a533ff423eb00",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0012.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "bf3ad7ac0c68f1304e143365d395ad4553ade8cc7365debdc23eec12d9fac8fd",
+    "sha256_after": "bf3ad7ac0c68f1304e143365d395ad4553ade8cc7365debdc23eec12d9fac8fd",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0013.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "a78bce1fa74177082ee21176ef597c754060e8b3c76f7753c735d00226a18ecd",
+    "sha256_after": "a78bce1fa74177082ee21176ef597c754060e8b3c76f7753c735d00226a18ecd",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0014.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "cf3b3310680a4f5ccd2ac03ade1daed6f6b67518d59eea185f357493ba67da63",
+    "sha256_after": "cf3b3310680a4f5ccd2ac03ade1daed6f6b67518d59eea185f357493ba67da63",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0015.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "99ecad3088f6710398dd4441dacecc255eba5fad7ab1f5df5712c65e242aecc0",
+    "sha256_after": "99ecad3088f6710398dd4441dacecc255eba5fad7ab1f5df5712c65e242aecc0",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0016.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8bf737fae4c7061bb2e2679ec9a309fce3d22f722361bb8c34aa9beb3de5df71",
+    "sha256_after": "8bf737fae4c7061bb2e2679ec9a309fce3d22f722361bb8c34aa9beb3de5df71",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0017.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "d8b0cbd63ae764585d01f83c19acc18bcd887257e7c90a45a1e13ea9f47821f3",
+    "sha256_after": "d8b0cbd63ae764585d01f83c19acc18bcd887257e7c90a45a1e13ea9f47821f3",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0018.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "5f9e3937f76a31dcae311c5352ccafbec802eeca74e74aeb9b11f87285bb5469",
+    "sha256_after": "5f9e3937f76a31dcae311c5352ccafbec802eeca74e74aeb9b11f87285bb5469",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0019.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "27509ade41f3acb1fe36f3690df55d2298cea3fce9c1f2deeaebe22b9d4bebb4",
+    "sha256_after": "27509ade41f3acb1fe36f3690df55d2298cea3fce9c1f2deeaebe22b9d4bebb4",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0020.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "cc437529d4ece1eefa20ff3c274d40aacfb534fcce1475f0789f5c7c966e805e",
+    "sha256_after": "cc437529d4ece1eefa20ff3c274d40aacfb534fcce1475f0789f5c7c966e805e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0021.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "4c95ca7f734885b7cea192bc5b0f14c4c6858dd2694c6b0f6b375836221ab658",
+    "sha256_after": "4c95ca7f734885b7cea192bc5b0f14c4c6858dd2694c6b0f6b375836221ab658",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0022.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "223ec47dfb79dd8874d17499138e637e099b23adc4d29e7be724b53a3d612b09",
+    "sha256_after": "223ec47dfb79dd8874d17499138e637e099b23adc4d29e7be724b53a3d612b09",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0023.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "470e0e0eaed42619cd86320929890c26c5cc6d880440203a7847284f94ea3230",
+    "sha256_after": "470e0e0eaed42619cd86320929890c26c5cc6d880440203a7847284f94ea3230",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0024.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "b667f7608d91e2444387afe318dee5c035e87a9af9cb1829ef69636846b453b1",
+    "sha256_after": "b667f7608d91e2444387afe318dee5c035e87a9af9cb1829ef69636846b453b1",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0025.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "52e321ff161765be3009352b17b9ab9378d0d23166c9c059ab20c42b82708bd6",
+    "sha256_after": "52e321ff161765be3009352b17b9ab9378d0d23166c9c059ab20c42b82708bd6",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0026.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "f8a0692b0e8166483a178a1731b4c44b8b945cc3f31ae9606af78f41f48b6052",
+    "sha256_after": "f8a0692b0e8166483a178a1731b4c44b8b945cc3f31ae9606af78f41f48b6052",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0027.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "0806a6ea82d96d71eb2f3d57cbd229ba5bd12f60d775f10b056661233a576bb7",
+    "sha256_after": "0806a6ea82d96d71eb2f3d57cbd229ba5bd12f60d775f10b056661233a576bb7",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0028.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "b0b89bee2f55794d266255c0ddb088844fe395f43003f06a13faf79c4bdacf98",
+    "sha256_after": "b0b89bee2f55794d266255c0ddb088844fe395f43003f06a13faf79c4bdacf98",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0029.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "0a5c6f7a66abcbbea894d9443ea404eb7e7c28be43578f000abf129a0b445598",
+    "sha256_after": "0a5c6f7a66abcbbea894d9443ea404eb7e7c28be43578f000abf129a0b445598",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0030.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "43aec61d0d3173158acba9ac75e07f16bfe7c3d657fa9871cb53b1107c1fddc4",
+    "sha256_after": "43aec61d0d3173158acba9ac75e07f16bfe7c3d657fa9871cb53b1107c1fddc4",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0031.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "203468721fedabb50e8ccd2e46ff9dc4b8b16b886c06ae9ea790dc948215950b",
+    "sha256_after": "203468721fedabb50e8ccd2e46ff9dc4b8b16b886c06ae9ea790dc948215950b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0032.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "49e32aac0d4f68e553fc04c419516e137f5a19ffc00f4f75e584b5b48b68dd32",
+    "sha256_after": "49e32aac0d4f68e553fc04c419516e137f5a19ffc00f4f75e584b5b48b68dd32",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0033.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "e077fe3d8161b6c63ab97058255b45bd080b6906d68b1cd41667ee80e70dd0de",
+    "sha256_after": "e077fe3d8161b6c63ab97058255b45bd080b6906d68b1cd41667ee80e70dd0de",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0034.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "364d2b2900c4670884cb73f0c923a1bccbc6b250a1f510704485fc661573e40a",
+    "sha256_after": "364d2b2900c4670884cb73f0c923a1bccbc6b250a1f510704485fc661573e40a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0035.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "dc2c755684f5ca53b85e2404296b1dd00617e2ea4de88217b20530d905d00cb8",
+    "sha256_after": "dc2c755684f5ca53b85e2404296b1dd00617e2ea4de88217b20530d905d00cb8",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0036.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "54fc7d6c4796a3b71e724c4b152652a8cb3c6afd62a5a08ed65609d21b0f9d3d",
+    "sha256_after": "54fc7d6c4796a3b71e724c4b152652a8cb3c6afd62a5a08ed65609d21b0f9d3d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0037.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "2cfd3c2bc81ed3f106b8ab901af9e45b0ddf32295681047e9e34c88031a4e361",
+    "sha256_after": "2cfd3c2bc81ed3f106b8ab901af9e45b0ddf32295681047e9e34c88031a4e361",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0038.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "1fd788bf684e2a8453618058df2607a17fc329b6eac8e964290fff43e5a4e909",
+    "sha256_after": "1fd788bf684e2a8453618058df2607a17fc329b6eac8e964290fff43e5a4e909",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0039.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "926f4fe3a819e82433ef3ecfb211ec786abc89a945866fa3d27be7a9e309e7f4",
+    "sha256_after": "926f4fe3a819e82433ef3ecfb211ec786abc89a945866fa3d27be7a9e309e7f4",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0040.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "2a7c48376f4002d29ee5f80fab694723ef816fe1481a1d84df1bc341584ef0be",
+    "sha256_after": "2a7c48376f4002d29ee5f80fab694723ef816fe1481a1d84df1bc341584ef0be",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0041.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c48a570e56db2af4ceadace59b38796d81b2c487b888a2a459f7a0689587c432",
+    "sha256_after": "c48a570e56db2af4ceadace59b38796d81b2c487b888a2a459f7a0689587c432",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0042.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "eb965cf8edd2bff231d390a2692cc80d77e0d27cca19f6e447c27d42b78b120f",
+    "sha256_after": "eb965cf8edd2bff231d390a2692cc80d77e0d27cca19f6e447c27d42b78b120f",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0043.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "732585c364a26495b8eb300cfd474000a90e1448f41921b201099a575045d7a1",
+    "sha256_after": "732585c364a26495b8eb300cfd474000a90e1448f41921b201099a575045d7a1",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0044.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "a17ec59837a55d1870c50b28858c3b987e9b6c02797d1ccd3a97004029f40f4d",
+    "sha256_after": "a17ec59837a55d1870c50b28858c3b987e9b6c02797d1ccd3a97004029f40f4d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0045.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "ca42da7497ad784782dc482f654083b575a5f85d386207b6d355a05d929ae459",
+    "sha256_after": "ca42da7497ad784782dc482f654083b575a5f85d386207b6d355a05d929ae459",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0046.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "2438387526ab72b88103ae458f5afbb159b8d796ac92a5bb67d57bb556a850c7",
+    "sha256_after": "2438387526ab72b88103ae458f5afbb159b8d796ac92a5bb67d57bb556a850c7",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0047.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "4ff0d8bd58307a84008623a23864e8ff1abd946637c34e007f20188fad53e619",
+    "sha256_after": "4ff0d8bd58307a84008623a23864e8ff1abd946637c34e007f20188fad53e619",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0048.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "7f14814e846f8d1d8fa0064e0dc8221a3ae9bbeff1bb18da9a7eec53d0b93475",
+    "sha256_after": "7f14814e846f8d1d8fa0064e0dc8221a3ae9bbeff1bb18da9a7eec53d0b93475",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0049.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "7ab86f6840973f4ccade66d6c2bf850d8277a3f1701fedb6ff88984cfca33299",
+    "sha256_after": "7ab86f6840973f4ccade66d6c2bf850d8277a3f1701fedb6ff88984cfca33299",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/epochs/epoch_0050.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "4fe2ff2212967620771fc61fcb0d92e47e70ca6a428d2fbf7a6206de7f6bbf4c",
+    "sha256_after": "4fe2ff2212967620771fc61fcb0d92e47e70ca6a428d2fbf7a6206de7f6bbf4c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_repeat_v1/manifest.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Repetición deliberada para reproducibilidad; no redundancia eliminable.",
+    "sha256_before": "799860f619443f832e4dec8e3989364dcaaf3c0fa339fdd06bde091066c5d20c",
+    "sha256_after": "799860f619443f832e4dec8e3989364dcaaf3c0fa339fdd06bde091066c5d20c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_repeat_v1/predictions.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Repetición deliberada para reproducibilidad; no redundancia eliminable.",
+    "sha256_before": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "sha256_after": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_repeat_v1/results_comparison.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Repetición deliberada para reproducibilidad; no redundancia eliminable.",
+    "sha256_before": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "sha256_after": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_v1/manifest.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "799860f619443f832e4dec8e3989364dcaaf3c0fa339fdd06bde091066c5d20c",
+    "sha256_after": "799860f619443f832e4dec8e3989364dcaaf3c0fa339fdd06bde091066c5d20c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_v1/predictions.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "sha256_after": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_v1/results_comparison.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "sha256_after": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/final.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "368cab7766ba8d26b94d06e1e15e95ce804f50ef207ba68dc5c1c505c4abc8fa",
+    "sha256_after": "368cab7766ba8d26b94d06e1e15e95ce804f50ef207ba68dc5c1c505c4abc8fa",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/history.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "23a538648d369aa8e3e6e206d7a66732b4379576e729f3513502416c2dd8337b",
+    "sha256_after": "23a538648d369aa8e3e6e206d7a66732b4379576e729f3513502416c2dd8337b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/initial.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "1f6638ab54bc0c2c97d4bf0d79837d45f67554a4dd7bfe032f74c26333b24f23",
+    "sha256_after": "1f6638ab54bc0c2c97d4bf0d79837d45f67554a4dd7bfe032f74c26333b24f23",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/learning_curve.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Cálculo/datos reutilizados; salida de publicación adaptada. Entrenador congelado por el manifiesto de promoción.",
+    "sha256_before": "7e8ff689a051d6961a249640f1fd72566971efb5b5aeca33812b002ff1c98138",
+    "sha256_after": "7e8ff689a051d6961a249640f1fd72566971efb5b5aeca33812b002ff1c98138",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/manifest.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "5450c338971d270a05ab96413c283796fa6c5c034c45da4435e7013c0d3017f6",
+    "sha256_after": "5450c338971d270a05ab96413c283796fa6c5c034c45da4435e7013c0d3017f6",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/phase15_protocol.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "dc6a4343ea35faafcfdc362d0b835c3c7c26c2884d6ad62e2dcb19bff1fda20a",
+    "sha256_after": "dc6a4343ea35faafcfdc362d0b835c3c7c26c2884d6ad62e2dcb19bff1fda20a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/phase1_evaluate_before.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "be973288213a0416561486ba4bdd3ada3125979b9da5a070d74fde4f4958afb2",
+    "sha256_after": "be973288213a0416561486ba4bdd3ada3125979b9da5a070d74fde4f4958afb2",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/phase1_train_model_before.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0f355a35ae6e9d899aa6e486b42dc63bc66eb8522f063a5beaa2274f69f67977",
+    "sha256_after": "0f355a35ae6e9d899aa6e486b42dc63bc66eb8522f063a5beaa2274f69f67977",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/preflight_tests.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "807c3cefdcc549518280b212661c5a414a32dadf9d7152055779b7c47484dcb7",
+    "sha256_after": "807c3cefdcc549518280b212661c5a414a32dadf9d7152055779b7c47484dcb7",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/sources/scripts/evaluate_final.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "9244445caf400eb6583df8b91ae06eb191994f8e487256371bfeeae7e2c2e9f8",
+    "sha256_after": "9244445caf400eb6583df8b91ae06eb191994f8e487256371bfeeae7e2c2e9f8",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/sources/scripts/run_phase15.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "4f1197f6e3889f5676e78ec3eaf210d99142d78a11572ea372adb3a1d77e0c77",
+    "sha256_after": "4f1197f6e3889f5676e78ec3eaf210d99142d78a11572ea372adb3a1d77e0c77",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/sources/src/models/train_model.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "f984d1ee319a115ebf9112ef4687c8690c0282d0a5d1c1b5fc410a74b00dbe1e",
+    "sha256_after": "f984d1ee319a115ebf9112ef4687c8690c0282d0a5d1c1b5fc410a74b00dbe1e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/sources/src/processing/model_input.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+    "sha256_after": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/sources/src/processing/scientific_split.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "6fc51196f3241fa485c3635733f62b30687009456540d5d3b33fae3be0d126f0",
+    "sha256_after": "6fc51196f3241fa485c3635733f62b30687009456540d5d3b33fae3be0d126f0",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z/verification.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "c721dae15df829d045d8a7e6117eb2fc50155b8236197f7cf103f4f08add8132",
+    "sha256_after": "c721dae15df829d045d8a7e6117eb2fc50155b8236197f7cf103f4f08add8132",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z.evaluation-repeat.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "fbba5e9ae3b2555c10b96dfa0a676f040b74f389a1c83cc5f0ca1f888bc3903c",
+    "sha256_after": "fbba5e9ae3b2555c10b96dfa0a676f040b74f389a1c83cc5f0ca1f888bc3903c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z.evaluation.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "b4da1fd154d978e5005299655d5a4e65a4a1ea9d3114c32e6ff884e226fe588d",
+    "sha256_after": "b4da1fd154d978e5005299655d5a4e65a4a1ea9d3114c32e6ff884e226fe588d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase15_runs/20260905T132456995672Z.training.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0ce2ba3568f4b97fa67d8b967bc8642678cac0582a5289eae52644039b9d158a",
+    "sha256_after": "0ce2ba3568f4b97fa67d8b967bc8642678cac0582a5289eae52644039b9d158a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/phase16_coronium_v3_1.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "3f25517bb1bb363bb3d0f10578ac056fbcee2669fd1c503b8d26245059fc1fe0",
+    "sha256_after": "3f25517bb1bb363bb3d0f10578ac056fbcee2669fd1c503b8d26245059fc1fe0",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/experiments/results_benchmarking.json",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "ec9dae1ada37451d79c27eaaedd5500feb5460eeb9843d7186fb30d6b543d092",
+    "sha256_after": "ec9dae1ada37451d79c27eaaedd5500feb5460eeb9843d7186fb30d6b543d092",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/best_coronium_v3_1.onnx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+    "sha256_after": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/best_coronium_v3_1.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+    "sha256_after": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/best_coronium_v3_pro.onnx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Archivo histórico preservado para diagnóstico; excluido de métricas vigentes.",
+    "sha256_before": "b2f1a17bad4446b7383c6b08f164d7f97add7f1d028df15bfc13744f0e9e92ec",
+    "sha256_after": "b2f1a17bad4446b7383c6b08f164d7f97add7f1d028df15bfc13744f0e9e92ec",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/best_coronium_v3_pro.onnx.data",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Archivo histórico preservado para diagnóstico; excluido de métricas vigentes.",
+    "sha256_before": "eabbbfd2ca216a07fc700ef660f502729d119bdba2fe0868ca180339bf17a359",
+    "sha256_after": "eabbbfd2ca216a07fc700ef660f502729d119bdba2fe0868ca180339bf17a359",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/best_coronium_v3_pro_augmented.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Archivo histórico preservado para diagnóstico; excluido de métricas vigentes.",
+    "sha256_before": "b544204016796e85e0de927c3609ee6011e63c6779a177dcb070b01152740668",
+    "sha256_after": "b544204016796e85e0de927c3609ee6011e63c6779a177dcb070b01152740668",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/coronium_v3_1_manifest.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+    "sha256_after": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/coronium_v3_1_metrics.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "ab15d2acece7c7b820a106d4472a7e651abdd2900c0fc027f4e7b6e2adb01d92",
+    "sha256_after": "ab15d2acece7c7b820a106d4472a7e651abdd2900c0fc027f4e7b6e2adb01d92",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/legacy_best_coronium_v3_pro.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "982fd64e7cc42e0283ba0dbc552464974c101bdb9208099b732a67b8d6dcdce3",
+    "sha256_after": "982fd64e7cc42e0283ba0dbc552464974c101bdb9208099b732a67b8d6dcdce3",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/legacy_coronium_v3_final.pth",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "66dc418c4da9c8efa6086553b2d7ae0549aa00ded26e9d55d98b620fbb549b37",
+    "sha256_after": "66dc418c4da9c8efa6086553b2d7ae0549aa00ded26e9d55d98b620fbb549b37",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/split_indices.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Archivo histórico preservado para diagnóstico; excluido de métricas vigentes.",
+    "sha256_before": "b344b58689339ccaa8c5bf4570092d0799fb67a667487f10d8b3c515200ade6b",
+    "sha256_after": "b344b58689339ccaa8c5bf4570092d0799fb67a667487f10d8b3c515200ade6b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/split_indices_phase1_v1.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+    "sha256_after": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/models/target_scaler.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Archivo histórico preservado para diagnóstico; excluido de métricas vigentes.",
+    "sha256_before": "1f5650c2e54314b7e9875b270d2e4cc1e3dc0bf022f8e59a637ef2c6af51fd5f",
+    "sha256_after": "1f5650c2e54314b7e9875b270d2e4cc1e3dc0bf022f8e59a637ef2c6af51fd5f",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/notebooks/01_exploracion_y_visualizacion.ipynb",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "cc92c76ceac1b33abc4e992ef57aa0439666263ecc0b77b59a3355028a7588e3",
+    "sha256_after": "cc92c76ceac1b33abc4e992ef57aa0439666263ecc0b77b59a3355028a7588e3",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/notebooks/README.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "3d618975eb4653065b23c7114bbfbf40a57bb8190e7f4d5680e7412a8c39b205",
+    "sha256_after": "3d618975eb4653065b23c7114bbfbf40a57bb8190e7f4d5680e7412a8c39b205",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/notebooks/generate_sample_viz.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6be59728e3208499f47454553fe2064af821e8a80828d6817a7499c2f87c9591",
+    "sha256_after": "6be59728e3208499f47454553fe2064af821e8a80828d6817a7499c2f87c9591",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/notebooks/magnetogram_sample.png",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "ac7ca6eb3cf9fb23729f9bf2b5b1612dac825b14f77eb33c562b549adf0f3f14",
+    "sha256_after": "ac7ca6eb3cf9fb23729f9bf2b5b1612dac825b14f77eb33c562b549adf0f3f14",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/notebooks/validate_notebook.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "340ca528d5c1ee5e3801beee3b0d66bc5a8d1e196e07827606e998b0ea8d3866",
+    "sha256_after": "340ca528d5c1ee5e3801beee3b0d66bc5a8d1e196e07827606e998b0ea8d3866",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/architecture_diagram.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "6b9d0952ea4fe0aca3a831d436cdbd1dea7849c04b5a735d49098a839c841126",
+    "sha256_after": "6b9d0952ea4fe0aca3a831d436cdbd1dea7849c04b5a735d49098a839c841126",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/error_scatter.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "dde809288c25eb8c4618cf500eca066b68639d0e4ed2c801275d4daaa787b722",
+    "sha256_after": "dde809288c25eb8c4618cf500eca066b68639d0e4ed2c801275d4daaa787b722",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/gradcam_overlay.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "45483640ea34646af4cb47e790094c4c68ab62a437a3b3302c15116e6e949f45",
+    "sha256_after": "45483640ea34646af4cb47e790094c4c68ab62a437a3b3302c15116e6e949f45",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/gradcam_sample.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "105c5a558107dda1a5d120795adfdd64b18874d82c3833be4ab151c97b1b732c",
+    "sha256_after": "105c5a558107dda1a5d120795adfdd64b18874d82c3833be4ab151c97b1b732c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/gradcam_v3pro_maxactivity_20240810.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "78df981600be08abedd80be1b26d7a072797bf4f58709d04120fefdce4653398",
+    "sha256_after": "78df981600be08abedd80be1b26d7a072797bf4f58709d04120fefdce4653398",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/gradcam_v3pro_maxactivity_20240812.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "105c5a558107dda1a5d120795adfdd64b18874d82c3833be4ab151c97b1b732c",
+    "sha256_after": "105c5a558107dda1a5d120795adfdd64b18874d82c3833be4ab151c97b1b732c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/learning_curve.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Cálculo/datos reutilizados; salida de publicación adaptada. Entrenador congelado por el manifiesto de promoción.",
+    "sha256_before": "aa18caeff0b92bbc0907621c729a30e4b692ba1d06f1beb37925bd6c6942249e",
+    "sha256_after": "aa18caeff0b92bbc0907621c729a30e4b692ba1d06f1beb37925bd6c6942249e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/learning_curve_v2_pro.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "a675a3ba50d6bd86141049566fa152aa54b475ebbcaa775508dc8cc271642cad",
+    "sha256_after": "a675a3ba50d6bd86141049566fa152aa54b475ebbcaa775508dc8cc271642cad",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/learning_curve_v3_pro.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "477d002aff16b1ad0ea18ae3887c3bdc004de66999570ba8478754eaa987706f",
+    "sha256_after": "477d002aff16b1ad0ea18ae3887c3bdc004de66999570ba8478754eaa987706f",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/mode_collapse_evidence.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "491d26481ae5cf591db90f065509bf65e274e49ece7961bfc78aa2af930f6eea",
+    "sha256_after": "491d26481ae5cf591db90f065509bf65e274e49ece7961bfc78aa2af930f6eea",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/parameter_count_comparison.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "262fb2422c5fb6ae98a3d35f435d70e2a85938b56d94f4dbe988172fa40b5b46",
+    "sha256_after": "262fb2422c5fb6ae98a3d35f435d70e2a85938b56d94f4dbe988172fa40b5b46",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/prediction_result.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "a1c718dffeb66e7b70980c83efc73e45c5220005e5a14b6ed911efefaebdaab5",
+    "sha256_after": "a1c718dffeb66e7b70980c83efc73e45c5220005e5a14b6ed911efefaebdaab5",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/figures/r2_vs_parameters.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "7837c1fc0ea3a546a2376556604fc774690c36e7850d9c81428d905c70e0fa49",
+    "sha256_after": "7837c1fc0ea3a546a2376556604fc774690c36e7850d9c81428d905c70e0fa49",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/final_coronium_scatter_tesis.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "d8f092f8bcc769300cac8887b24f995d62108dbc54abf4c1eaa1039d4b7b3e60",
+    "sha256_after": "d8f092f8bcc769300cac8887b24f995d62108dbc54abf4c1eaa1039d4b7b3e60",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/api-startup-local.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "d45c100ed9682ac277f2e04502d30f3180b2c6937a7c86a8649867160034398a",
+    "sha256_after": "d45c100ed9682ac277f2e04502d30f3180b2c6937a7c86a8649867160034398a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/api-startup.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "aa5af121d172096feb160ab64a4240abdad4f9154cbce534a1dc4dafb3678557",
+    "sha256_after": "aa5af121d172096feb160ab64a4240abdad4f9154cbce534a1dc4dafb3678557",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/completion.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c3320b3702311a20b316bcc3f0d13b34cf0ff2f6dd25b9e34c967b90074b23fa",
+    "sha256_after": "c3320b3702311a20b316bcc3f0d13b34cf0ff2f6dd25b9e34c967b90074b23fa",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/coronium_v3_1_deterministic_predictions.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "34ab84d025e5dcb246cec57a33760ae2c4a23c51bc94dd4e64e977a49ae008f3",
+    "sha256_after": "34ab84d025e5dcb246cec57a33760ae2c4a23c51bc94dd4e64e977a49ae008f3",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/coronium_v3_1_mc_predictions.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "sha256_after": "59807725beacf1671abf849685fb8ecd4a22c7d5f8657e5fce9044dc08613790",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/coronium_v3_1_mc_results_comparison.csv",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "sha256_after": "22d953e99019b7f3750d33461472391dad5f5faa01a98af854b8c3d2547d6d58",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/frontend-build-final.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "0a6f72b43ba0916a9d6ad40e9dcf6563ec48f4693b35e56ac2e1ecef7d350681",
+    "sha256_after": "0a6f72b43ba0916a9d6ad40e9dcf6563ec48f4693b35e56ac2e1ecef7d350681",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/frontend-build.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c2dfff3a7efd6f48591ad399378029e8f3f626b2a429a43f051c2c88a9c5a09a",
+    "sha256_after": "c2dfff3a7efd6f48591ad399378029e8f3f626b2a429a43f051c2c88a9c5a09a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/http-verification-mps.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "20db41f192f3a15889bb94dd6885b28c29437d32c4648c9c0759910b8bb864da",
+    "sha256_after": "20db41f192f3a15889bb94dd6885b28c29437d32c4648c9c0759910b8bb864da",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/http-verification.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "9c28d55ca1ad823f52abece81ab998835d43ffca3e5b0dab993ed27f2f572612",
+    "sha256_after": "9c28d55ca1ad823f52abece81ab998835d43ffca3e5b0dab993ed27f2f572612",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/live-http.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "6b27a8d601d5ca344bdd4699531d1b8fbaf54c3dcbd08344137fe58cdcca9ddf",
+    "sha256_after": "6b27a8d601d5ca344bdd4699531d1b8fbaf54c3dcbd08344137fe58cdcca9ddf",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/preserved_before.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "a4930dcae857f5cc8cbe95432d8014ea04b270d8a2c43e52a4129befedbfe093",
+    "sha256_after": "a4930dcae857f5cc8cbe95432d8014ea04b270d8a2c43e52a4129befedbfe093",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/promotion.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "2b3bcc16ebc0f894708a45198ef1071e05fd491b0bee38999a5262b6bf37fe66",
+    "sha256_after": "2b3bcc16ebc0f894708a45198ef1071e05fd491b0bee38999a5262b6bf37fe66",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/AGENTS.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "0c4ad091470b551ef46bd1ecd60483abb5013a8fae94fa401fa0034f458e52df",
+    "sha256_after": "0c4ad091470b551ef46bd1ecd60483abb5013a8fae94fa401fa0034f458e52df",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/README.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "ca89b74124b940a52452bd4363a98a8c157e10026c6764b93a1be5a4e85f10dd",
+    "sha256_after": "ca89b74124b940a52452bd4363a98a8c157e10026c6764b93a1be5a4e85f10dd",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/.gitignore",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "76949b291d3c8cebcedc53242559ed878c9b81a4461d21a459c40ce9df548e48",
+    "sha256_after": "76949b291d3c8cebcedc53242559ed878c9b81a4461d21a459c40ce9df548e48",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/scripts/explain_model.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "06bfd8f299b613e8fda0abb352b1bfe8cc9f50936db229a6094d6a0c301db431",
+    "sha256_after": "06bfd8f299b613e8fda0abb352b1bfe8cc9f50936db229a6094d6a0c301db431",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/scripts/export_to_onnx.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "97a19c7e4ec12e1979ff6440f5f06827cca2d42f057b340332a72bc374b45dca",
+    "sha256_after": "97a19c7e4ec12e1979ff6440f5f06827cca2d42f057b340332a72bc374b45dca",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/scripts/plot_gradcam_overlay.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "5c221d3815b94586525bf9aed912b78079179a93b6fae68cb3b2f6690962507f",
+    "sha256_after": "5c221d3815b94586525bf9aed912b78079179a93b6fae68cb3b2f6690962507f",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/scripts/predict.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "0a0738dd528cbff12bea1acce7bcee2fb47aa6671a536285c747ae36c0260d7d",
+    "sha256_after": "0a0738dd528cbff12bea1acce7bcee2fb47aa6671a536285c747ae36c0260d7d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/scripts/promote_coronium_v3_1.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8a80d18faa6144a7d0dd9758eeedf4ccf38c1df4ce8f0dffd26b40fd3092c44b",
+    "sha256_after": "8a80d18faa6144a7d0dd9758eeedf4ccf38c1df4ce8f0dffd26b40fd3092c44b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/scripts/verify_phase16.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "66542b9d84843e62b9b27943c13df8af09ff93ded7d34b0987e024cbc9e5e2a4",
+    "sha256_after": "66542b9d84843e62b9b27943c13df8af09ff93ded7d34b0987e024cbc9e5e2a4",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/src/api/main.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "73e3caa3488849fe9e560680e2ee6db6de1bcd81ac01235dc592cc7b2b00decb",
+    "sha256_after": "73e3caa3488849fe9e560680e2ee6db6de1bcd81ac01235dc592cc7b2b00decb",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/src/models/active_model.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "e8be66ebb066bfd758d956ce23413798fd7c0945ed36f49105d0cd7a62b09932",
+    "sha256_after": "e8be66ebb066bfd758d956ce23413798fd7c0945ed36f49105d0cd7a62b09932",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/tests/test_phase1.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c7c1311d0ea9d405240e07e40f1eb244977da157ae321a3247a4367983c6888e",
+    "sha256_after": "c7c1311d0ea9d405240e07e40f1eb244977da157ae321a3247a4367983c6888e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-back/tests/test_phase16.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "6de578c6f7b49006978e366d6b62a4959c6eb2ff96196109dc328390e78475d6",
+    "sha256_after": "6de578c6f7b49006978e366d6b62a4959c6eb2ff96196109dc328390e78475d6",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/dashboard/components/global-metrics.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "09df4ebc65c67c14945bc2b26f5d0fc52cafe841bd8ce1a92c6562f7edad5a0c",
+    "sha256_after": "09df4ebc65c67c14945bc2b26f5d0fc52cafe841bd8ce1a92c6562f7edad5a0c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/dashboard/components/predicted-vs-actual.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "201d1350996474f4e34b1476f2462ddf3f9f92437ba9786b4d1da59144502ba0",
+    "sha256_after": "201d1350996474f4e34b1476f2462ddf3f9f92437ba9786b4d1da59144502ba0",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/dashboard/dashboard-page.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "6e9592b76c0000830a4445535310546733438751cd7bc29f8e1720172e1f99be",
+    "sha256_after": "6e9592b76c0000830a4445535310546733438751cd7bc29f8e1720172e1f99be",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/dashboard/magnetogram-panel.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "db627c981b05cc25d4c10ab43b9f87c3f83753c0bc38c5fe9305b4d9c55dc87c",
+    "sha256_after": "db627c981b05cc25d4c10ab43b9f87c3f83753c0bc38c5fe9305b4d9c55dc87c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/dashboard/model-metrics.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "7e7d9797e5bcdd4afdc7f03fc2394862762cceda3af61e8f7b1cb1fc9b3850af",
+    "sha256_after": "7e7d9797e5bcdd4afdc7f03fc2394862762cceda3af61e8f7b1cb1fc9b3850af",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/landing/architecture-diagram.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "ae03ec67ac0ffd7ef6b42c25e169204ae8aad518803d379bf2ae39592f870a08",
+    "sha256_after": "ae03ec67ac0ffd7ef6b42c25e169204ae8aad518803d379bf2ae39592f870a08",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/landing/landing-hero.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c667e33dcecca8f6e3889ae56c8d8d5dcab6285ae0a1b5caf2c3553ccabe663b",
+    "sha256_after": "c667e33dcecca8f6e3889ae56c8d8d5dcab6285ae0a1b5caf2c3553ccabe663b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/landing/project-description.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8af05f779f365dcfc98b696ca299aba37c6c4ededad4b696a8ba91ec32599f4b",
+    "sha256_after": "8af05f779f365dcfc98b696ca299aba37c6c4ededad4b696a8ba91ec32599f4b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/features/landing/system-overview.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "09b400c1e74635878c471e77acdc883628717aa6ad4f2e18796877967cbe2681",
+    "sha256_after": "09b400c1e74635878c471e77acdc883628717aa6ad4f2e18796877967cbe2681",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/lib/api.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "e12815817ad582dc568a6fd6d0b10267428f20249c97665c38ad7f6a05e6618a",
+    "sha256_after": "e12815817ad582dc568a6fd6d0b10267428f20249c97665c38ad7f6a05e6618a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/lib/i18n/translations.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "977bf96d8f276d47149290e652f6a5ad5be5d47198eb165e0b01456979b884db",
+    "sha256_after": "977bf96d8f276d47149290e652f6a5ad5be5d47198eb165e0b01456979b884db",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/auralis-front/src/lib/types.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "f3e8199fece0a5ee5fe9b79ff3ac2f3ad9d2e4b3bace6e22581b0e2a0be27b64",
+    "sha256_after": "f3e8199fece0a5ee5fe9b79ff3ac2f3ad9d2e4b3bace6e22581b0e2a0be27b64",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/docs/backend.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "7a0d1b5d0ad40c106603538f8e42e2a18bcb647c6c67df141472ade23ab1de68",
+    "sha256_after": "7a0d1b5d0ad40c106603538f8e42e2a18bcb647c6c67df141472ade23ab1de68",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/docs/phase15.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "d384122392eddea8432832bf22389d6c1fbded5da9f0f16a56c774e2efe947c5",
+    "sha256_after": "d384122392eddea8432832bf22389d6c1fbded5da9f0f16a56c774e2efe947c5",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/sources/docs/phase16.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "ededd31e884b9a93c672a1819a42805dba860f8af47196db3c1bd67897be3e77",
+    "sha256_after": "ededd31e884b9a93c672a1819a42805dba860f8af47196db3c1bd67897be3e77",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/tests-final.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "60606deb8b68006cde06509cbdacd2c7ccb2866ce0002b1de5b80e833f6edc95",
+    "sha256_after": "60606deb8b68006cde06509cbdacd2c7ccb2866ce0002b1de5b80e833f6edc95",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/tests.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "c747d96ee281209180d260d97563617a70a44ec0195e53d7fa2f77d26be75b8e",
+    "sha256_after": "c747d96ee281209180d260d97563617a70a44ec0195e53d7fa2f77d26be75b8e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/verification-mps.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "dc36ab2355984101a6d3a0c187fa150b8684069ce1599095b4c25eb6551d08bd",
+    "sha256_after": "dc36ab2355984101a6d3a0c187fa150b8684069ce1599095b4c25eb6551d08bd",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/verification.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "0b237ef0b33f408d29415671e31c8ac027d7c069dae46000a8fecb730e66a117",
+    "sha256_after": "0b237ef0b33f408d29415671e31c8ac027d7c069dae46000a8fecb730e66a117",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase16_coronium_v3_1/workspace_before.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "34e73deb8d5d370574c77dd854f014156be1cbd74b2cad12c7ffa6c01641f7b5",
+    "sha256_after": "34e73deb8d5d370574c77dd854f014156be1cbd74b2cad12c7ffa6c01641f7b5",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/checkpoint_diagnostic.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "901321aa4ab1ed4eef925cab906c486fa40b4918bf69ba85791ee4b77870cc48",
+    "sha256_after": "901321aa4ab1ed4eef925cab906c486fa40b4918bf69ba85791ee4b77870cc48",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/evidence.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "de6abda8f5e88e0df592ff0c12b5d76c152aa746631c3b0e95049aa3154cd401",
+    "sha256_after": "de6abda8f5e88e0df592ff0c12b5d76c152aa746631c3b0e95049aa3154cd401",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/frontend_build.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8379c39773101b86562b0430746114fe5e97934482fc5330ee88862d804ab888",
+    "sha256_after": "8379c39773101b86562b0430746114fe5e97934482fc5330ee88862d804ab888",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/historical_inference.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "783f843a34509f66f2714f81b2bac4c17571e3ac130c55109c7d39ce0763064f",
+    "sha256_after": "783f843a34509f66f2714f81b2bac4c17571e3ac130c55109c7d39ce0763064f",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/observation_times.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "5ce8ac1ca1fd592ca906b90a85b15368f113259692a1fd6f14b2d5696aae9bfc",
+    "sha256_after": "5ce8ac1ca1fd592ca906b90a85b15368f113259692a1fd6f14b2d5696aae9bfc",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/validation.json",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "8faded7fb80b51559517efc2e3341ea8eb53efc4c023e4180fc18d6855fa1923",
+    "sha256_after": "8faded7fb80b51559517efc2e3341ea8eb53efc4c023e4180fc18d6855fa1923",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/phase1_v1/validation_tests.log",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Proveniencia/evidencia congelada; se conserva, no es por sí sola evidencia de generalización.",
+    "sha256_before": "a5278268b8ef41844729cf02e93eba672450de0a329120daa3b84f1ecec98402",
+    "sha256_after": "a5278268b8ef41844729cf02e93eba672450de0a329120daa3b84f1ecec98402",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/r2_diagnostic.png",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Imagen histórica preservada. No es figura de resultados V3.1; usar el catálogo Phase 1.7.",
+    "sha256_before": "0c4019d45d2576635adf75c678cca350a826e7fe4b56906f62597171b1a4ec86",
+    "sha256_after": "0c4019d45d2576635adf75c678cca350a826e7fe4b56906f62597171b1a4ec86",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/reports/results_comparison.csv",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Histórico: distinto split/protocolo, posibles etiquetas antiguas. Conservado sin reemplazar ni usar como comparación controlada.",
+    "sha256_before": "c7ae4c65a4b498cdeb7d48698f3cec48f30cffe671aae217a3f011eaa6960ab5",
+    "sha256_after": "c7ae4c65a4b498cdeb7d48698f3cec48f30cffe671aae217a3f011eaa6960ab5",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/audit_phase1.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "affe1eb9aec9004411401fd858ce1bf0295d2bff6131fe8adb47d5d14e8b8cc6",
+    "sha256_after": "affe1eb9aec9004411401fd858ce1bf0295d2bff6131fe8adb47d5d14e8b8cc6",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/evaluate_final.py",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Cálculo/datos reutilizados; salida de publicación adaptada. Entrenador congelado por el manifiesto de promoción.",
+    "sha256_before": "9244445caf400eb6583df8b91ae06eb191994f8e487256371bfeeae7e2c2e9f8",
+    "sha256_after": "2386aaf97698a9fa35b604f35946e1a01aecd80bcfa847dccd961921bfcec979",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/scripts/explain_model.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "06bfd8f299b613e8fda0abb352b1bfe8cc9f50936db229a6094d6a0c301db431",
+    "sha256_after": "06bfd8f299b613e8fda0abb352b1bfe8cc9f50936db229a6094d6a0c301db431",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/export_to_onnx.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "97a19c7e4ec12e1979ff6440f5f06827cca2d42f057b340332a72bc374b45dca",
+    "sha256_after": "97a19c7e4ec12e1979ff6440f5f06827cca2d42f057b340332a72bc374b45dca",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/extract_test_kit.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "96ebce4b33d59afd115bfac4c98cfc679bb6ceff67468a80dd3361b7e93ec716",
+    "sha256_after": "96ebce4b33d59afd115bfac4c98cfc679bb6ceff67468a80dd3361b7e93ec716",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/kaggle_auralis_v3pro_dataset_builder.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d2b43e76791de73c80ebed5cc27d7570addd5c7e1b26bd8301340e4c191e4d54",
+    "sha256_after": "d2b43e76791de73c80ebed5cc27d7570addd5c7e1b26bd8301340e4c191e4d54",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/plot_architecture_diagram.py",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Contenía etiquetas de versión, log-SI/SSN, hold-out o cifras sin respaldo vigente; corregido o señalado como archivo histórico.",
+    "sha256_before": "57e5476cf1447eb91558333e2e04af89a755eab92c3404ff1af4ac687fb7d580",
+    "sha256_after": "01de48bc752ad1e266f74193931542097d36aa77ec08a30fd30c27dcbd559381",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/scripts/plot_final_scatter.py",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Contenía etiquetas de versión, log-SI/SSN, hold-out o cifras sin respaldo vigente; corregido o señalado como archivo histórico.",
+    "sha256_before": "6d4e49268039e1ccae3da080be82cdf81d06dcea9b5b6aa90b365b1cdce7bc76",
+    "sha256_after": "93a94c1925e3e822e6123726a1f398104dff2a3cd1c1e9d577452ca24d4a8980",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/scripts/plot_gradcam_overlay.py",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Contenía etiquetas de versión, log-SI/SSN, hold-out o cifras sin respaldo vigente; corregido o señalado como archivo histórico.",
+    "sha256_before": "5c221d3815b94586525bf9aed912b78079179a93b6fae68cb3b2f6690962507f",
+    "sha256_after": "3166ef79d3af8ffa6f96438737be7d61e47d2acc72e1151ba7c5c786465bc568",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/scripts/plot_r2_diagnostic.py",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Contenía etiquetas de versión, log-SI/SSN, hold-out o cifras sin respaldo vigente; corregido o señalado como archivo histórico.",
+    "sha256_before": "8caf1d7e34f223369d8cbf640c0381f20ab73e9272ddbec3b8cf34a247b68a01",
+    "sha256_after": "548de3e544515a30ccdba01a58193b53d11080d6e5d1568bb5fa466b1deaf334",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/scripts/predict.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0a0738dd528cbff12bea1acce7bcee2fb47aa6671a536285c747ae36c0260d7d",
+    "sha256_after": "0a0738dd528cbff12bea1acce7bcee2fb47aa6671a536285c747ae36c0260d7d",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/promote_coronium_v3_1.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "8a80d18faa6144a7d0dd9758eeedf4ccf38c1df4ce8f0dffd26b40fd3092c44b",
+    "sha256_after": "8a80d18faa6144a7d0dd9758eeedf4ccf38c1df4ce8f0dffd26b40fd3092c44b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/recalculate_scaler.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "39c2e32e4210119fac98f68704acbe1c8f63c950d9e060aa0d1f48a0566d4c34",
+    "sha256_after": "39c2e32e4210119fac98f68704acbe1c8f63c950d9e060aa0d1f48a0566d4c34",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/run_phase15.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "4f1197f6e3889f5676e78ec3eaf210d99142d78a11572ea372adb3a1d77e0c77",
+    "sha256_after": "4f1197f6e3889f5676e78ec3eaf210d99142d78a11572ea372adb3a1d77e0c77",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/test_inference.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6b9f66c70ba7d5f03d8b8119c9e66e66e785022eb1eb1efae16747b2a5452235",
+    "sha256_after": "6b9f66c70ba7d5f03d8b8119c9e66e66e785022eb1eb1efae16747b2a5452235",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/verify_phase15_results.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "88bf2c0651d961839f7844acaed16dbdbd36c1a316059fb4d109d54533dc7928",
+    "sha256_after": "88bf2c0651d961839f7844acaed16dbdbd36c1a316059fb4d109d54533dc7928",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/scripts/verify_phase16.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "66542b9d84843e62b9b27943c13df8af09ff93ded7d34b0987e024cbc9e5e2a4",
+    "sha256_after": "66542b9d84843e62b9b27943c13df8af09ff93ded7d34b0987e024cbc9e5e2a4",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/api/__init__.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/api/main.py",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Se reutiliza el contrato y se añade separación explícita MC/determinista, unidades y metadatos; compatibilidad conservada.",
+    "sha256_before": "73e3caa3488849fe9e560680e2ee6db6de1bcd81ac01235dc592cc7b2b00decb",
+    "sha256_after": "ae63fb106016092cd3d30c135a36bbd851ad9ef470f06de8e8b3c2ae63c81d26",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/src/experiments/__init__.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/experiments/run_external_baselines.py",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Cálculo/datos reutilizados; salida de publicación adaptada. Entrenador congelado por el manifiesto de promoción.",
+    "sha256_before": "fdc28289e09d5988f4064e265f7c8f943d8f32658d25aefd560dcc2f59f3a0c7",
+    "sha256_after": "79a96392af6924628be56232bebca5eaea304cbf09e3f7191f5edd35cb27fb6b",
+    "changed": true
+  },
+  {
+    "path": "auralis-back/src/ingestion/__init__.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/ingestion/download_solar_data.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "fd1757bdd4bfb2613ecdf06011255c51e76108f8e49aa22e12aa3c9882b42d7a",
+    "sha256_after": "fd1757bdd4bfb2613ecdf06011255c51e76108f8e49aa22e12aa3c9882b42d7a",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/ingestion/massive_ingest_pipeline.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "acb266fc61d6471e351bfb3013e7b22dc561c094597cb97f8e441632b2f8debd",
+    "sha256_after": "acb266fc61d6471e351bfb3013e7b22dc561c094597cb97f8e441632b2f8debd",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/models/__init__.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/models/active_model.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e8be66ebb066bfd758d956ce23413798fd7c0945ed36f49105d0cd7a62b09932",
+    "sha256_after": "e8be66ebb066bfd758d956ce23413798fd7c0945ed36f49105d0cd7a62b09932",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/models/train_model.py",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Cálculo/datos reutilizados; salida de publicación adaptada. Entrenador congelado por el manifiesto de promoción.",
+    "sha256_before": "f984d1ee319a115ebf9112ef4687c8690c0282d0a5d1c1b5fc410a74b00dbe1e",
+    "sha256_after": "f984d1ee319a115ebf9112ef4687c8690c0282d0a5d1c1b5fc410a74b00dbe1e",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/processing/__init__.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/processing/model_input.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+    "sha256_after": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/processing/observation_time.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0e118e06e0e7aac2d6742f2e3e1728de080c8e4b7991e7649d73348e01ea5e75",
+    "sha256_after": "0e118e06e0e7aac2d6742f2e3e1728de080c8e4b7991e7649d73348e01ea5e75",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/processing/prepare_dataset.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "f2c6fdded9d5b7870df8897541fea92d7f72b875a909561ebf6325db8e75246b",
+    "sha256_after": "f2c6fdded9d5b7870df8897541fea92d7f72b875a909561ebf6325db8e75246b",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/processing/scientific_split.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6fc51196f3241fa485c3635733f62b30687009456540d5d3b33fae3be0d126f0",
+    "sha256_after": "6fc51196f3241fa485c3635733f62b30687009456540d5d3b33fae3be0d126f0",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/processing/validate_processed.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "79932e2057b48fa1f612f6ffbaf72401ac3ee7fbc8b8dd8eb59489d71b32a536",
+    "sha256_after": "79932e2057b48fa1f612f6ffbaf72401ac3ee7fbc8b8dd8eb59489d71b32a536",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/tools/visualize_tensor.py",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "8565a19bd1dbd575bae6b9e781c71005e90e0d427caed0bf7d94501d6f2ebc3c",
+    "sha256_after": "8565a19bd1dbd575bae6b9e781c71005e90e0d427caed0bf7d94501d6f2ebc3c",
+    "changed": false
+  },
+  {
+    "path": "auralis-back/src/visualization/app.py",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Contenía etiquetas de versión, log-SI/SSN, hold-out o cifras sin respaldo vigente; corregido o señalado como archivo histórico.",
+    "sha256_before": "8a17584d321ef359b8b0228830a0ccfee153abe658b29cfdfdb01fa5b3bac337",
+    "sha256_after": "238d04863b33c8ddd1505837fd26a50e214b481ed0bc0747443f9ad25ce1de94",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/app/App.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "8861cec591a5b5cd751bd7839bce14ea679437b5de44704fcd342fc76cae83f7",
+    "sha256_after": "8861cec591a5b5cd751bd7839bce14ea679437b5de44704fcd342fc76cae83f7",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/accordion.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0ff6fadd3560c21aa67911d817f89d206188fd07bd57244ba59a117bd4ff9cb4",
+    "sha256_after": "0ff6fadd3560c21aa67911d817f89d206188fd07bd57244ba59a117bd4ff9cb4",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/alert-dialog.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "16f0bf95de446a8579cba6e75557fd83eb4aa0dbbc77ee936fbb59451e9390e9",
+    "sha256_after": "16f0bf95de446a8579cba6e75557fd83eb4aa0dbbc77ee936fbb59451e9390e9",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/alert.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "19835c5f03b78e8915b5e8900a0681ddfb83e3bcc0c9930e62f31c01e4dfb129",
+    "sha256_after": "19835c5f03b78e8915b5e8900a0681ddfb83e3bcc0c9930e62f31c01e4dfb129",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/aspect-ratio.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "7706745e217bebbc2d7bdf6697e9c6d484061146ae771755c9b6f240762c7217",
+    "sha256_after": "7706745e217bebbc2d7bdf6697e9c6d484061146ae771755c9b6f240762c7217",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/avatar.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d40b1cbabe71c094c6bcf089ac5702ec77623dbc75c770ca9f86530e03d6fea1",
+    "sha256_after": "d40b1cbabe71c094c6bcf089ac5702ec77623dbc75c770ca9f86530e03d6fea1",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/badge.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "8329a0b50f818665f1aca05ab93c16b103178b463f2949234ee4416bbc7d3fe2",
+    "sha256_after": "8329a0b50f818665f1aca05ab93c16b103178b463f2949234ee4416bbc7d3fe2",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/breadcrumb.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "c9fcf4df692c80c06ccc38c32f7045d1f389197c503edac32941cde64bada62e",
+    "sha256_after": "c9fcf4df692c80c06ccc38c32f7045d1f389197c503edac32941cde64bada62e",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/button.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "a3f96150fdf0c929eec3759673cc34b2cf5538fc088b25a54c00e0a3ed1c3f60",
+    "sha256_after": "a3f96150fdf0c929eec3759673cc34b2cf5538fc088b25a54c00e0a3ed1c3f60",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/calendar.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "280ba2b6416bb46259762fbb0068c61e93f186242516a10c2f319d484b09485d",
+    "sha256_after": "280ba2b6416bb46259762fbb0068c61e93f186242516a10c2f319d484b09485d",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/card.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "afc99cfa090791e394e68766095a4a86f5f6140521546b32d4b298061d72473f",
+    "sha256_after": "afc99cfa090791e394e68766095a4a86f5f6140521546b32d4b298061d72473f",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/carousel.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "5ffdde6336f0ee479c11255f3b951b230a1771f0080323f4dd0def03d677f50c",
+    "sha256_after": "5ffdde6336f0ee479c11255f3b951b230a1771f0080323f4dd0def03d677f50c",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/chart.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3e14ac980ce857edda5414ceaf8d7e504b5be37a4d99c28ff67c4c2535f51ff",
+    "sha256_after": "e3e14ac980ce857edda5414ceaf8d7e504b5be37a4d99c28ff67c4c2535f51ff",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/checkbox.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "894eb30992723a15e3ae75c46a3bf8808a526f5b3bff2c61c78f4d3e8d521cb8",
+    "sha256_after": "894eb30992723a15e3ae75c46a3bf8808a526f5b3bff2c61c78f4d3e8d521cb8",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/collapsible.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "b763764ebced561c04e2e6ada9dc53375bb90b9f4bcb91b0f3d5de7381aaf0cb",
+    "sha256_after": "b763764ebced561c04e2e6ada9dc53375bb90b9f4bcb91b0f3d5de7381aaf0cb",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/command.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "17ae21889928aeb0c042911153b7f0715bf537b190da31f16fc5798b9439aa2f",
+    "sha256_after": "17ae21889928aeb0c042911153b7f0715bf537b190da31f16fc5798b9439aa2f",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/context-menu.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e17a7028f18669ddd104e0f40fbb0110ebab0cfc89ad6910a43d2dc8539e7c22",
+    "sha256_after": "e17a7028f18669ddd104e0f40fbb0110ebab0cfc89ad6910a43d2dc8539e7c22",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/dialog.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "f4adc0065a7f795b5d99b8afe095a443d2d03b523cf5f958bc36ee7fbe0d3e45",
+    "sha256_after": "f4adc0065a7f795b5d99b8afe095a443d2d03b523cf5f958bc36ee7fbe0d3e45",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/drawer.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "5a99d073185e0ef6d984436547dce1f99c333dde7c1d7f33a2155dce05216514",
+    "sha256_after": "5a99d073185e0ef6d984436547dce1f99c333dde7c1d7f33a2155dce05216514",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/dropdown-menu.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "798b5337dc147d88c65de01f7221e0bfa04272968a1fce6acc1ec0bef7d9ddb9",
+    "sha256_after": "798b5337dc147d88c65de01f7221e0bfa04272968a1fce6acc1ec0bef7d9ddb9",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/form.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "b181a640358bd91b827f7e3ba610036f24a976994d4d88b480471a167770a508",
+    "sha256_after": "b181a640358bd91b827f7e3ba610036f24a976994d4d88b480471a167770a508",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/hover-card.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6ec1ef98aef3898ef3f8eb35e52c10add150d76cd041132d2520fe3016ecfe60",
+    "sha256_after": "6ec1ef98aef3898ef3f8eb35e52c10add150d76cd041132d2520fe3016ecfe60",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/input-otp.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "b15b03f71841b176baa6e0294a0790eea1ffe9264c55003fbbc9039d8457057b",
+    "sha256_after": "b15b03f71841b176baa6e0294a0790eea1ffe9264c55003fbbc9039d8457057b",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/input.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "cb82ffcd1a9accdf9b07edc8e976f43ad1c9cf91968ffd7639df5df14b7ad407",
+    "sha256_after": "cb82ffcd1a9accdf9b07edc8e976f43ad1c9cf91968ffd7639df5df14b7ad407",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/label.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "5ed157f039340cedaa59a888931db608667827170ae9538513a50ccf2ca65a9f",
+    "sha256_after": "5ed157f039340cedaa59a888931db608667827170ae9538513a50ccf2ca65a9f",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/menubar.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "1f0173397dac560a4748782bb595c956155a9360755667bee3d18c4a0f1179b1",
+    "sha256_after": "1f0173397dac560a4748782bb595c956155a9360755667bee3d18c4a0f1179b1",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/navigation-menu.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "df9f6e0c1d3fb1b265f8561ef00c98412f24a360a00cb7935b7c6f9a0d7513e6",
+    "sha256_after": "df9f6e0c1d3fb1b265f8561ef00c98412f24a360a00cb7935b7c6f9a0d7513e6",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/pagination.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "10bad2279ea5120ade645a1a834ed74f2471cde0fe7f3e9457fcb4918b7d0bc3",
+    "sha256_after": "10bad2279ea5120ade645a1a834ed74f2471cde0fe7f3e9457fcb4918b7d0bc3",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/popover.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "f14e16bebcfb1b605f6336d52153e43b76456c419930faea216d0ce2e3b1d3b7",
+    "sha256_after": "f14e16bebcfb1b605f6336d52153e43b76456c419930faea216d0ce2e3b1d3b7",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/progress.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "956cf4b485bcf57684caac10df2aa2a72387d0736d8f4cd1315c49ebd2da4615",
+    "sha256_after": "956cf4b485bcf57684caac10df2aa2a72387d0736d8f4cd1315c49ebd2da4615",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/radio-group.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "ecaeebb62d064893c23e7242b796ff5834e2b430676b3eecb1b3d4bc413283c8",
+    "sha256_after": "ecaeebb62d064893c23e7242b796ff5834e2b430676b3eecb1b3d4bc413283c8",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/resizable.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "7930ed39d1095de95193bb72ef046b8198647e1114d9a437aa1cd04c0975c5a8",
+    "sha256_after": "7930ed39d1095de95193bb72ef046b8198647e1114d9a437aa1cd04c0975c5a8",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/scroll-area.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "5bd9bb1d6909467b431283e96d2a9c83003bca1aa043d149dcfed8e81de51986",
+    "sha256_after": "5bd9bb1d6909467b431283e96d2a9c83003bca1aa043d149dcfed8e81de51986",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/select.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6aaf2111952394fbb8c64a505af02d08da28cc25726d61a991daebe400772480",
+    "sha256_after": "6aaf2111952394fbb8c64a505af02d08da28cc25726d61a991daebe400772480",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/separator.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "54cc34fc3ef7e445948c5bccf7307efbb2c8f9e63db0fc68dd3fa8ee54dc9812",
+    "sha256_after": "54cc34fc3ef7e445948c5bccf7307efbb2c8f9e63db0fc68dd3fa8ee54dc9812",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/sheet.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "8e1e064f92e2463bc7b8bb227a7c4d68d7464837c02d48ff75a87585d864c54c",
+    "sha256_after": "8e1e064f92e2463bc7b8bb227a7c4d68d7464837c02d48ff75a87585d864c54c",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/sidebar.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "24e197a06698ac0606e99b3ab9e7c31e9544e759eb929d22f37ea15391cae1c1",
+    "sha256_after": "24e197a06698ac0606e99b3ab9e7c31e9544e759eb929d22f37ea15391cae1c1",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/skeleton.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "7fd5d7f3ea479c3c1ae7be79bdbaf84c87647333768f70d396cd84580535d485",
+    "sha256_after": "7fd5d7f3ea479c3c1ae7be79bdbaf84c87647333768f70d396cd84580535d485",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/slider.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "19dd9d8b758f41fa61967d1a0540ea34ed989727258d23eef9a50cdebcab805b",
+    "sha256_after": "19dd9d8b758f41fa61967d1a0540ea34ed989727258d23eef9a50cdebcab805b",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/sonner.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "c5853f16cc11cb69e0115bab13eeabe7be5dad16fafd77b35cdfe4dbc64f0256",
+    "sha256_after": "c5853f16cc11cb69e0115bab13eeabe7be5dad16fafd77b35cdfe4dbc64f0256",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/switch.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d4c744131c6161300510909aafe2c2cb6d819f2c7a8c2aeb75d4317004c7eff7",
+    "sha256_after": "d4c744131c6161300510909aafe2c2cb6d819f2c7a8c2aeb75d4317004c7eff7",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/table.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e4ec7d3be042efd0fa363a57dd0e649a7831b86f975d4ec5192ebbfdd66e0f95",
+    "sha256_after": "e4ec7d3be042efd0fa363a57dd0e649a7831b86f975d4ec5192ebbfdd66e0f95",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/tabs.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "933b8f421bd84b21a22e3fd11cd62fbf4fd8b6fb7252f42ea706b9cd29255051",
+    "sha256_after": "933b8f421bd84b21a22e3fd11cd62fbf4fd8b6fb7252f42ea706b9cd29255051",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/textarea.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6c3127c28ba1dda0428ba286a9e291c52ad95bfc8acd10518b262b71e470f3e7",
+    "sha256_after": "6c3127c28ba1dda0428ba286a9e291c52ad95bfc8acd10518b262b71e470f3e7",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/toggle-group.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "43e56c5487ed93a2e0d418dcf944a646c716b8c8c55d050fcda1d5cd1248cce6",
+    "sha256_after": "43e56c5487ed93a2e0d418dcf944a646c716b8c8c55d050fcda1d5cd1248cce6",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/toggle.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "31f91bca26bed6bc884e3dbebe095046d4cf925b9d7676094721ac287d0b2135",
+    "sha256_after": "31f91bca26bed6bc884e3dbebe095046d4cf925b9d7676094721ac287d0b2135",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/tooltip.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "2f3a8720fb4b75c6911450be73d0407e2a84bb5ea1ded28ccdbf955be62a0155",
+    "sha256_after": "2f3a8720fb4b75c6911450be73d0407e2a84bb5ea1ded28ccdbf955be62a0155",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/use-mobile.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "738d8e4520edeca7caa2ca56a4923839e30be14a00fc32b5a770f5d5b451a63e",
+    "sha256_after": "738d8e4520edeca7caa2ca56a4923839e30be14a00fc32b5a770f5d5b451a63e",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/app/components/ui/utils.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d1f1e0d62cb8d8d1e04c26e14de842d8a151f75812d81b046c65b5d1fe8e4b27",
+    "sha256_after": "d1f1e0d62cb8d8d1e04c26e14de842d8a151f75812d81b046c65b5d1fe8e4b27",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/components/figma/ImageWithFallback.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "79caaf9d1736698c090823383f7b18a9496e9c1309a40f925c8aeb37e496bd8e",
+    "sha256_after": "79caaf9d1736698c090823383f7b18a9496e9c1309a40f925c8aeb37e496bd8e",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/components/shared/ripple-button.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "a37b3806a63ab806949f710f767453e55e18a3d66c7e801d4db824f5d3a491b5",
+    "sha256_after": "a37b3806a63ab806949f710f767453e55e18a3d66c7e801d4db824f5d3a491b5",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/architecture-comparison.tsx",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Se corrigieron comparación sin control, unidades, afirmaciones XAI, estado inferido o rango temporal hardcodeado.",
+    "sha256_before": "a71cc76de425c985d5b9ed9308cdd58fe488dc9ef2d4dc4219d9eedc853a20d0",
+    "sha256_after": "d9a8f67d90fc65db4e24d0aaca08a5b0076c2d3b4e8b1cd053c7378b45525984",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/config-panel.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "99e927261b01f06e8cc4c12a374e40d45f2151f73ac0751e9b0e7f4e2743c9d3",
+    "sha256_after": "99e927261b01f06e8cc4c12a374e40d45f2151f73ac0751e9b0e7f4e2743c9d3",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/experiment-log.tsx",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Se corrigieron comparación sin control, unidades, afirmaciones XAI, estado inferido o rango temporal hardcodeado.",
+    "sha256_before": "00a143575836abacc064a27d7ec503061ca7ce94009469cb26fdc1519baecae8",
+    "sha256_after": "f3df5b8541e3c55debc38876f45f36faca260b278bc9b4f2720b87f65cfb9646",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/global-metrics.tsx",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Se reutiliza el contrato y se añade separación explícita MC/determinista, unidades y metadatos; compatibilidad conservada.",
+    "sha256_before": "09df4ebc65c67c14945bc2b26f5d0fc52cafe841bd8ce1a92c6562f7edad5a0c",
+    "sha256_after": "2ba327057af3b2fb2d274dd2a8c20d0a4f5ee8720121208dd228aa2a17c01723",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/kfold-results.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Únicamente como ilustración ya rotulada; no son resultados científicos ni se incorporan al reporte V3.1.",
+    "sha256_before": "9d8982f219eb9e6d04196b9f4e26510255b3cb59530420583674ad6716791787",
+    "sha256_after": "9d8982f219eb9e6d04196b9f4e26510255b3cb59530420583674ad6716791787",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/predicted-vs-actual.tsx",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Se reutiliza el contrato y se añade separación explícita MC/determinista, unidades y metadatos; compatibilidad conservada.",
+    "sha256_before": "201d1350996474f4e34b1476f2462ddf3f9f92437ba9786b4d1da59144502ba0",
+    "sha256_after": "e37fa8eebcc91c1a9cf2ac43f753b0c67a219330ea89c510b3f6111fb3bca660",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/components/xai-faithfulness.tsx",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Se corrigieron comparación sin control, unidades, afirmaciones XAI, estado inferido o rango temporal hardcodeado.",
+    "sha256_before": "57ece3069f9954d899987cfd3cf9ea14b268913f352f9501df1af1fa045fffbb",
+    "sha256_after": "71e23a733d07383031e3ef134275a6229ef9cfdab59fb97e2560a69b2161580f",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/dashboard-page.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6e9592b76c0000830a4445535310546733438751cd7bc29f8e1720172e1f99be",
+    "sha256_after": "6e9592b76c0000830a4445535310546733438751cd7bc29f8e1720172e1f99be",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/execution-logs.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d2d5ea0df3082f2975fd9d1cb1c5f5acbd84b03c102c1f5c33926523271d5210",
+    "sha256_after": "d2d5ea0df3082f2975fd9d1cb1c5f5acbd84b03c102c1f5c33926523271d5210",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/magnetogram-panel.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "db627c981b05cc25d4c10ab43b9f87c3f83753c0bc38c5fe9305b4d9c55dc87c",
+    "sha256_after": "db627c981b05cc25d4c10ab43b9f87c3f83753c0bc38c5fe9305b4d9c55dc87c",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/model-metrics.tsx",
+    "classification_before": "incorrecto/desactualizado",
+    "reason_and_action": "Se corrigieron comparación sin control, unidades, afirmaciones XAI, estado inferido o rango temporal hardcodeado.",
+    "sha256_before": "7e7d9797e5bcdd4afdc7f03fc2394862762cceda3af61e8f7b1cb1fc9b3850af",
+    "sha256_after": "64e3c9409ba7e0b1c02289f3c83198fd7fab4746cd53e1afce280a104f5d56ed",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/pages/research-insights.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0bdb369253bc688a8771276081bc3faba40c7fe316791783d071d40e67300732",
+    "sha256_after": "0bdb369253bc688a8771276081bc3faba40c7fe316791783d071d40e67300732",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/prediction-chart.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6697f4670f21720410f4b00e7154d6f2c66ac4fe8520674890bad3aad73584a2",
+    "sha256_after": "6697f4670f21720410f4b00e7154d6f2c66ac4fe8520674890bad3aad73584a2",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/scientific-header.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "e3fc56b94ccbde085c3686f27f8476ba522e4b54a595bafeb900f57e2c782c8d",
+    "sha256_after": "e3fc56b94ccbde085c3686f27f8476ba522e4b54a595bafeb900f57e2c782c8d",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/dashboard/scientific-sidebar.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d489cdb50e9697526f6f2e7e286c7a7893d2a723f3fb93fdb7d968a385dcaa45",
+    "sha256_after": "d489cdb50e9697526f6f2e7e286c7a7893d2a723f3fb93fdb7d968a385dcaa45",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/landing/architecture-diagram.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "ae03ec67ac0ffd7ef6b42c25e169204ae8aad518803d379bf2ae39592f870a08",
+    "sha256_after": "ae03ec67ac0ffd7ef6b42c25e169204ae8aad518803d379bf2ae39592f870a08",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/landing/landing-cta.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "1e7289fcf4cc18a5dc1a0b02c7e3a87b15c0b24be4263282f5879bcee95cd7e3",
+    "sha256_after": "1e7289fcf4cc18a5dc1a0b02c7e3a87b15c0b24be4263282f5879bcee95cd7e3",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/landing/landing-hero.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "c667e33dcecca8f6e3889ae56c8d8d5dcab6285ae0a1b5caf2c3553ccabe663b",
+    "sha256_after": "c667e33dcecca8f6e3889ae56c8d8d5dcab6285ae0a1b5caf2c3553ccabe663b",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/landing/landing-page.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "a7e12849b5aebf5e252a3823e28669805da38950a7f4d5850b73a1473dab4d21",
+    "sha256_after": "a7e12849b5aebf5e252a3823e28669805da38950a7f4d5850b73a1473dab4d21",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/landing/project-description.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "8af05f779f365dcfc98b696ca299aba37c6c4ededad4b696a8ba91ec32599f4b",
+    "sha256_after": "8af05f779f365dcfc98b696ca299aba37c6c4ededad4b696a8ba91ec32599f4b",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/features/landing/system-overview.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "09b400c1e74635878c471e77acdc883628717aa6ad4f2e18796877967cbe2681",
+    "sha256_after": "09b400c1e74635878c471e77acdc883628717aa6ad4f2e18796877967cbe2681",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/lib/api.ts",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Se reutiliza el contrato y se añade separación explícita MC/determinista, unidades y metadatos; compatibilidad conservada.",
+    "sha256_before": "e12815817ad582dc568a6fd6d0b10267428f20249c97665c38ad7f6a05e6618a",
+    "sha256_after": "be23312c54b3719bb89e0fe4bb512fba546fa9b8a15e46331a2a827a86c8d5d2",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/lib/i18n/language-context.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "90c14696e0c4d4197a05c59fa828c2ccb1b0dfe26da2b9b367b392911cf46f1a",
+    "sha256_after": "90c14696e0c4d4197a05c59fa828c2ccb1b0dfe26da2b9b367b392911cf46f1a",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/lib/i18n/translations.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "977bf96d8f276d47149290e652f6a5ad5be5d47198eb165e0b01456979b884db",
+    "sha256_after": "833b06dae76512140f898a3669d5d400272f05feebc70240cfb5a030f86c7245",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/lib/types.ts",
+    "classification_before": "necesita adaptación a V3.1",
+    "reason_and_action": "Se reutiliza el contrato y se añade separación explícita MC/determinista, unidades y metadatos; compatibilidad conservada.",
+    "sha256_before": "f3e8199fece0a5ee5fe9b79ff3ac2f3ad9d2e4b3bace6e22581b0e2a0be27b64",
+    "sha256_after": "9db95cffc59407684f6da1893fb3d257525130bc9116b1d5c58050ca96f622e9",
+    "changed": true
+  },
+  {
+    "path": "auralis-front/src/main.tsx",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "a581599ccca32d2e42a7d7ec949efbcb85d28e10d4e74d7243fc1cf9d37baac2",
+    "sha256_after": "a581599ccca32d2e42a7d7ec949efbcb85d28e10d4e74d7243fc1cf9d37baac2",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/styles/fonts.css",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "bffaa162c7cbebc2d6ff4cc5ed6f5fe53f1812478b21f1bdd6ca519db6078dd3",
+    "sha256_after": "bffaa162c7cbebc2d6ff4cc5ed6f5fe53f1812478b21f1bdd6ca519db6078dd3",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/styles/index.css",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "0d46dda02561a65d8171ef491236820a78814f922e2e1e1c806047a3fb411536",
+    "sha256_after": "0d46dda02561a65d8171ef491236820a78814f922e2e1e1c806047a3fb411536",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/styles/tailwind.css",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "c7dddb734b0c9e3cfaa6698cd725f018b8a5e41f847ae42fd9b0269d44ee9ff4",
+    "sha256_after": "c7dddb734b0c9e3cfaa6698cd725f018b8a5e41f847ae42fd9b0269d44ee9ff4",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/styles/theme.css",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "bbebb4cd280d5c3a3e808233670b18e7ce72c08da66823522d2b5ca3166acde7",
+    "sha256_after": "bbebb4cd280d5c3a3e808233670b18e7ce72c08da66823522d2b5ca3166acde7",
+    "changed": false
+  },
+  {
+    "path": "auralis-front/src/vite-env.d.ts",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "3fd035fcdadbf8ecb0a3563de822202066c49ffc61f6f259b063e20364242730",
+    "sha256_after": "3fd035fcdadbf8ecb0a3563de822202066c49ffc61f6f259b063e20364242730",
+    "changed": false
+  },
+  {
+    "path": "docs/architecture.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "778a20be224375e1ab4e6b7bb426f65d304d0e417a4da688d1084ccbff88daec",
+    "sha256_after": "778a20be224375e1ab4e6b7bb426f65d304d0e417a4da688d1084ccbff88daec",
+    "changed": false
+  },
+  {
+    "path": "docs/backend.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "7a0d1b5d0ad40c106603538f8e42e2a18bcb647c6c67df141472ade23ab1de68",
+    "sha256_after": "7a0d1b5d0ad40c106603538f8e42e2a18bcb647c6c67df141472ade23ab1de68",
+    "changed": false
+  },
+  {
+    "path": "docs/phase1.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "6063b27ca9096cefca3984f370eeec049b38c963e34c3164b55caae8f913e93f",
+    "sha256_after": "6063b27ca9096cefca3984f370eeec049b38c963e34c3164b55caae8f913e93f",
+    "changed": false
+  },
+  {
+    "path": "docs/phase15.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "d384122392eddea8432832bf22389d6c1fbded5da9f0f16a56c774e2efe947c5",
+    "sha256_after": "d384122392eddea8432832bf22389d6c1fbded5da9f0f16a56c774e2efe947c5",
+    "changed": false
+  },
+  {
+    "path": "docs/phase16.md",
+    "classification_before": "válido y reutilizable",
+    "reason_and_action": "Fuente/infraestructura conservada; interpretar con el alcance y protocolo documentados en el inventario narrativo.",
+    "sha256_before": "ededd31e884b9a93c672a1819a42805dba860f8af47196db3c1bd67897be3e77",
+    "sha256_after": "ededd31e884b9a93c672a1819a42805dba860f8af47196db3c1bd67897be3e77",
+    "changed": false
+  },
+  {
+    "path": "Métricas/CSV por banda y casos extremos de V3.1",
+    "classification_before": "faltante",
+    "reason_and_action": "metrics_by_activity.csv y worst_cases.csv",
+    "changed": true
+  },
+  {
+    "path": "Residuos vs target/predicción y errores absolutos de ambos protocolos",
+    "classification_before": "faltante",
+    "reason_and_action": "figuras 02–05",
+    "changed": true
+  },
+  {
+    "path": "Comparación pareada MC/determinista con sesgo y percentiles",
+    "classification_before": "faltante",
+    "reason_and_action": "metrics.json y figura 07",
+    "changed": true
+  },
+  {
+    "path": "Baseline de media de train en split limpio",
+    "classification_before": "faltante",
+    "reason_and_action": "train_mean_si y figura 08",
+    "changed": true
+  },
+  {
+    "path": "Latencia V3.1 reproducible con tiempos crudos",
+    "classification_before": "faltante",
+    "reason_and_action": "latency.json, latency_samples.csv y figura 11",
+    "changed": true
+  },
+  {
+    "path": "Catálogo de publicación versionado PNG/PDF/SVG",
+    "classification_before": "faltante",
+    "reason_and_action": "figure_catalog.json, report.md, manifest.json",
+    "changed": true
+  },
+  {
+    "path": "Errores por año del registro TAI",
+    "classification_before": "faltante",
+    "reason_and_action": "metrics_by_record_year.csv y figura 10",
+    "changed": true
+  },
+  {
+    "path": "Scatter repetido en antiguos gráficos final/R2",
+    "classification_before": "redundante",
+    "reason_and_action": "Helper draw_scatter reutilizado; diagnóstico de residuos separado. Scripts e imágenes históricos preservados.",
+    "changed": true
+  }
+]

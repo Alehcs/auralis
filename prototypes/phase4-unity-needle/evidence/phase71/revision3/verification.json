@@ -1,0 +1,89 @@
+{
+  "protected": {
+    "passed": true,
+    "protected_files_unchanged": 1590,
+    "states": 5,
+    "final_si_decline_preserved": true,
+    "unity_glb_sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5"
+  },
+  "full": {
+    "sameScienceAndCamera": true,
+    "video": {
+      "width": 1119,
+      "height": 660,
+      "r_frame_rate": "30/1"
+    },
+    "distance": 2,
+    "recordedSecondsOfSurfaceTime": 7.968100000008942
+  },
+  "close": {
+    "sameScienceAndCamera": true,
+    "video": {
+      "width": 1119,
+      "height": 660,
+      "r_frame_rate": "30/1"
+    },
+    "distance": 1.15,
+    "recordedSecondsOfSurfaceTime": 7.998799999997031
+  },
+  "exactPixels": {
+    "forward-24 / reverse-24": 0,
+    "forward-25 / reverse-25": 0,
+    "forward-28 / reverse-28": 0,
+    "forward-29 / reverse-29": 0,
+    "forward-30 / reverse-30": 0,
+    "paused-a / paused-b": 0,
+    "magnetogram-a / magnetogram-b": 0,
+    "bplus-a / bplus-b": 0,
+    "bminus-a / bminus-b": 0
+  },
+  "performance-before": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase71-v2",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-24",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "frames": 911,
+    "durationMs": 30000.79999999702,
+    "renderHz": 30.365856910485405,
+    "medianIntervalMs": 33.29999999701977,
+    "p95IntervalMs": 34,
+    "intervalsOver50ms": 1,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "performance-after": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase71-v3",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-24",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "frames": 911,
+    "durationMs": 30001.30000001192,
+    "renderHz": 30.365350834785094,
+    "medianIntervalMs": 33.29999999701977,
+    "p95IntervalMs": 34.6000000089407,
+    "intervalsOver50ms": 1,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "comparison": {
+    "duration": "18.000000",
+    "size": "7713768",
+    "sha256": "9a55f31772fc95238c8333f985838923dd751d7f42e22c927c348b9dc5d0b2b3"
+  },
+  "physicalAR": "not_tested",
+  "visualAcceptance": "pending_user_review"
+}

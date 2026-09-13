@@ -53,16 +53,22 @@ export function PredictedVsActual() {
   const [data,    setData]    = useState<DataPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState<string | null>(null);
+  const [protocol, setProtocol] = useState<'mc' | 'deterministic'>('mc');
 
   useEffect(() => {
-    getResultsComparison()
-      .then(setData)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    let active = true;
+    setLoading(true);
+    setError(null);
+    getResultsComparison(protocol)
+      .then((values) => { if (active) setData(values); })
+      .catch((err) => { if (active) setError(err.message); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [protocol]);
 
-  const axisMin = 1.0;
-  const axisMax = 3.2;
+  const values = data.flatMap((point) => [point.real, point.predicted]);
+  const axisMin = values.length ? Math.floor((Math.min(...values) - 0.05) * 10) / 10 : 0;
+  const axisMax = values.length ? Math.ceil((Math.max(...values) + 0.05) * 10) / 10 : 1;
 
   const diagonalLine = [
     { real: axisMin, predicted: axisMin },
@@ -80,11 +86,19 @@ export function PredictedVsActual() {
           </div>
         </div>
         <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
-          {e.testSet} · N={data.length || '—'}
+          V3.1 · {protocol === 'mc' ? 'MC T=20 · MPS' : 'ONNX eval · CPU'} · N={loading ? '—' : data.length}
         </span>
       </div>
 
       <div className="p-5">
+        <label className="text-xs text-neutral-400 flex items-center gap-3 mb-3">
+          Protocol
+          <select aria-label="Evaluation protocol" value={protocol} onChange={(event) => setProtocol(event.target.value as 'mc' | 'deterministic')} className="bg-neutral-800 rounded px-2 py-1 text-white">
+            <option value="mc">MC Dropout T=20 · batch 32 · seed 42</option>
+            <option value="deterministic">Deterministic ONNX · batch 1</option>
+          </select>
+        </label>
+        <p className="text-[11px] text-neutral-500 mb-3">Selection validation · no independent or temporal test. SI = % of original pixels with |B LOS| &gt; 200 G.</p>
         {loading && (
           <div className="flex items-center justify-center h-72 text-neutral-600 text-sm">
             {e.loading}
@@ -112,7 +126,7 @@ export function PredictedVsActual() {
                   tickFormatter={(v: number) => v.toFixed(1)}
                 >
                   <Label
-                    value="Real"
+                    value="Target SI (%)"
                     position="insideBottom"
                     offset={-20}
                     style={{ fill: '#737373', fontSize: 11, fontFamily: 'monospace' }}
@@ -129,7 +143,7 @@ export function PredictedVsActual() {
                   width={36}
                 >
                   <Label
-                    value="Predicted"
+                    value="Predicted SI (%)"
                     angle={-90}
                     position="insideLeft"
                     offset={12}

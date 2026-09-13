@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-09",
+  "phase": "4.2",
+  "unity_needle_web_demonstrated": true,
+  "unity_editor": "6000.3.17f1",
+  "exporter": "5.1.12",
+  "real_scene_created": true,
+  "real_export": {
+    "unityVersion": "6000.3.17f1",
+    "exporterVersion": "5.1.12",
+    "timestampUtc": "2026-09-09T17:00:59.9602080Z",
+    "scene": "Assets/Scenes/Phase4Probe.unity",
+    "sha256": "92ce99f4e279eaf47110ddaee595e0c52daa566d806bb05204f9e458fe9d413b",
+    "bytes": 73316
+  },
+  "export_exit_code": 0,
+  "export_log": "unity-export-20260909T170054Z.log",
+  "node_tests_passed": 8,
+  "build_passed": true,
+  "basic_visual_parity": {
+    "verified": true,
+    "method": "Visual inspection of actual Unity camera render and browser screenshot; not pixel exact"
+  },
+  "web_interaction_verified": true,
+  "public_anonymous_http_verified": true,
+  "qr_software_decode_verified": true,
+  "physical_qr_scan_verified": false,
+  "physical_android_ar_verified": false,
+  "physical_ios_ar_verified": false,
+  "mobile_performance_verified": false,
+  "definitive_mobile_technology_approved": false,
+  "public_version": 6,
+  "source_commit": "08c481f707f2d7ca865beb1a5826b48a0f6e2414",
+  "build": "phase4.2-20260909-b",
+  "public_reload_outside_viewport_verified": true,
+  "phase42_technical_preparation": "completed",
+  "full_physical_validation": "pending"
+}

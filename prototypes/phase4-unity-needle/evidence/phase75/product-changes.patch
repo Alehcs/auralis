@@ -1,0 +1,445 @@
+--- phase74/phase6/index.html
++++ phase75/phase6/index.html
+@@ -2,7 +2,7 @@
+ <html lang="es">
+ <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090b10"><meta name="description" content="Cinco estados HMI, contexto SRS de NOAA 12975 y eventos GOES históricos independientes; Coronium estima SI actual, sin predicción de llamaradas. Exploración Unity y Needle en web y AR."><title>Auralis · Contexto científico NOAA 12975</title></head>
+ <body data-phase="6">
+-<header class="topbar"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">◉</span>AURALIS<span class="brand-divider"></span><span class="brand-sub">SOLAR LAB</span></a><span class="phase-tag">FASE 07.4 <span>NOAA 12975</span></span></header>
++<header class="topbar"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">◉</span>AURALIS<span class="brand-divider"></span><span class="brand-sub">SOLAR LAB</span></a><span class="phase-tag">FASE 07.5 <span>NOAA 12975</span></span></header>
+ <main>
+   <div class="page-heading"><div><p class="eyebrow">EXPLORADOR SOLAR</p><h1>El Sol y su contexto histórico.</h1></div><div class="observation-date"><span class="live-dot"></span><div><strong id="header-date">Cargando observación…</strong><span>Archivo SDO / HMI · registro UTC</span></div></div></div>
+   <section class="temporal-panel" aria-label="Evolución temporal"><h2>24–30 marzo · cinco estados HMI de disco completo</h2><div class="science-legend" aria-label="Naturaleza de la información"><span>Observación real · HMI / SRS</span><span>Resultado de Coronium · SI</span><span>Recreación visual · Sol 3D</span><span>Evento histórico externo · GOES</span></div><div id="timeline"></div></section>
+@@ -32,5 +32,5 @@
+   <section class="ar-section" aria-labelledby="ar-title"><div class="ar-copy"><p class="eyebrow">DEL NAVEGADOR A TU ESPACIO</p><h2 id="ar-title">Explora este estado en AR.</h2><p id="capability" role="status">Comprobando compatibilidad del navegador…</p><p class="small">Abre AR en el menú del visor, busca una superficie y toca para colocar. El Sol mide 84 cm a escala 1×; es una escala de demostración.</p><label class="scale-label" for="scale">Escala del objeto <output id="scale-value">1,0×</output></label><input id="scale" type="range" min="0.4" max="1.5" step="0.1" value="1" disabled><p class="small">El gesto de escala de AR es independiente; comprueba el tamaño tras colocar.</p><p id="placement" class="small" role="status">Sin sesión AR. La exploración 3D está disponible.</p><a id="ios-launch" class="text-link" hidden>Abrir en Needle Go ↗</a><button id="quicklook" hidden>Quick Look · escala original</button><p class="small">iPhone: Safari → Needle Go (App Clip), sin WebXR nativo. Quick Look abre una instantánea de la superficie seleccionada, sin animación superficial, timeline, fundido ni controles web. WebXR y Needle Go usan el material web; su funcionamiento en este teléfono está pendiente de prueba física.</p></div><div class="qr-block"><canvas id="qr" aria-label="QR para abrir este estado en el teléfono"></canvas><strong>Continúa en tu teléfono</strong><a id="share-url"></a><p id="share-note" class="small"></p></div></section>
+   <details class="validation"><summary>Prueba física y registro de este dispositivo</summary><div class="validation-grid"><div><ol><li>Escanea el QR. Recorre 24 → 25 → 28 → 29 → 30 y regresa: compara las regiones sobre el Sol y el magnetograma.</li><li>Mide 30 s en 3D. Entra en AR, concede cámara, coloca y explora delante y detrás.</li><li>En AR colocado, cambia las cinco fechas y capas; ajusta escala y comprueba frente y dorso; sal, vuelve a entrar y prueba bloquear/reanudar.</li><li>Anota seguimiento, legibilidad, demoras y calor. Descarga el registro.</li></ol><p class="small">Solo se registra lo que tú observes. No se envía información a un servidor. Needle Go o Quick Look pueden abrir otro contexto: registra sus resultados por separado.</p><button id="sample" disabled>Medir 30 s de render</button><pre id="sample-result" aria-live="polite">Sin medición.</pre></div><div class="human-fields"><label for="device">Teléfono y sistema</label><input id="device" placeholder="Modelo y versión del sistema"><label for="browser">Navegador y recorrido AR</label><input id="browser" placeholder="Versión; WebXR, Needle Go o Quick Look"><label for="outcome">Resultado de esta prueba</label><select id="outcome"><option value="not_tested">No probado</option><option value="passed">Funcionó en este dispositivo</option><option value="partial">Parcial</option><option value="failed">Falló</option></select><label for="observations">Observaciones</label><textarea id="observations" rows="4" placeholder="QR, materiales, capas, colocación, escala, deriva, reentrada y calor"></textarea><button id="download">Descargar registro</button></div></div></details>
+   <details class="validation"><summary>Verificación técnica</summary><pre id="diagnostics">Esperando carga.</pre><button id="release" disabled>Liberar visor 3D</button><p class="small">Libera recursos de esta escena. La referencia 2D permanece disponible; Reintentar vuelve a cargar el visor.</p></details>
+-</main><footer><span>AURALIS · GEMELO SOLAR / FASE 07.4</span><span>Observación · estimación · ilustración, distinguidas.</span></footer>
++</main><footer><span>AURALIS · GEMELO SOLAR / FASE 07.5</span><span>Observación · estimación · ilustración, distinguidas.</span></footer>
+ <script type="module" src="/src/phase5/main.ts"></script><script type="module">if(import.meta.env.DEV && new URLSearchParams(location.search).has('capture')) import('/dev/phase72-capture.mjs');</script></body></html>
+--- phase74/src/phase5/main.ts
++++ phase75/src/phase5/main.ts
+@@ -1,6 +1,7 @@
+ /// <reference types="vite/client" />
+ import './style.css';
+ import QRCode from 'qrcode';
++import { createActivityLoops } from '../phase6/activity-loops';
+ import { createSurfaceParticles, PARTICLE_COUNT } from '../phase6/surface-particles';
+ import { SurfaceClock, SURFACE_SEED } from '../phase6/surface-motion.mjs';
+ import { TemporalSequence } from '../phase6/temporal';
+@@ -22,7 +23,7 @@
+ const abort = new AbortController();
+ const events:Record<string,unknown>[]=[];
+ const samples:Record<string,unknown>[]=[];
+-const diag:Record<string,unknown>={build:isTemporal?'phase74-v1':'phase5-visual-polish-v1',engine:'5.1.12',source:'waiting-for-real-unity',errors:[],physicalValidation:'not_tested',placementCount:0,layer:'solar'};
++const diag:Record<string,unknown>={build:isTemporal?'phase75-v1':'phase5-visual-polish-v1',engine:'5.1.12',source:'waiting-for-real-unity',errors:[],physicalValidation:'not_tested',placementCount:0,layer:'solar'};
+ const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ let context:Context|undefined, object:Object3D|undefined, orbit:OrbitControls|undefined;
+ let element:HTMLElement|undefined, removePlaced:(()=>void)|undefined;
+@@ -32,6 +33,7 @@
+ let displayGain=4, plasma=!matchMedia('(prefers-reduced-motion: reduce)').matches, visual:ReturnType<typeof polishMaterials>|undefined, visualTime=0, visualLast=0;
+ const surfaceClock=new SurfaceClock(plasma);
+ let surfaceVisible=true;
++let activityLoops:ReturnType<typeof createActivityLoops>|undefined;
+ let loading=false, released=false, attempt=0;
+ let sceneUrl:string|undefined;
+ const cleanupCallbacks:(()=>void)[]=[];
+@@ -65,7 +67,7 @@
+   bplus:{title:'Polaridad positiva · B+',kind:'DERIVADO OBSERVACIONAL',description:'B+ = max(x, 0). Blanco indica mayor magnitud positiva; negro indica cero. Escala lineal normalizada.',reference:'Canal B+'},
+   bminus:{title:'Polaridad negativa · |B−|',kind:'DERIVADO OBSERVACIONAL',description:'|B−| = max(−x, 0). Blanco indica mayor magnitud negativa; el canal conserva valores no negativos.',reference:'Magnitud B−'},
+ };
+-if(isTemporal)modes.solar={title:'Actividad magnética · recreación 3D',kind:'RECREACIÓN GUIADA POR HMI',description:'Ámbar: B+ · coral: B− · núcleos oscuros: concentraciones magnéticas recreadas, no manchas confirmadas. Proyección geométrica aproximada del disco; dorso ilustrativo sin observación HMI.',reference:'Campo firmado'};
++if(isTemporal)modes.solar={title:'Actividad magnética · recreación 3D',kind:'RECREACIÓN GUIADA POR HMI',description:'Distribución guiada por HMI · superficie y arcos de plasma ilustrativos, inspirados en SDO/AIA. No reconstruyen la corona ni el campo 3D real. Núcleos magnéticos recreados; dorso sin observación HMI.',reference:'Campo firmado'};
+ function showLayer(name:string){
+   layer=checkedLayer(name);const mode=modes[layer];
+   if(context){for(const item of ['solar','magnetogram','bplus','bminus']){const go=context.scene.getObjectByName(item==='solar'?'SolarIllustration':'Layer_'+item);if(go)setActive(go,item===layer);}}
+@@ -91,7 +93,7 @@
+   $('legend-max').textContent=signed?'+'+limit+' · B+':limit+' · magnitud';
+   const note=g===1?'Escala original lineal.':'Contraste ×'+g+' · saturación visual en '+(signed?'±':'')+limit+'. Datos y SI intactos.';
+   $('display-note').textContent=note;
+-  const arNote=document.getElementById('ar-layer-note');if(arNote)arNote.textContent=layer==='solar'&&isTemporal?'B+ ámbar · B− coral · regiones recreadas, no manchas confirmadas. Dorso sin HMI.':modes[layer].title+' · '+(signed?'negro −'+limit+' / blanco +'+limit:'negro 0 / blanco '+limit)+' · '+note;
++  const arNote=document.getElementById('ar-layer-note');if(arNote)arNote.textContent=layer==='solar'&&isTemporal?'HMI guía la distribución. Plasma y arcos ilustrativos; no corona/campo 3D medidos. Dorso sin HMI.':modes[layer].title+' · '+(signed?'negro −'+limit+' / blanco +'+limit:'negro 0 / blanco '+limit)+' · '+note;
+   diag.displayGain=g;diag.illustrativeMotion=plasma;
+ }
+ $('contrast').onchange=e=>{displayGain=Number((e.target as HTMLSelectElement).value);if(![1,4,12].includes(displayGain))displayGain=1;updateDisplay();};
+@@ -178,6 +180,7 @@
+   object.traverse(o=>{if(o instanceof Mesh)for(const material of Array.isArray(o.material)?o.material:[o.material])material.toneMapped=false;});
+   visual=polishMaterials(object,isTemporal);visualLast=performance.now();surfaceClock.sync(visualLast);plasmaButton();
+   const particleVisual=isTemporal?createSurfaceParticles(ctx.scene.getObjectByName('IllustrativeSphere') as Mesh,visual):undefined;
++  if(isTemporal&&temporal){activityLoops=createActivityLoops(ctx.scene.getObjectByName('IllustrativeSphere') as Mesh,visual,temporal.bundles);cleanupCallbacks.push(()=>{activityLoops?.dispose();activityLoops=undefined;});}
+   if(particleVisual)cleanupCallbacks.push(()=>particleVisual.dispose());
+   if(isTemporal)diag.illustrativeParticleCount=PARTICLE_COUNT;
+   const visibility=new IntersectionObserver(entries=>{surfaceVisible=entries[0].isIntersecting;surfaceClock.sync(performance.now());});visibility.observe($('viewport'));cleanupCallbacks.push(()=>visibility.disconnect());
+@@ -185,7 +188,7 @@
+   orbit.autoTarget=false;orbit.autoFit=false;orbit.enablePan=false;orbit.minZoom=1.15;orbit.maxZoom=3.8;orbit.autoRotateSpeed=.65;orbit.enableDamping=true;orbit.minPolarAngle=.12;orbit.maxPolarAngle=Math.PI-.12;orbit.setLookTargetPosition(rootPosition,true);
+   const xr=ctx.scene.addComponent(WebXR,{createARButton:true,createVRButton:false,createSendToQuestButton:false,createQRCode:false,autoPlace:false,autoCenter:false,usePlacementReticle:true,usePlacementAdjustment:true,useQuicklookExport:false,useXRAnchor:true,arScale:1,defaultAvatar:false});void xr;
+   const usdz=ctx.scene.addComponent(USDZExporter,{objectToExport:object,exportFileName:'auralis-phase5-'+data.state.id,interactive:false});
+-  if(ios){$('quicklook').hidden=false;$('quicklook').onclick=()=>{temporal?.pause();usdz.exportFileName='auralis-'+data.state.id;record('quicklook-request');if(particleVisual)particleVisual.points.visible=false;void usdz.exportAndOpen().catch(fail).finally(()=>{if(particleVisual)particleVisual.points.visible=true;});};}
++  if(ios){$('quicklook').hidden=false;$('quicklook').onclick=()=>{temporal?.pause();usdz.exportFileName='auralis-'+data.state.id;record('quicklook-request');if(particleVisual)particleVisual.points.visible=false;if(activityLoops)activityLoops.mesh.visible=false;void usdz.exportAndOpen().catch(fail).finally(()=>{if(particleVisual)particleVisual.points.visible=true;if(activityLoops)activityLoops.mesh.visible=true;});};}
+   removePlaced=WebARSessionRoot.onPlaced(args=>{if(args.instance.context!==ctx)return;diag.placementCount=Number(diag.placementCount)+1;record('placed');$('placement').textContent='Colocación notificada. Comprueba visualmente escala, capas y estabilidad.';startSample();});
+   let removeXRVisibility:(()=>void)|undefined;
+   const sessionStart=()=>{
+@@ -199,7 +202,7 @@
+   ctx.post_render_callbacks.push(()=>{
+     const now=performance.now(),info=ctx.renderer.info;
+     if(sample&&lastFrame!==info.render.frame){const mode=ctx.renderer.xr.isPresenting?'xr':'web3d';if(mode!==sample.mode)stopSample('interrupted-mode-change');else if(info.render.calls>0)sample.times.push(now);}lastFrame=info.render.frame;
+-    if(now-lastStats>500){lastStats=now;Object.assign(diag,{status:'ready',layer,scale,autoRotate:automatic,illustrativeTime:visualTime,illustrativeMotion:plasma,...(isTemporal?{surfaceSeed:SURFACE_SEED,surfaceVisible,surfaceGuideState:data.state.id,surfaceGuideMaps:[visual?.guidePlus.value?.name,visual?.guideMinus.value?.name],surfaceShader:visual?.guidePlus.value?'anchored-hmi-v74':null}:{}),drawCalls:info.render.calls,triangles:info.render.triangles,renderFrames:info.render.frame,gpuTextures:info.memory.textures,gpuGeometries:info.memory.geometries,retainedEvents:events.length,pixelRatio:ctx.renderer.getPixelRatio(),cameraPosition:ctx.mainCamera.position.toArray(),cameraDistance:ctx.mainCamera.position.distanceTo(rootPosition),orbitEnabled:!!orbit?.controls?.enabled,canvasAttached:ctx.renderer.domElement.isConnected,engineElements:document.querySelectorAll('needle-engine').length});$('diagnostics').textContent=JSON.stringify(diag,null,2);}
++    if(now-lastStats>500){lastStats=now;Object.assign(diag,{status:'ready',layer,scale,autoRotate:automatic,illustrativeTime:visualTime,illustrativeMotion:plasma,...(isTemporal?{surfaceSeed:SURFACE_SEED,surfaceVisible,surfaceGuideState:data.state.id,surfaceGuideMaps:[visual?.guidePlus.value?.name,visual?.guideMinus.value?.name],surfaceShader:visual?.guidePlus.value?'anchored-hmi-v75':null}:{}),drawCalls:info.render.calls,triangles:info.render.triangles,renderFrames:info.render.frame,gpuTextures:info.memory.textures,gpuGeometries:info.memory.geometries,retainedEvents:events.length,pixelRatio:ctx.renderer.getPixelRatio(),cameraPosition:ctx.mainCamera.position.toArray(),cameraDistance:ctx.mainCamera.position.distanceTo(rootPosition),orbitEnabled:!!orbit?.controls?.enabled,canvasAttached:ctx.renderer.domElement.isConnected,engineElements:document.querySelectorAll('needle-engine').length});$('diagnostics').textContent=JSON.stringify(diag,null,2);}
+   });
+   temporal?.activate();scientific?.setEnabled(true);if(temporal&&visual){const texture=temporal.bundles[temporal.index].textures.get('solar')!;visual.solarFrom.value=texture;visual.solarTo.value=texture;}showLayer(layer);setScale(scale);setAutomatic(false);buttons(true);diag.source='unity-glb-loaded';diag.readyMs=Math.round(performance.now()-started);diag.exportHashVerified=true;diag.exportEvidence=evidence;
+   $('load-status').textContent='Unity → Needle · escena y recursos verificados';clearTimeout(timer);$('retry').hidden=true;record('ready');
+@@ -233,6 +236,7 @@
+             if(old&&old!==visual?.decoration.value&&!temporal?.bundles.some(b=>Array.from(b.textures.values()).includes(old)))old.dispose();
+           }
+           if(visual){visual.guidePlus.value=bundle.textures.get('bplus')!;visual.guideMinus.value=bundle.textures.get('bminus')!;visual.guideDisk.value.set(bundle.activity.disk.cx,bundle.activity.disk.cy,bundle.activity.disk.radius);}
++          if(activityLoops)diag.illustrativeArcades=activityLoops.select(bundle.entry.state.id);
+           Object.assign(diag,{surfaceGuideState:bundle.entry.state.id,surfaceGuideMaps:[bundle.textures.get('bplus')!.name,bundle.textures.get('bminus')!.name],activeMaps:Object.fromEntries(Array.from(bundle.textures,([key,texture])=>[key,{name:texture.name,sha256:(key==='solar'?bundle.activity.solar:bundle.entry.layers[key]).sha256,flipY:texture.flipY}])),solarActivity:{id:bundle.activity.id,sha256:bundle.activity.solar.sha256,sourceSha256:bundle.activity.source_sha256,disk:bundle.activity.disk},magnetogramFile:bundle.entry.state.observation.magnetogram.filename});
+           fillScience();scientific?.setState(data.state.id);showLayer(layer);record('state:'+data.state.id);
+         },
+--- phase74/src/phase5/visual-materials.ts
++++ phase75/src/phase5/visual-materials.ts
+@@ -1,11 +1,12 @@
+ import {surfaceUniforms,surfaceTransfer} from '../phase6/surface-shader';
+ import {SURFACE_SEED} from '../phase6/surface-motion.mjs';
+-import { Mesh, Object3D, Vector3, type Material, type Texture } from 'three';
++import { Mesh, Object3D, Vector3, Vector4, type Material, type Texture } from 'three';
+ 
+ // Extend the materials of the Unity GLB; geometry and baked assets stay in Unity.
+ // Quick Look keeps the baked material and the original linear scientific maps.
+ export function polishMaterials(root:Object3D, temporal=false) {
+   const guidePlus={value:null as Texture|null},guideMinus={value:null as Texture|null},guideDisk={value:new Vector3()},seed={value:SURFACE_SEED};
++  const arcadeAnchors={value:Array.from({length:12},()=>new Vector4())},arcadeCount={value:0};
+   const time={value:0}, gain={value:1},fade={value:1};
+   // Original observation-free Unity illustration; HMI atlases retain their UVs.
+   const decoration={value:null as Texture|null};
+@@ -15,24 +16,29 @@
+     const solar=o.name==='IllustrativeSphere', scientific=o.name.startsWith('Layer_');
+     if(temporal&&o.name==='SubtleCorona'){
+       for(const material of Array.isArray(o.material)?o.material:[o.material]){
+-        material.customProgramCacheKey=()=> 'auralis-corona-v74';
++        material.customProgramCacheKey=()=> 'auralis-corona-v75';
+         material.onBeforeCompile=(shader:Parameters<Material['onBeforeCompile']>[0])=>{
+           shader.uniforms.uStateFade=fade;
+           shader.fragmentShader='uniform float uStateFade;\n'+shader.fragmentShader;
+-          // Same Unity plane/texture, with a thinner falloff and broad irregularity.
+-          // Decorative halo only; no atmospheric structure reconstructed from HMI.
++          shader.uniforms.uIllustrationTime=time;
++          shader.fragmentShader='uniform float uIllustrationTime;\n'+shader.fragmentShader;
++          // Nested irregular falloffs on the original Unity plane. Presentation
++          // rays are not reconstructed field lines or inferred coronal heights.
+           shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#ifdef USE_MAP
+-            vec4 bakedCorona=texture2D(map,vMapUv);
+-            float radius=length(vMapUv*2.0-1.0);
++            vec2 p=vMapUv*2.0-1.0;
++            float radius=length(p);
++            float angle=atan(p.y,p.x);
+             float edge=max(0.0,radius-.70);
+-            float outside=smoothstep(.700,.716,radius);
+-            float cutoff=1.0-smoothstep(.94,1.0,radius);
+-            float innerGlow=exp(-edge*95.0);
+-            float diffuseGlow=exp(-edge*14.0);
+-            diffuseColor.rgb*=mix(vec3(1.0,.17,.009),vec3(1.0,.52,.085),innerGlow);
+-            float angle=atan(vMapUv.y-.5,vMapUv.x-.5);
+-            float irregular=.88+.07*sin(3.0*angle+.4)+.05*sin(5.0*angle-1.7);
+-            diffuseColor.a*=(.42*innerGlow+.14*diffuseGlow+.12*bakedCorona.a)*outside*cutoff*irregular;
++            float outside=smoothstep(.697,.707,radius);
++            float cutoff=1.0-smoothstep(.93,1.0,radius);
++            float t=uIllustrationTime*.045;
++            float fan=.5+.5*sin(angle*11.0+1.4*sin(angle*5.0)+t);
++            float rays=pow(.5+.5*sin(angle*59.0+3.0*sin(angle*13.0)+edge*47.0*sin(angle*7.0)-t),5.0);
++            float fine=pow(.5+.5*sin(angle*113.0+2.0*sin(angle*23.0)+edge*63.0*sin(angle*9.0)+t*.7),9.0);
++            float innerGlow=exp(-edge*125.0);
++            float diffuseGlow=exp(-edge*mix(17.0,32.0,fan));
++            diffuseColor.rgb=vec3(1.0,.65,.19);
++            diffuseColor.a*=(.52*innerGlow+diffuseGlow*(.11+.19*fan+.09*rays+.035*fine))*outside*cutoff;
+           #endif`);
+           shader.fragmentShader=shader.fragmentShader.replace('#include <colorspace_fragment>','#include <colorspace_fragment>\ngl_FragColor.a*=uStateFade;');
+         };
+@@ -43,14 +49,14 @@
+     for(const material of Array.isArray(o.material)?o.material:[o.material]) {
+       if(solar&&temporal)decoration.value=(material as Material&{map:Texture}).map;
+       material.toneMapped=false;
+-      material.customProgramCacheKey=()=>solar?(temporal?'auralis-solar-motion-v74':'auralis-solar-polish-v1'):'auralis-data-display-'+o.name;
++      material.customProgramCacheKey=()=>solar?(temporal?'auralis-solar-motion-v75':'auralis-solar-polish-v1'):'auralis-data-display-'+o.name;
+       material.onBeforeCompile=(shader:Parameters<Material['onBeforeCompile']>[0])=>{
+         shader.uniforms.uIllustrationTime=time;shader.uniforms.uDisplayGain=gain;shader.uniforms.uStateFade=fade;
+         shader.fragmentShader='uniform float uStateFade;\n'+shader.fragmentShader;
+         if(solar){
+           shader.uniforms.uSolarFrom=solarFrom;shader.uniforms.uSolarTo=solarTo;shader.uniforms.uSolarMix=solarMix;
+           if(temporal){
+-            shader.uniforms.uDecoration=decoration;
++            shader.uniforms.uDecoration=decoration;shader.uniforms.uArcadeAnchors=arcadeAnchors;shader.uniforms.uArcadeCount=arcadeCount;
+             shader.uniforms.uGuidePlus=guidePlus;shader.uniforms.uGuideMinus=guideMinus;shader.uniforms.uGuideDisk=guideDisk;shader.uniforms.uSurfaceSeed=seed;
+             shader.fragmentShader=surfaceUniforms+shader.fragmentShader;
+             shader.vertexShader='varying vec3 vSolarLocal;\n'+shader.vertexShader;
+@@ -72,9 +78,9 @@
+           #endif`);
+           shader.fragmentShader=shader.fragmentShader.replace('#include <colorspace_fragment>',`#include <colorspace_fragment>
+             float mu=clamp(dot(normalize(vSolarNormal),normalize(vSolarView)),0.0,1.0);
+-            float limb=${temporal?'.30+.70*pow(mu,.52)':'.53+.47*pow(mu,.40)'};
++            float limb=${temporal?'.50+.50*pow(mu,.40)':'.53+.47*pow(mu,.40)'};
+             gl_FragColor.rgb*=limb;
+-            gl_FragColor.rgb+=${temporal?'vec3(.10,.028,.002)*pow(1.0-mu,18.0)':'vec3(.09,.035,.006)*pow(1.0-mu,9.0)'};
++            gl_FragColor.rgb+=${temporal?'vec3(.24,.16,.035)*pow(1.0-mu,28.0)':'vec3(.09,.035,.006)*pow(1.0-mu,9.0)'};
+             gl_FragColor.rgb*=uStateFade;
+           `);
+         }else{
+@@ -88,6 +94,6 @@
+       material.needsUpdate=true;
+     }
+   });
+-  return {time,gain,fade,solarFrom,solarTo,solarMix,guidePlus,guideMinus,guideDisk,seed,decoration,
++  return {time,gain,fade,solarFrom,solarTo,solarMix,guidePlus,guideMinus,guideDisk,seed,decoration,arcadeAnchors,arcadeCount,
+     dispose(){decoration.value?.dispose();decoration.value=null;}};
+ }
+--- phase74/src/phase6/surface-shader.ts
++++ phase75/src/phase6/surface-shader.ts
+@@ -2,6 +2,8 @@
+ // remain fixed; no displacement of observations, vertices or magnetic regions.
+ export const surfaceUniforms = /* glsl */`
+ uniform float uSurfaceSeed;
++uniform vec4 uArcadeAnchors[12];
++uniform int uArcadeCount;
+ uniform sampler2D uGuidePlus;
+ uniform sampler2D uGuideMinus;
+ uniform sampler2D uDecoration;
+@@ -22,25 +24,22 @@
+ vec3 solarHash3(vec3 p) {
+   return vec3(solarHash(p),solarHash(p+vec3(19.7,3.1,7.9)),solarHash(p+vec3(3.7,31.1,13.3)));
+ }
+-// Continuous cellular detail: per-cell radii vary, but brightness never switches
+-// abruptly to a nearest cell's ID. Smooth domain warping supplies larger clusters.
+-// Filtering is applied after the nonlinear palette below, not just to the noise.
+-float solarGranules(vec3 p,float time) {
+-  vec3 tile=floor(p),f=fract(p);float nearest=9.0,second=9.0;
+-  for(int z=-1;z<=1;z++)for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
+-    vec3 offset=vec3(float(x),float(y),float(z));
+-    vec3 h=solarHash3(tile+offset+vec3(uSurfaceSeed));
+-    vec3 center=.5+(h-.5)*.82+.045*sin(time*mix(.11,.23,h.z)+h*6.2831853);
+-    vec3 r=offset+center-f;float d=dot(r,r)/mix(.80,1.20,h.y);
+-    second=min(second,max(nearest,d));nearest=min(nearest,d);
+-  }
+-  float lane=smoothstep(.0,.48,second-nearest);
+-  float interior=exp(-2.8*nearest);
+-  return (.90*interior+.10*lane)*mix(.90,1.10,solarNoise(p*.43));
++// Smooth, anisotropic emissive threads, filtered at the screen footprint.
++// All transport is decorative object-space detail. HMI UVs remain stationary.
++float solarFbm(vec3 p) {
++  return .53*solarNoise(p)+.27*solarNoise(p*2.03+7.1)+.13*solarNoise(p*4.11+19.3)+.07*solarNoise(p*8.23);
++}
++float solarThreads(vec3 p) {
++  float warp=solarNoise(p*.37+3.1);
++  float phase=(p.x+1.8*solarNoise(p*.61)+warp*2.7)*6.2831853;
++  float ridge=pow(.5+.5*sin(phase),7.0);
++  float resolved=1.0-smoothstep(.65,2.7,fwidth(phase));
++  return mix(.21,ridge,resolved);
+ }
+ vec3 solarPalette(float level) {
+-  vec3 color=mix(vec3(.29,.039,.0025),vec3(1.0,.36,.024),smoothstep(.04,.57,level));
+-  return mix(color,vec3(1.0,.79,.31),smoothstep(.54,.92,level));
++  vec3 color=mix(vec3(.035,.012,.0015),vec3(.27,.12,.012),smoothstep(.04,.49,level));
++  color=mix(color,vec3(.80,.53,.095),smoothstep(.39,.78,level));
++  return mix(color,vec3(1.0,.93,.60),smoothstep(.72,1.10,level));
+ }
+ // Cached sRGB textures encode nonnegative, linear channel magnitudes.
+ float guideMagnitude(float c) { return c<=.0031308 ? c*12.92 : 1.055*pow(c,1.0/2.4)-.055; }
+@@ -50,50 +49,58 @@
+   vec2 guideUv=(uGuideDisk.xy+vec2(-n.x,-n.y)*uGuideDisk.z+.5)/512.0;
+   float plus=guideMagnitude(texture2D(uGuidePlus,guideUv).r);
+   float minus=guideMagnitude(texture2D(uGuideMinus,guideUv).r);
+-  float guide=smoothstep(.02,.30,plus+minus)*smoothstep(0.0,.095,-n.z);
++  float front=smoothstep(0.0,.095,-n.z);
++  float guide=smoothstep(.02,.30,plus+minus)*front;
++  // Mip levels are a display envelope over the same selected HMI channels.
++  // They neither alter the source maps nor introduce a new observation.
++  float envelope=guideMagnitude(textureLod(uGuidePlus,guideUv,3.5).r)+guideMagnitude(textureLod(uGuideMinus,guideUv,3.5).r);
++  float broadField=guideMagnitude(textureLod(uGuidePlus,guideUv,5.0).r)+guideMagnitude(textureLod(uGuideMinus,guideUv,5.0).r);
++  float activityGlow=smoothstep(.018,.19,envelope)*front;
++  float aura=smoothstep(.012,.10,broadField)*front;
+   vec3 original=texture2D(uDecoration,vMapUv).rgb;
+-  // The ratio retains the baked, anchored HMI transfer while reducing the coarse
+-  // decorative filaments shared by the original and all five activity atlases.
+   vec3 anchoredRatio=clamp((diffuseColor.rgb+.002)/(original+.002),vec3(.018),vec3(2.3));
+   float dark=1.0-smoothstep(.15,.9,dot(anchoredRatio,vec3(.2126,.7152,.0722)));
+-  float rate=mix(.10,.19,solarNoise(n.yzx*11.0+vec3(uSurfaceSeed)));
++  float rate=mix(.09,.16,solarNoise(n.yzx*11.0+vec3(uSurfaceSeed)));
+   float t=uIllustrationTime*rate;
+-  vec2 flow=vec2(solarNoise(n*19.0+vec3(t,7.3,3.1)),
+-                 solarNoise(n.yzx*17.0+vec3(5.7,t*.81,19.1)))-.5;
+-  float pole=sin(clamp(vMapUv.y,0.0,1.0)*3.14159265);
+-  vec3 transported=texture2D(uDecoration,vMapUv+flow*vec2(.0018,.0028)*pole*pole).rgb;
+-  float decorationLuma=dot(transported,vec3(.2126,.7152,.0722));
+-  float broad=solarNoise(n*13.0+vec3(3.1,7.9,uSurfaceSeed));
+-  vec3 p=n*88.0+vec3(flow*.45,uSurfaceSeed*.17);
+-  p+=.95*vec3(solarNoise(n*23.0),solarNoise(n.yzx*29.0+vec3(7.1)),solarNoise(n.zxy*19.0+vec3(19.3)));
+-  float granules=solarGranules(p,uIllustrationTime);
+-  vec3 q=n.yzx*410.0+vec3(-flow.yx*.6,t*.10);
+-  float fine=(solarNoise(q)-.5)*(1.0-smoothstep(.35,1.15,length(fwidth(q))));
+-  // Three display scales: fine granules, intermediate mottling and restrained
+-  // original Unity decoration. No broad bright veins or global brightness pulse.
+-  float meso=solarNoise(n*33.0+vec3(flow*.35,11.7));
+-  vec3 detailP=n.zxy*203.0+vec3(7.1,flow*.35);
+-  float detail=(solarNoise(detailP)-.5)*(1.0-smoothstep(.35,1.15,length(fwidth(detailP))));
+-  // Lower contrast at HMI cores/shoulders integrates decoration without changing
+-  // the anchored attenuation or sampling neighboring observations.
+-  float baseLevel=.50+.20*(meso-.5);
+-  float level=clamp(baseLevel+.70*(granules-.46)*(1.0-.45*dark)+.09*detail+.05*fine,0.0,1.0);
+-  // Preserve the exact gold/amber Phase 7.3 palette. Estimate the unresolved
+-  // color average before blending out subpixel structure; no beige LOD fallback.
+-  vec3 averageColor=.25*solarPalette(baseLevel-.12)+.50*solarPalette(baseLevel)+.25*solarPalette(baseLevel+.12);
+-  float resolved=1.0-smoothstep(.38,1.20,length(fwidth(p)));
+-  vec3 photosphere=mix(averageColor,solarPalette(level),resolved);
+-  float originalDetail=clamp(log2(max(.04,decorationLuma)/.34),-1.4,1.4);
+-  photosphere*=.94+.19*(broad-.5)+.07*originalDetail;
+-  // Volume comes from the continuous limb law, not screen-pixel slope lighting.
+-  // No normals, vertices or reconstructed surface heights are introduced.
+-  // Keep exactly the same scalar HMI attenuation as Phase 7.2. Warming the
+-  // shoulders improves integration without moving, enlarging or lifting cores.
++  vec3 flow=vec3(solarNoise(n*9.0+vec3(t,7.3,3.1)),solarNoise(n.yzx*11.0+vec3(5.7,t*.81,19.1)),solarNoise(n.zxy*8.0+vec3(3.1,1.7,t*.73)))-.5;
++  vec3 p=n*28.0+flow*.85;
++  vec3 warp=vec3(solarFbm(p),solarFbm(p.yzx+13.1),solarNoise(p.zxy+8.7));
++  float cloud=solarFbm(p+warp*1.8);
++  float meso=solarFbm(n*63.0+warp*4.0+flow);
++  float threads=solarThreads(n.yxz*vec3(91.,23.,27.)+warp*5.0+flow*.6);
++  float fine=solarThreads(n.zxy*vec3(177.,53.,37.)+warp*7.0-flow*.8);
++  float veil=solarNoise(n*8.0+vec3(17.1,uSurfaceSeed,3.7));
++  float level=.34+.66*(cloud-.48)+.26*(meso-.5)+.13*threads+.06*fine;
++  // Quiet channels are darker; bright woven shoulders follow the HMI envelope.
++  level+=.075*aura+.14*activityGlow;
++  level-=.07*smoothstep(.54,.75,veil)*(1.0-.7*aura);
++  // Schematic circular filament contours through the same opposite-polarity
++  // anchors as the raised arcades. This is an illustrative weave, not a field
++  // solver. Contours and envelopes are fixed; only emissive texture travels.
++  float arcadeLight=0.0;
++  for(int i=0;i<12;i++){
++    if(i>=uArcadeCount)break;
++    vec4 anchor=uArcadeAnchors[i];
++    vec2 pa=guideUv-anchor.xy,pb=guideUv-anchor.zw;
++    float span=max(.014,length(anchor.xy-anchor.zw));
++    float distanceToFeet=min(length(pa),length(pb));
++    float mask=exp(-2.1*distanceToFeet/span)*(1.0-smoothstep(span*1.9,span*3.3,distanceToFeet));
++    float angle=atan(pa.x*pb.y-pa.y*pb.x,dot(pa,pb));
++    float phase=angle*23.0+solarNoise(n*45.0)*1.9;
++    float ridge=pow(.5+.5*sin(phase),10.0);
++    ridge=mix(.15,ridge,1.0-smoothstep(.8,3.5,fwidth(phase)));
++    float current=.65+.35*solarNoise(n*84.0+vec3(uIllustrationTime*.20,float(i),0));
++    arcadeLight+=mask*ridge*current;
++  }
++  arcadeLight=min(1.6,arcadeLight)*front;
++  vec3 atmosphere=solarPalette(level);
+   float attenuation=pow(clamp(anchoredRatio.r,.018,1.35),.96);
+   float shoulder=smoothstep(.13,.48,attenuation)*(1.0-smoothstep(.68,.98,attenuation));
+-  vec3 polarityTint=mix(vec3(1.0,.19,.012),vec3(1.0,.55,.095),plus/max(.0001,plus+minus));
+-  photosphere=mix(photosphere,polarityTint,guide*.13);
+-  photosphere+=vec3(.15,.055,.003)*shoulder*(.75+.25*meso);
+-  diffuseColor.rgb=photosphere*attenuation;
+-  diffuseColor.rgb*=1.0+.04*detail*(1.0-.75*dark)*(1.0-.5*guide);
++  vec3 polarityTint=mix(vec3(1.0,.30,.065),vec3(1.0,.76,.27),plus/max(.0001,plus+minus));
++  atmosphere=mix(atmosphere,polarityTint,guide*.09);
++  atmosphere+=vec3(.25,.14,.025)*shoulder*(.6+.7*meso);
++  diffuseColor.rgb=atmosphere*attenuation;
++  // HMI anchors remain dark; emissive filaments gather on their shoulders.
++  diffuseColor.rgb+=vec3(.42,.28,.055)*arcadeLight*smoothstep(.06,.36,attenuation);
++  diffuseColor.rgb+=vec3(.70,.43,.085)*activityGlow*(.065+.30*threads)*smoothstep(.035,.24,attenuation);
+ `;
+--- phase74/src/phase6/activity-loops.ts
++++ phase75/src/phase6/activity-loops.ts
+@@ -0,0 +1,99 @@
++import {BufferGeometry,Float32BufferAttribute,Mesh,ShaderMaterial,DoubleSide,AdditiveBlending,Vector3,type Texture} from 'three';
++import type {polishMaterials} from '../phase5/visual-materials';
++
++type Bundle={entry:any;activity:any;textures:Map<string,Texture>};
++type Peak={x:number;y:number;value:number};
++// This is an aesthetic construction, not a magnetic extrapolation. Its two
++// anchors are sampled from opposite signed HMI concentrations, but connections,
++// heights, strand counts and speeds are deliberately illustrative.
++function channels(texture:Texture){
++  const c=document.createElement('canvas');c.width=c.height=512;
++  const ctx=c.getContext('2d',{willReadFrequently:true})!;
++  ctx.drawImage(texture.image,0,0);return ctx.getImageData(0,0,512,512).data;
++}
++function peaks(pixels:Uint8ClampedArray,disk:{cx:number;cy:number;radius:number}){
++  const candidates:Peak[]=[];
++  for(let y=8;y<504;y+=3)for(let x=8;x<504;x+=3){
++    if(Math.hypot(x-disk.cx,y-disk.cy)>disk.radius*.985)continue;
++    let v=0;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)v+=pixels[((y+dy)*512+x+dx)*4]/255;
++    v/=25;if(v>.065)candidates.push({x,y,value:v});
++  }
++  candidates.sort((a,b)=>b.value-a.value||a.y-b.y||a.x-b.x);
++  const selected:Peak[]=[];
++  for(const p of candidates){if(selected.every(q=>Math.hypot(p.x-q.x,p.y-q.y)>15))selected.push(p);if(selected.length===32)break;}
++  return selected;
++}
++function geometryFor(bundle:Bundle){
++  const disk=bundle.activity.disk;
++  const plusPixels=channels(bundle.textures.get('bplus')!),minusPixels=channels(bundle.textures.get('bminus')!);
++  const positive=peaks(plusPixels,disk),negative=peaks(minusPixels,disk);
++  const positions:number[]=[],tangents:number[]=[],uv:number[]=[],phases:number[]=[],indices:number[]=[];
++  const anchors:{positive:Peak;negative:Peak}[]=[];
++  const direction=(p:Peak)=>{const x=-(p.x-disk.cx)/disk.radius,y=-(p.y-disk.cy)/disk.radius;return new Vector3(x,y,-Math.sqrt(Math.max(.001,1-x*x-y*y))).normalize();};
++  for(const p of positive){
++    if(p.value<.15)continue;
++    const options=negative.filter(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);return d>=7&&d<55;});
++    options.sort((a,b)=>b.value/(8+Math.hypot(p.x-b.x,p.y-b.y))-a.value/(8+Math.hypot(p.x-a.x,p.y-a.y)));
++    const q=options[0];if(!q||anchors.some(a=>Math.hypot(a.positive.x-p.x,a.positive.y-p.y)<22))continue;
++    anchors.push({positive:p,negative:q});if(anchors.length>=12)break;
++  }
++  for(const [region,pair] of anchors.entries()){
++    const a=direction(pair.positive),b=direction(pair.negative),span=a.distanceTo(b),side=new Vector3().crossVectors(a,b).normalize();
++    for(let strand=0;strand<14;strand++){
++      const seed=region*17+strand*2.39996323;
++      const height=Math.min(.09,span*.23)*(.55+.75*(.5+.5*Math.sin(seed*1.37)));
++      const spread=Math.sin(seed*2.71)*Math.min(.025,span*.10);
++      const jitter=(p:Peak,pixels:Uint8ClampedArray,phase:number)=>{const x=Math.round(p.x+3*Math.sin(phase)),y=Math.round(p.y+3*Math.cos(phase*1.7));return pixels[(y*512+x)*4]/255>.065?direction({x,y,value:p.value}):direction(p);};
++      const footA=jitter(pair.positive,plusPixels,seed),footB=jitter(pair.negative,minusPixels,seed+2.1);
++      const curve=(t:number)=>{
++        const arc=Math.sin(Math.PI*t);
++        const n=footA.clone().lerp(footB,t).normalize().addScaledVector(side,(spread+.003*Math.sin(t*9+seed))*arc).normalize();
++        return n.multiplyScalar(.421+height*arc);
++      };
++      const start=positions.length/3;
++      for(let i=0;i<=56;i++){
++        const t=i/56,pos=curve(t),tangent=curve(Math.min(1,t+.001)).sub(curve(Math.max(0,t-.001))).normalize();
++        for(const edge of [-1,1]){positions.push(...pos.toArray());tangents.push(...tangent.toArray());uv.push(t,edge);phases.push(seed);}
++        if(i<56){const k=start+i*2;indices.push(k,k+1,k+2,k+1,k+3,k+2);}
++      }
++    }
++  }
++  const geometry=new BufferGeometry();
++  geometry.setAttribute('position',new Float32BufferAttribute(positions,3));geometry.setAttribute('aTangent',new Float32BufferAttribute(tangents,3));
++  geometry.setAttribute('uv',new Float32BufferAttribute(uv,2));geometry.setAttribute('aPhase',new Float32BufferAttribute(phases,1));geometry.setIndex(indices);
++  return {geometry,anchors};
++}
++export function createActivityLoops(sphere:Mesh,visual:ReturnType<typeof polishMaterials>,bundles:Bundle[]){
++  const cache=new Map(bundles.map(b=>[b.entry.state.id,geometryFor(b)]));
++  const material=new ShaderMaterial({transparent:true,depthWrite:false,depthTest:true,side:DoubleSide,blending:AdditiveBlending,toneMapped:false,
++    uniforms:{uTime:visual.time,uFade:visual.fade},
++    vertexShader:/* glsl */`
++      attribute vec3 aTangent; attribute float aPhase;
++      uniform float uTime; varying vec2 vUv; varying float vPhase;
++      void main(){
++        vUv=uv;vPhase=aPhase;
++        float arc=sin(uv.x*3.14159265);
++        vec3 n=normalize(position);
++        // Bounded sub-strand sway vanishes at both fixed HMI anchors.
++        vec3 pos=position+n*(.00065*arc*sin(uv.x*9.0-uTime*.38+aPhase));
++        vec4 mv=modelViewMatrix*vec4(pos,1.0);
++        vec3 tangent=normalize(mat3(modelViewMatrix)*aTangent);
++        vec3 across=normalize(cross(tangent,normalize(-mv.xyz)));
++        float width=.0022*(.65+.35*sin(aPhase*1.7)*sin(aPhase*1.7));
++        mv.xyz+=across*uv.y*width*length(modelViewMatrix[0].xyz);
++        gl_Position=projectionMatrix*mv;
++      }`,
++    fragmentShader:/* glsl */`
++      uniform float uTime; uniform float uFade; varying vec2 vUv; varying float vPhase;
++      void main(){
++        float crossSection=.40*exp(-vUv.y*vUv.y*12.0)+.12*exp(-vUv.y*vUv.y*2.0);
++        float ends=.35+.65*pow(sin(vUv.x*3.14159265),.32);
++        float flow=.64+.36*sin(vUv.x*16.0-uTime*.9+vPhase);
++        float fine=.85+.15*sin(vUv.x*43.0-uTime*.6+vPhase*2.0);
++        float alpha=crossSection*ends*flow*fine*.62*uFade;
++        gl_FragColor=vec4(mix(vec3(1.0,.48,.09),vec3(1.0,.91,.50),flow),alpha);
++      }`});
++  const mesh=new Mesh(cache.values().next().value!.geometry,material);mesh.name='IllustrativeHmiArcades';mesh.frustumCulled=false;mesh.renderOrder=2;sphere.add(mesh);
++  return {mesh,select(id:string){const entry=cache.get(id);if(!entry)throw Error('Missing HMI arcade state: '+id);mesh.geometry=entry.geometry;visual.arcadeCount.value=entry.anchors.length;for(const [i,p] of entry.anchors.entries())visual.arcadeAnchors.value[i].set((p.positive.x+.5)/512,(p.positive.y+.5)/512,(p.negative.x+.5)/512,(p.negative.y+.5)/512);return {state:id,regions:entry.anchors.length,strands:entry.anchors.length*14,anchors:entry.anchors};},
++    dispose(){mesh.removeFromParent();material.dispose();for(const e of cache.values())e.geometry.dispose();cache.clear();}};
++}

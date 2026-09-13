@@ -22,6 +22,7 @@ import type {
     FullAgentReport,
 } from './types';
 
+import { IS_FROZEN_DEMO, frozenResponse, requireLiveBackend, type DisplayPredictionResult } from './frozen-demo';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 // ---------------------------------------------------------------------------
@@ -29,6 +30,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 // ---------------------------------------------------------------------------
 
 async function fetchJson<T>(path: string): Promise<T> {
+    if (IS_FROZEN_DEMO) return frozenResponse<T>(path);
     const res = await fetch(`${API_URL}${path}`);
     if (!res.ok) {
         const detail = await res.text().catch(() => res.statusText);
@@ -51,17 +53,23 @@ export function getImageList(): Promise<ImageListResponse> {
     return fetchJson<ImageListResponse>('/api/images/list');
 }
 
+/** Full catalog remains available for dataset charts; selectable demo cases have frozen predictions. */
+export function getSelectableImages(): Promise<ImageListResponse> {
+    return IS_FROZEN_DEMO ? frozenResponse<ImageListResponse>('/demo/selectable-images') : getImageList();
+}
+
 /**
  * Build the full URL for rendering a .npy magnetogram as PNG.
  * Use this as the `src` attribute for an `<img>` tag.
  */
 export function getImageUrl(filename: string): string {
+    if (IS_FROZEN_DEMO) return `/demo/images/${encodeURIComponent(filename)}.png`;
     return `${API_URL}/api/images/${encodeURIComponent(filename)}`;
 }
 
 /** Run Coronium prediction on a processed image. */
-export function predict(filename: string): Promise<PredictionResult> {
-    return fetchJson<PredictionResult>(
+export function predict(filename: string): Promise<DisplayPredictionResult> {
+    return fetchJson<DisplayPredictionResult>(
         `/api/predict/${encodeURIComponent(filename)}`,
     );
 }
@@ -98,18 +106,19 @@ export function getExperiments(): Promise<ExperimentEntry[]> {
  * or synthesizes it from the co-registered magnetogram as a proxy.
  */
 export function getAiaUrl(filename: string): string {
+    if (IS_FROZEN_DEMO) return `/demo/aia/${encodeURIComponent(filename)}.png`;
     return `${API_URL}/api/aia/${encodeURIComponent(filename)}`;
 }
 
 /**
  * Run the compatibility dual endpoint.
  *
- * The current backend implementation uses the same Coronium V3 PRO B+ / B-
+ * The current backend implementation uses the same Coronium V3.1 B+ / B-
  * ONNX path as `/api/predict/{filename}`. The route remains because older UI
  * panels were wired to `predict-dual`.
  */
-export function predictDual(filename: string): Promise<PredictionResult> {
-    return fetchJson<PredictionResult>(
+export function predictDual(filename: string): Promise<DisplayPredictionResult> {
+    return fetchJson<DisplayPredictionResult>(
         `/api/predict-dual/${encodeURIComponent(filename)}`,
     );
 }
@@ -119,9 +128,9 @@ export function getExperimentMetadata(filename: string): Promise<unknown> {
     return fetchJson<unknown>(`/api/experiments/${encodeURIComponent(filename)}`);
 }
 
-/** Fetch predicted-vs-actual comparison data from the promoted hold-out split. */
-export function getResultsComparison(): Promise<{ real: number; predicted: number; error: number }[]> {
-    return fetchJson<{ real: number; predicted: number; error: number }[]>('/api/results-comparison');
+/** Fetch predicted-vs-actual comparison data from the V3.1 clean MC validation used for checkpoint selection. */
+export function getResultsComparison(protocol: 'mc' | 'deterministic' = 'mc'): Promise<{ real: number; predicted: number; error: number }[]> {
+    return fetchJson<{ real: number; predicted: number; error: number }[]>(`/api/results-comparison?protocol=${protocol}`);
 }
 
 /**
@@ -129,12 +138,15 @@ export function getResultsComparison(): Promise<{ real: number; predicted: numbe
  * Use this as the `src` attribute for an `<img>` tag.
  */
 export function getExplainPanelsUrl(filename: string): string {
+    if (IS_FROZEN_DEMO) return `/demo/gradcam/${encodeURIComponent(filename)}.png`;
     return `${API_URL}/api/explain-panels/${encodeURIComponent(filename)}`;
 }
 
 export interface GradCAMLayer {
     layer: string;
+    /** Normalized heatmap maximum, capped at 99; not area or confidence. */
     activation_pct: number;
+    activation_interpretation: string;
     image: string; // base64 PNG
 }
 
@@ -160,6 +172,7 @@ export function getPolaritySeries(limit = 48): Promise<PolarityPoint[]> {
 
 /** Upload a .npy file and get back a blob URL for the rendered magnetogram PNG. */
 export async function uploadImagePreview(file: File): Promise<string> {
+    requireLiveBackend();
     const form = new FormData();
     form.append('file', file);
     const res = await fetch(`${API_URL}/api/images-upload`, { method: 'POST', body: form });
@@ -173,6 +186,7 @@ export async function uploadImagePreview(file: File): Promise<string> {
 
 /** Upload a .npy file and run ONNX inference, returning a PredictionResult. */
 export async function predictUpload(file: File): Promise<PredictionResult> {
+    requireLiveBackend();
     const form = new FormData();
     form.append('file', file);
     const res = await fetch(`${API_URL}/api/predict-upload`, { method: 'POST', body: form });
@@ -185,6 +199,7 @@ export async function predictUpload(file: File): Promise<PredictionResult> {
 
 /** Upload a .npy file and get back a blob URL for the 3-panel Grad-CAM PNG. */
 export async function explainPanelsUpload(file: File): Promise<string> {
+    requireLiveBackend();
     const form = new FormData();
     form.append('file', file);
     const res = await fetch(`${API_URL}/api/explain-panels-upload`, { method: 'POST', body: form });
@@ -228,4 +243,9 @@ export function getAgentXaiReview(): Promise<XAIReviewReport> {
 /** Active Learning Agent: deterministic bandit recommendation (decision-support). */
 export function getAgentActiveLearning(): Promise<ActiveLearningReport> {
     return fetchJson<ActiveLearningReport>('/api/agents/active-learning');
+}
+
+/** Cases with archived Grad-CAM figures in the static deployment. */
+export function getSavedGradcamImages(): Promise<string[]> {
+    return IS_FROZEN_DEMO ? frozenResponse<string[]>('/demo/gradcam-images') : Promise.resolve([]);
 }

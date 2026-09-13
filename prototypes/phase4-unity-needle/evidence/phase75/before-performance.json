@@ -1,0 +1,21 @@
+{
+  "mode": "web3d",
+  "status": "completed",
+  "layer": "solar",
+  "build": "phase74-v1",
+  "surfaceMotion": true,
+  "stateId": "hmi-2022-03-29",
+  "pixelRatio": 1.5,
+  "cameraPosition": [
+    2.4492935982947064e-16,
+    0.5000000000000001,
+    -2
+  ],
+  "frames": 1800,
+  "durationMs": 30001,
+  "renderHz": 59.998000066664446,
+  "medianIntervalMs": 16.69999998807907,
+  "p95IntervalMs": 18.599999994039536,
+  "intervalsOver50ms": 0,
+  "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+}

@@ -1,0 +1,2 @@
+# Additional offline schema-validation dependency; use the full backend environment.
+jsonschema==4.26.0

@@ -1,0 +1,9 @@
+{
+  "node": "22.23.2",
+  "npm": "10.9.8",
+  "needle": "5.1.12",
+  "lockfiles": {
+    "auralis-front/package-lock.json": "037250ce528e787661607dedc2c4141627ec18f6d175a8eb359f1b0dced86580",
+    "prototypes/phase4-unity-needle/web/package-lock.json": "465d4424dba9179d5d17116ef358667e3320d92aa88f62641537cd20e687d00b"
+  }
+}

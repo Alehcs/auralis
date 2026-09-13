@@ -1,0 +1,52 @@
+{
+  "phase": "1.5",
+  "registered_before_final_evaluation": true,
+  "run_dir": "/Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/experiments/phase15_runs/20260905T132456995672Z",
+  "input_contract": "hmi-clip400-polarity-v1",
+  "target_contract": "strong-field-pixel-percent-200G-v1",
+  "seed": 42,
+  "train_observations": 1051,
+  "validation_observations": 263,
+  "overlap": 0,
+  "selection": "minimum sample-weighted MC validation MAE across training epochs",
+  "maximum_epochs": 100,
+  "early_stopping": {
+    "monitor": "val_whl",
+    "patience": 10
+  },
+  "final_evaluation": {
+    "seed": 42,
+    "mc_passes": 20,
+    "batch_size": 32,
+    "device": "mps",
+    "repeat_in_separate_process": true,
+    "metrics": [
+      "mae",
+      "rmse",
+      "r2",
+      "mape"
+    ]
+  },
+  "interpretation": "Validation is used for model selection, not an untouched test set. No temporal extrapolation claim.",
+  "mps_preflight": {
+    "identical_single_step_state_in_two_seed42_repetitions": true,
+    "state_sha256": "ae445a2ebba9960bf825e10f00ad61f936d46934f611c4c6d3bb161128434d90",
+    "batch_size": 32,
+    "driver_memory_bytes": 12914737152
+  },
+  "aggregation_bug_before_correction": {
+    "three_targets": [
+      0,
+      0,
+      3
+    ],
+    "batch_size": 2,
+    "predictions": [
+      0,
+      0,
+      0
+    ],
+    "old_reported_mae": 1.5,
+    "correct_mae": 1.0
+  }
+}

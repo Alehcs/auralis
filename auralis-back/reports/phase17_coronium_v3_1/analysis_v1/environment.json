@@ -1,0 +1,16 @@
+{
+  "python": "3.12.7 (main, Jan 27 2026, 21:01:07) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "executable": "/Users/alejandro/.pyenv/versions/3.12.7/bin/python3",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "processor": null,
+  "memory_bytes": null,
+  "logical_cpus": 10,
+  "torch": "2.11.0",
+  "onnxruntime": "1.25.1",
+  "numpy": "1.26.4",
+  "pandas": "3.0.2",
+  "matplotlib": "3.10.8",
+  "torch_threads": 4,
+  "torch_interop_threads": 1,
+  "mps_available": false
+}

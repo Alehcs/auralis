@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "node_tests_passed": 16,
+  "typescript_build_passed": true,
+  "asset_states_verified": 5,
+  "png_maps_verified": 15,
+  "public_files_verified": 54,
+  "public_state_values_and_map_bindings_exact": true,
+  "play_forward_and_reverse_verified": true,
+  "pause_verified": true,
+  "orbit_preserved_by_selection": true,
+  "warm_gpu_texture_count": 17,
+  "cache_texture_count": 15,
+  "release_and_retry_verified": true,
+  "integrity_error_recovery_verified": true,
+  "physical_ar_tested": false,
+  "desktop_render_sample": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "frames": 1784,
+    "durationMs": 30000.60000000894,
+    "renderHz": 59.465477357101804,
+    "medianIntervalMs": 16.700000002980232,
+    "p95IntervalMs": 17.5,
+    "intervalsOver50ms": 0,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  }
+}

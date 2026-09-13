@@ -1,0 +1,52 @@
+{
+  "before": {
+    "source": "typescript-provisional",
+    "readyMs": 236,
+    "rafSamples": 600,
+    "rafMedianMs": 8.3,
+    "rafP95Ms": 9.1,
+    "drawCalls": 1,
+    "triangles": 12,
+    "pixelRatio": 1.5,
+    "immersiveAR": false,
+    "placementCount": 0,
+    "cameraPosition": [
+      0.5,
+      0.39999999999999997,
+      0.7000000000000002
+    ],
+    "orbitEnabled": true,
+    "orbitConnected": true,
+    "orbitInputEnabled": true,
+    "needleCameraActive": true,
+    "pointerDowns": 0,
+    "colorIndex": 0,
+    "objectScale": 1,
+    "rotationY": 0
+  },
+  "after": {
+    "source": "typescript-provisional",
+    "readyMs": 236,
+    "rafSamples": 600,
+    "rafMedianMs": 8.3,
+    "rafP95Ms": 8.9,
+    "drawCalls": 1,
+    "triangles": 12,
+    "pixelRatio": 1.5,
+    "immersiveAR": false,
+    "placementCount": 0,
+    "cameraPosition": [
+      -2.778680845762966,
+      -0.958071070425836,
+      -2.7468884179620523
+    ],
+    "orbitEnabled": true,
+    "orbitConnected": true,
+    "orbitInputEnabled": true,
+    "needleCameraActive": true,
+    "pointerDowns": 1,
+    "colorIndex": 0,
+    "objectScale": 1,
+    "rotationY": 0
+  }
+}

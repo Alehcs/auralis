@@ -1,0 +1,13 @@
+{
+  "previously_protected": 291,
+  "changed_frontend_files": [
+    "auralis-front/src/lib/api.ts",
+    "auralis-front/src/features/dashboard/dashboard-page.tsx",
+    "auralis-front/src/features/dashboard/model-metrics.tsx",
+    "auralis-front/src/features/dashboard/magnetogram-panel.tsx",
+    "auralis-front/src/features/dashboard/components/config-panel.tsx",
+    "auralis-front/src/features/dashboard/components/xai-faithfulness.tsx"
+  ],
+  "solar_existing_files_unchanged": 119,
+  "backend_existing_files_unchanged": true
+}

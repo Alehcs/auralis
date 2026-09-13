@@ -1,0 +1,91 @@
+ M README.md
+ M RESEARCH_DOSSIER_MASTER.md
+ M auralis-back/.gitignore
+ M auralis-back/scripts/evaluate_final.py
+ M auralis-back/scripts/explain_model.py
+ M auralis-back/scripts/export_to_onnx.py
+ M auralis-back/scripts/plot_architecture_diagram.py
+ M auralis-back/scripts/plot_final_scatter.py
+ M auralis-back/scripts/plot_gradcam_overlay.py
+ M auralis-back/scripts/plot_r2_diagnostic.py
+ M auralis-back/scripts/predict.py
+ M auralis-back/scripts/test_inference.py
+ M auralis-back/src/api/main.py
+ M auralis-back/src/experiments/run_external_baselines.py
+ M auralis-back/src/models/train_model.py
+ M auralis-back/src/processing/prepare_dataset.py
+ M auralis-back/src/visualization/app.py
+ M auralis-front/src/features/dashboard/components/architecture-comparison.tsx
+ M auralis-front/src/features/dashboard/components/experiment-log.tsx
+ M auralis-front/src/features/dashboard/components/global-metrics.tsx
+ M auralis-front/src/features/dashboard/components/kfold-results.tsx
+ M auralis-front/src/features/dashboard/components/predicted-vs-actual.tsx
+ M auralis-front/src/features/dashboard/components/xai-faithfulness.tsx
+ M auralis-front/src/features/dashboard/dashboard-page.tsx
+ M auralis-front/src/features/dashboard/magnetogram-panel.tsx
+ M auralis-front/src/features/dashboard/model-metrics.tsx
+ M auralis-front/src/features/dashboard/prediction-chart.tsx
+ M auralis-front/src/features/dashboard/scientific-header.tsx
+ M auralis-front/src/features/dashboard/simulation/SimulationControls.tsx
+ M auralis-front/src/features/dashboard/simulation/SolarSimulationPage.tsx
+ M auralis-front/src/features/landing/architecture-diagram.tsx
+ M auralis-front/src/features/landing/landing-hero.tsx
+ M auralis-front/src/features/landing/project-description.tsx
+ M auralis-front/src/features/landing/system-overview.tsx
+ M auralis-front/src/lib/api.ts
+ M auralis-front/src/lib/i18n/translations.ts
+ M auralis-front/src/lib/types.ts
+ M docs/backend.md
+?? auralis-back/contracts/
+?? auralis-back/experiments/phase15_runs/
+?? auralis-back/experiments/phase16_coronium_v3_1.json
+?? auralis-back/models/best_coronium_v3_1.onnx
+?? auralis-back/models/best_coronium_v3_1.pth
+?? auralis-back/models/coronium_v3_1_manifest.json
+?? auralis-back/models/coronium_v3_1_metrics.json
+?? auralis-back/models/split_indices_phase1_v1.json
+?? auralis-back/reports/README.md
+?? auralis-back/reports/phase16_coronium_v3_1/
+?? auralis-back/reports/phase17_coronium_v3_1/
+?? auralis-back/reports/phase1_v1/
+?? auralis-back/reports/phase2_historical_case/
+?? auralis-back/reports/phase3_temporal_model/
+?? auralis-back/scripts/audit_phase1.py
+?? auralis-back/scripts/build_phase3_temporal.py
+?? auralis-back/scripts/promote_coronium_v3_1.py
+?? auralis-back/scripts/run_phase15.py
+?? auralis-back/scripts/run_phase17.py
+?? auralis-back/scripts/select_phase2_history.py
+?? auralis-back/scripts/verify_phase15_results.py
+?? auralis-back/scripts/verify_phase16.py
+?? auralis-back/scripts/verify_phase17.py
+?? auralis-back/src/models/active_model.py
+?? auralis-back/src/processing/model_input.py
+?? auralis-back/src/processing/observation_time.py
+?? auralis-back/src/processing/scientific_split.py
+?? auralis-back/tests/
+?? docs/ar-panel-final.md
+?? docs/phase1.md
+?? docs/phase15.md
+?? docs/phase16.md
+?? docs/phase17.md
+?? docs/phase17_inventory.md
+?? docs/phase2.md
+?? docs/phase3.md
+?? docs/phase4.md
+?? docs/phase41.md
+?? docs/phase42.md
+?? docs/phase5.md
+?? docs/phase6.md
+?? docs/phase61.md
+?? docs/phase7.md
+?? docs/phase71-revision3.md
+?? docs/phase71-revision4.md
+?? docs/phase71.md
+?? docs/phase72.md
+?? docs/phase73.md
+?? docs/phase74.md
+?? docs/phase75.md
+?? docs/solar-visual-polish.md
+?? evidence/
+?? prototypes/

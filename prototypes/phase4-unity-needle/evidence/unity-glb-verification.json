@@ -1,0 +1,26 @@
+{
+  "status": "structure_and_recorded_hash_verified",
+  "sha256": "92ce99f4e279eaf47110ddaee595e0c52daa566d806bb05204f9e458fe9d413b",
+  "bytes": 73316,
+  "unityVersion": "6000.3.17f1",
+  "generator": "Needle Engine Unity Integration 5.1.12",
+  "extensionsUsed": [
+    "NEEDLE_gameobject_data",
+    "NEEDLE_components",
+    "KHR_lights_punctual",
+    "EXT_texture_exr",
+    "NEEDLE_lightmaps",
+    "NEEDLE_lighting_settings"
+  ],
+  "nodes": [
+    "Cube20cm",
+    "Key Light",
+    "Main Camera",
+    "NeedleExport",
+    "Phase4Probe",
+    "PlacementRoot",
+    "ProbeObject"
+  ],
+  "visual_parity_verified": false,
+  "ar_verified": false
+}

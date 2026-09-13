@@ -2,11 +2,13 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { solarViewer } from './build/solar-viewer.mjs'
 
 export default defineConfig({
   plugins: [
     // React handles JSX transforms; Tailwind supplies the project's utility CSS.
     react(),
+    solarViewer(),
     tailwindcss(),
   ],
   resolve: {

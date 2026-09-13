@@ -1,0 +1,218 @@
+--- revision2/web/src/phase5/main.ts
++++ revision4/web/src/phase5/main.ts
+@@ -21,7 +21,7 @@
+ const abort = new AbortController();
+ const events:Record<string,unknown>[]=[];
+ const samples:Record<string,unknown>[]=[];
+-const diag:Record<string,unknown>={build:isTemporal?'phase71-v2':'phase5-visual-polish-v1',engine:'5.1.12',source:'waiting-for-real-unity',errors:[],physicalValidation:'not_tested',placementCount:0,layer:'solar'};
++const diag:Record<string,unknown>={build:isTemporal?'phase71-v4':'phase5-visual-polish-v1',engine:'5.1.12',source:'waiting-for-real-unity',errors:[],physicalValidation:'not_tested',placementCount:0,layer:'solar'};
+ const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ let context:Context|undefined, object:Object3D|undefined, orbit:OrbitControls|undefined;
+ let element:HTMLElement|undefined, removePlaced:(()=>void)|undefined;
+@@ -197,7 +197,7 @@
+ function release(){
+   if(sample)stopSample('interrupted-release');attempt++;released=true;setAutomatic(false);clearTimeout(timer);removePlaced?.();removePlaced=undefined;
+   for(const fn of cleanupCallbacks.splice(0))fn();
+-  scientific?.setEnabled(false);scientific?.dispose();scientific=undefined;temporal?.dispose(new Set(verifiedUrls.values()));temporal=undefined;context?.dispose();element?.remove();if(sceneUrl){URL.revokeObjectURL(sceneUrl);sceneUrl=undefined;}element=undefined;context=undefined;object=undefined;orbit=undefined;visual=undefined;buttons(false);
++  scientific?.setEnabled(false);scientific?.dispose();scientific=undefined;temporal?.dispose(new Set(verifiedUrls.values()));temporal=undefined;visual?.dispose();context?.dispose();element?.remove();if(sceneUrl){URL.revokeObjectURL(sceneUrl);sceneUrl=undefined;}element=undefined;context=undefined;object=undefined;orbit=undefined;visual=undefined;buttons(false);
+   $('retry').hidden=false;$('load-status').textContent='Visor liberado. La referencia 2D sigue disponible.';diag.status='disposed';diag.engineElements=document.querySelectorAll('needle-engine').length;diag.canvasAttached=false;diag.callbacksReleased=true;$('diagnostics').textContent=JSON.stringify(diag,null,2);record('released');
+ }
+ $('release').onclick=release;
+@@ -220,7 +220,7 @@
+             const mesh=context.scene.getObjectByName(key==='solar'?'IllustrativeSphere':'Layer_'+key) as Mesh;
+             const mat=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material) as any;
+             const old=mat.map;mat.map=texture;mat.needsUpdate=true;
+-            if(old&&!temporal?.bundles.some(b=>Array.from(b.textures.values()).includes(old)))old.dispose();
++            if(old&&old!==visual?.decoration.value&&!temporal?.bundles.some(b=>Array.from(b.textures.values()).includes(old)))old.dispose();
+           }
+           if(visual){visual.guidePlus.value=bundle.textures.get('bplus')!;visual.guideMinus.value=bundle.textures.get('bminus')!;visual.guideDisk.value.set(bundle.activity.disk.cx,bundle.activity.disk.cy,bundle.activity.disk.radius);}
+           Object.assign(diag,{surfaceGuideState:bundle.entry.state.id,surfaceGuideMaps:[bundle.textures.get('bplus')!.name,bundle.textures.get('bminus')!.name],activeMaps:Object.fromEntries(Array.from(bundle.textures,([key,texture])=>[key,{name:texture.name,sha256:(key==='solar'?bundle.activity.solar:bundle.entry.layers[key]).sha256,flipY:texture.flipY}])),solarActivity:{id:bundle.activity.id,sha256:bundle.activity.solar.sha256,sourceSha256:bundle.activity.source_sha256,disk:bundle.activity.disk},magnetogramFile:bundle.entry.state.observation.magnetogram.filename});
+--- revision2/web/src/phase5/visual-materials.ts
++++ revision4/web/src/phase5/visual-materials.ts
+@@ -7,20 +7,35 @@
+ export function polishMaterials(root:Object3D, temporal=false) {
+   const guidePlus={value:null as Texture|null},guideMinus={value:null as Texture|null},guideDisk={value:new Vector3()},seed={value:SURFACE_SEED};
+   const time={value:0}, gain={value:1},fade={value:1};
++  // Original observation-free Unity illustration; HMI atlases retain their UVs.
++  const decoration={value:null as Texture|null};
+   const solarFrom={value:null as Texture|null},solarTo={value:null as Texture|null},solarMix={value:1};
+   root.traverse(o=>{
+     if(!(o instanceof Mesh))return;
+     const solar=o.name==='IllustrativeSphere', scientific=o.name.startsWith('Layer_');
++    if(temporal&&o.name==='SubtleCorona'){
++      for(const material of Array.isArray(o.material)?o.material:[o.material]){
++        material.customProgramCacheKey=()=> 'auralis-corona-v71-r4';
++        material.onBeforeCompile=(shader:Parameters<Material['onBeforeCompile']>[0])=>{
++          shader.uniforms.uStateFade=fade;
++          shader.fragmentShader='uniform float uStateFade;\n'+shader.fragmentShader;
++          shader.fragmentShader=shader.fragmentShader.replace('#include <colorspace_fragment>','#include <colorspace_fragment>\ngl_FragColor.a*=.65*uStateFade;');
++        };
++        material.needsUpdate=true;
++      }
++    }
+     if(!solar&&!scientific)return;
+     for(const material of Array.isArray(o.material)?o.material:[o.material]) {
++      if(solar&&temporal)decoration.value=(material as Material&{map:Texture}).map;
+       material.toneMapped=false;
+-      material.customProgramCacheKey=()=>solar?(temporal?'auralis-solar-motion-v71-r2':'auralis-solar-polish-v1'):'auralis-data-display-'+o.name;
++      material.customProgramCacheKey=()=>solar?(temporal?'auralis-solar-motion-v71-r4':'auralis-solar-polish-v1'):'auralis-data-display-'+o.name;
+       material.onBeforeCompile=(shader:Parameters<Material['onBeforeCompile']>[0])=>{
+         shader.uniforms.uIllustrationTime=time;shader.uniforms.uDisplayGain=gain;shader.uniforms.uStateFade=fade;
+         shader.fragmentShader='uniform float uStateFade;\n'+shader.fragmentShader;
+         if(solar){
+           shader.uniforms.uSolarFrom=solarFrom;shader.uniforms.uSolarTo=solarTo;shader.uniforms.uSolarMix=solarMix;
+           if(temporal){
++            shader.uniforms.uDecoration=decoration;
+             shader.uniforms.uGuidePlus=guidePlus;shader.uniforms.uGuideMinus=guideMinus;shader.uniforms.uGuideDisk=guideDisk;shader.uniforms.uSurfaceSeed=seed;
+             shader.fragmentShader=surfaceUniforms+shader.fragmentShader;
+             shader.vertexShader='varying vec3 vSolarLocal;\n'+shader.vertexShader;
+@@ -58,5 +73,6 @@
+       material.needsUpdate=true;
+     }
+   });
+-  return {time,gain,fade,solarFrom,solarTo,solarMix,guidePlus,guideMinus,guideDisk,seed};
++  return {time,gain,fade,solarFrom,solarTo,solarMix,guidePlus,guideMinus,guideDisk,seed,decoration,
++    dispose(){decoration.value?.dispose();decoration.value=null;}};
+ }
+--- revision2/web/src/phase6/surface-shader.ts
++++ revision4/web/src/phase6/surface-shader.ts
+@@ -1,46 +1,58 @@
+-// Small-scale, seeded Eulerian granulation on the actual Unity sphere.
+-// The atlas and HMI guide coordinates are NEVER advected. Only decorative
+-// noise moves. No SI, event input, geometry deformation or new regions.
++// Local illustrative transport. Only the original observation-free Unity texture
++// is displaced. The selected activity atlas, guide UVs and vertices stay fixed.
+ export const surfaceUniforms = /* glsl */`
+ uniform float uSurfaceSeed;
+ uniform sampler2D uGuidePlus;
+ uniform sampler2D uGuideMinus;
++uniform sampler2D uDecoration;
+ uniform vec3 uGuideDisk;
+ varying vec3 vSolarLocal;
+ float solarHash(vec3 p) {
+-  p = fract(p * .1031);
+-  p += dot(p, p.yzx + 33.33);
+-  return fract((p.x + p.y) * p.z);
++  p=fract(p*.1031); p+=dot(p,p.yzx+33.33);
++  return fract((p.x+p.y)*p.z);
+ }
+ float solarNoise(vec3 p) {
+-  vec3 i = floor(p), f = fract(p);
+-  f = f*f*f*(f*(f*6.0-15.0)+10.0);
++  vec3 i=floor(p), f=fract(p);
++  f=f*f*f*(f*(f*6.0-15.0)+10.0);
+   return mix(mix(mix(solarHash(i),solarHash(i+vec3(1,0,0)),f.x),
+                  mix(solarHash(i+vec3(0,1,0)),solarHash(i+vec3(1,1,0)),f.x),f.y),
+              mix(mix(solarHash(i+vec3(0,0,1)),solarHash(i+vec3(1,0,1)),f.x),
+                  mix(solarHash(i+vec3(0,1,1)),solarHash(i+vec3(1,1,1)),f.x),f.y),f.z);
+ }
+-// The cached PNGs have sRGB GPU storage, but encode linear channel magnitudes.
+-float guideMagnitude(float c) { return c <= .0031308 ? c*12.92 : 1.055*pow(c,1.0/2.4)-.055; }
++// Cached sRGB textures encode linear, nonnegative channel magnitudes.
++float guideMagnitude(float c) { return c<=.0031308 ? c*12.92 : 1.055*pow(c,1.0/2.4)-.055; }
+ `;
+ export const surfaceTransfer = /* glsl */`
+-  vec3 n = normalize(vSolarLocal);
+-  // Same array-right=-X, up=+Y and front=-Z as the verified Phase6.1 atlas.
+-  vec2 guideUv = (uGuideDisk.xy + vec2(-n.x,-n.y)*uGuideDisk.z + .5)/512.0;
+-  float plus = guideMagnitude(texture2D(uGuidePlus,guideUv).r);
+-  float minus = guideMagnitude(texture2D(uGuideMinus,guideUv).r);
+-  float guide = smoothstep(.02,.30,plus+minus)*smoothstep(0.0,.095,-n.z);
+-  vec3 p = n*45.0 + vec3(uSurfaceSeed*.17);
+-  // Bounded local circulation, not global UV rotation. Quintic noise yields
+-  // continuous translation and evolution, including the illustrative back.
+-  vec3 flow = vec3(sin(n.y*9.0+uIllustrationTime*.65),
+-                   cos(n.z*8.0+uIllustrationTime*.48),
+-                   sin(n.x*7.0-uIllustrationTime*.54)) * 1.4;
+-  float cells = solarNoise(p+flow);
+-  float fine = solarNoise(p*1.87-flow*.6+vec3(0,uIllustrationTime*.3,0));
+-  float localLight = solarNoise(n*18.0+vec3(uIllustrationTime*.09,0,-uIllustrationTime*.07));
+-  // Attenuate granulation at strong HMI concentrations; their cores stay fixed.
+-  float granulation = ((cells-.5)*.34+(fine-.5)*.12)*(1.0-.8*guide);
+-  float magneticLight = guide*(localLight-.5)*.065;
+-  diffuseColor.rgb *= 1.0 + granulation + magneticLight;
++  vec3 n=normalize(vSolarLocal);
++  vec2 guideUv=(uGuideDisk.xy+vec2(-n.x,-n.y)*uGuideDisk.z+.5)/512.0;
++  float plus=guideMagnitude(texture2D(uGuidePlus,guideUv).r);
++  float minus=guideMagnitude(texture2D(uGuideMinus,guideUv).r);
++  float guide=smoothstep(.02,.30,plus+minus)*smoothstep(0.0,.095,-n.z);
++
++  // Bounded, non-periodic local displacement, with independently varying rates.
++  // Noise is continuous in object space: no seam, whole-sphere spin or UV scroll.
++  float rate=mix(.16,.30,solarNoise(n.yzx*11.0+vec3(uSurfaceSeed)));
++  float t=uIllustrationTime*rate;
++  vec2 flow=vec2(solarNoise(n*19.0+vec3(t,7.3,3.1)),
++                 solarNoise(n.yzx*17.0+vec3(5.7,t*.81,19.1)))-.5;
++  float pole=sin(clamp(vMapUv.y,0.0,1.0)*3.14159265);
++  vec2 decorativeUv=vMapUv+flow*vec2(.0045,.007)*pole*pole;
++  vec3 original=texture2D(uDecoration,vMapUv).rgb;
++  vec3 transported=texture2D(uDecoration,decorativeUv).rgb;
++  // Suppress transport in anchored magnetic concentrations. No displaced atlas
++  // sample is ever taken, so HMI-derived dark regions cannot travel with flow.
++  vec3 detailRatio=clamp((transported+.018)/(original+.018),vec3(.40),vec3(2.4));
++  diffuseColor.rgb*=mix(vec3(1.0),detailRatio,.82*(1.0-guide));
++
++  // Fine structures reshape as well as move, at two resolved scales. The source
++  // texture supplies persistent structure; this small modulation supplies life.
++  vec3 p=n*140.0+vec3(flow*3.0,uSurfaceSeed*.17);
++  vec3 q=n.yzx*231.0+vec3(-flow.yx*2.0,t*.21);
++  float cells=solarNoise(p),fine=solarNoise(q);
++  float visible=1.0-smoothstep(.65,1.8,length(fwidth(p)));
++  float fineVisible=1.0-smoothstep(.65,1.8,length(fwidth(q)));
++  float localLight=solarNoise(n*25.0+vec3(t*.19,7.1,-t*.13));
++  diffuseColor.rgb*=1.0+((cells-.5)*.24*visible+(fine-.5)*.10*fineVisible)*(1.0-.9*guide)+guide*(localLight-.5)*.025;
++  // Leave room between the quiet network and bright knots in the golden palette.
++  diffuseColor.rgb*=.94/(1.0+.12*dot(diffuseColor.rgb,vec3(.2126,.7152,.0722)));
+ `;
+--- revision2/web/src/phase6/surface-particles.ts
++++ revision4/web/src/phase6/surface-particles.ts
+@@ -1,8 +1,8 @@
+ import {BufferGeometry,Float32BufferAttribute,Points,ShaderMaterial,NormalBlending,type Mesh} from 'three';
+ import type {polishMaterials} from '../phase5/visual-materials';
+ 
+-export const PARTICLE_COUNT=256;
+-export const TRAIL_SAMPLES=5;
++export const PARTICLE_COUNT=96;
++export const TRAIL_SAMPLES=3;
+ 
+ // Uniform illustrative tracers, NOT newly generated magnetic regions.
+ // Fibonacci placement and bounded tangential paths are identical for all dates.
+@@ -31,18 +31,22 @@
+         vec3 n=normalize(position);
+         vec3 axis=abs(n.y)>.95?vec3(1,0,0):vec3(0,1,0);
+         vec3 tangent=normalize(cross(axis,n)),bitangent=cross(n,tangent);
+-        float t=uTime-aTrail*.075;
++        float phase=fract(sin(aPhase*12.9898)*43758.5453);
++        float speed=mix(.28,.63,phase);
++        float t=uTime-aTrail*.045;
++        float life=fract(uTime/mix(4.0,9.0,phase)+phase);
++        float envelope=smoothstep(0.0,.25,life)*(1.0-smoothstep(.65,1.0,life));
+         // Short closed circulation: no eruption, outward flight or rotation of HMI.
+-        vec3 drift=tangent*(.075*sin(t*.95+aPhase))
+-                  +bitangent*(.045*cos(t*.73+aPhase*.71));
++        vec3 drift=tangent*(.025*sin(t*speed+aPhase))
++                  +bitangent*(.018*cos(t*speed*.71+aPhase*.71));
+         vLocal=normalize(n+drift);
+         vec4 mv=modelViewMatrix*vec4(vLocal*.4212,1.0);
+         vec3 viewNormal=normalize(normalMatrix*vLocal);
+         float facing=dot(viewNormal,normalize(-mv.xyz));
+-        vOpacity=exp(-aTrail*.48)*smoothstep(.08,.3,facing);
++        vOpacity=envelope*exp(-aTrail*.85)*smoothstep(.15,.4,facing);
+         gl_Position=projectionMatrix*mv;
+         float objectScale=length(modelViewMatrix[0].xyz);
+-        gl_PointSize=clamp(.0065*objectScale*uHeight*projectionMatrix[1][1]/max(.1,-mv.z),1.5,8.0);
++        gl_PointSize=clamp(.0032*objectScale*uHeight*projectionMatrix[1][1]/max(.1,-mv.z),.7,3.5);
+       }`,
+     fragmentShader:/* glsl */`
+       uniform sampler2D uPlus; uniform sampler2D uMinus;
+@@ -58,8 +62,8 @@
+         float guide=smoothstep(.02,.3,field)*smoothstep(0.0,.095,-n.z);
+         // Avoid painting over the anchored dark cores. Sparse tracers stay warm,
+         // not neon; their position/count never depends on SI or GOES.
+-        float alpha=(1.0-smoothstep(.2,1.0,radius))*vOpacity*(.94-.68*guide)*uFade;
+-        gl_FragColor=vec4(vec3(1.0,.97,.78),alpha);
++        float alpha=(1.0-smoothstep(.2,1.0,radius))*vOpacity*(.30-.25*guide)*uFade;
++        gl_FragColor=vec4(vec3(1.0,.80,.43),alpha);
+       }`,
+   });
+   const points=new Points(geometry,material);points.name='IllustrativeSurfaceTracers';

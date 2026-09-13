@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Visor solar de Auralis con cinco estados HMI y acceso a realidad aumentada.">
+  <title>Auralis · Sol y AR</title>
+  <script>
+    const viewer = new URL('./phase6/', location.href);
+    viewer.search = location.search;
+    viewer.hash = location.hash;
+    location.replace(viewer.href);
+  </script>
+</head>
+<body><a href="./phase6/">Abrir el Sol y AR</a></body>
+</html>

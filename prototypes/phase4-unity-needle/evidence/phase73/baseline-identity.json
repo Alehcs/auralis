@@ -1,0 +1,14 @@
+{
+  "build": "phase72-v1",
+  "hero": "hmi-2022-03-29",
+  "utc": "2022-03-29T00:00:53.000Z",
+  "source_hashes": {
+    "phase6/index.html": "1fbbf9dbe5b79e54ed14dac577c7f7fd9f33ae0821a20bbe51b0c1e699925a2c",
+    "src/phase5/visual-materials.ts": "07771ea92c53ea1c92e578cecf70c019d27de517b132415dde3cfcd64b49f992",
+    "src/phase5/main.ts": "fe3d85effc8b09dee588e74ee097dd047207851084c6e9aa51234a78222d3d1e",
+    "src/phase6/surface-particles.ts": "543d57d9554c320aed49b47cde06bc25cd1a31b3c2b41302aa230abb25dc0ed0",
+    "src/phase6/surface-shader.ts": "45e7031379fb4b2f380ef44c6b552a536f16b2b8c1b63e70278f409c8e8458f0",
+    "src/phase6/temporal.ts": "112861e7609590140a1cc31d9a9f200aca456ba81c269ecc0c1624142c91a161"
+  },
+  "protected_files": 2061
+}

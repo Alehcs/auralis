@@ -1,0 +1,153 @@
+
+> auralis-phase4-needle-probe@0.1.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: insecure LAN never presented as AR-capable
+ok 1 - insecure LAN never presented as AR-capable
+  ---
+  duration_ms: 0.446917
+  type: 'test'
+  ...
+# Subtest: iPhone without WebXR distinguishes App Clip from Safari
+ok 2 - iPhone without WebXR distinguishes App Clip from Safari
+  ---
+  duration_ms: 0.092292
+  type: 'test'
+  ...
+# Subtest: unsupported desktop retains 3D
+ok 3 - unsupported desktop retains 3D
+  ---
+  duration_ms: 0.041667
+  type: 'test'
+  ...
+# Subtest: capability exception preserves 3D
+ok 4 - capability exception preserves 3D
+  ---
+  duration_ms: 0.035583
+  type: 'test'
+  ...
+# Subtest: support probe is not proof of placement
+ok 5 - support probe is not proof of placement
+  ---
+  duration_ms: 0.047792
+  type: 'test'
+  ...
+# Subtest: localhost is not a phone sharing URL
+ok 6 - localhost is not a phone sharing URL
+  ---
+  duration_ms: 0.113292
+  type: 'test'
+  ...
+# Subtest: accepts the frozen first-state contract and exported evidence
+ok 7 - accepts the frozen first-state contract and exported evidence
+  ---
+  duration_ms: 5.379083
+  type: 'test'
+  ...
+# Subtest: rejects another state, false time, MC protocol, invented WCS and negative channel
+ok 8 - rejects another state, false time, MC protocol, invented WCS and negative channel
+  ---
+  duration_ms: 0.401791
+  type: 'test'
+  ...
+# Subtest: rejects damaged GLB, other scene provenance and mismatched scientific values
+ok 9 - rejects damaged GLB, other scene provenance and mismatched scientific values
+  ---
+  duration_ms: 7.998375
+  type: 'test'
+  ...
+# Subtest: limits layers and scale to Phase5 controls
+ok 10 - limits layers and scale to Phase5 controls
+  ---
+  duration_ms: 0.146834
+  type: 'test'
+  ...
+# Subtest: five frozen observations retain chronological gaps, values and final SI decline
+ok 11 - five frozen observations retain chronological gaps, values and final SI decline
+  ---
+  duration_ms: 0.775
+  type: 'test'
+  ...
+# Subtest: forwards/backwards cover all states and stop at boundaries
+ok 12 - forwards/backwards cover all states and stop at boundaries
+  ---
+  duration_ms: 0.120917
+  type: 'test'
+  ...
+# Subtest: rejects swapped states, fake dates, wrong channel files and MC results
+ok 13 - rejects swapped states, fake dates, wrong channel files and MC results
+  ---
+  duration_ms: 0.809292
+  type: 'test'
+  ...
+# Subtest: all 15 map files and the sequence match their frozen display hashes
+ok 14 - all 15 map files and the sequence match their frozen display hashes
+  ---
+  duration_ms: 12.309958
+  type: 'test'
+  ...
+# Subtest: five spatial textures bind to exact source magnetograms and real Unity geometry
+ok 15 - five spatial textures bind to exact source magnetograms and real Unity geometry
+  ---
+  duration_ms: 72.140958
+  type: 'test'
+  ...
+# Subtest: reject swapped solar maps, substituted source, wrong orientation or invalid disk
+ok 16 - reject swapped solar maps, substituted source, wrong orientation or invalid disk
+  ---
+  duration_ms: 0.446583
+  type: 'test'
+  ...
+# Subtest: controller returns identical textures in both directions; pause and rapid selection settle atomically
+ok 17 - controller returns identical textures in both directions; pause and rapid selection settle atomically
+  ---
+  duration_ms: 0.468375
+  type: 'test'
+  ...
+# Subtest: SRS, six independent events and preserved source snapshots match frozen provenance
+ok 18 - SRS, six independent events and preserved source snapshots match frozen provenance
+  ---
+  duration_ms: 5.59075
+  type: 'test'
+  ...
+# Subtest: X1.3 remains 63367 seconds after state5; M4 and M2.2 stay between their correct observations
+ok 19 - X1.3 remains 63367 seconds after state5; M4 and M2.2 stay between their correct observations
+  ---
+  duration_ms: 0.27075
+  type: 'test'
+  ...
+# Subtest: reject false X capture, snapped event time, regional type rewrite and replacement source
+ok 20 - reject false X capture, snapped event time, regional type rewrite and replacement source
+  ---
+  duration_ms: 0.686459
+  type: 'test'
+  ...
+# Subtest: selecting events pauses without selecting or replacing any HMI state; selection clears on real state change
+ok 21 - selecting events pauses without selecting or replacing any HMI state; selection clears on real state change
+  ---
+  duration_ms: 0.432167
+  type: 'test'
+  ...
+# Subtest: counts cadence over the complete window, including startup stalls
+ok 22 - counts cadence over the complete window, including startup stalls
+  ---
+  duration_ms: 0.698042
+  type: 'test'
+  ...
+# Subtest: no rendered frames is zero throughput, not a passing sample
+ok 23 - no rendered frames is zero throughput, not a passing sample
+  ---
+  duration_ms: 0.20175
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 259.60325
+

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "command": "node /Users/alejandro/.codex/plugins/cache/openai-bundled/sites/0.1.66/scripts/build-site.mjs",
+  "checks": ["tsc --noEmit", "vite build"],
+  "exit_code": 0,
+  "vite_version": "6.4.1",
+  "modules_transformed": 605,
+  "build_seconds": 3.67,
+  "warnings": ["MaterialX externalized node:module for browser compatibility", "Some chunks larger than 500 kB"],
+  "local_site_commit": "e4e99fc2d478277753ae44dc444b25b424bcb4b0",
+  "remote_push": "succeeded_after_explicit_user_authorization",
+  "phase7_deployed": true,
+  "physical_ar_tested": false
+}

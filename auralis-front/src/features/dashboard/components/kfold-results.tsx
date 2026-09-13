@@ -7,7 +7,7 @@ interface FoldResult {
   r2: number;
 }
 
-// log-SI space cross-validation — Coronium V3 PRO + ExtremeAugmentation (exp_005)
+// Illustrative hardcoded values only. No K-fold experiment supports this table.
 const FOLD_DATA: FoldResult[] = [
   { fold: 1, mae: 0.1031, rmse: 0.1349, r2: 0.8124 },
   { fold: 2, mae: 0.1048, rmse: 0.1371, r2: 0.8092 },
@@ -25,7 +25,7 @@ const SUMMARY = {
 function fmt(n: number) { return n.toFixed(4); }
 
 export function KFoldResults() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const e = t.experiments;
 
   return (
@@ -34,6 +34,9 @@ export function KFoldResults() {
       <div className="px-5 py-4 border-b border-neutral-800 flex items-start justify-between">
         <div>
           <div className="text-[15px] font-semibold text-white">{e.kfold}</div>
+          <p className="mt-2 text-xs text-amber-300">
+            {language === 'es' ? 'Ejemplo ilustrativo con valores fijos. No se ejecutó validación K-fold; estos valores no son evidencia científica.' : 'Illustrative example with fixed values. K-fold validation was not run; these values are not scientific evidence.'}
+          </p>
         </div>
         <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
           K = 5

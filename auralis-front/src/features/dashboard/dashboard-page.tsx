@@ -9,10 +9,9 @@ import { ConfigPanel } from './components/config-panel';
 import { ResearchInsights } from './pages/research-insights';
 import { AgentLabPage } from './agent-lab/AgentLabPage';
 
-// Lazy-loaded so Three.js stays out of the main bundle; only visitors of the
-// Simulation tab pay for it.
-const SolarSimulationPage = lazy(() =>
-  import('./simulation/SolarSimulationPage').then((m) => ({ default: m.SolarSimulationPage })),
+// The isolated viewer exists only while the Simulation tab is mounted.
+const SolarTwinPanel = lazy(() =>
+  import('./simulation/SolarTwinPanel').then((m) => ({ default: m.SolarTwinPanel })),
 );
 
 function SimulationFallback() {
@@ -70,9 +69,10 @@ export function DashboardPage() {
             {activeTab === 'agentlab'    && <AgentLabPage />}
             {activeTab === 'simulation'  && (
               <Suspense fallback={<SimulationFallback />}>
-                <SolarSimulationPage />
+                <SolarTwinPanel />
               </Suspense>
             )}
+
           </div>
         </div>
       </main>

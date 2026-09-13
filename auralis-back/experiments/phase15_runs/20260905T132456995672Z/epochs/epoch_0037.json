@@ -1,0 +1,10 @@
+{
+  "epoch": 37,
+  "train_whl": 0.11412873558636283,
+  "val_whl": 0.036786383775703806,
+  "train_mae": 0.17382301280999843,
+  "val_mae": 0.1018568577648569,
+  "learning_rate": 0.000125,
+  "aggregation": "sample_weighted",
+  "best_val_mae": 0.09972223798131762
+}

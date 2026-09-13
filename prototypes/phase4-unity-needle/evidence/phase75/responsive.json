@@ -1,0 +1,43 @@
+{
+  "requested": {
+    "width": 393,
+    "height": 852
+  },
+  "actual": {
+    "height": 852,
+    "scrollWidth": 393,
+    "width": 393
+  },
+  "states": [
+    {
+      "state": "hmi-2022-03-24",
+      "arcades": "hmi-2022-03-24",
+      "cache": 20,
+      "errors": []
+    },
+    {
+      "state": "hmi-2022-03-25",
+      "arcades": "hmi-2022-03-25",
+      "cache": 20,
+      "errors": []
+    },
+    {
+      "state": "hmi-2022-03-28",
+      "arcades": "hmi-2022-03-28",
+      "cache": 20,
+      "errors": []
+    },
+    {
+      "state": "hmi-2022-03-29",
+      "arcades": "hmi-2022-03-29",
+      "cache": 20,
+      "errors": []
+    },
+    {
+      "state": "hmi-2022-03-30",
+      "arcades": "hmi-2022-03-30",
+      "cache": 20,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "phase": "1.7",
+  "status": "CUMPLIDA",
+  "final_report": "analysis_v2/report.md",
+  "scientific_report": "docs/phase17.md",
+  "tests": {
+    "passed": 30,
+    "new_phase17_tests": 12
+  },
+  "build": "passed; existing large-chunk warning",
+  "standalone_scatter_and_residual_exports": "passed",
+  "python_compile_and_git_diff_check": "passed",
+  "data_reproduction_byte_identical": 10,
+  "png_reproduction_byte_identical": 13,
+  "frozen_artifacts_unchanged": 178,
+  "protected_files_unchanged": 26,
+  "later_phase_started": false,
+  "evidence_sha256": {
+    "reproduction.txt": "f9d5ff886e971e0b9ebc4c4299f30712a989a0a65a3100c708e83333ed9b512f",
+    "generation-final.txt": "366ed4910f65617357d92804481105ecd65f4d990d03619537269652412db23c",
+    "hardware.json": "25f35da24250c459165ae83551b6cb413b574a831e212914a866f7001473ad09",
+    "tests-final.txt": "78f03ea677898b144089a32dca3f5850723a11df477a73dc33a824d11c9a26e6",
+    "http-verification.txt": "eeb3832114874e6221364047ce04caadcf19377827bb1890e87f12b18c74767f",
+    "browser-verification.json": "08c4a0a7c94bcbfd69d9adfe0ea7eef90b20af0083491e9918ccbb58d3434c95",
+    "audit_before.json": "56d5fa5fa7dcc644807bd4847f31ccbb2e406d3b1b6b42aa87beaf82dc1215d2",
+    "http_parity.json": "0b237ef0b33f408d29415671e31c8ac027d7c069dae46000a8fecb730e66a117",
+    "inventory.json": "b731f2d0f13eeb453d479acf4b647540a39a16d4e3af895cecf8f23c4e249891",
+    "verification.json": "e3f0e8213c02b249cc632bf49fb3c82c761843ca2b0c2f93def8ce2b5fc8dbc5",
+    "build-final.txt": "343545fdc1ea4d574350c4a71564bee2f7dd1be999b67178383275f3632f9a26"
+  },
+  "changed_source_sha256": {
+    "AGENTS.md": "0e2fae1b9f12cf0f9a2d4654f2e274e1ca11e70c3b3b266917123692bf13c0ee",
+    "README.md": "c49d5c6c754caa4901003a506d623793306e7f1d8ff4af4cb71819cebbf8707e",
+    "RESEARCH_DOSSIER_MASTER.md": "95057b51ecda30916c690bad3e02b23e9480e66d0a917e4349cab766670ae96e",
+    "auralis-back/scripts/evaluate_final.py": "2386aaf97698a9fa35b604f35946e1a01aecd80bcfa847dccd961921bfcec979",
+    "auralis-back/scripts/plot_architecture_diagram.py": "01de48bc752ad1e266f74193931542097d36aa77ec08a30fd30c27dcbd559381",
+    "auralis-back/scripts/plot_final_scatter.py": "93a94c1925e3e822e6123726a1f398104dff2a3cd1c1e9d577452ca24d4a8980",
+    "auralis-back/scripts/plot_gradcam_overlay.py": "3166ef79d3af8ffa6f96438737be7d61e47d2acc72e1151ba7c5c786465bc568",
+    "auralis-back/scripts/plot_r2_diagnostic.py": "548de3e544515a30ccdba01a58193b53d11080d6e5d1568bb5fa466b1deaf334",
+    "auralis-back/src/api/main.py": "ae63fb106016092cd3d30c135a36bbd851ad9ef470f06de8e8b3c2ae63c81d26",
+    "auralis-back/src/experiments/run_external_baselines.py": "79a96392af6924628be56232bebca5eaea304cbf09e3f7191f5edd35cb27fb6b",
+    "auralis-back/src/visualization/app.py": "238d04863b33c8ddd1505837fd26a50e214b481ed0bc0747443f9ad25ce1de94",
+    "auralis-front/src/features/dashboard/components/architecture-comparison.tsx": "d9a8f67d90fc65db4e24d0aaca08a5b0076c2d3b4e8b1cd053c7378b45525984",
+    "auralis-front/src/features/dashboard/components/experiment-log.tsx": "f3df5b8541e3c55debc38876f45f36faca260b278bc9b4f2720b87f65cfb9646",
+    "auralis-front/src/features/dashboard/components/global-metrics.tsx": "2ba327057af3b2fb2d274dd2a8c20d0a4f5ee8720121208dd228aa2a17c01723",
+    "auralis-front/src/features/dashboard/components/predicted-vs-actual.tsx": "e37fa8eebcc91c1a9cf2ac43f753b0c67a219330ea89c510b3f6111fb3bca660",
+    "auralis-front/src/features/dashboard/components/xai-faithfulness.tsx": "71e23a733d07383031e3ef134275a6229ef9cfdab59fb97e2560a69b2161580f",
+    "auralis-front/src/features/dashboard/model-metrics.tsx": "64e3c9409ba7e0b1c02289f3c83198fd7fab4746cd53e1afce280a104f5d56ed",
+    "auralis-front/src/lib/api.ts": "be23312c54b3719bb89e0fe4bb512fba546fa9b8a15e46331a2a827a86c8d5d2",
+    "auralis-front/src/lib/i18n/translations.ts": "833b06dae76512140f898a3669d5d400272f05feebc70240cfb5a030f86c7245",
+    "auralis-front/src/lib/types.ts": "9db95cffc59407684f6da1893fb3d257525130bc9116b1d5c58050ca96f622e9"
+  },
+  "added_source_sha256": {
+    "auralis-back/scripts/run_phase17.py": "38619fa1048a56c548108188ab097f960acbb5683bf8cd7c72d3985c8da59c98",
+    "auralis-back/scripts/verify_phase17.py": "9d3949966fffc72f7f7fca26b6d11e83a0306da374c077de77786ce5b9ae004b",
+    "auralis-back/tests/test_phase17.py": "c4aa0227024ac5dbc921585e494b2e5a16df8f99010c09c00eeeea511ce1083c",
+    "docs/phase17.md": "c4e9b66914ed753d61d264dd7be2e9d5acf2a0f33ef2a9efa77d224cc5ee1b01",
+    "docs/phase17_inventory.md": "ed5d1f52669c79df57735597373f8701be01e33270821bbbe5382bb2a5f13879",
+    "auralis-back/reports/README.md": "138b509ce73476c24ec23313f1c21135c9f15525e2b2307b346952e6d0e663f6"
+  }
+}

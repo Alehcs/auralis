@@ -1,0 +1,350 @@
+{
+  "states": [
+    {
+      "SI": 1.679617166519165,
+      "class": "Beta",
+      "contextStateId": "hmi-2022-03-24",
+      "errors": [],
+      "prediction": 1.4705196619033811,
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-24/solar",
+        "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621"
+      },
+      "stateId": "hmi-2022-03-24"
+    },
+    {
+      "SI": 1.7170906066894531,
+      "class": "Beta",
+      "contextStateId": "hmi-2022-03-25",
+      "errors": [],
+      "prediction": 1.4772802591323853,
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-25/solar",
+        "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20"
+      },
+      "stateId": "hmi-2022-03-25"
+    },
+    {
+      "SI": 1.947987079620361,
+      "class": "Beta",
+      "contextStateId": "hmi-2022-03-28",
+      "errors": [],
+      "prediction": 1.6562585830688477,
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-28/solar",
+        "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb"
+      },
+      "stateId": "hmi-2022-03-28"
+    },
+    {
+      "SI": 2.057671546936035,
+      "class": "Beta-Gamma",
+      "contextStateId": "hmi-2022-03-29",
+      "errors": [],
+      "prediction": 1.6834452152252195,
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-29/solar",
+        "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277"
+      },
+      "stateId": "hmi-2022-03-29"
+    },
+    {
+      "SI": 2.050173282623291,
+      "class": "Beta-Gamma-Delta",
+      "contextStateId": "hmi-2022-03-30",
+      "errors": [],
+      "prediction": 1.712676167488098,
+      "solar": {
+        "flipY": false,
+        "name": "hmi-2022-03-30/solar",
+        "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8"
+      },
+      "stateId": "hmi-2022-03-30"
+    }
+  ],
+  "events": [
+    {
+      "ar": "EVENTO HISTÓRICO EXTERNO · GOES G16M4.0 · NOAA 12975 · pico 28 mar 11:29:00 UTCInicio 28 mar 10:58:00 UTC · fin 28 mar 11:45:00 UTC11 h 28 min 07 s después del HMI del 28 mar. Entre los estados 28 mar y 29 mar.Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 30 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.Ver HMI anterior · 28 marFuente conservada · 20220328events.txt · línea 403390 +     1058   1129      1145  G16  5   XRA  1-8A      M4.0    4.4E-02   2975Abrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:25.147577+00:00SHA-256 afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0",
+      "d": {
+        "SI": 2.050173282623291,
+        "activeMaps": {
+          "bminus": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/bminus",
+            "sha256": "bcbe13b75bd1918955f5addc37063f84626e1f9087865a51206bb635719fc2d2"
+          },
+          "bplus": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/bplus",
+            "sha256": "461d08bc83c4e795bec68179f2f8b96dce7bf0ac13c364bf3e518bc66d583ccb"
+          },
+          "magnetogram": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/magnetogram",
+            "sha256": "c4023b47f96d90dedbfdc10b25af5c2d274b5766367fc2cef910b0c1d86dd129"
+          },
+          "solar": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/solar",
+            "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8"
+          }
+        },
+        "autoRotate": false,
+        "build": "phase7-v1",
+        "cachedTextures": 20,
+        "contextMagneticType": "Beta-Gamma-Delta",
+        "contextManifestVerified": true,
+        "contextStateId": "hmi-2022-03-30",
+        "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+        "displayGain": 1,
+        "engine": "5.1.12",
+        "errors": [],
+        "exportEvidence": {
+          "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+          "bytes": 6206672,
+          "exporterVersion": "5.1.12",
+          "scene": "Assets/Scenes/Phase5Solar.unity",
+          "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+          "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+          "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+          "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+          "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+          "unityVersion": "6000.3.17f1"
+        },
+        "exportHashVerified": true,
+        "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+        "historicalEventCount": 6,
+        "illustrativeMotion": false,
+        "immersiveAR": false,
+        "layer": "solar",
+        "magnetogramFile": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+        "observationId": "hmi-2022-03-30-observation",
+        "pendingStateIndex": 4,
+        "physicalValidation": "not_tested",
+        "placementCount": 0,
+        "playDirection": 1,
+        "playing": false,
+        "prediction": 1.712676167488098,
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "readyMs": 8610,
+        "recordUTC": "2022-03-30T00:00:53.000Z",
+        "scale": 1,
+        "secureContext": true,
+        "selectedEventId": "20220328_3390",
+        "selectedEventPeak": "2022-03-28T11:29:00Z",
+        "solarActivity": {
+          "disk": {
+            "cx": 254.50768522017657,
+            "cy": 255.69330306004736,
+            "edge_residual_max_px": 0.9353162529279472,
+            "edge_residual_p95_px": 0.7240023597810236,
+            "method": "circle_fit_zero_exterior_filled_support",
+            "radius": 251.42193580149495
+          },
+          "id": "hmi-2022-03-30",
+          "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+          "sourceSha256": "f64b967b6f71e816e31dbf38bd576baddbb2e34c4db0b29eec24c254c7567366"
+        },
+        "solarFrom": "hmi-2022-03-30",
+        "solarMix": 1,
+        "solarTo": "hmi-2022-03-30",
+        "source": "unity-glb-loaded",
+        "stateId": "hmi-2022-03-30",
+        "stateIndex": 4,
+        "temporalChanges": 4,
+        "transitioning": false
+      },
+      "web": "EVENTO HISTÓRICO EXTERNO · GOES G16M4.0 · NOAA 12975 · pico 28 mar 11:29:00 UTCInicio 28 mar 10:58:00 UTC · fin 28 mar 11:45:00 UTC11 h 28 min 07 s después del HMI del 28 mar. Entre los estados 28 mar y 29 mar.Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 30 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.Ver HMI anterior · 28 marFuente conservada · 20220328events.txt · línea 403390 +     1058   1129      1145  G16  5   XRA  1-8A      M4.0    4.4E-02   2975Abrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:25.147577+00:00SHA-256 afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0"
+    },
+    {
+      "ar": "EVENTO HISTÓRICO EXTERNO · GOES G16M2.2 · NOAA 12975 · pico 29 mar 01:11:00 UTCInicio 29 mar 00:57:00 UTC · fin 29 mar 01:26:00 UTC1 h 10 min 07 s después del HMI del 29 mar. Entre los estados 29 mar y 30 mar.Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 30 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.Ver HMI anterior · 29 marFuente conservada · 20220329events.txt · línea 193630 +     0057   0111      0126  G16  5   XRA  1-8A      M2.2    2.5E-02   2975Abrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:25.581352+00:00SHA-256 ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686",
+      "d": {
+        "SI": 2.050173282623291,
+        "activeMaps": {
+          "bminus": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/bminus",
+            "sha256": "bcbe13b75bd1918955f5addc37063f84626e1f9087865a51206bb635719fc2d2"
+          },
+          "bplus": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/bplus",
+            "sha256": "461d08bc83c4e795bec68179f2f8b96dce7bf0ac13c364bf3e518bc66d583ccb"
+          },
+          "magnetogram": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/magnetogram",
+            "sha256": "c4023b47f96d90dedbfdc10b25af5c2d274b5766367fc2cef910b0c1d86dd129"
+          },
+          "solar": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/solar",
+            "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8"
+          }
+        },
+        "autoRotate": false,
+        "build": "phase7-v1",
+        "cachedTextures": 20,
+        "contextMagneticType": "Beta-Gamma-Delta",
+        "contextManifestVerified": true,
+        "contextStateId": "hmi-2022-03-30",
+        "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+        "displayGain": 1,
+        "engine": "5.1.12",
+        "errors": [],
+        "exportEvidence": {
+          "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+          "bytes": 6206672,
+          "exporterVersion": "5.1.12",
+          "scene": "Assets/Scenes/Phase5Solar.unity",
+          "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+          "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+          "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+          "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+          "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+          "unityVersion": "6000.3.17f1"
+        },
+        "exportHashVerified": true,
+        "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+        "historicalEventCount": 6,
+        "illustrativeMotion": false,
+        "immersiveAR": false,
+        "layer": "solar",
+        "magnetogramFile": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+        "observationId": "hmi-2022-03-30-observation",
+        "pendingStateIndex": 4,
+        "physicalValidation": "not_tested",
+        "placementCount": 0,
+        "playDirection": 1,
+        "playing": false,
+        "prediction": 1.712676167488098,
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "readyMs": 8610,
+        "recordUTC": "2022-03-30T00:00:53.000Z",
+        "scale": 1,
+        "secureContext": true,
+        "selectedEventId": "20220329_3630",
+        "selectedEventPeak": "2022-03-29T01:11:00Z",
+        "solarActivity": {
+          "disk": {
+            "cx": 254.50768522017657,
+            "cy": 255.69330306004736,
+            "edge_residual_max_px": 0.9353162529279472,
+            "edge_residual_p95_px": 0.7240023597810236,
+            "method": "circle_fit_zero_exterior_filled_support",
+            "radius": 251.42193580149495
+          },
+          "id": "hmi-2022-03-30",
+          "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+          "sourceSha256": "f64b967b6f71e816e31dbf38bd576baddbb2e34c4db0b29eec24c254c7567366"
+        },
+        "solarFrom": "hmi-2022-03-30",
+        "solarMix": 1,
+        "solarTo": "hmi-2022-03-30",
+        "source": "unity-glb-loaded",
+        "stateId": "hmi-2022-03-30",
+        "stateIndex": 4,
+        "temporalChanges": 4,
+        "transitioning": false
+      },
+      "web": "EVENTO HISTÓRICO EXTERNO · GOES G16M2.2 · NOAA 12975 · pico 29 mar 01:11:00 UTCInicio 29 mar 00:57:00 UTC · fin 29 mar 01:26:00 UTC1 h 10 min 07 s después del HMI del 29 mar. Entre los estados 29 mar y 30 mar.Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 30 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.Ver HMI anterior · 29 marFuente conservada · 20220329events.txt · línea 193630 +     0057   0111      0126  G16  5   XRA  1-8A      M2.2    2.5E-02   2975Abrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:25.581352+00:00SHA-256 ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686"
+    },
+    {
+      "ar": "EVENTO HISTÓRICO EXTERNO · GOES G16X1.3 · NOAA 12975 · pico 30 mar 17:37:00 UTCInicio 30 mar 17:21:00 UTC · fin 30 mar 17:46:00 UTC17 h 36 min 07 s después del HMI del 30 mar. Posterior al último estado; no hay otro magnetograma seleccionado.Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 30 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.Ver HMI anterior · 30 marFuente conservada · 20220330events.txt · línea 614220 +     1721   1737      1746  G16  5   XRA  1-8A      X1.3    9.6E-02   2975Abrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:25.543779+00:00SHA-256 c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe",
+      "d": {
+        "SI": 2.050173282623291,
+        "activeMaps": {
+          "bminus": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/bminus",
+            "sha256": "bcbe13b75bd1918955f5addc37063f84626e1f9087865a51206bb635719fc2d2"
+          },
+          "bplus": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/bplus",
+            "sha256": "461d08bc83c4e795bec68179f2f8b96dce7bf0ac13c364bf3e518bc66d583ccb"
+          },
+          "magnetogram": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/magnetogram",
+            "sha256": "c4023b47f96d90dedbfdc10b25af5c2d274b5766367fc2cef910b0c1d86dd129"
+          },
+          "solar": {
+            "flipY": false,
+            "name": "hmi-2022-03-30/solar",
+            "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8"
+          }
+        },
+        "autoRotate": false,
+        "build": "phase7-v1",
+        "cachedTextures": 20,
+        "contextMagneticType": "Beta-Gamma-Delta",
+        "contextManifestVerified": true,
+        "contextStateId": "hmi-2022-03-30",
+        "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+        "displayGain": 1,
+        "engine": "5.1.12",
+        "errors": [],
+        "exportEvidence": {
+          "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+          "bytes": 6206672,
+          "exporterVersion": "5.1.12",
+          "scene": "Assets/Scenes/Phase5Solar.unity",
+          "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+          "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+          "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+          "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+          "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+          "unityVersion": "6000.3.17f1"
+        },
+        "exportHashVerified": true,
+        "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+        "historicalEventCount": 6,
+        "illustrativeMotion": false,
+        "immersiveAR": false,
+        "layer": "solar",
+        "magnetogramFile": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+        "observationId": "hmi-2022-03-30-observation",
+        "pendingStateIndex": 4,
+        "physicalValidation": "not_tested",
+        "placementCount": 0,
+        "playDirection": 1,
+        "playing": false,
+        "prediction": 1.712676167488098,
+        "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+        "readyMs": 8610,
+        "recordUTC": "2022-03-30T00:00:53.000Z",
+        "scale": 1,
+        "secureContext": true,
+        "selectedEventId": "20220330_4220",
+        "selectedEventPeak": "2022-03-30T17:37:00Z",
+        "solarActivity": {
+          "disk": {
+            "cx": 254.50768522017657,
+            "cy": 255.69330306004736,
+            "edge_residual_max_px": 0.9353162529279472,
+            "edge_residual_p95_px": 0.7240023597810236,
+            "method": "circle_fit_zero_exterior_filled_support",
+            "radius": 251.42193580149495
+          },
+          "id": "hmi-2022-03-30",
+          "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+          "sourceSha256": "f64b967b6f71e816e31dbf38bd576baddbb2e34c4db0b29eec24c254c7567366"
+        },
+        "solarFrom": "hmi-2022-03-30",
+        "solarMix": 1,
+        "solarTo": "hmi-2022-03-30",
+        "source": "unity-glb-loaded",
+        "stateId": "hmi-2022-03-30",
+        "stateIndex": 4,
+        "temporalChanges": 4,
+        "transitioning": false
+      },
+      "web": "EVENTO HISTÓRICO EXTERNO · GOES G16X1.3 · NOAA 12975 · pico 30 mar 17:37:00 UTCInicio 30 mar 17:21:00 UTC · fin 30 mar 17:46:00 UTC17 h 36 min 07 s después del HMI del 30 mar. Posterior al último estado; no hay otro magnetograma seleccionado.Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 30 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.Ver HMI anterior · 30 marFuente conservada · 20220330events.txt · línea 614220 +     1721   1737      1746  G16  5   XRA  1-8A      X1.3    9.6E-02   2975Abrir snapshot de Fase 2Consulta original: 2026-09-06T13:40:25.543779+00:00SHA-256 c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe"
+    }
+  ]
+}

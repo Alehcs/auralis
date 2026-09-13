@@ -1,0 +1,25 @@
+{
+  "status": "deduplicated_observation_validation_not_temporal_validation",
+  "weights_sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+  "split_sha256": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+  "metadata_sha256": "baedaf612234239f044b9240a1e6426e0ac3cc5064a995cda8050eb9db84e11f",
+  "input_contract": "hmi-clip400-polarity-v1",
+  "target_contract": "strong-field-pixel-percent-200G-v1",
+  "seed": 42,
+  "mc_passes": 20,
+  "batch_size": 32,
+  "metrics": {
+    "mae": 0.10155761986970901,
+    "rmse": 0.12337954342365265,
+    "r2": 0.875296638661553,
+    "mape": 5.987025052309036
+  },
+  "device": "mps",
+  "torch_version": "2.11.0",
+  "validation_observations": 263,
+  "mape_nonzero_samples": 263,
+  "torch_threads": 4,
+  "deterministic_algorithms": true,
+  "checkpoint_selection_note": "Validation was used for early stopping/model selection; not an untouched test set",
+  "evaluation_completed": true
+}

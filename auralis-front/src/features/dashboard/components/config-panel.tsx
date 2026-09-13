@@ -1,3 +1,4 @@
+import { IS_FROZEN_DEMO } from '@/lib/frozen-demo';
 import { useState } from 'react';
 import { Globe, Bell, Cpu, Lock, Check } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/language-context';
@@ -34,6 +35,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void }) {
   return (
     <button
+      disabled={IS_FROZEN_DEMO}
       onClick={() => onChange(!on)}
       className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${on ? 'bg-orange-500' : 'bg-neutral-600'}`}
     >
@@ -52,8 +54,8 @@ export function ConfigPanel() {
 
   const [notif, setNotif] = useState({ highRisk: true, slackFail: true, digest: false });
 
-  const DEVICE    = 'ONNX Runtime · CPU (edge)';
-  const BATCH     = '32';
+  const DEVICE    = IS_FROZEN_DEMO ? 'Resultados guardados' : 'ONNX Runtime · CPU (edge)';
+  const BATCH     = IS_FROZEN_DEMO ? 'No disponible' : '32';
   const PRECISION = 'float32';
   const API_KEY   = 'Not configured';
 
@@ -112,7 +114,7 @@ export function ConfigPanel() {
 
       {/* ── BOTTOM-LEFT: Notifications ───────────────────────────── */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
-        <SectionHeader icon={Bell} title={s.notifications} description={s.notificationsDesc} />
+        <SectionHeader icon={Bell} title={s.notifications} description={IS_FROZEN_DEMO ? "No disponibles" : s.notificationsDesc} />
         <div className="space-y-2">
           <Row label={s.emailAlerts}>
             <Toggle on={notif.highRisk}  onChange={(v) => setNotif((p) => ({ ...p, highRisk: v }))} />

@@ -1,0 +1,374 @@
+[
+  {
+    "file": "20170830SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/08/20170830SRS.txt",
+    "sha256": "2cabd7238b3703f24eb95b05823f489e0f365d7e4cb808a4d64593277d39fd8d",
+    "bytes": 687,
+    "retrieved_utc": "2026-09-06T13:40:23.065668+00:00"
+  },
+  {
+    "file": "20170831SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/08/20170831SRS.txt",
+    "sha256": "e62d6df02160e92710e6574b1e47eef93b2ca10ff8354aa019a5186cb4bc220c",
+    "bytes": 687,
+    "retrieved_utc": "2026-09-06T13:40:23.066107+00:00"
+  },
+  {
+    "file": "20170903SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/09/20170903SRS.txt",
+    "sha256": "47d126e286f8972d66a6b0f1b65847faf607c94cfbffb2960b9d07e0e8fc90ee",
+    "bytes": 734,
+    "retrieved_utc": "2026-09-06T13:40:23.065351+00:00"
+  },
+  {
+    "file": "20220324SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220324SRS.txt",
+    "sha256": "9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91d",
+    "bytes": 722,
+    "retrieved_utc": "2026-09-06T13:40:23.105719+00:00"
+  },
+  {
+    "file": "20220325SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220325SRS.txt",
+    "sha256": "a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ff",
+    "bytes": 764,
+    "retrieved_utc": "2026-09-06T13:40:23.073474+00:00"
+  },
+  {
+    "file": "20220328SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220328SRS.txt",
+    "sha256": "e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2b",
+    "bytes": 821,
+    "retrieved_utc": "2026-09-06T13:40:23.106934+00:00"
+  },
+  {
+    "file": "20220329SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220329SRS.txt",
+    "sha256": "e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225c",
+    "bytes": 880,
+    "retrieved_utc": "2026-09-06T13:40:23.563029+00:00"
+  },
+  {
+    "file": "20220330SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/03/20220330SRS.txt",
+    "sha256": "d6f1477902dfed7836f11db7bd728264d7d4d6dd020bdcae27c332fb08ea5969",
+    "bytes": 894,
+    "retrieved_utc": "2026-09-06T13:40:23.548083+00:00"
+  },
+  {
+    "file": "20220401SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/04/20220401SRS.txt",
+    "sha256": "d04d5813a0e6c8ad0638b247743644367ec959eeaaf381c343a06b516bdd2227",
+    "bytes": 827,
+    "retrieved_utc": "2026-09-06T13:40:23.595299+00:00"
+  },
+  {
+    "file": "20220403SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/04/20220403SRS.txt",
+    "sha256": "78d01b4a9c375165d9d3ce9bdd77b081e55f23acb9aa8c3cdfedae1ae9fb2032",
+    "bytes": 917,
+    "retrieved_utc": "2026-09-06T13:40:23.583203+00:00"
+  },
+  {
+    "file": "20220405SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2022/04/20220405SRS.txt",
+    "sha256": "047b9408109a19b6f28dada706f6a9396f61f5a3e90366d07871e61aca2e08a4",
+    "bytes": 828,
+    "retrieved_utc": "2026-09-06T13:40:23.604811+00:00"
+  },
+  {
+    "file": "20231208SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2023/12/20231208SRS.txt",
+    "sha256": "9a0c5af22759cfc02d14a164e365c2f269b7f42ce62e35c0a2ea99fa90fe8250",
+    "bytes": 916,
+    "retrieved_utc": "2026-09-06T13:40:23.590212+00:00"
+  },
+  {
+    "file": "20231211SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2023/12/20231211SRS.txt",
+    "sha256": "54b421903fc949405a4c1eaca00156d5ff856e85a168de416d0ec3602c423100",
+    "bytes": 969,
+    "retrieved_utc": "2026-09-06T13:40:24.068419+00:00"
+  },
+  {
+    "file": "20231213SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2023/12/20231213SRS.txt",
+    "sha256": "c739909660c384245d8783fbdfac2fd8239551b618e1bd36dfe46f344261cd24",
+    "bytes": 919,
+    "retrieved_utc": "2026-09-06T13:40:24.066938+00:00"
+  },
+  {
+    "file": "20231216SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2023/12/20231216SRS.txt",
+    "sha256": "c4c26e26153ae7f9d24558858b5b287b455deb9c827ce3a5d2e20749926dfa9b",
+    "bytes": 986,
+    "retrieved_utc": "2026-09-06T13:40:24.108215+00:00"
+  },
+  {
+    "file": "20231217SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2023/12/20231217SRS.txt",
+    "sha256": "5cf3b8102c918e2d3519f4a8e93f1c756aa39bf6ff7f7b1494cb7a9f6714fa33",
+    "bytes": 1110,
+    "retrieved_utc": "2026-09-06T13:40:24.110602+00:00"
+  },
+  {
+    "file": "20231218SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2023/12/20231218SRS.txt",
+    "sha256": "cc65608b75f02a9fb12b92ef6f1250b4b6a115903f45e595c080334bf35b3c10",
+    "bytes": 1046,
+    "retrieved_utc": "2026-09-06T13:40:24.120340+00:00"
+  },
+  {
+    "file": "20240504SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/05/20240504SRS.txt",
+    "sha256": "7ad3ffe0d622b3ff57d9ff2df8adb5e32808f651d8e0caedd144c9ec73a71c42",
+    "bytes": 907,
+    "retrieved_utc": "2026-09-06T13:40:24.089126+00:00"
+  },
+  {
+    "file": "20240505SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/05/20240505SRS.txt",
+    "sha256": "b811b21b80b4857ae36ea00ef7955912c6476be0f458eaecd9ccec47a4b00527",
+    "bytes": 932,
+    "retrieved_utc": "2026-09-06T13:40:24.569746+00:00"
+  },
+  {
+    "file": "20240508SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/05/20240508SRS.txt",
+    "sha256": "c536a0f6869f488a477483569d986f52cdfc93d4057e5d977fac99c89379a18e",
+    "bytes": 1068,
+    "retrieved_utc": "2026-09-06T13:40:24.555847+00:00"
+  },
+  {
+    "file": "20240510SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/05/20240510SRS.txt",
+    "sha256": "5fa32fddf22b299cbdde88013129038abd315d6e391909c9d57fae42efc21f5c",
+    "bytes": 1022,
+    "retrieved_utc": "2026-09-06T13:40:24.620516+00:00"
+  },
+  {
+    "file": "20240511SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/05/20240511SRS.txt",
+    "sha256": "21908818a7f0812d1de33d9d3ad59311485703416590680e739f1b0720be4b93",
+    "bytes": 1006,
+    "retrieved_utc": "2026-09-06T13:40:24.614613+00:00"
+  },
+  {
+    "file": "20240515SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/05/20240515SRS.txt",
+    "sha256": "d5eae989548c12edcbea0f474589d16fe56b0a248308ff9926ee981dfd769647",
+    "bytes": 1176,
+    "retrieved_utc": "2026-09-06T13:40:24.646105+00:00"
+  },
+  {
+    "file": "20241003SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/10/20241003SRS.txt",
+    "sha256": "a62c0585c70ca89a7f171e4716c42c6adbbcc36bc39841e8485367c2c5a1e8e7",
+    "bytes": 1081,
+    "retrieved_utc": "2026-09-06T13:40:24.640066+00:00"
+  },
+  {
+    "file": "20241006SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/10/20241006SRS.txt",
+    "sha256": "292d521e6496a85c5c9a43a8eda9b77440ccc1ff326cfa819f87f941d6c45cc3",
+    "bytes": 1000,
+    "retrieved_utc": "2026-09-06T13:40:25.055300+00:00"
+  },
+  {
+    "file": "20241007SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/10/20241007SRS.txt",
+    "sha256": "349fd45dc88846ea883cabf5f49777a5950e3cdbfe4b71af18582ceb576926ad",
+    "bytes": 980,
+    "retrieved_utc": "2026-09-06T13:40:25.055894+00:00"
+  },
+  {
+    "file": "20241009SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/10/20241009SRS.txt",
+    "sha256": "fc809d6e9239b0af1526656e4ab8e0ed2bace41f42311a0f3755ebbbaa094466",
+    "bytes": 1037,
+    "retrieved_utc": "2026-09-06T13:40:25.116445+00:00"
+  },
+  {
+    "file": "20241010SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/10/20241010SRS.txt",
+    "sha256": "d814ad815a7a249cb0bb909b36a313ac07c90c864e73f8f55915ec5c9e2b3e3a",
+    "bytes": 876,
+    "retrieved_utc": "2026-09-06T13:40:25.149826+00:00"
+  },
+  {
+    "file": "20220325events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220325events.txt",
+    "sha256": "e3ca16e341990bfa9620581fd7ebd5be8b955e886d1ce5e0827e2e83c1039675",
+    "bytes": 2450,
+    "retrieved_utc": "2026-09-06T13:40:25.140417+00:00"
+  },
+  {
+    "file": "20220328events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220328events.txt",
+    "sha256": "afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0",
+    "bytes": 5634,
+    "retrieved_utc": "2026-09-06T13:40:25.147577+00:00"
+  },
+  {
+    "file": "20220329events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220329events.txt",
+    "sha256": "ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686",
+    "bytes": 6456,
+    "retrieved_utc": "2026-09-06T13:40:25.581352+00:00"
+  },
+  {
+    "file": "20220330events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220330events.txt",
+    "sha256": "c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe",
+    "bytes": 4653,
+    "retrieved_utc": "2026-09-06T13:40:25.543779+00:00"
+  },
+  {
+    "file": "20220331events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2022/03/20220331events.txt",
+    "sha256": "8f10d524d36da91c5c8c3028da87e5314fe8c61d16e7a2912ec990be4636a318",
+    "bytes": 6772,
+    "retrieved_utc": "2026-09-06T13:40:25.620653+00:00"
+  },
+  {
+    "file": "all_harps_with_noaa_ars.txt",
+    "url": "https://jsoc.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt",
+    "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1000)>"
+  },
+  {
+    "url": "http://jsoc.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt",
+    "retrieved_utc": "2026-09-06T13:43:10.529394+00:00",
+    "file": "harp_mapping_attempt_0.txt",
+    "sha256": "e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f",
+    "bytes": 34870
+  },
+  {
+    "url": "https://jsoc1.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt",
+    "retrieved_utc": "2026-09-06T13:43:11.038823+00:00",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://jsoc2.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt",
+    "retrieved_utc": "2026-09-06T13:43:11.038867+00:00",
+    "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1000)>"
+  },
+  {
+    "file": "20170906events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2017/09/20170906events.txt",
+    "retrieved_utc": "2026-09-06T13:44:27.425240+00:00",
+    "sha256": "a35f193922428d7a970a7e9defe3ee76e596717bc3907fe86671bd25abdda0aa",
+    "bytes": 5474
+  },
+  {
+    "file": "20170910events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2017/09/20170910events.txt",
+    "retrieved_utc": "2026-09-06T13:44:27.425390+00:00",
+    "sha256": "084fca4a07f84cd1b24b66ce457e4644cc0e1d3f111143308fea25c4fcee1c2f",
+    "bytes": 3431
+  },
+  {
+    "file": "20231214events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2023/12/20231214events.txt",
+    "retrieved_utc": "2026-09-06T13:44:27.425510+00:00",
+    "sha256": "f41b8342a571f0a3c5dfb1e4618cf75a6fba0a285a017bb8ed2f49ed51cc97ed",
+    "bytes": 4332
+  },
+  {
+    "file": "20240508events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/05/20240508events.txt",
+    "retrieved_utc": "2026-09-06T13:44:27.425564+00:00",
+    "sha256": "8f35f8773e9a996aede67dcb397b9a4a79bf253bdcf60eff9e5866f4d6e55d04",
+    "bytes": 9130
+  },
+  {
+    "file": "20240509events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/05/20240509events.txt",
+    "retrieved_utc": "2026-09-06T13:44:27.425604+00:00",
+    "sha256": "a8ac4a850dff97cebf3ded0d09ce259af79198f14873929215549c7aef1fb496",
+    "bytes": 10190
+  },
+  {
+    "file": "20240510events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/05/20240510events.txt",
+    "retrieved_utc": "2026-09-06T13:44:28.083113+00:00",
+    "sha256": "a594390724cb9ceb9fe2c153f2f1a8c7c5b44efb96cff14e1af42e19cd6c07ed",
+    "bytes": 8739
+  },
+  {
+    "file": "20240511events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/05/20240511events.txt",
+    "retrieved_utc": "2026-09-06T13:44:28.083471+00:00",
+    "sha256": "afb11d54948f3573e9b0cd2c015aba99e483c35c711f140aa671d73e6a190fdc",
+    "bytes": 7587
+  },
+  {
+    "file": "20240514events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/05/20240514events.txt",
+    "retrieved_utc": "2026-09-06T13:44:28.108344+00:00",
+    "sha256": "bd03f0004ce5213860849164bd49e0c7a14e0994a1239d6699ade1ab8c2c3b98",
+    "bytes": 6604
+  },
+  {
+    "file": "20241001events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/10/20241001events.txt",
+    "retrieved_utc": "2026-09-06T13:44:28.122474+00:00",
+    "sha256": "3fa1e9fe51637cd7a538767ff1b2b4105c4142bb211fa0cbaa305f0f4388dc67",
+    "bytes": 5069
+  },
+  {
+    "file": "20241003events.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_event_reports/2024/10/20241003events.txt",
+    "retrieved_utc": "2026-09-06T13:44:28.122857+00:00",
+    "sha256": "bd7804379ab4f253c6801b4ff0b7e86dfd396ef423331ff2bcef86f53ef96b32",
+    "bytes": 8734
+  },
+  {
+    "file": "20170823SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/08/20170823SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.134458+00:00",
+    "sha256": "7fc4f09379e0684f49298c17ff6e620bdaa7521e25270a52944a762f3497af9d",
+    "bytes": 650
+  },
+  {
+    "file": "20170828SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/08/20170828SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.134621+00:00",
+    "sha256": "32fb02bc7e1782042999fc8e45d43dadb57a8a9127bb57780aa44d9df186891c",
+    "bytes": 644
+  },
+  {
+    "file": "20170913SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/09/20170913SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.134736+00:00",
+    "sha256": "4c76db7c0cb6b378cd751fb21ce8930f2a6c9e68a8efc0bd32c03535d64bdad2",
+    "bytes": 647
+  },
+  {
+    "file": "20170914SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2017/09/20170914SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.134787+00:00",
+    "sha256": "7ba217b3e99ccd3aa3c4f12d14e0ae488d0b387ec1d30fef79c78d3d67ceadd4",
+    "bytes": 647
+  },
+  {
+    "file": "20240925SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/09/20240925SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.134839+00:00",
+    "sha256": "a2c17c36a746aa2800a594f1e4d4556b108810492ced9b92f5ef71bb700990f2",
+    "bytes": 996
+  },
+  {
+    "file": "20240926SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/09/20240926SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.652398+00:00",
+    "sha256": "0032e2ad1a5ca90f4cef929fa0f9894afd7e4413d96187de6c4974b7acdb5a55",
+    "bytes": 992
+  },
+  {
+    "file": "20240929SRS.txt",
+    "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/2024/09/20240929SRS.txt",
+    "retrieved_utc": "2026-09-06T13:45:00.652658+00:00",
+    "sha256": "4749cb88f0760cbd583bbd1cba8dc480d268c93789a80fea507d94b62fe75311",
+    "bytes": 994
+  }
+]

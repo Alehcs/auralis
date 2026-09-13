@@ -289,6 +289,8 @@ def get_risk_level(activity_index):
 def main():
     """Render the legacy Streamlit dashboard."""
 
+    st.warning("Legacy single-channel demo; checkpoint coronium_v3_final.pth. This view does not evaluate Coronium V3.1. Use the React dashboard for the active model and its separate protocols.")
+
     # Header
     st.markdown("""
     <div style='text-align: center; padding: 1rem 0 0.5rem 0;'>
@@ -296,7 +298,7 @@ def main():
             AURALIS
         </h1>
         <p style='margin: 0.3rem 0 0 0; font-size: 0.95rem; color: #A0A0A0; font-weight: 400;'>
-            Local Dataset Analysis | Model: <span style='color: #1E88E5;'>Coronium V3 PRO</span> | Val MAE: <span style='color: #2ECC71;'>5.52%</span>
+            Legacy Streamlit demo | Single-channel Coronium | No verified V3.1 metrics
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -531,11 +533,11 @@ def main():
             aboard NASA's SDO (Solar Dynamics Observatory) mission.
 
             **Technical Specifications**:
-            - Architecture: Coronium V3 PRO (V3ResidualBlock + ECA attention)
-            - Performance: 0.07% MAE on validation set
-            - Training: 2000+ solar magnetograms
+            - Architecture: legacy single-channel Coronium CNN
+            - Performance: no verified evaluation metadata for this legacy checkpoint
+            - Training: historical dataset provenance unavailable in this demo
             - Inference: Local current-index estimation
-            - Application: Critical infrastructure protection
+            - Application: academic visualization demo
             """)
 
 

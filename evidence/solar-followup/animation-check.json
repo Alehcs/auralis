@@ -1,0 +1,27 @@
+{
+  "running": {
+    "difference_bounds": [
+      312,
+      232,
+      688,
+      608
+    ],
+    "identical": false,
+    "separation_seconds": 3
+  },
+  "paused": {
+    "difference_bounds": null,
+    "identical": true,
+    "separation_seconds": 3
+  },
+  "resumed": {
+    "difference_bounds": [
+      312,
+      240,
+      688,
+      616
+    ],
+    "identical": false,
+    "separation_seconds": 3
+  }
+}

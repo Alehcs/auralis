@@ -1,0 +1,43 @@
+{
+  "evidence_status": "clean_observation_validation_used_for_selection_not_independent_test_or_temporal_validation",
+  "run_id": "phase16_coronium_v3_1",
+  "run_name": "Coronium V3.1 \u2014 clean Phase 1.5 checkpoint promotion",
+  "date": "2026-09-06T03:00:15.388906+00:00",
+  "model_name": "Coronium V3.1",
+  "weights_file": "best_coronium_v3_1.pth",
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "dropout_rate": 0.2,
+    "seed": 42,
+    "batch_size": 32,
+    "optimizer": "AdamW",
+    "scheduler": "ReduceLROnPlateau (patience=3, factor=0.5, min_lr=1e-6)",
+    "max_epochs": 100,
+    "early_stopping_patience": 10,
+    "epochs_run": 50
+  },
+  "dataset": {
+    "total_samples": 1314,
+    "train_samples": 1051,
+    "val_samples": 263,
+    "augmentation": true,
+    "observation_overlap": 0
+  },
+  "metrics": {
+    "final_mae": 0.10155761986970901,
+    "final_rmse": 0.12337954342365265,
+    "r2_score": 0.875296638661553,
+    "mape_pct": 5.987025052309036,
+    "best_epoch": 40,
+    "best_val_loss": 0.031851010262512885
+  },
+  "environment": {
+    "device": "mps",
+    "framework": "PyTorch 2.11.0",
+    "python_version": "3.12.7",
+    "os": "macOS 26.6.2 arm64"
+  },
+  "source_run": "experiments/phase15_runs/20260905T132456995672Z",
+  "release_manifest": "models/coronium_v3_1_manifest.json",
+  "notes": "Validation used for checkpoint selection and early stopping; not an untouched test or temporal generalization. MC metrics are not single-pass API metrics. Official metrics: MC Dropout T=20, seed=42, batch=32. ONNX eval-mode MAE=0.20408340; do not attribute MC performance to the API. Historical V3 artifacts remain intact."
+}

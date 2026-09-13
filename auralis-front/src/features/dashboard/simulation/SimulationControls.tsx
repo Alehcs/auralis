@@ -64,8 +64,7 @@ export function SimulationControls({
 
       {/* ── Visual activity level ────────────────────────────────── */}
       <div>
-        <div className="text-[11px] text-neutral-400 font-mono mb-1">{s.activityLevel}</div>
-        <div className="text-[10.5px] text-neutral-600 mb-3 leading-snug">{s.activityLevelNote}</div>
+        <div className="text-[11px] text-neutral-400 font-mono mb-3">{s.activityLevel}</div>
         <div className="grid grid-cols-3 gap-2">
           {CLASSES.map(({ id, desc }) => {
             const active = activity === id;
@@ -99,7 +98,6 @@ export function SimulationControls({
         <Zap className="w-4 h-4" />
         <span className="text-[13px] font-semibold">{s.triggerEvent}</span>
       </button>
-      <div className="text-[10px] text-neutral-600 -mt-3 text-center leading-snug">{s.triggerEventNote}</div>
 
       {/* ── Overlays ─────────────────────────────────────────────── */}
       <div className="space-y-2">

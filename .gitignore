@@ -7,3 +7,12 @@ __pycache__/
 venv/
 .env
 *.log
+
+# Reproducible delivery archives and local build output
+/auralis-front/build/
+/evidence/**/*.tar.gz
+/evidence/**/*.zip
+/prototypes/phase4-unity-needle/evidence/**/*.tar.gz
+/prototypes/phase4-unity-needle/evidence/**/*.zip
+/prototypes/phase4-unity-needle/evidence/qr-private-url.png
+/deployments/dashboard-sites/.git/

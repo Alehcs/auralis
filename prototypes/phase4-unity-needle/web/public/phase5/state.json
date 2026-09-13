@@ -1,0 +1,262 @@
+{
+  "schema_version": "auralis.phase5.v1",
+  "contract_schema_version": "1.0.0",
+  "sequence_id": "noaa12975-20220324-20220330-v1",
+  "contract_sha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+  "state": {
+    "id": "hmi-2022-03-24",
+    "order": 1,
+    "observation": {
+      "id": "hmi-2022-03-24-observation",
+      "kind": "observational",
+      "scope": "full_disk",
+      "magnetogram": {
+        "artifact_ref": "data/processed/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+        "filename": "hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+        "shape": [
+          512,
+          512
+        ],
+        "dtype": "float32",
+        "unit": "dimensionless_clip400"
+      },
+      "time": {
+        "record_tai": "2022-03-24T00:01:30",
+        "record_utc": "2022-03-24T00:00:53.000Z",
+        "source": "filename_record_time",
+        "exposure_utc": null,
+        "csv_date_unknown_scale": "2022-03-24 00:00:28.900"
+      },
+      "region_context": {
+        "noaa": 12975,
+        "harp": 8088,
+        "harp_scope": "catalog_lifetime_association_not_exact_time_patch_assignment",
+        "harp_noaa_lifetime_mapping": [
+          12975,
+          12976,
+          12977,
+          12984
+        ],
+        "harp_source_ref": "reports/phase2_historical_case/sources/harp_mapping_attempt_0.txt",
+        "location": {
+          "reported": "N13E63",
+          "coordinate_system": "SRS_heliographic_cardinal_text",
+          "valid_utc": "2022-03-24T00:00:00Z",
+          "issued_utc": "2022-03-24T00:30:00Z",
+          "source_ref": "reports/phase2_historical_case/sources/20220324SRS.txt",
+          "source_line": 12,
+          "raw_line": "2975 N13E63   078  0160 Dao  11   05 Beta",
+          "pixel_position": null
+        },
+        "magnetic_type": "Beta",
+        "area_millionths_solar_hemisphere": 160.0,
+        "other_noaa_regions": [
+          12974
+        ],
+        "wcs": null,
+        "region_mask": null,
+        "magnetic_field_3d": null
+      },
+      "target_si": {
+        "value": 1.679617166519165,
+        "unit": "percent_original_full_disk_pixels",
+        "contract": "strong-field-pixel-percent-200G-v1",
+        "provenance": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy",
+        "source_ref": "data/processed/metadata_processed.csv",
+        "metadata_row_indices": [
+          807,
+          808
+        ]
+      },
+      "split": "train",
+      "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+      "source_csv_row_1based": 1
+    },
+    "coronium_results": {
+      "kind": "model_inference",
+      "model_ref": "coronium-3.1",
+      "preprocessing_ref": "hmi-clip400-polarity-v1",
+      "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+      "prediction_si": 1.4705196619033813,
+      "unit": "SI_percentage_points",
+      "api_display_4dp": 1.4705,
+      "source_ref": "reports/phase2_historical_case/recommended_sequence.csv",
+      "grad_cam": {
+        "status": "not_available",
+        "artifact_ref": null,
+        "reason": "No frozen Grad-CAM artifact with matching state/model provenance was found; not generated in Phase 3.",
+        "interpretation": "Model attribution, not a region mask, probability, magnetic field or flare measurement."
+      }
+    },
+    "derived": {
+      "kind": "observation_derived",
+      "preprocessing_ref": "hmi-clip400-polarity-v1",
+      "polarity": {
+        "unit": "dimensionless_clip400",
+        "scope": "full_512x512_array",
+        "shape": [
+          2,
+          512,
+          512
+        ],
+        "channel_order": [
+          "B_plus",
+          "B_minus_magnitude"
+        ],
+        "recipe": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)",
+        "b_plus_mean": 0.0062681349526047415,
+        "b_minus_magnitude_mean": 0.005543777343080284,
+        "channel_storage": "reconstruct_from_magnetogram",
+        "physical_flux": null
+      },
+      "delta_target_si_pp": null,
+      "gap_seconds": null
+    },
+    "visual": {
+      "kind": "visual_only",
+      "assets": [],
+      "spatial_registration": "unavailable",
+      "interpolation": "none"
+    }
+  },
+  "model": {
+    "id": "coronium-3.1",
+    "name": "Coronium V3.1",
+    "version": "3.1",
+    "manifest_ref": "models/coronium_v3_1_manifest.json",
+    "checkpoint_ref": "models/best_coronium_v3_1.pth",
+    "onnx_ref": "models/best_coronium_v3_1.onnx"
+  },
+  "preprocessing": {
+    "id": "hmi-clip400-polarity-v1",
+    "version": "1",
+    "source_ref": "src/processing/model_input.py",
+    "stored_input": "clip(resize(B_LOS),-400,400)/400",
+    "input_transform": "[max(x,0),max(-x,0)]",
+    "target_contract": "strong-field-pixel-percent-200G-v1",
+    "target_transform": "none",
+    "target_definition": "100 * count(abs(original B_LOS)>200 G) / original_pixel_count"
+  },
+  "sources": [
+    {
+      "id": "data/processed/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "path": "data/processed/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "sha256": "68dc2c3623c8a8be43afbb383846d8e91f8053876c11f4c5a8c89d222e6743b4",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "src/processing/model_input.py",
+      "path": "src/processing/model_input.py",
+      "sha256": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/coronium_v3_1_manifest.json",
+      "path": "models/coronium_v3_1_manifest.json",
+      "sha256": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/best_coronium_v3_1.pth",
+      "path": "models/best_coronium_v3_1.pth",
+      "sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "models/best_coronium_v3_1.onnx",
+      "path": "models/best_coronium_v3_1.onnx",
+      "sha256": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "data/processed/metadata_processed.csv",
+      "path": "data/processed/metadata_processed.csv",
+      "sha256": "baedaf612234239f044b9240a1e6426e0ac3cc5064a995cda8050eb9db84e11f",
+      "url": null,
+      "retrieved_utc": null
+    },
+    {
+      "id": "reports/phase2_historical_case/recommended_sequence.csv",
+      "path": "reports/phase2_historical_case/recommended_sequence.csv",
+      "sha256": "4b0035bbdf11228c84c3efc85fe24fcd055893ad473f635a77e4c315dd201619",
+      "url": null,
+      "retrieved_utc": null
+    }
+  ],
+  "layers": {
+    "magnetogram": {
+      "url": "./assets/magnetogram.png",
+      "sha256": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027",
+      "width": 512,
+      "height": 512,
+      "range": [
+        -1,
+        1
+      ],
+      "encoding": "round(255*(x+1)/2)",
+      "unit": "dimensionless_clip400",
+      "origin": "upper_left_array_row0",
+      "geometry": "flat_reference_only",
+      "interpolation": "nearest_in_2d_linear_mipmap_in_3d"
+    },
+    "bplus": {
+      "url": "./assets/bplus.png",
+      "sha256": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3",
+      "width": 512,
+      "height": 512,
+      "range": [
+        0,
+        1
+      ],
+      "encoding": "round(255*channel)",
+      "unit": "dimensionless_clip400",
+      "origin": "upper_left_array_row0",
+      "geometry": "flat_reference_only",
+      "interpolation": "nearest_in_2d_linear_mipmap_in_3d"
+    },
+    "bminus": {
+      "url": "./assets/bminus.png",
+      "sha256": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755",
+      "width": 512,
+      "height": 512,
+      "range": [
+        0,
+        1
+      ],
+      "encoding": "round(255*channel)",
+      "unit": "dimensionless_clip400",
+      "origin": "upper_left_array_row0",
+      "geometry": "flat_reference_only",
+      "interpolation": "nearest_in_2d_linear_mipmap_in_3d"
+    }
+  },
+  "limitations": [
+    "No original FITS, exposure time, WCS, HARP masks or certified pixel orientation.",
+    "SRS coordinates describe the regional catalog at its own valid time, not registered image pixels.",
+    "HARP 8088 is a lifetime association shared with NOAA 12976, 12977 and 12984.",
+    "SI labels are stored original measurements; cannot be recovered exactly from resized/clipped arrays.",
+    "B+/B- are nonnegative normalized channel magnitudes, not regional or deprojected magnetic flux.",
+    "Four training states and one selection-validation state; no independent temporal validation.",
+    "Irregular sampling; no observed state at the X1.3 event and no validated physical interpolation.",
+    "Coronium estimates current full-disk SI; it does not predict GOES flares or future activity."
+  ],
+  "visual": {
+    "kind": "illustrative_only",
+    "data_projection": "none",
+    "solar_surface": "Unity-authored continuous sphere with multiscale 3D noise; visual recreation inspired by EUV imagery, not observed features",
+    "back_surface": "illustrative_continuation_not_observed",
+    "corona": "camera-facing illustrative radial wisps, not measured"
+  },
+  "generation": {
+    "generator": "scripts/build-phase5-assets.py",
+    "generator_sha256": "be80f4cf04c7a064e29a4b81e77836458c304e380e674706ff60f58effda5c41",
+    "numpy": "1.26.4",
+    "quantization": "8-bit linear, signed max error 1/255; channels max error 0.5/255",
+    "orientation": "PNG[row,column] = array[row,column]; no certified solar north/east"
+  }
+}

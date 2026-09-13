@@ -1,0 +1,943 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "sequence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path_base": {
+      "const": "auralis-back"
+    },
+    "scope": {
+      "const": "full_disk_SI_with_regional_catalog_context"
+    },
+    "independent_test": {
+      "const": false
+    },
+    "event_catalog_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "$ref": "#/$defs/model"
+    },
+    "preprocessing": {
+      "$ref": "#/$defs/preprocessing"
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/state"
+      },
+      "minItems": 1
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "optional_reserve": {
+      "$ref": "#/$defs/reserve"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "sequence_id",
+    "title",
+    "path_base",
+    "scope",
+    "independent_test",
+    "event_catalog_scope",
+    "model",
+    "preprocessing",
+    "states",
+    "events",
+    "optional_reserve",
+    "limitations",
+    "artifacts"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:auralis:temporal-sequence:1.0.0",
+  "title": "Auralis temporal sequence v1.0.0",
+  "description": "Full-disk processed HMI + SRS context + deterministic Coronium + independent event times. Semantic validator fixes the Phase 3 case to five states. Missing spatial/Grad-CAM/visual data are intentionally null/empty in v1.0.0.",
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retrieved_utc": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "sha256",
+        "url",
+        "retrieved_utc"
+      ],
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checkpoint_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "onnx_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "version",
+        "manifest_ref",
+        "checkpoint_ref",
+        "onnx_ref"
+      ],
+      "additionalProperties": false
+    },
+    "preprocessing": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stored_input": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_transform": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_contract": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_transform": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_definition": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "source_ref",
+        "stored_input",
+        "input_transform",
+        "target_contract",
+        "target_transform",
+        "target_definition"
+      ],
+      "additionalProperties": false
+    },
+    "time": {
+      "type": "object",
+      "properties": {
+        "record_tai": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?$"
+        },
+        "record_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "source": {
+          "const": "filename_record_time"
+        },
+        "exposure_utc": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "csv_date_unknown_scale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "record_tai",
+        "record_utc",
+        "source",
+        "exposure_utc",
+        "csv_date_unknown_scale"
+      ],
+      "additionalProperties": false
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "reported": {
+          "type": "string",
+          "pattern": "^[NS]\\d{2}[EW]\\d{2}$"
+        },
+        "coordinate_system": {
+          "const": "SRS_heliographic_cardinal_text"
+        },
+        "valid_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "issued_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "raw_line": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pixel_position": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "reported",
+        "coordinate_system",
+        "valid_utc",
+        "issued_utc",
+        "source_ref",
+        "source_line",
+        "raw_line",
+        "pixel_position"
+      ],
+      "additionalProperties": false
+    },
+    "region": {
+      "type": "object",
+      "properties": {
+        "noaa": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "harp": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "harp_scope": {
+          "const": "catalog_lifetime_association_not_exact_time_patch_assignment"
+        },
+        "harp_noaa_lifetime_mapping": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "harp_source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "$ref": "#/$defs/location"
+        },
+        "magnetic_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "area_millionths_solar_hemisphere": {
+          "type": "number",
+          "minimum": 0
+        },
+        "other_noaa_regions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "uniqueItems": true
+        },
+        "wcs": {
+          "type": "null"
+        },
+        "region_mask": {
+          "type": "null"
+        },
+        "magnetic_field_3d": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "noaa",
+        "harp",
+        "harp_scope",
+        "harp_noaa_lifetime_mapping",
+        "harp_source_ref",
+        "location",
+        "magnetic_type",
+        "area_millionths_solar_hemisphere",
+        "other_noaa_regions",
+        "wcs",
+        "region_mask",
+        "magnetic_field_3d"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "const": "observational"
+        },
+        "scope": {
+          "const": "full_disk"
+        },
+        "magnetogram": {
+          "type": "object",
+          "properties": {
+            "artifact_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "filename": {
+              "type": "string",
+              "pattern": "^[^/]+\\.npy$"
+            },
+            "shape": {
+              "const": [
+                512,
+                512
+              ]
+            },
+            "dtype": {
+              "const": "float32"
+            },
+            "unit": {
+              "const": "dimensionless_clip400"
+            }
+          },
+          "required": [
+            "artifact_ref",
+            "filename",
+            "shape",
+            "dtype",
+            "unit"
+          ],
+          "additionalProperties": false
+        },
+        "time": {
+          "$ref": "#/$defs/time"
+        },
+        "region_context": {
+          "$ref": "#/$defs/region"
+        },
+        "target_si": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent_original_full_disk_pixels"
+            },
+            "contract": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "const": "stored_original_4096x4096_pixel_percentage_not_recomputed_from_npy"
+            },
+            "source_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "metadata_row_indices": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "contract",
+            "provenance",
+            "source_ref",
+            "metadata_row_indices"
+          ],
+          "additionalProperties": false
+        },
+        "split": {
+          "enum": [
+            "train",
+            "selection_validation"
+          ]
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_csv_row_1based": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "scope",
+        "magnetogram",
+        "time",
+        "region_context",
+        "target_si",
+        "split",
+        "source_ref",
+        "source_csv_row_1based"
+      ],
+      "additionalProperties": false
+    },
+    "grad_cam": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "not_available"
+        },
+        "artifact_ref": {
+          "type": "null"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "interpretation": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "artifact_ref",
+        "reason",
+        "interpretation"
+      ],
+      "additionalProperties": false
+    },
+    "coronium": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "model_inference"
+        },
+        "model_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "preprocessing_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol": {
+          "const": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc"
+        },
+        "prediction_si": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "SI_percentage_points"
+        },
+        "api_display_4dp": {
+          "type": "number"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grad_cam": {
+          "$ref": "#/$defs/grad_cam"
+        }
+      },
+      "required": [
+        "kind",
+        "model_ref",
+        "preprocessing_ref",
+        "protocol",
+        "prediction_si",
+        "unit",
+        "api_display_4dp",
+        "source_ref",
+        "grad_cam"
+      ],
+      "additionalProperties": false
+    },
+    "polarity": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "const": "dimensionless_clip400"
+        },
+        "scope": {
+          "const": "full_512x512_array"
+        },
+        "shape": {
+          "const": [
+            2,
+            512,
+            512
+          ]
+        },
+        "channel_order": {
+          "const": [
+            "B_plus",
+            "B_minus_magnitude"
+          ]
+        },
+        "recipe": {
+          "const": "B_plus=max(x,0); B_minus_magnitude=max(-x,0)"
+        },
+        "b_plus_mean": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "b_minus_magnitude_mean": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "channel_storage": {
+          "const": "reconstruct_from_magnetogram"
+        },
+        "physical_flux": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "unit",
+        "scope",
+        "shape",
+        "channel_order",
+        "recipe",
+        "b_plus_mean",
+        "b_minus_magnitude_mean",
+        "channel_storage",
+        "physical_flux"
+      ],
+      "additionalProperties": false
+    },
+    "derived": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "observation_derived"
+        },
+        "preprocessing_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "polarity": {
+          "$ref": "#/$defs/polarity"
+        },
+        "delta_target_si_pp": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gap_seconds": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "preprocessing_ref",
+        "polarity",
+        "delta_target_si_pp",
+        "gap_seconds"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "observation": {
+          "$ref": "#/$defs/observation"
+        },
+        "coronium_results": {
+          "$ref": "#/$defs/coronium"
+        },
+        "derived": {
+          "$ref": "#/$defs/derived"
+        },
+        "visual": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "visual_only"
+            },
+            "assets": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "maxItems": 0
+            },
+            "spatial_registration": {
+              "const": "unavailable"
+            },
+            "interpolation": {
+              "const": "none"
+            }
+          },
+          "required": [
+            "kind",
+            "assets",
+            "spatial_registration",
+            "interpolation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "order",
+        "observation",
+        "coronium_results",
+        "derived",
+        "visual"
+      ],
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "properties": {
+        "basis": {
+          "const": "peak_utc"
+        },
+        "placement": {
+          "enum": [
+            "between_states",
+            "after_last_state"
+          ]
+        },
+        "preceding_state_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "following_state_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seconds_after_preceding_state": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "captured_by_state_id": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "basis",
+        "placement",
+        "preceding_state_id",
+        "following_state_id",
+        "seconds_after_preceding_state",
+        "captured_by_state_id"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "placement": {
+                "const": "between_states"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "following_state_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "placement": {
+                "const": "after_last_state"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "following_state_id": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "const": "observational_event"
+        },
+        "type": {
+          "const": "GOES_XRA_1_8A"
+        },
+        "noaa": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "goes_class": {
+          "type": "string",
+          "pattern": "^[MX]\\d+(\\.\\d+)?$"
+        },
+        "satellite": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "peak_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "end_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "raw_line": {
+          "type": "string",
+          "minLength": 1
+        },
+        "catalog_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "temporal_relation": {
+          "$ref": "#/$defs/relation"
+        },
+        "association": {
+          "const": "NOAA_catalog_region_context_not_model_prediction"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "type",
+        "noaa",
+        "goes_class",
+        "satellite",
+        "start_utc",
+        "peak_utc",
+        "end_utc",
+        "source_ref",
+        "source_line",
+        "raw_line",
+        "catalog_ref",
+        "temporal_relation",
+        "association"
+      ],
+      "additionalProperties": false
+    },
+    "reserve": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "const": false
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "magnetogram_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_tai": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?$"
+        },
+        "record_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "enabled",
+        "date",
+        "magnetogram_ref",
+        "record_tai",
+        "record_utc",
+        "source_ref",
+        "reason"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

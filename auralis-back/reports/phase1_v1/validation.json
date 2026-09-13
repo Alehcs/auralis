@@ -1,0 +1,21 @@
+{
+  "phase1_status": "completed_base_contract_and_audit",
+  "directed_tests_passed": 13,
+  "train_observations": 1051,
+  "validation_observations": 263,
+  "observation_overlap": 0,
+  "identical_preprocessed_real_inputs": 1314,
+  "pytorch_onnx_parity_samples": 3,
+  "pytorch_onnx_tolerance": 1e-05,
+  "backend_compileall": "passed",
+  "frontend_vite_build": "passed_with_bundle_size_warning",
+  "standalone_typescript_check": "unavailable_tsc_not_installed",
+  "new_checkpoint_trained": false,
+  "legacy_artifacts_preserved_sha256": true,
+  "unresolved": [
+    "Original FITS headers and historical CSV date scale unavailable",
+    "Original training provenance manifest unavailable",
+    "Independent model metrics require retraining from scratch",
+    "Observation split does not establish temporal generalization"
+  ]
+}

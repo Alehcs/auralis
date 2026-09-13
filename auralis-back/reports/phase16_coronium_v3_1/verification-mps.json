@@ -1,0 +1,134 @@
+{
+  "status": "verified",
+  "model_name": "Coronium V3.1",
+  "health": {
+    "model_name": "Coronium V3.1",
+    "model_version": "3.1",
+    "checkpoint": "best_coronium_v3_1.pth",
+    "onnx": "best_coronium_v3_1.onnx",
+    "status": "ok",
+    "version": "3.1.0",
+    "model_loaded": true,
+    "device": "mps"
+  },
+  "full_validation_export_parity": {
+    "observations": 263,
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "max_abs_difference": 1.1920928955078125e-06,
+    "dynamic_batch_2": "passed"
+  },
+  "http_samples": 11,
+  "sample_selection": "9 target quantiles plus earliest/latest validation observations",
+  "raw_tolerance": {
+    "atol": 1e-05,
+    "rtol": 1e-05
+  },
+  "http_rounding_decimals": 4,
+  "max_pytorch_api_device_difference": 2.384185791015625e-07,
+  "max_pytorch_http_difference": 4.668235778804153e-05,
+  "preserved_artifacts": 127,
+  "protected_files_unchanged": 26,
+  "stats_scatter_and_historical_benchmark": "passed",
+  "comparisons": [
+    {
+      "source_row": 148,
+      "filename": "hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.3675583600997925,
+      "pytorch_api_device": 1.367558479309082,
+      "onnx_cpu": 1.3675587177276611,
+      "http_api": 1.3676,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 285,
+      "filename": "hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.381520390510559,
+      "pytorch_api_device": 1.3815202713012695,
+      "onnx_cpu": 1.3815205097198486,
+      "http_api": 1.3815,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 681,
+      "filename": "hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.362546682357788,
+      "pytorch_api_device": 1.362546682357788,
+      "onnx_cpu": 1.3625465631484985,
+      "http_api": 1.3625,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 411,
+      "filename": "hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.3533456325531006,
+      "pytorch_api_device": 1.3533453941345215,
+      "onnx_cpu": 1.3533458709716797,
+      "http_api": 1.3533,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 1654,
+      "filename": "hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.546472191810608,
+      "pytorch_api_device": 1.5464720726013184,
+      "onnx_cpu": 1.5464715957641602,
+      "http_api": 1.5465,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 1043,
+      "filename": "hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.6098971366882324,
+      "pytorch_api_device": 1.6098971366882324,
+      "onnx_cpu": 1.6098963022232056,
+      "http_api": 1.6099,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 1060,
+      "filename": "hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.7557220458984375,
+      "pytorch_api_device": 1.755721926689148,
+      "onnx_cpu": 1.755721926689148,
+      "http_api": 1.7557,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 1376,
+      "filename": "hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.9020700454711914,
+      "pytorch_api_device": 1.9020699262619019,
+      "onnx_cpu": 1.9020698070526123,
+      "http_api": 1.9021,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 1312,
+      "filename": "hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 2.2511813640594482,
+      "pytorch_api_device": 2.2511813640594482,
+      "onnx_cpu": 2.2511801719665527,
+      "http_api": 2.2512,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 30,
+      "filename": "hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.38742995262146,
+      "pytorch_api_device": 1.38742995262146,
+      "onnx_cpu": 1.3874297142028809,
+      "http_api": 1.3874,
+      "alias_upload_cached_equal": true
+    },
+    {
+      "source_row": 1756,
+      "filename": "hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy",
+      "pytorch_cpu": 1.5583302974700928,
+      "pytorch_api_device": 1.5583302974700928,
+      "onnx_cpu": 1.5583304166793823,
+      "http_api": 1.5583,
+      "alias_upload_cached_equal": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+INFO:     Started server process [25819]
+INFO:     Waiting for application startup.
+2026-09-05 23:06:26,717 - auralis.api - INFO - Device selected: cpu
+2026-09-05 23:06:26,722 - auralis.api - INFO - Coronium V3.1 loaded: 206,875 parameters, checkpoint: best_coronium_v3_1.pth, device: cpu
+2026-09-05 23:06:26,725 - auralis.api - INFO - ONNX Runtime session ready: best_coronium_v3_1.onnx
+INFO:     Application startup complete.
+ERROR:    [Errno 1] error while attempting to bind on address ('127.0.0.1', 8000): [errno 1] operation not permitted
+INFO:     Waiting for application shutdown.
+2026-09-05 23:06:26,725 - auralis.api - INFO - Shutting down Auralis API
+INFO:     Application shutdown complete.

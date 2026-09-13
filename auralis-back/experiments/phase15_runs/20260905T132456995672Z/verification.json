@@ -1,0 +1,29 @@
+{
+  "status": "verified",
+  "validation_observations": 263,
+  "observation_overlap": 0,
+  "same_predictions_in_two_processes": true,
+  "identical_repeated_metrics": true,
+  "checkpoint_sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+  "best_epoch": 40,
+  "metrics_recomputed_float64_sklearn": {
+    "mae": 0.1015576183116028,
+    "rmse": 0.12337954147975747,
+    "r2": 0.8752966390214253,
+    "mape": 5.9870256777635245
+  },
+  "reported_metrics": {
+    "mae": 0.10155761986970901,
+    "rmse": 0.12337954342365265,
+    "r2": 0.875296638661553,
+    "mape": 5.987025052309036
+  },
+  "mape_nonzero_samples": 263,
+  "constant_training_mean_reference": {
+    "training_mean": 1.7683212412299711,
+    "mae": 0.30440372784726594,
+    "rmse": 0.3496202727749896,
+    "r2": -0.0013480799749923111
+  },
+  "scope": "clean observation validation used for model selection; not an independent test or temporal validation"
+}

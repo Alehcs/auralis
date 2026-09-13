@@ -1,0 +1,12 @@
+{
+  "qr-phase5-public.png": {
+    "decoded": "https://auralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site/phase5/",
+    "method": "OpenCV QRCodeDetector software decode",
+    "physical_scan": false
+  },
+  "qr-phase5-ios.png": {
+    "decoded": "https://appclip.needle.tools/ar?url=https%3A%2F%2Fauralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site%2Fphase5%2F",
+    "method": "OpenCV QRCodeDetector software decode",
+    "physical_scan": false
+  }
+}

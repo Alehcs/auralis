@@ -1,0 +1,151 @@
+{
+  "engine": "5.1.12",
+  "source_commit": "8f04403d3fc9b76bb1b609445f2eb13c3e7320fe",
+  "total_uncompressed_bytes": 11829881,
+  "files": [
+    {
+      "path": "assets/GenerateMeshBVHWorker-DPDcDBJO.js",
+      "bytes": 2085,
+      "gzip_bytes": 946,
+      "sha256": "6e5cb9b4464d666adce100937ede476b7fdceb30b85511175a24ebca6409735a"
+    },
+    {
+      "path": "assets/JsMaterialXCore-DvsYbWVa.js",
+      "bytes": 95,
+      "gzip_bytes": 113,
+      "sha256": "18afcd32bc5a692de1c76badaf1d153badcc1a615e9914bd5c2997f67f181919"
+    },
+    {
+      "path": "assets/JsMaterialXCore-N9PhV8rN.wasm",
+      "bytes": 1156513,
+      "gzip_bytes": 289632,
+      "sha256": "4d8ddd4df7a64a90a515161d306f73d94555cc12eb3e9da2779e79a95b110406"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader-2LPW2QoU.wasm",
+      "bytes": 2259524,
+      "gzip_bytes": 550533,
+      "sha256": "854a0d0de4897b571c17679107d16ad959cc1bc4366999c99a389c8ffdfa9813"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader-CtJs9m7t.js",
+      "bytes": 100,
+      "gzip_bytes": 118,
+      "sha256": "51f2a975f8bc299b839dfe49257986510f9da4774664429cd5acd47e811927b5"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader.data-Bh2un-82.txt",
+      "bytes": 1481722,
+      "gzip_bytes": 149788,
+      "sha256": "321b2025fb83b918777e2bb281b5699341686e53506dfe6e4aeb93f9d6a30665"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader.data-C5NzNKnl.js",
+      "bytes": 104,
+      "gzip_bytes": 122,
+      "sha256": "368b662fff98206fe66cd53d08a78dc8ac8df688ffc0f5061d330fe1f155c3a0"
+    },
+    {
+      "path": "assets/MeshBVH-DzAN_nZV.js",
+      "bytes": 47793,
+      "gzip_bytes": 15691,
+      "sha256": "823e8f7410fa59a25d687362b52fa725ca8537bef90c5e7dc2b972bf05f180eb"
+    },
+    {
+      "path": "assets/N8AO-BoaWxVYJ.js",
+      "bytes": 163717,
+      "gzip_bytes": 78327,
+      "sha256": "f8a5245b63c3ce8e9149465c02b2c285d4134f2d13acdb4848ac4dfce5e7d74b"
+    },
+    {
+      "path": "assets/__vite-browser-external-BIHI7g3E.js",
+      "bytes": 33,
+      "gzip_bytes": 53,
+      "sha256": "82507b0bb9ac4affaeb17c40968d830cbd6d14a2ffa04d8994faf1a78e58e1b5"
+    },
+    {
+      "path": "assets/bundler-tNM2ZrnL.js",
+      "bytes": 142114,
+      "gzip_bytes": 37039,
+      "sha256": "a67e5c218c8f5820334c061964dda16bc1ac8cc981ca4e4739ab67256c0b8e6a"
+    },
+    {
+      "path": "assets/generateMeshBVH.worker-kOUnIokO.js",
+      "bytes": 231134,
+      "gzip_bytes": 66292,
+      "sha256": "8cfcbd738e09c4583715db04575855daa1bcc4be75ac51fa6b68b0550c600071"
+    },
+    {
+      "path": "assets/gltf-progressive.worker-B0UCwfHD.js",
+      "bytes": 391244,
+      "gzip_bytes": 114942,
+      "sha256": "612eea41fd4378a4517b5d8e6e362ea61b1b746859e7fe81c3396f3ac19b81a8"
+    },
+    {
+      "path": "assets/index-6CJ-uumg.js",
+      "bytes": 10241,
+      "gzip_bytes": 2427,
+      "sha256": "cb0d006f40d9d716c666f5f83a014184d482f00bce7d20028df67662bc8da1ff"
+    },
+    {
+      "path": "assets/index-BAXbwi1P.js",
+      "bytes": 3059309,
+      "gzip_bytes": 846945,
+      "sha256": "5decb9d2c71a50d4b351f92b398cd6d64ca1499550265f882b05ca8e67820fcd"
+    },
+    {
+      "path": "assets/index-CVFkGaBn.js",
+      "bytes": 37323,
+      "gzip_bytes": 12187,
+      "sha256": "15bad934a67d889aff14a62bd5480cf1f00d0f1ca98faf606d7ea7a19e81ed06"
+    },
+    {
+      "path": "assets/index-CevIrqEP.css",
+      "bytes": 2269,
+      "gzip_bytes": 1022,
+      "sha256": "bd242fecb2903409ebb851550f1cf94bea2da9b8a66556232abc5d2c701ccb5e"
+    },
+    {
+      "path": "assets/index-CnJbTiUa.js",
+      "bytes": 321961,
+      "gzip_bytes": 112487,
+      "sha256": "59f9bbf6956953a10aae82a9c56b83582aa38ca14807db46c7972e39840526b3"
+    },
+    {
+      "path": "assets/index-DEZRnOcE.js",
+      "bytes": 167930,
+      "gzip_bytes": 50396,
+      "sha256": "e4af42066fbb2347df22097bf18bb1d4589cece1085180fd6198b5c247e7359d"
+    },
+    {
+      "path": "assets/index-RIlhES1d.js",
+      "bytes": 8749,
+      "gzip_bytes": 3037,
+      "sha256": "e50603386db9350485fe3f720e004e78c25ab9a99f9649935831d0a7f3ef9847"
+    },
+    {
+      "path": "assets/mikktspace.module-DO88SLib.js",
+      "bytes": 46452,
+      "gzip_bytes": 20732,
+      "sha256": "77e7baea73ba4d5b18faf66dae8fc51932fda3628f24e27793a7abdd17c30b89"
+    },
+    {
+      "path": "assets/rapier-DBjBuyhF.js",
+      "bytes": 2237380,
+      "gzip_bytes": 834317,
+      "sha256": "48d676dc3d074046ffd218cbadcc9455b971a3b355f402885de179ef229b9d51"
+    },
+    {
+      "path": "assets/scroll-timeline-BTfoavoS.js",
+      "bytes": 59781,
+      "gzip_bytes": 17209,
+      "sha256": "ab171280c26bfc7cf703fa1b5d833ea6b69556fa97b9499ba1a8abeed1af24a9"
+    },
+    {
+      "path": "index.html",
+      "bytes": 2308,
+      "gzip_bytes": 1267,
+      "sha256": "590654e6014a92eb0b7a4729ad8d47a40539b82b09a97fc114986e5bf660285b"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "imageChecks": {
+    "24": true,
+    "25": true,
+    "28": true,
+    "29": true,
+    "30": true,
+    "protected_unchanged": 2061,
+    "pause_exact": true
+  },
+  "tests": 26,
+  "build": "passed",
+  "playback": {
+    "currentTime": 9,
+    "duration": 9,
+    "ended": true,
+    "error": null
+  },
+  "browserErrors": [],
+  "design": "approved by user; frozen images unchanged",
+  "physicalAR": "not_tested"
+}

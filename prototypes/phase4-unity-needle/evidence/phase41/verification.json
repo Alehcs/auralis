@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-09",
+  "phase": "4.1",
+  "status": "PARCIALMENTE CUMPLIDA",
+  "build": "phase4.1-20260909-a",
+  "unity": {
+    "editor_detected": false,
+    "real_scene_created": false,
+    "real_export": false,
+    "browser_parity": false,
+    "preflight_exit_code": 2,
+    "glb_verifier_exit_code": 1
+  },
+  "android": {
+    "adb_devices": [],
+    "physical_ar": "not_tested",
+    "mobile_performance": "not_tested"
+  },
+  "ios": {
+    "known_device": "iPhone 15 Pro",
+    "connection_state": "unavailable",
+    "appclip_launch_url_http_status": 200,
+    "physical_appclip": "not_tested",
+    "physical_ar": "not_tested",
+    "quicklook": "not_tested",
+    "mobile_performance": "not_tested"
+  },
+  "web": {
+    "node_tests_passed": 8,
+    "typescript_build": "passed",
+    "scene_source": "typescript-provisional",
+    "interaction": [
+      "color",
+      "rotate_45",
+      "scale_1.5",
+      "reset",
+      "orbit_drag"
+    ],
+    "qr_software_decode": "passed",
+    "qr_physical_scan": "not_tested",
+    "desktop_render_sample": "desktop-render-sample.json",
+    "anonymous_http": "public-http-verification.json"
+  },
+  "recommendation": "Do not approve Unity + Needle as the definitive technology without real export and physical validation; preserve current Three.js.",
+  "later_phase_started": false
+}

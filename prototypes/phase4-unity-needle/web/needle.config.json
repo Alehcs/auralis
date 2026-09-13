@@ -1,0 +1,7 @@
+{
+  "baseUrl": null,
+  "buildDirectory": "dist",
+  "assetsDirectory": "public/unity",
+  "scriptsDirectory": "src/scripts",
+  "codegenDirectory": "src/generated"
+}

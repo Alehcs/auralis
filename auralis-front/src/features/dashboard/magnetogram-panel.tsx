@@ -1,3 +1,4 @@
+import { IS_FROZEN_DEMO, type DisplayPredictionResult } from '@/lib/frozen-demo';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronDown, Cpu, Eye, Zap, Upload, X } from 'lucide-react';
 
@@ -38,8 +39,8 @@ import {
   Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts';
 import {
-  getImageList, getImageUrl, getAiaUrl, predictDual,
-  getExplainPanelsUrl, getPolaritySeries,
+  getSelectableImages, getImageUrl, getAiaUrl, predictDual,
+  getExplainPanelsUrl, getPolaritySeries, getSavedGradcamImages,
   uploadImagePreview, predictUpload, explainPanelsUpload,
 } from '@/lib/api';
 import type { ImageListItem, PredictionResult } from '@/lib/types';
@@ -79,9 +80,16 @@ export function MagnetogramPanel() {
   const m = t.monitoring;
   const [images, setImages] = useState<ImageListItem[]>([]);
   const [selected, setSelected] = useState<string>('');
-  const [prediction, setPrediction] = useState<PredictionResult | null>(null);
+  const [prediction, setPrediction] = useState<DisplayPredictionResult | null>(null);
   const [predLoading, setPredLoading] = useState(false);
   const [gradcamOn, setGradcamOn] = useState(false);
+  const [savedGradcamImages, setSavedGradcamImages] = useState<string[]>([]);
+  const [gradcamError, setGradcamError] = useState(false);
+  const canShowGradcam = !IS_FROZEN_DEMO || savedGradcamImages.includes(selected);
+  useEffect(() => {
+    if (IS_FROZEN_DEMO) getSavedGradcamImages().then(setSavedGradcamImages).catch(console.error);
+  }, []);
+  useEffect(() => { setGradcamError(false); }, [selected]);
   const [panelImgKey, setPanelImgKey] = useState(0);
   const [polarity, setPolarity] = useState<PolarityPoint[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -168,7 +176,7 @@ export function MagnetogramPanel() {
 
   // Load image list once
   useEffect(() => {
-    getImageList()
+    getSelectableImages()
       .then((res) => {
         setImages(res.images);
         if (res.images.length > 0) setSelected(res.images[0].filename);
@@ -199,10 +207,11 @@ export function MagnetogramPanel() {
   const magnetoUrl = getImageUrl(selected);
   const aiaUrl = getAiaUrl(selected);
   const selectedImg = images.find((i) => i.filename === selected);
-  const dateLabel = selectedImg?.date ?? '—';
+  const dateLabel = selectedImg?.date ?? (selectedImg?.date_original ? `${selectedImg.date_original} ${selectedImg.date_scale}` : '—');
+  const aiaSynthetic = selectedImg?.aia_source !== 'local_aia_file_unverified';
   const classification = prediction?.classification;
   const hexColor = classification?.hex_color ?? '#6b7280';
-  const confPct = prediction ? prediction.confidence * 100 : 0;
+  const confPct = prediction?.confidence != null ? prediction.confidence * 100 : 0;
 
   return (
     <div className="space-y-4">
@@ -233,9 +242,15 @@ export function MagnetogramPanel() {
       <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-1.5 text-[10px] text-neutral-600 font-mono mr-1">
           <Zap className="w-3 h-3" />
-          DEMO KIT
+          {IS_FROZEN_DEMO ? 'MARZO 2022' : 'DEMO KIT'}
         </div>
-        {GOLDEN_SAMPLES.map((s) => (
+        {IS_FROZEN_DEMO && savedGradcamImages.map(filename => (
+          <button key={filename} aria-pressed={selected === filename} onClick={() => setSelected(filename)}
+            className={`min-h-11 rounded-lg border px-3 text-sm ${selected === filename ? 'border-orange-500 text-orange-300' : 'border-neutral-700 text-neutral-300'}`}>
+            {images.find(image => image.filename === filename)?.date?.slice(8, 10)} mar
+          </button>
+        ))}
+        {!IS_FROZEN_DEMO && GOLDEN_SAMPLES.filter(s => !IS_FROZEN_DEMO || images.some(image => image.filename === s.filename)).map((s) => (
           <button
             key={s.label}
             onClick={() => setSelected(s.filename)}
@@ -264,7 +279,7 @@ export function MagnetogramPanel() {
             <div>
               <div className="text-[14px] font-semibold text-white">{m.magnetogram}</div>
               <div className="text-[11px] text-neutral-500 mt-0.5">
-                {m.hmiLos} · {dateLabel} {m.utc}
+                {m.hmiLos} · {dateLabel}
               </div>
             </div>
             <Badge label="HMI" />
@@ -291,17 +306,17 @@ export function MagnetogramPanel() {
             <div>
               <div className="text-[14px] font-semibold text-white">{m.euv}</div>
               <div className="text-[11px] text-neutral-500 mt-0.5">
-                {m.coronalPlasma} · {dateLabel} {m.utc}
+                {aiaSynthetic ? 'Synthetic HMI proxy · not observed EUV' : 'Local AIA file · provenance unverified'}
               </div>
             </div>
-            <Badge label="AIA" color="blue" />
+            <Badge label={aiaSynthetic ? "DEMO" : "AIA FILE"} color="blue" />
           </div>
           <div className="aspect-square bg-black">
             {selected ? (
               <img
                 key={aiaUrl}
                 src={aiaUrl}
-                alt="AIA 193Å EUV"
+                alt={aiaSynthetic ? "Synthetic HMI visualization; not AIA data" : "Local AIA file with unverified provenance"}
                 className="w-full h-full object-contain"
               />
             ) : (
@@ -319,11 +334,11 @@ export function MagnetogramPanel() {
           <div className="flex items-start justify-between">
             <div>
               <div className="text-[14px] font-semibold text-white">{m.prediction}</div>
-              <div className="text-[11px] text-neutral-500 mt-0.5">{dateLabel} {m.utc}</div>
+              <div className="text-[11px] text-neutral-500 mt-0.5">{dateLabel}</div>
             </div>
             <span className="flex items-center gap-1.5 text-[11px] text-green-400">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-              {m.live}
+              {IS_FROZEN_DEMO ? 'GUARDADO' : m.live}
             </span>
           </div>
 
@@ -345,7 +360,7 @@ export function MagnetogramPanel() {
             <div className="text-[11px] text-neutral-500 mt-1">
               {m.predictedFlare}{' '}
               <span className="font-medium" style={{ color: hexColor }}>
-                {classification ? `${classification.flare_class}-class` : '—'}
+                {classification ? `${classification.flare_class} (internal)` : '—'}
               </span>
             </div>
           </div>
@@ -380,9 +395,9 @@ export function MagnetogramPanel() {
                 {m.confidence}
               </div>
               <div className="text-[20px] font-bold font-mono text-white">
-                {prediction ? `${confPct.toFixed(1)}%` : '—'}
+                {prediction?.confidence != null ? `${confPct.toFixed(1)}%` : '—'}
               </div>
-              {prediction && (
+              {prediction?.confidence != null && (
                 <div className="mt-2 h-1 bg-neutral-700 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full bg-orange-500 transition-all duration-700"
@@ -399,11 +414,13 @@ export function MagnetogramPanel() {
               <Cpu className="w-3.5 h-3.5" />
               <span>{m.model}</span>
             </div>
-            <span className="text-neutral-300 font-mono">Coronium V3 PRO · v3.0</span>
+            <span className="text-neutral-300 font-mono">Coronium V3.1 · v3.1</span>
           </div>
 
           {/* Grad-CAM toggle */}
           <button
+            disabled={!selected || !canShowGradcam}
+            title={!canShowGradcam ? "Sin Grad-CAM guardado para esta observación" : undefined}
             onClick={() => setGradcamOn(!gradcamOn)}
             className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg border transition-colors ${gradcamOn
                 ? 'bg-orange-500/10 border-orange-500/50 text-orange-400'
@@ -415,14 +432,14 @@ export function MagnetogramPanel() {
               {m.aiVision}
             </div>
             <span className={`text-[11px] font-mono font-bold ${gradcamOn ? 'text-orange-400' : 'text-neutral-600'}`}>
-              {gradcamOn ? 'ON' : 'OFF'}
+              {!canShowGradcam ? 'NO GUARDADO' : gradcamOn ? 'ON' : 'OFF'}
             </span>
           </button>
         </div>
       </div>
 
       {/* ── Bottom: Grad-CAM + Polarity chart ──────────────────────── */}
-      {gradcamOn && (
+      {gradcamOn && canShowGradcam && (
         <div className="space-y-4">
 
           {/* Grad-CAM 3-panel full-width */}
@@ -435,13 +452,16 @@ export function MagnetogramPanel() {
                 </div>
               </div>
               <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
-                XAI
+                {IS_FROZEN_DEMO ? 'PRECALCULADO' : 'XAI'}
               </span>
             </div>
             <div className="bg-black p-1">
+              {gradcamError && <p role="alert" className="p-4 text-sm text-neutral-300">No se pudo cargar Grad-CAM. <button className="ml-2 underline" onClick={() => { setGradcamError(false); setPanelImgKey(k => k + 1); }}>Reintentar</button></p>}
               <img
                 key={`panels-${panelImgKey}-${selected}`}
                 src={getExplainPanelsUrl(selected)}
+                onLoad={() => setGradcamError(false)}
+                onError={() => setGradcamError(true)}
                 alt="Grad-CAM 3-panel: B+ | B− | Grad-CAM on |B|"
                 className="w-full object-contain"
               />
@@ -519,6 +539,7 @@ export function MagnetogramPanel() {
       )}
 
       {/* ── Black Box Test — Drag & Drop ───────────────────────────── */}
+      {IS_FROZEN_DEMO ? <p className="text-sm text-neutral-500">{images.length} observaciones guardadas · análisis de archivos no disponible.</p> : (
       <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
 
         {/* Section header */}
@@ -655,7 +676,7 @@ export function MagnetogramPanel() {
                           style={{ color: uploadPrediction.classification?.hex_color ?? '#6b7280' }}
                         >
                           {uploadPrediction.classification
-                            ? `${uploadPrediction.classification.flare_class}-class`
+                            ? `${uploadPrediction.classification.flare_class} (internal)`
                             : '—'}
                         </span>
                       </div>
@@ -718,7 +739,7 @@ export function MagnetogramPanel() {
 
                     <div className="flex items-center gap-1.5 text-[11px] text-neutral-500 py-2 border-t border-neutral-800">
                       <Cpu className="w-3.5 h-3.5" />
-                      <span>Coronium V3 PRO · ONNX Runtime · 86.6 KB</span>
+                      <span>Coronium V3.1 · ONNX Runtime · 815.7 KiB</span>
                     </div>
                   </>
                 ) : null}
@@ -760,7 +781,7 @@ export function MagnetogramPanel() {
           )}
 
         </div>
-      </div>
+      </div>)}
 
     </div>
   );

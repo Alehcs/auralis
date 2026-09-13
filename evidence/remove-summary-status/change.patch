@@ -1,0 +1,160 @@
+--- before/model-metrics.tsx
++++ after/model-metrics.tsx
+@@ -4,12 +4,6 @@
+   ImageIcon,
+   HardDrive,
+   Activity,
+-  CheckCircle2,
+-  AlertTriangle,
+-  CalendarDays,
+-  Layers,
+-  ScanLine,
+-  Timer,
+ } from 'lucide-react';
+ import { getStats, getSelectableImages, predictDual } from '@/lib/api';
+ import { IS_FROZEN_DEMO, type DisplayPredictionResult } from '@/lib/frozen-demo';
+@@ -94,38 +88,6 @@
+ }
+ 
+ // ---------------------------------------------------------------------------
+-// Status row
+-// ---------------------------------------------------------------------------
+-
+-function StatusRow({ label, status, labels }: {
+-  label: string;
+-  status: 'nominal' | 'degraded' | 'offline' | 'unknown';
+-  labels: { nominal: string; degraded: string; offline: string };
+-}) {
+-  return (
+-    <div className="flex items-center justify-between py-2.5 border-b border-neutral-800/60 last:border-0">
+-      <span className="text-[12px] text-neutral-400">{label}</span>
+-      {status === 'unknown' ? <span className="text-[11px] text-neutral-500">Unverified</span> : status === 'nominal' ? (
+-        <span className="flex items-center gap-1.5 text-[11px] text-green-400">
+-          <CheckCircle2 className="w-3.5 h-3.5" />
+-          {labels.nominal}
+-        </span>
+-      ) : status === 'degraded' ? (
+-        <span className="flex items-center gap-1.5 text-[11px] text-orange-400">
+-          <AlertTriangle className="w-3.5 h-3.5" />
+-          {labels.degraded}
+-        </span>
+-      ) : (
+-        <span className="flex items-center gap-1.5 text-[11px] text-red-400">
+-          <AlertTriangle className="w-3.5 h-3.5" />
+-          {labels.offline}
+-        </span>
+-      )}
+-    </div>
+-  );
+-}
+-
+-// ---------------------------------------------------------------------------
+ // Main component
+ // ---------------------------------------------------------------------------
+ 
+@@ -136,7 +98,6 @@
+   const [stats, setStats]           = useState<SystemStats | null>(null);
+   const [prediction, setPrediction] = useState<DisplayPredictionResult | null>(null);
+   const [latestFile, setLatestFile] = useState<string>('—');
+-  const [yearRange, setYearRange] = useState('—');
+   const [statsLoading, setStatsLoading] = useState(true);
+ 
+   useEffect(() => {
+@@ -150,8 +111,6 @@
+     getSelectableImages()
+       .then((res) => {
+         if (res.images.length === 0) return;
+-        const years = res.images.map((image) => image.filename.match(/hmi\.m_45s\.(\d{4})/)?.[1]).filter((year): year is string => !!year).sort();
+-        if (years.length) setYearRange(`${years[0]} — ${years[years.length - 1]} (TAI)`);
+         const img = res.images[0];
+         setLatestFile(img.date ?? img.filename);
+         return predictDual(img.filename).then(setPrediction).catch(console.error);
+@@ -168,14 +127,6 @@
+   const mae           = stats ? stats.mae.toFixed(4) : '—';
+   const totalImages   = stats ? stats.total_images.toLocaleString() : '—';
+   const diskGb        = stats ? (stats.disk_usage_mb / 1024).toFixed(2) : '—';
+-  const diskMb        = stats?.disk_usage_mb ?? 0;
+-
+-  // Disk allocation bar (max 20 GB display cap)
+-  const MAX_DISK_MB = 20_000;
+-  const diskPct     = Math.min((diskMb / MAX_DISK_MB) * 100, 100);
+-
+-  const statusLabels = { nominal: o.nominal, degraded: o.degraded, offline: o.offline };
+-
+   return (
+     <div className="space-y-4">
+ 
+@@ -253,73 +204,6 @@
+         />
+       </div>
+ 
+-      {/* ── Dataset summary + System status ────────────────────── */}
+-      <details className="border-t border-neutral-800">
+-        <summary className="cursor-pointer py-3 text-sm text-neutral-400 hover:text-neutral-200">{t.overview.datasetSummary} · {t.overview.systemStatus}</summary>
+-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
+-
+-        {/* Dataset summary (2/3) */}
+-        <div className="lg:col-span-2 bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+-          <div className="flex items-center justify-between mb-4">
+-            <span className="text-[13px] font-semibold text-white">{o.datasetSummary}</span>
+-            <span className="text-[10px] font-mono text-neutral-500 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
+-              SDO / HMI · local catalog
+-            </span>
+-          </div>
+-
+-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+-            {[
+-              { icon: CalendarDays, label: o.years,      value: yearRange },
+-              { icon: Layers,       label: o.channels,   value: '2 (B+/B−)' },
+-              { icon: ScanLine,     label: o.resolution, value: '512²' },
+-              { icon: Timer,        label: 'Source series', value: 'HMI m_45s'  },
+-            ].map(({ icon: Icon, label, value }) => (
+-              <div
+-                key={label}
+-                className="bg-neutral-950 border border-neutral-800 rounded-lg p-3 flex flex-col gap-2"
+-              >
+-                <div className="flex items-center gap-1.5">
+-                  <Icon className="w-3.5 h-3.5 text-neutral-600" />
+-                  <span className="text-[9px] text-neutral-600 tracking-[0.14em]">{label}</span>
+-                </div>
+-                <span className="text-[15px] font-mono text-white font-medium leading-none">
+-                  {value}
+-                </span>
+-              </div>
+-            ))}
+-          </div>
+-
+-          {/* Disk allocation bar */}
+-          <div>
+-            <div className="flex items-center justify-between mb-2">
+-              <span className="text-[11px] text-neutral-500">{o.diskAllocation}</span>
+-              <span className="text-[11px] font-mono text-neutral-400">{diskGb} {o.diskUsed}</span>
+-            </div>
+-            <div className="h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+-              <div
+-                className="h-full rounded-full transition-all duration-700"
+-                style={{
+-                  width: `${diskPct}%`,
+-                  background: 'linear-gradient(to right, #22c55e, #f59e0b, #ef4444)',
+-                }}
+-              />
+-            </div>
+-          </div>
+-        </div>
+-
+-        {/* System status (1/3) */}
+-        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+-          <div className="text-[13px] font-semibold text-white mb-4">{o.systemStatus}</div>
+-          <div>
+-            <StatusRow label={o.inferenceWorker} status={IS_FROZEN_DEMO ? "offline" : prediction ? "nominal" : "unknown"}  labels={statusLabels} />
+-            <StatusRow label={o.sdoIngestion}    status="unknown"  labels={statusLabels} />
+-            <StatusRow label={o.modelRegistry}   status={IS_FROZEN_DEMO ? "offline" : stats ? "nominal" : "unknown"}  labels={statusLabels} />
+-            <StatusRow label={o.gradcamEngine}   status="unknown"  labels={statusLabels} />
+-            <StatusRow label={o.experimentStore} status="unknown"  labels={statusLabels} />
+-          </div>
+-        </div>
+-      </div>
+-      </details>
+     </div>
+   );
+ }

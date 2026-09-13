@@ -1,0 +1,19 @@
+{
+  "forward": {
+    "arPosition": "5 / 5",
+    "arState": "2022-03-30 00:00:53 UTC",
+    "changes": 10,
+    "errors": [],
+    "playing": false,
+    "state": "hmi-2022-03-30"
+  },
+  "reverse": {
+    "arPosition": "1 / 5",
+    "arState": "2022-03-24 00:00:53 UTC",
+    "changes": 14,
+    "errors": [],
+    "playing": false,
+    "state": "hmi-2022-03-24"
+  },
+  "physicalAR": false
+}

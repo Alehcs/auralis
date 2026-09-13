@@ -1,0 +1,68 @@
+[
+  {
+    "id": "android",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer",
+    "exists": true
+  },
+  {
+    "id": "android-open-jdk-17.0.18+8",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/OpenJDK",
+    "exists": true
+  },
+  {
+    "id": "android-sdk-ndk-tools",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK",
+    "exists": true
+  },
+  {
+    "id": "android-ndk-r27c",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/NDK",
+    "exists": true
+  },
+  {
+    "id": "cmake-3.22.1",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1",
+    "exists": true,
+    "note": "Final path after installer renameTo; checked cmake --version successfully."
+  },
+  {
+    "id": "android-sdk-build-tools-36.0.0",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/build-tools",
+    "exists": true
+  },
+  {
+    "id": "android-sdk-platform-tools-36.0.0",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK",
+    "exists": true
+  },
+  {
+    "id": "android-sdk-platforms-34",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/platforms",
+    "exists": true
+  },
+  {
+    "id": "android-sdk-platforms-35",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/platforms",
+    "exists": true
+  },
+  {
+    "id": "android-sdk-platforms-36",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/platforms",
+    "exists": true
+  },
+  {
+    "id": "android-sdk-command-line-tools-16.0",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/cmdline-tools",
+    "exists": true
+  },
+  {
+    "id": "ios",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines",
+    "exists": true
+  },
+  {
+    "id": "webgl",
+    "destination": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/WebGLSupport",
+    "exists": true
+  }
+]

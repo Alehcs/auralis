@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "known_upper_right_source": [
+    380,
+    170
+  ],
+  "projected_uv_pixel": [
+    859,
+    199
+  ],
+  "front_detected": true,
+  "back_unchanged": true,
+  "sign_changes_visual_at_same_magnitude": true,
+  "spatial_mirror_changes_visual_at_same_global_magnitude": true
+}

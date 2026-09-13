@@ -1,0 +1,27 @@
+[
+  {
+    "loaded": true,
+    "src": "/demo/gradcam/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png",
+    "width": 2804
+  },
+  {
+    "loaded": true,
+    "src": "/demo/gradcam/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png",
+    "width": 2804
+  },
+  {
+    "loaded": true,
+    "src": "/demo/gradcam/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png",
+    "width": 2804
+  },
+  {
+    "loaded": true,
+    "src": "/demo/gradcam/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png",
+    "width": 2804
+  },
+  {
+    "loaded": true,
+    "src": "/demo/gradcam/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png",
+    "width": 2804
+  }
+]

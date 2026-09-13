@@ -1,0 +1,44 @@
+{
+  "android_player": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer",
+    "exists": true
+  },
+  "ios_support": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/iOSSupport",
+    "exists": true
+  },
+  "webgl_support": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/WebGLSupport",
+    "exists": true
+  },
+  "java": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/OpenJDK/bin/java",
+    "exists": true
+  },
+  "cmake": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/cmake",
+    "exists": true
+  },
+  "adb": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/platform-tools/adb",
+    "exists": true,
+    "exit_code": 0,
+    "version": "Android Debug Bridge version 1.0.41\nVersion 36.0.0-13206524\nInstalled as /Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/platform-tools/adb\nRunning on Darwin 25.6.0 (arm64)\n"
+  },
+  "sdkmanager": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/cmdline-tools/16.0/bin/sdkmanager",
+    "exists": true
+  },
+  "ndk_clang": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+    "exists": true,
+    "exit_code": 0,
+    "version": "Android (12470979, +pgo, -bolt, +lto, -mlgo, based on r522817c) clang version 18.0.3 (https://android.googlesource.com/toolchain/llvm-project d8003a456d14a3deb8054cdaa529ffbf02d9b262)\nTarget: x86_64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin\n"
+  },
+  "android_build_tools": {
+    "path": "/Applications/Unity/Hub/Editor/6000.3.17f1/PlaybackEngines/AndroidPlayer/SDK/build-tools/36.0.0/aapt2",
+    "exists": true,
+    "exit_code": 0,
+    "version": "Android Asset Packaging Tool (aapt) 2.20-13193326\n"
+  }
+}

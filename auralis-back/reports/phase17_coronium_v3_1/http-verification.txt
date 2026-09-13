@@ -1,0 +1,61 @@
+2026-09-05 23:30:10,264 - predict - INFO - Loading checkpoint: /Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/models/best_coronium_v3_1.pth
+2026-09-05 23:30:10,269 - predict - INFO - Model loaded: 206875 parameters  |  device: cpu
+2026-09-05 23:30:10,280 - auralis.api - INFO - Device selected: cpu
+2026-09-05 23:30:10,284 - auralis.api - INFO - Coronium V3.1 loaded: 206,875 parameters, checkpoint: best_coronium_v3_1.pth, device: cpu
+2026-09-05 23:30:10,287 - auralis.api - INFO - ONNX Runtime session ready: best_coronium_v3_1.onnx
+2026-09-05 23:30:11,048 - auralis.api - INFO - Prediction for hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.3676, uncertainty=0.0004, class=C, confidence=0.99
+2026-09-05 23:30:11,668 - auralis.api - INFO - Black-box upload: sunspot_index=1.3676, uncertainty=0.0004, class=C
+2026-09-05 23:30:12,357 - auralis.api - INFO - Prediction for hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.3815, uncertainty=0.0003, class=C, confidence=0.99
+2026-09-05 23:30:13,022 - auralis.api - INFO - Black-box upload: sunspot_index=1.3815, uncertainty=0.0003, class=C
+2026-09-05 23:30:13,702 - auralis.api - INFO - Prediction for hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.3625, uncertainty=0.0003, class=C, confidence=0.99
+2026-09-05 23:30:14,282 - auralis.api - INFO - Black-box upload: sunspot_index=1.3625, uncertainty=0.0003, class=C
+2026-09-05 23:30:15,039 - auralis.api - INFO - Prediction for hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.3533, uncertainty=0.0005, class=C, confidence=0.99
+2026-09-05 23:30:15,604 - auralis.api - INFO - Black-box upload: sunspot_index=1.3533, uncertainty=0.0005, class=C
+2026-09-05 23:30:16,259 - auralis.api - INFO - Prediction for hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.5465, uncertainty=0.0006, class=M, confidence=0.99
+2026-09-05 23:30:16,825 - auralis.api - INFO - Black-box upload: sunspot_index=1.5465, uncertainty=0.0006, class=M
+2026-09-05 23:30:17,477 - auralis.api - INFO - Prediction for hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.6099, uncertainty=0.0006, class=M, confidence=0.99
+2026-09-05 23:30:18,051 - auralis.api - INFO - Black-box upload: sunspot_index=1.6099, uncertainty=0.0006, class=M
+2026-09-05 23:30:18,799 - auralis.api - INFO - Prediction for hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.7557, uncertainty=0.0006, class=X, confidence=0.99
+2026-09-05 23:30:19,368 - auralis.api - INFO - Black-box upload: sunspot_index=1.7557, uncertainty=0.0006, class=X
+2026-09-05 23:30:20,027 - auralis.api - INFO - Prediction for hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.9021, uncertainty=0.0005, class=X, confidence=0.99
+2026-09-05 23:30:20,608 - auralis.api - INFO - Black-box upload: sunspot_index=1.9021, uncertainty=0.0005, class=X
+2026-09-05 23:30:21,351 - auralis.api - INFO - Prediction for hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=2.2512, uncertainty=0.0005, class=X, confidence=0.99
+2026-09-05 23:30:21,919 - auralis.api - INFO - Black-box upload: sunspot_index=2.2512, uncertainty=0.0005, class=X
+2026-09-05 23:30:22,569 - auralis.api - INFO - Prediction for hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.3874, uncertainty=0.0005, class=C, confidence=0.99
+2026-09-05 23:30:23,130 - auralis.api - INFO - Black-box upload: sunspot_index=1.3874, uncertainty=0.0005, class=C
+2026-09-05 23:30:23,874 - auralis.api - INFO - Prediction for hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.5583, uncertainty=0.0005, class=M, confidence=0.99
+2026-09-05 23:30:24,435 - auralis.api - INFO - Black-box upload: sunspot_index=1.5583, uncertainty=0.0005, class=M
+2026-09-05 23:30:24,439 - auralis.api - INFO - Shutting down Auralis API
+{
+  "status": "verified",
+  "model_name": "Coronium V3.1",
+  "health": {
+    "model_name": "Coronium V3.1",
+    "model_version": "3.1",
+    "checkpoint": "best_coronium_v3_1.pth",
+    "onnx": "best_coronium_v3_1.onnx",
+    "status": "ok",
+    "version": "3.1.0",
+    "model_loaded": true,
+    "device": "cpu"
+  },
+  "full_validation_export_parity": {
+    "observations": 263,
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "max_abs_difference": 1.1920928955078125e-06,
+    "dynamic_batch_2": "passed"
+  },
+  "http_samples": 11,
+  "sample_selection": "9 target quantiles plus earliest/latest validation observations",
+  "raw_tolerance": {
+    "atol": 1e-05,
+    "rtol": 1e-05
+  },
+  "http_rounding_decimals": 4,
+  "max_pytorch_api_device_difference": 0.0,
+  "max_pytorch_http_difference": 4.668235778804153e-05,
+  "preserved_artifacts": 127,
+  "protected_files_unchanged": 26,
+  "stats_scatter_and_historical_benchmark": "passed"
+}

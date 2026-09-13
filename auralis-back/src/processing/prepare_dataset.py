@@ -1,11 +1,12 @@
-"""Preprocess HMI FITS files into Coronium V3 PRO tensors.
+"""Prepare a NEW dataset compatible with the promoted checkpoint's clip400 input.
 
-The model contract is `(2, 512, 512)`: channel 0 is B+ and channel 1 is B-,
-both derived from the symmetric log-scaled magnetogram. The sunspot proxy is
-computed before resize so interpolation does not change the active-pixel count.
+SI is the raw percentage of original pixels with abs(B_LOS) > 200 G. The
+historical log-input/Z-score route did not produce the current local dataset.
+See docs/phase1.md. Existing datasets/scalers are never replaced.
 """
 
 import csv
+import sys
 import json
 import logging
 from pathlib import Path
@@ -14,7 +15,8 @@ import warnings
 
 import numpy as np
 import sunpy.map
-from skimage.transform import resize
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from processing.model_input import normalize_field, prepare_model_input
 from tqdm import tqdm
 
 
@@ -27,19 +29,7 @@ warnings.filterwarnings("ignore")
 
 
 def log_scale(x: np.ndarray) -> np.ndarray:
-    """Apply the sign-preserving log transform used by V3 PRO.
-
-    It compresses strong umbral fields without the information loss introduced
-    by the older +/-400 G hard clip.
-
-    Args:
-        x: Magnetic field array in Gauss (any shape). May contain negative
-            values; the sign of each element is preserved.
-
-    Returns:
-        An array of the same shape as ``x`` where each element is
-        ``sign(x) * log1p(|x|)``.
-    """
+    """Historical experimental transform; NOT used by the promoted checkpoint."""
     return np.sign(x) * np.log1p(np.abs(x))
 
 
@@ -48,7 +38,7 @@ def load_and_process_magnetogram(
     target_size: int = 512,
     sunspot_threshold: float = 200.0,
 ) -> Tuple[np.ndarray, Dict[str, Any]]:
-    """Load, resample, log-scale, and decompose a single HMI FITS magnetogram.
+    """Load, resample, clip400-normalize, and decompose a single HMI FITS magnetogram.
 
     The sunspot proxy index is computed on the original, pre-resample pixel
     array to avoid double-counting artefacts introduced by bilinear
@@ -80,28 +70,17 @@ def load_and_process_magnetogram(
         strong_field_mask: np.ndarray = np.abs(data) > sunspot_threshold
         sunspot_index: float = (np.sum(strong_field_mask) / data.size) * 100.0
 
-        data_resampled: np.ndarray = resize(
-            data,
-            (target_size, target_size),
-            mode="reflect",
-            anti_aliasing=True,
-            preserve_range=True,
-        )
-        data_resampled = np.nan_to_num(data_resampled, nan=0.0)
-
-        # Symmetric log scaling: x' = sign(x) * log(1 + |x|)
-        data_log: np.ndarray = log_scale(data_resampled)
-
-        # Polarity decomposition into two non-negative channels
-        b_pos: np.ndarray = np.maximum(data_log, 0.0)   # ReLU(x')
-        b_neg: np.ndarray = np.maximum(-data_log, 0.0)  # ReLU(-x')
-
-        # Stack into (2, H, W) tensor — channel 0: B+, channel 1: B-
-        processed: np.ndarray = np.stack([b_pos, b_neg], axis=0)
+        if target_size != 512 or sunspot_threshold != 200.0:
+            raise ValueError("Promoted contract requires 512 px and a 200 G target threshold")
+        processed = prepare_model_input(normalize_field(data, target_size))
+        b_pos, b_neg = processed
 
         metadata: Dict[str, Any] = {
             "filename": fits_path.stem,
             "date": solar_map.date.iso,
+            "date_scale": solar_map.date.scale.upper(),
+            "date_source": "solar_map.date",
+            "date_utc": solar_map.date.utc.isot + "Z",
             "sunspot_index": sunspot_index,
             "original_shape": data.shape,
             "processed_shape": processed.shape,
@@ -120,7 +99,7 @@ def load_and_process_magnetogram(
 
 def prepare_dataset(
     raw_dir: str = "data/raw",
-    processed_dir: str = "data/processed",
+    processed_dir: str = "data/processed_phase1_v1",
     target_size: int = 512,
     sunspot_threshold: float = 200.0,
 ) -> List[Dict[str, Any]]:
@@ -144,6 +123,8 @@ def prepare_dataset(
         no FITS files.
     """
     processed_path = Path(processed_dir)
+    if processed_path.exists() and any(processed_path.iterdir()):
+        raise FileExistsError(f"Use a new dataset version; refusing to replace {processed_path}")
     processed_path.mkdir(parents=True, exist_ok=True)
 
     raw_path = Path(raw_dir)
@@ -154,7 +135,7 @@ def prepare_dataset(
         return []
 
     logger.info(
-        "%d files to process  |  output: 2 x %dx%d px  |  scaling: log1p",
+        "%d files to process  |  output: 2 x %dx%d px  |  scaling: clip400",
         len(fits_files), target_size, target_size,
     )
 
@@ -196,7 +177,9 @@ def normalize_sunspot_targets(
     metadata_list: List[Dict[str, Any]],
     scaler_path: str = "models/target_scaler.json",
 ) -> Tuple[float, float]:
-    """Apply Z-Score standardization to ``sunspot_index`` in-place and persist the scaler.
+    """Historical experimental Z-score helper; not part of the promoted contract.
+
+    Kept for explicit experiments only. Never called by main().
 
     The raw ``sunspot_index`` value is preserved under the key
     ``sunspot_index_raw`` to allow debugging and distribution checks
@@ -221,7 +204,7 @@ def normalize_sunspot_targets(
 
     scaler_file = Path(scaler_path)
     scaler_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(scaler_file, "w") as f:
+    with open(scaler_file, "x") as f:
         json.dump({"mean": mean, "std": std}, f, indent=2)
 
     logger.info(
@@ -233,7 +216,7 @@ def normalize_sunspot_targets(
 
 def save_metadata_csv(
     metadata_list: List[Dict[str, Any]],
-    output_path: str = "data/processed/metadata_processed.csv",
+    output_path: str = "data/processed_phase1_v1/metadata_processed.csv",
 ) -> None:
     """Write metadata CSV, stringifying shape tuples for portability."""
     if not metadata_list:
@@ -246,7 +229,10 @@ def save_metadata_csv(
     fieldnames = [
         "filename",
         "date",
-        "sunspot_index",        # Z-Score normalised value (model input)
+        "date_scale",
+        "date_source",
+        "date_utc",
+        "sunspot_index",        # Raw SI pixel percent (regression target)
         "sunspot_index_raw",    # Original value before normalisation
         "processed_file",
         "original_shape",
@@ -257,7 +243,7 @@ def save_metadata_csv(
         "mean_b_neg",
     ]
 
-    with open(output_path, "w", newline="") as csvfile:
+    with open(output_path, "x", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for metadata in metadata_list:
@@ -270,53 +256,11 @@ def save_metadata_csv(
 
 
 def main() -> None:
-    """Execute the V3 PRO dataset preprocessing pipeline."""
-    logger.info("=" * 70)
-    logger.info("Auralis — Dataset Preparation  [V3 PRO / log1p + dual-channel]")
-    logger.info("=" * 70)
-
-    metadata = prepare_dataset(
-        raw_dir="data/raw",
-        processed_dir="data/processed",
-        target_size=512,
-        sunspot_threshold=200.0,
-    )
-
+    """Create a separate clip400 dataset with raw SI; preserve historical artifacts."""
+    metadata = prepare_dataset()
     if metadata:
-        # ── Z-Score normalization of the regression target ───────────────────
-        # Must be applied BEFORE writing the CSV so that the persisted
-        # sunspot_index values match what the model will receive at training
-        # time. The raw values are kept under sunspot_index_raw for auditing.
-        mean, std = normalize_sunspot_targets(
-            metadata,
-            scaler_path="models/target_scaler.json",
-        )
-
-        save_metadata_csv(metadata, output_path="data/processed/metadata_processed.csv")
-
-        raw_indices = [m["sunspot_index_raw"] for m in metadata]
-        norm_indices = [m["sunspot_index"] for m in metadata]
-        b_pos_maxima = [m["b_pos_max"] for m in metadata]
-        b_neg_maxima = [m["b_neg_max"] for m in metadata]
-        logger.info("=" * 70)
-        logger.info("Dataset statistics:")
-        logger.info("  Images:            %d", len(metadata))
-        logger.info("  Tensor shape:      (2, 512, 512) — [B+, B-]")
-        logger.info("  Sunspot index (raw)  — mean: %.4f  std: %.4f  "
-                    "min: %.4f  max: %.4f",
-                    np.mean(raw_indices), np.std(raw_indices),
-                    np.min(raw_indices), np.max(raw_indices))
-        logger.info("  Sunspot index (norm) — mean: %.4f  std: %.4f  "
-                    "min: %.4f  max: %.4f  [Z-Score: μ=%.4f σ=%.4f]",
-                    np.mean(norm_indices), np.std(norm_indices),
-                    np.min(norm_indices), np.max(norm_indices), mean, std)
-        logger.info("  B+ max  — mean: %.3f  max: %.3f",
-                    np.mean(b_pos_maxima), np.max(b_pos_maxima))
-        logger.info("  B- max  — mean: %.3f  max: %.3f",
-                    np.mean(b_neg_maxima), np.max(b_neg_maxima))
-        logger.info("=" * 70)
-    else:
-        logger.error("No files processed successfully.")
+        save_metadata_csv(metadata)
+        logger.info("Created %d observations: clip400 B+/B-, raw SI pixel percent", len(metadata))
 
 
 if __name__ == "__main__":

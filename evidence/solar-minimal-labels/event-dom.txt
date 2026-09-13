@@ -1,0 +1,126 @@
+- banner:
+  - link "AURALIS SOLAR LAB":
+    - /url: ./
+    - generic: ◉
+    - text: AURALIS
+    - generic: SOLAR LAB
+  - generic: FASE 07.5 NOAA 12975
+- main:
+  - paragraph: EXPLORADOR SOLAR
+  - heading "El Sol y su contexto histórico." [level=1]
+  - strong: 29-03-2022
+  - generic: Archivo SDO / HMI · registro UTC
+  - region "Evolución temporal":
+    - heading "24–30 marzo · cinco estados HMI de disco completo" [level=2]
+    - generic "Naturaleza de la información":
+      - generic: Observación real · HMI / SRS
+      - generic: Resultado de Coronium · SI
+      - generic: Recreación visual · Sol 3D
+      - generic: Evento histórico externo · GOES
+    - button "Anterior"
+    - button "Reproducir"
+    - button "Siguiente"
+    - text: Dirección
+    - combobox "Dirección":
+      - option "Adelante" [selected]
+      - option "Atrás"
+    - strong: 4 / 5
+    - generic "Timeline UTC; desliza horizontalmente":
+      - generic: Sin más magnetogramas
+      - generic: OBSERVACIONES HMI · 00:00:53 UTC
+      - button "Seleccionar 2022-03-24": 24 mar · β
+      - button "Seleccionar 2022-03-25": 25 mar · β
+      - button "Seleccionar 2022-03-28": 28 mar · β
+      - button "Seleccionar 2022-03-29" [pressed]: 29 mar · βγ
+      - button "Seleccionar 2022-03-30": 30 mar · βγδ
+      - generic: EVENTOS GOES · MARCA EN EL PICO UTC
+      - button "Evento M4.0 · 28 mar 11:29:00 UTC":
+        - strong: ◆ M4.0
+        - generic: 28 mar 11:29
+      - button "Evento M1.1 · 28 mar 20:59:00 UTC":
+        - strong: ◆ M1.1
+        - generic: 28 mar 20:59
+      - button "Evento M2.2 · 29 mar 01:11:00 UTC":
+        - strong: ◆ M2.2
+        - generic: 29 mar 01:11
+      - button "Evento M1.6 · 29 mar 21:52:00 UTC":
+        - strong: ◆ M1.6
+        - generic: 29 mar 21:52
+      - button "Evento X1.3 · 30 mar 17:37:00 UTC" [active] [pressed]:
+        - strong: ◆ X1.3
+        - generic: 30 mar 17:37
+      - button "Evento M9.6 · 31 mar 18:35:00 UTC":
+        - strong: ◆ M9.6
+        - generic: 31 mar 18:35
+    - text: Evento histórico
+    - combobox "Elegir evento histórico":
+      - option "Selecciona un evento"
+      - option "M4.0 · 28 mar 11:29:00 UTC"
+      - option "M1.1 · 28 mar 20:59:00 UTC"
+      - option "M2.2 · 29 mar 01:11:00 UTC"
+      - option "M1.6 · 29 mar 21:52:00 UTC"
+      - option "X1.3 · 30 mar 17:37:00 UTC" [selected]
+      - option "M9.6 · 31 mar 18:35:00 UTC"
+    - region "Contexto científico seleccionado":
+      - paragraph: EVENTO HISTÓRICO EXTERNO · GOES G16
+      - heading "X1.3 · NOAA 12975 · pico 30 mar 17:37:00 UTC" [level=3]
+      - paragraph: Inicio 30 mar 17:21:00 UTC · fin 30 mar 17:46:00 UTC
+      - paragraph: 17 h 36 min 07 s después del HMI del 30 mar. Posterior al último estado; no hay otro magnetograma seleccionado.
+      - paragraph: Ningún estado seleccionado captura este evento. El Sol conserva el HMI del 29 mar 00:00:53 UTC. Coronium estima SI actual; no anticipa llamaradas.
+      - button "Ver HMI anterior · 30 mar"
+  - region "Exploración solar":
+    - 'generic "Escena Unity: arrastra para orbitar; rueda o pellizca para acercar"':
+      - application "Needle Engine 3D scene":
+        - region "3D Needle Engine scene":
+          - status
+        - img "3D rendering"
+    - group "Capa de visualización":
+      - button "☀ Vista solar" [pressed]
+      - button "Magnetograma"
+      - button "B+"
+      - button "B−"
+    - generic: Arrastra para rotar · pellizca para acercar
+    - button "Alejar": −
+    - button "Acercar": +
+    - button "↺ Restablecer"
+    - button "Pausar superficie" [pressed]
+    - button "Congelar en t=0"
+    - button "Giro automático"
+  - complementary "Información científica":
+    - paragraph: ESTADO OBSERVADO
+    - generic: HMI · 512²
+    - text: ESTADO HERO · 29 MARZO
+    - heading "29 de marzo de 2022" [level=2]
+    - paragraph: 00:00:53 UTC
+    - generic: SI conservado
+    - generic: OBSERVACIÓN
+    - paragraph:
+      - strong: 2,057672
+      - text: "%"
+    - text: "Disco completo: píxeles originales con |B"
+    - subscript: LOS
+    - text: "| > 200 G."
+    - generic: Coronium V3.1
+    - generic: RESULTADO DE CORONIUM
+    - paragraph:
+      - strong: 1,683445
+      - text: "%"
+    - generic: ONNX · CPU · eval · una pasada determinista
+    - text: Estimación − SI conservado
+    - strong: "-0,374226 pp"
+    - heading "Referencia 2D" [level=3]
+    - generic: Campo firmado
+    - figure "Fila 0 arriba · sin recorte ni espejo":
+      - img "Campo firmado; fila 0 arriba, columnas conservadas"
+      - generic: Fila 0 arriba · sin recorte ni espejo
+    - generic: −1 · B−
+    - generic: "0"
+    - generic: +1 · B+
+  - region "Explora en AR":
+    - heading "Explora en AR" [level=2]:
+      - link "Explora en AR":
+        - /url: https://appclip.needle.tools/ar?url=http%3A%2F%2F127.0.0.1%3A4184%2Fphase6%2F%3Fstate%3Dhmi-2022-03-29
+    - generic "QR para abrir este estado en el teléfono"
+    - strong: Continúa en tu teléfono
+    - link "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-29":
+      - /url: http://127.0.0.1:4184/phase6/?state=hmi-2022-03-29

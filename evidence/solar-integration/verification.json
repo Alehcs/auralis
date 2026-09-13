@@ -1,0 +1,16 @@
+{
+  "protected_existing_files": 291,
+  "changed_existing_files": [
+    "auralis-front/src/features/dashboard/dashboard-page.tsx"
+  ],
+  "solar_pixels_identical": true,
+  "canvas": [
+    730,
+    570
+  ],
+  "dpr": 1,
+  "time": 0,
+  "state": "hmi-2022-03-29",
+  "generated_files_identical": 73,
+  "physical_ar_tested": false
+}

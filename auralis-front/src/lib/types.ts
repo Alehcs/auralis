@@ -14,8 +14,13 @@
 export interface ImageListItem {
     /** Basename of the `.npy` file, e.g. `hmi.m_45s.2023.01.15_00_00_00_TAI.npy`. */
     filename: string;
-    /** UTC timestamp parsed from the filename (`YYYY-MM-DDTHH:MM:SSZ`), or `null` if unparseable. */
+    /** UTC timestamp explicitly converted from the filename’s TAI record time (`YYYY-MM-DDTHH:MM:SSZ`), or `null` if unparseable. */
     date: string | null;
+    date_original?: string | null;
+    date_scale?: string | null;
+    date_source?: string;
+    date_utc?: string | null;
+    aia_source?: 'synthetic_hmi_proxy' | 'local_aia_file_unverified';
     /** File size in bytes on disk. */
     size_bytes: number;
 }
@@ -35,7 +40,7 @@ export interface ImageListResponse {
 /**
  * Solar activity classification derived from the predicted sunspot index.
  *
- * Thresholds are calibrated to the promoted V3 PRO ONNX output range:
+ * Historical demo thresholds retained for V3.1; not calibrated or GOES classes:
  * - `< 1.41`        -> Low    / C-class / #22c55e
  * - `1.41 - <1.75` -> Medium / M-class / #f97316
  * - `>= 1.75`      -> High   / X-class / #ef4444
@@ -59,7 +64,16 @@ export interface ClassificationInfo {
  * is not true dropout-based uncertainty.
  */
 export interface PredictionResult {
-    /** Predicted sunspot index (continuous, normalised to the training distribution). */
+    model_name: string;
+    model_version: string;
+    /** Predicted raw SI pixel percentage; no logarithm or Z-score. */
+    input_contract?: string;
+    target_contract?: string;
+    output_units?: string;
+    model_status?: string;
+    prediction_method?: string;
+    confidence_method?: string;
+    uncertainty_method?: string;
     sunspot_index: number;
     /** Three-tier activity level derived from `classification.level`. */
     risk_level: 'Low' | 'Medium' | 'High';
@@ -78,22 +92,32 @@ export interface PredictionResult {
 /**
  * Dataset-level statistics and frozen evaluation performance metrics.
  *
- * `mae`, `rmse`, and `r2_score` reflect the promoted Coronium V3 PRO model
- * (`exp_005` with ExtremeAugmentation). Metrics are reported in log-SI space
- * from evaluate_final.py using MC Dropout T=20 over 353 hold-out samples.
+ * Official V3.1 MC Dropout T=20 metrics on 263 clean validation observations
+ * used for checkpoint selection; not an independent or temporal test.
+ * Single-pass serving metrics and historical V3 are separate fields.
  */
 export interface SystemStats {
+    model_name: string;
+    model_version: string;
+    mape: number;
+    evaluation_protocol: string;
+    validation_observations: number;
+    observation_overlap: number;
+    serving_deterministic: { protocol: string; pytorch: Record<string, number>; onnx: Record<string, number> };
+    historical_v3: { model_name: string; status: string; source: string; validation_rows: number; observation_overlap: number; metrics: Record<string, number> };
     /** Count of `.npy` files currently in `data/processed/`. */
     total_images: number;
     /** Aggregate disk footprint of all magnetogram files in MiB. */
     disk_usage_mb: number;
-    /** Mean Absolute Error in log-SI space, MC Dropout T=20 eval, 353 hold-out samples. */
+    /** Mean Absolute Error in raw SI space (percentage points for errors), MC Dropout T=20, 263 clean selection-validation observations. */
     mae: number;
-    /** Root Mean Squared Error — log-SI space, same evaluation protocol as `mae`. */
+    /** Root Mean Squared Error — raw SI space (percentage points for errors), same evaluation protocol as `mae`. */
     rmse: number;
-    /** R2 on the promoted hold-out split. */
+    /** R2 on clean validation used for model selection. */
     r2_score: number;
     /** UTC ISO-8601 timestamp of the most recently modified `.npy` file. */
+    metrics_status?: string;
+    metric_units?: string;
     last_updated: string;
 }
 
@@ -154,7 +178,7 @@ export interface XAIPoint {
  *
  * `auc_score` = (∫random − ∫GradCAM) / 100 over the masking range [0, 100].
  * Positive values indicate that the Grad-CAM saliency map identifies
- * genuinely predictive pixels (faithful saliency).
+ * lower normalized output under guided deletion on this image; no significance or causal claim.
  */
 export interface XAIFaithfulnessResult {
     /** Source magnetogram filename. */
@@ -163,7 +187,7 @@ export interface XAIFaithfulnessResult {
     baseline_prediction: number;
     /** Degradation curve sampled at 10-percentage-point masking thresholds. */
     curve: XAIPoint[];
-    /** Faithfulness score; higher is more faithful. Typical range: [−0.1, 0.3]. */
+    /** Faithfulness score; higher is more faithful. Uncalibrated, dimensionless; no fixed range is guaranteed. */
     auc_score: number;
 }
 
@@ -194,6 +218,9 @@ export interface ModelBenchmark {
  * improvement of `proposed` over `baseline` as positive percentages.
  */
 export interface BenchmarkResult {
+    metrics_status: string;
+    comparison_valid_for_v31: boolean;
+    comparison_note: string;
     /** ResNet-18 baseline metrics. */
     baseline: ModelBenchmark;
     /** Coronium V3 PRO metrics (the proposed architecture). */
@@ -253,6 +280,7 @@ export interface ExperimentEnvironment {
 
 /** Full metadata record for a single experiment run. */
 export interface ExperimentEntry {
+    evidence_status?: string;
     /** Unique run identifier, e.g. `"exp_003"`. */
     run_id: string;
     run_name: string;
@@ -297,7 +325,7 @@ export interface DualChannelPredictionResult extends PredictionResult {
 // existing artifacts and recommend data priorities. Nothing here measures or
 // implies real-world model improvement.
 
-/** Activity bin in log-SI space (thresholds 1.41 / 1.75). */
+/** Activity bin in raw SI space (percentage points for errors) (thresholds 1.41 / 1.75). */
 export type ActivityBin = 'low' | 'medium' | 'high';
 
 /** Advisory severity for an audit finding. */

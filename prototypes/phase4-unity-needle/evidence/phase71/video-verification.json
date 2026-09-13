@@ -1,0 +1,10 @@
+{
+  "frames_at_2Hz": 20,
+  "mean_absolute_rgb_difference_in_solar_disk": {
+    "frozen_0_5_to_1_5s": 0.1615119574303248,
+    "moving_2_5_to_7_5s": 4.561825929172868,
+    "paused_8_5_to_9_5s": 0.0
+  },
+  "note": "Lossy MP4; initial encoder convergence can slightly change frozen frames. Motion is deliberately subtle.",
+  "all_20_samples_science_maps_guides_and_camera_identical": true
+}

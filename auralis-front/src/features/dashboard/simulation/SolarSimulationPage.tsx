@@ -3,13 +3,13 @@
  *
  * Interactive procedural 3D Sun for explaining solar rotation, activity
  * levels, sunspots, active regions, flare-like events and B+/B− magnetogram
- * polarity in the context of the Coronium V3 dashboard. Explicitly NOT a
- * physical plasma simulation, forecast, or real SDO/HMI imagery — every panel
- * carries that disclaimer, and nothing here reads or writes model artifacts.
+ * polarity in the context of the Coronium V3 dashboard. The visuals are
+ * procedural and illustrative — not a physical plasma simulation, forecast,
+ * or real SDO/HMI imagery — and nothing here reads or writes model artifacts.
  */
 
 import { useRef, useState } from 'react';
-import { Info, Orbit, Sun, Magnet, Waves, RotateCcw } from 'lucide-react';
+import { Orbit, Sun, Magnet, Waves, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/language-context';
 import { SolarScene, type SolarSceneHandle } from './SolarScene';
 import { SimulationControls } from './SimulationControls';
@@ -76,11 +76,6 @@ export function SolarSimulationPage() {
       {/* ── Header ────────────────────────────────────────────────── */}
       <div>
         <h1 className="text-[20px] font-bold text-white tracking-tight">{s.title}</h1>
-        <p className="text-[12.5px] text-neutral-500 mt-1 max-w-3xl leading-snug">{s.subtitle}</p>
-        <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-800 bg-neutral-900/60">
-          <span className="w-[6px] h-[6px] rounded-full bg-orange-500 flex-shrink-0" />
-          <span className="text-[10px] text-neutral-500 tracking-wide">{s.educationalBadge}</span>
-        </div>
       </div>
 
       {/* ── Canvas + side panel ───────────────────────────────────── */}
@@ -148,14 +143,6 @@ export function SolarSimulationPage() {
         <ExplainerCard icon={Waves}  title={s.explainActivityTitle} body={s.explainActivityBody} />
         <ExplainerCard icon={Sun}    title={s.explainSunspotsTitle} body={s.explainSunspotsBody} />
         <ExplainerCard icon={Magnet} title={s.explainPolarityTitle} body={s.explainPolarityBody} />
-      </div>
-
-      {/* ── Global disclaimer ─────────────────────────────────────── */}
-      <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-neutral-800 flex items-center justify-center flex-shrink-0">
-          <Info className="w-4 h-4 text-neutral-400" />
-        </div>
-        <p className="text-[11.5px] text-neutral-500 leading-snug">{s.disclaimer}</p>
       </div>
     </div>
   );

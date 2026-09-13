@@ -1,0 +1,62 @@
+2026-09-05 23:02:06,988 - models.train_model - INFO - Dataset loaded: 1763 samples
+2026-09-05 23:02:06,988 - models.train_model - INFO - Sunspot index range: [1.220, 2.979]
+test_all_real_inputs_match_training_evaluation_and_api (test_phase1.Phase1Tests.test_all_real_inputs_match_training_evaluation_and_api) ... 2026-09-05 23:02:14,522 - models.train_model - INFO - Dataset loaded: 1763 samples
+2026-09-05 23:02:14,522 - models.train_model - INFO - Sunspot index range: [1.220, 2.979]
+ok
+test_checkpoint_and_onnx_parity (test_phase1.Phase1Tests.test_checkpoint_and_onnx_parity) ... 2026-09-05 23:02:15,431 - auralis.api - INFO - Prediction for hmi.m_45s.2016.02.03_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.5412, uncertainty=0.0005, class=M, confidence=0.99
+2026-09-05 23:02:16,056 - auralis.api - INFO - Black-box upload: sunspot_index=1.5412, uncertainty=0.0005, class=M
+ok
+test_conflicting_duplicates_and_changed_csv_rejected (test_phase1.Phase1Tests.test_conflicting_duplicates_and_changed_csv_rejected) ... ok
+test_demo_labels_and_catalog (test_phase1.Phase1Tests.test_demo_labels_and_catalog) ... ok
+test_evaluation_does_not_validate_old_weights_on_new_split_by_default (test_phase1.Phase1Tests.test_evaluation_does_not_validate_old_weights_on_new_split_by_default) ... usage: evaluate_final.py [-h] [--legacy-reproduction] [--run-dir RUN_DIR]
+                         [--output-dir OUTPUT_DIR]
+evaluate_final.py: error: Retraining required: use --run-dir; --legacy-reproduction is diagnostic only
+ok
+test_existing_checkpoint_and_report_cannot_be_replaced (test_phase1.Phase1Tests.test_existing_checkpoint_and_report_cannot_be_replaced) ... ok
+test_http_lifecycle_schemas_and_gradcam (test_phase1.Phase1Tests.test_http_lifecycle_schemas_and_gradcam) ... 2026-09-05 23:02:17,076 - auralis.api - INFO - Device selected: cpu
+2026-09-05 23:02:17,084 - auralis.api - INFO - Coronium V3.1 loaded: 206,875 parameters, checkpoint: best_coronium_v3_1.pth, device: cpu
+2026-09-05 23:02:17,086 - auralis.api - INFO - ONNX Runtime session ready: best_coronium_v3_1.onnx
+2026-09-05 23:02:17,093 - httpx - INFO - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2026-09-05 23:02:17,119 - httpx - INFO - HTTP Request: GET http://testserver/api/images/list "HTTP/1.1 200 OK"
+2026-09-05 23:02:17,130 - httpx - INFO - HTTP Request: GET http://testserver/api/stats "HTTP/1.1 200 OK"
+2026-09-05 23:02:17,818 - auralis.api - INFO - Prediction for hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.4577, uncertainty=0.0005, class=M, confidence=0.99
+2026-09-05 23:02:17,819 - httpx - INFO - HTTP Request: GET http://testserver/api/predict/hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy "HTTP/1.1 200 OK"
+2026-09-05 23:02:18,221 - auralis.api - INFO - Multi-layer Grad-CAM generated for hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy
+2026-09-05 23:02:18,225 - httpx - INFO - HTTP Request: GET http://testserver/api/explain-layers/hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy "HTTP/1.1 200 OK"
+2026-09-05 23:02:18,230 - httpx - INFO - HTTP Request: POST http://testserver/api/predict-upload "HTTP/1.1 422 Unprocessable Entity"
+2026-09-05 23:02:18,230 - auralis.api - INFO - Shutting down Auralis API
+ok
+test_input_rejects_wrong_representation (test_phase1.Phase1Tests.test_input_rejects_wrong_representation) ... ok
+test_new_fits_preparation_raw_si_and_time_scale (test_phase1.Phase1Tests.test_new_fits_preparation_raw_si_and_time_scale) ... ERROR
+test_no_astropy_never_labels_tai_as_utc (test_phase1.Phase1Tests.test_no_astropy_never_labels_tai_as_utc) ... ok
+test_preserved_scientific_artifacts_and_npy_hashes (test_phase1.Phase1Tests.test_preserved_scientific_artifacts_and_npy_hashes) ... ok
+test_split_zero_overlap_and_reproducible_deduplication (test_phase1.Phase1Tests.test_split_zero_overlap_and_reproducible_deduplication) ... ok
+test_tai_utc_leap_seconds_and_original_preserved (test_phase1.Phase1Tests.test_tai_utc_leap_seconds_and_original_preserved) ... ok
+test_nonfinite_epoch_stops (test_phase15.Phase15Tests.test_nonfinite_epoch_stops) ... Validation (MC):   0%|          | 0/1 [00:00<?, ?it/s]                                                      ok
+test_partial_batch_is_weighted_by_samples_train_and_validation (test_phase15.Phase15Tests.test_partial_batch_is_weighted_by_samples_train_and_validation) ... Training:   0%|          | 0/2 [00:00<?, ?it/s]                                               Validation (MC):   0%|          | 0/2 [00:00<?, ?it/s]                                                      ok
+
+======================================================================
+ERROR: test_new_fits_preparation_raw_si_and_time_scale (test_phase1.Phase1Tests.test_new_fits_preparation_raw_si_and_time_scale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/tests/test_phase1.py", line 120, in test_new_fits_preparation_raw_si_and_time_scale
+    from processing.prepare_dataset import load_and_process_magnetogram
+  File "/Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/src/processing/prepare_dataset.py", line 17, in <module>
+    import sunpy.map
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/site-packages/sunpy/__init__.py", line 36, in <module>
+    config = load_config()
+             ^^^^^^^^^^^^^
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/site-packages/sunpy/util/config.py", line 33, in load_config
+    config_files = _find_config_files()
+                   ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/site-packages/sunpy/util/config.py", line 78, in _find_config_files
+    config_path = Path(_get_user_configdir())
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/site-packages/sunpy/util/config.py", line 151, in _get_user_configdir
+    raise RuntimeError(f'Could not write to SUNPY_CONFIGDIR="{configdir}"')
+RuntimeError: Could not write to SUNPY_CONFIGDIR="/Users/alejandro/Library/Application Support/sunpy"
+
+----------------------------------------------------------------------
+Ran 15 tests in 11.915s
+
+FAILED (errors=1)

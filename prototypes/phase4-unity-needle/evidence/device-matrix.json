@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-09-06",
+  "overall": "PARTIALLY_COMPLETED",
+  "unity_editor": {
+    "status": "not_installed_in_standard_location_or_spotlight",
+    "executed": false,
+    "target": "6000.3.0f1",
+    "exporter": "5.1.12",
+    "glb_exists": false,
+    "csharp_compiled": false
+  },
+  "desktop": {
+    "status": "browser_tested",
+    "os": "macOS 26.6.2 arm64",
+    "browser": "Codex in-app Chromium",
+    "scene": "typescript-provisional",
+    "rendered": true,
+    "color_rotation_scale_reset": true,
+    "unsupported_ar_fallback": true,
+    "immersive_ar": false,
+    "placement_count": 0,
+    "responsive_390px": "layout_only_not_iOS_emulation",
+    "draw_calls": 1,
+    "triangles": 12,
+    "pixel_ratio": 1.5,
+    "local_warm_ready_ms": 166,
+    "raf_window_samples": 600,
+    "raf_median_ms": 8.3,
+    "raf_p95_ms": 9.1,
+    "note": "Rolling requestAnimationFrame cadence, not GPU time, sustained render FPS, mobile performance or AR tracking.",
+    "orbit_drag": true,
+    "orbit_camera_before": [
+      0.5,
+      0.4,
+      0.7
+    ],
+    "orbit_camera_after": [
+      -1.3408938856708046,
+      -0.18017996703337552,
+      1.222711788298337
+    ],
+    "orbit_input_enabled": true,
+    "pointer_downs": 1,
+    "zoom_gesture_verified": false
+  },
+  "android": {
+    "status": "not_tested_physical",
+    "adb_attached_devices": 0,
+    "expected_route": "Chrome + ARCore + HTTPS"
+  },
+  "ios": {
+    "status": "not_tested_physical",
+    "known_device_model": "iPhone 15 Pro",
+    "device_connection": "unavailable",
+    "expected_route": "Needle Go App Clip; optional Quick Look",
+    "quicklook_export_executed": false
+  },
+  "webmcp": {
+    "set_probe_scale_valid": true,
+    "set_probe_scale_out_of_range_rejected": true
+  },
+  "tests": {
+    "node_tests_passed": 6,
+    "typescript": true,
+    "vite_build": true,
+    "missing_unity_export_no_substitution": true
+  },
+  "updated_at": "2026-09-09"
+}

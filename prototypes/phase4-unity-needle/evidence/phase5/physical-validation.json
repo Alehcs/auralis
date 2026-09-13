@@ -1,0 +1,15 @@
+{
+  "device": "iPhone 15 Pro",
+  "device_source": "user_statement",
+  "os_version": null,
+  "browsers_requested": [
+    "Brave",
+    "Google Chrome"
+  ],
+  "ar_route_prepared": "Safari → Needle Go",
+  "physical_test_performed": false,
+  "result": "not_tested",
+  "browser_versions": null,
+  "mobile_performance": null,
+  "other_devices_approved": []
+}

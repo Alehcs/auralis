@@ -1,0 +1,48 @@
+{
+  "model_name": "Coronium V3.1",
+  "model_version": "3.1",
+  "status": "clean_observation_validation_used_for_selection_not_independent_test_or_temporal_validation",
+  "validation_observations": 263,
+  "observation_overlap": 0,
+  "units": "SI percentage points (MAE/RMSE), dimensionless R2, percent MAPE",
+  "checkpoint_sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+  "official_mc_dropout": {
+    "protocol": "MC Dropout T=20, seed=42, batch=32, MPS; Phase 1.5",
+    "metrics": {
+      "mae": 0.10155761986970901,
+      "rmse": 0.12337954342365265,
+      "r2": 0.875296638661553,
+      "mape": 5.987025052309036
+    },
+    "source": "experiments/phase15_runs/20260905T132456995672Z/evaluation_clean_v1/manifest.json"
+  },
+  "serving_deterministic": {
+    "protocol": "single eval-mode pass, CPU, batch=1; no input noise in point estimate",
+    "pytorch": {
+      "mae": 0.20408323599811742,
+      "rmse": 0.25823296738954693,
+      "r2": 0.45372009349240605,
+      "mape": 10.497507132398479
+    },
+    "onnx": {
+      "mae": 0.2040833964547277,
+      "rmse": 0.25823317396733214,
+      "r2": 0.45371921948054406,
+      "mape": 10.497514994433411
+    }
+  },
+  "historical_v3": {
+    "model_name": "Coronium V3 PRO",
+    "status": "historical_contaminated_validation_not_generalization_evidence",
+    "source": "experiments/exp_005_v3pro_augmented.json",
+    "validation_rows": 353,
+    "observation_overlap": 145,
+    "metrics": {
+      "mae": 0.1048,
+      "rmse": 0.1272,
+      "r2": 0.8634,
+      "mape": 6.07
+    }
+  },
+  "scope": "Validation used for checkpoint selection and early stopping; not an untouched test or temporal generalization. MC metrics are not single-pass API metrics."
+}

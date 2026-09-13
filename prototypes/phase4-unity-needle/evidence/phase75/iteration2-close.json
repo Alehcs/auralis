@@ -1,0 +1,314 @@
+{
+  "science": {
+    "build": "phase75-v1",
+    "engine": "5.1.12",
+    "source": "unity-glb-loaded",
+    "errors": [],
+    "physicalValidation": "not_tested",
+    "placementCount": 0,
+    "layer": "solar",
+    "immersiveAR": false,
+    "secureContext": true,
+    "surfaceGuideState": "hmi-2022-03-29",
+    "surfaceGuideMaps": [
+      "hmi-2022-03-29/bplus",
+      "hmi-2022-03-29/bminus"
+    ],
+    "activeMaps": {
+      "magnetogram": {
+        "name": "hmi-2022-03-29/magnetogram",
+        "sha256": "c6b7fc316ce64e3239a23c46a5a1b68e39126cfb97f7ecd50c1d6a3f5b1443f4",
+        "flipY": false
+      },
+      "bplus": {
+        "name": "hmi-2022-03-29/bplus",
+        "sha256": "6854e78dff106af70c99221d807a70cdfb89901c67a88204a6f4a258bc9e51fc",
+        "flipY": false
+      },
+      "bminus": {
+        "name": "hmi-2022-03-29/bminus",
+        "sha256": "36c1e93f66cbe761b5ff3acc72c67f9f7fb604342569790981c9c4e2ab08f897",
+        "flipY": false
+      },
+      "solar": {
+        "name": "hmi-2022-03-29/solar",
+        "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+        "flipY": false
+      }
+    },
+    "solarActivity": {
+      "id": "hmi-2022-03-29",
+      "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+      "sourceSha256": "cb5a199a4483ea0bb9b4f62053c99f2c7ea035d35b5ecc1ac767987d953503c5",
+      "disk": {
+        "cx": 254.5109428240573,
+        "cy": 255.67528695892747,
+        "radius": 251.48984611569568,
+        "edge_residual_p95_px": 0.7459766796541486,
+        "edge_residual_max_px": 1.0005784744417952,
+        "method": "circle_fit_zero_exterior_filled_support"
+      }
+    },
+    "magnetogramFile": "hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+    "stateId": "hmi-2022-03-29",
+    "observationId": "hmi-2022-03-29-observation",
+    "recordUTC": "2022-03-29T00:00:53.000Z",
+    "SI": 2.057671546936035,
+    "prediction": 1.6834452152252197,
+    "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_no_noise_no_mc",
+    "contractSha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+    "displayGain": 1,
+    "illustrativeMotion": false,
+    "historicalContextSha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+    "historicalEventCount": 6,
+    "stateIndex": 3,
+    "pendingStateIndex": 3,
+    "playing": false,
+    "playDirection": 1,
+    "transitioning": false,
+    "cachedTextures": 20,
+    "temporalChanges": 0,
+    "contextStateId": "hmi-2022-03-29",
+    "selectedEventId": null,
+    "selectedEventPeak": null,
+    "contextMagneticType": "Beta-Gamma",
+    "contextManifestVerified": true,
+    "illustrativeParticleCount": 96,
+    "illustrativeArcades": {
+      "state": "hmi-2022-03-29",
+      "regions": 16,
+      "strands": 224,
+      "anchors": [
+        {
+          "positive": {
+            "x": 269,
+            "y": 173,
+            "value": 1
+          },
+          "negative": {
+            "x": 308,
+            "y": 158,
+            "value": 0.9355294117647058
+          }
+        },
+        {
+          "positive": {
+            "x": 218,
+            "y": 176,
+            "value": 0.7554509803921567
+          },
+          "negative": {
+            "x": 209,
+            "y": 167,
+            "value": 0.5794509803921568
+          }
+        },
+        {
+          "positive": {
+            "x": 470,
+            "y": 326,
+            "value": 0.5157647058823529
+          },
+          "negative": {
+            "x": 458,
+            "y": 311,
+            "value": 0.9171764705882353
+          }
+        },
+        {
+          "positive": {
+            "x": 209,
+            "y": 314,
+            "value": 0.41239215686274505
+          },
+          "negative": {
+            "x": 209,
+            "y": 323,
+            "value": 0.26588235294117646
+          }
+        },
+        {
+          "positive": {
+            "x": 140,
+            "y": 200,
+            "value": 0.4114509803921568
+          },
+          "negative": {
+            "x": 152,
+            "y": 194,
+            "value": 0.36690196078431386
+          }
+        },
+        {
+          "positive": {
+            "x": 152,
+            "y": 146,
+            "value": 0.41050980392156866
+          },
+          "negative": {
+            "x": 167,
+            "y": 143,
+            "value": 0.4194509803921569
+          }
+        },
+        {
+          "positive": {
+            "x": 296,
+            "y": 320,
+            "value": 0.31921568627450986
+          },
+          "negative": {
+            "x": 290,
+            "y": 314,
+            "value": 0.5745882352941175
+          }
+        },
+        {
+          "positive": {
+            "x": 416,
+            "y": 299,
+            "value": 0.28062745098039216
+          },
+          "negative": {
+            "x": 458,
+            "y": 311,
+            "value": 0.9171764705882353
+          }
+        },
+        {
+          "positive": {
+            "x": 458,
+            "y": 356,
+            "value": 0.22556862745098033
+          },
+          "negative": {
+            "x": 458,
+            "y": 311,
+            "value": 0.9171764705882353
+          }
+        },
+        {
+          "positive": {
+            "x": 110,
+            "y": 173,
+            "value": 0.21082352941176466
+          },
+          "negative": {
+            "x": 152,
+            "y": 194,
+            "value": 0.36690196078431386
+          }
+        },
+        {
+          "positive": {
+            "x": 131,
+            "y": 155,
+            "value": 0.16000000000000003
+          },
+          "negative": {
+            "x": 167,
+            "y": 143,
+            "value": 0.4194509803921569
+          }
+        },
+        {
+          "positive": {
+            "x": 338,
+            "y": 305,
+            "value": 0.1589019607843137
+          },
+          "negative": {
+            "x": 305,
+            "y": 290,
+            "value": 0.46682352941176475
+          }
+        },
+        {
+          "positive": {
+            "x": 74,
+            "y": 347,
+            "value": 0.1375686274509804
+          },
+          "negative": {
+            "x": 29,
+            "y": 338,
+            "value": 0.14070588235294118
+          }
+        },
+        {
+          "positive": {
+            "x": 494,
+            "y": 269,
+            "value": 0.1220392156862745
+          },
+          "negative": {
+            "x": 458,
+            "y": 311,
+            "value": 0.9171764705882353
+          }
+        },
+        {
+          "positive": {
+            "x": 320,
+            "y": 83,
+            "value": 0.11952941176470588
+          },
+          "negative": {
+            "x": 305,
+            "y": 140,
+            "value": 0.38478431372549016
+          }
+        },
+        {
+          "positive": {
+            "x": 491,
+            "y": 299,
+            "value": 0.11498039215686275
+          },
+          "negative": {
+            "x": 458,
+            "y": 311,
+            "value": 0.9171764705882353
+          }
+        }
+      ]
+    },
+    "scale": 1,
+    "autoRotate": false,
+    "readyMs": 310,
+    "exportHashVerified": true,
+    "exportEvidence": {
+      "unityVersion": "6000.3.17f1",
+      "exporterVersion": "5.1.12",
+      "timestampUtc": "2026-09-09T18:53:56.3024100Z",
+      "scene": "Assets/Scenes/Phase5Solar.unity",
+      "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+      "sceneSha256": "8280d002027458033377b87fe0866737bf9e43e8bcd71be265a7ad7622236b00",
+      "authoringSha256": "d8a7b8c4b1fad6fd48bc87b1bc70dee5efefd792783e576e214f136dca081346",
+      "stateSha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+      "solarTextureSha256": "6691d9480e6918eb8aba23a6ca7c2a3b3b290d9a1db706d2ae9f2ac3e3a35030",
+      "bytes": 6206672
+    },
+    "status": "ready",
+    "illustrativeTime": 0,
+    "surfaceSeed": 71,
+    "surfaceVisible": true,
+    "surfaceShader": "anchored-hmi-v75",
+    "drawCalls": 4,
+    "triangles": 49666,
+    "renderFrames": 1720,
+    "gpuTextures": 4,
+    "gpuGeometries": 4,
+    "retainedEvents": 9,
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      1.408343819019456e-16,
+      0.5000000000000001,
+      -1.15
+    ],
+    "cameraDistance": 1.15,
+    "orbitEnabled": true,
+    "canvasAttached": true,
+    "engineElements": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "created_utc": "2026-09-06T13:50:59.658336+00:00",
+  "model": "Coronium V3.1",
+  "protocol": "deterministic ONNX CPU, batch 1, four intra-op threads, no noise or MC",
+  "report_sha256": "c999459ca4408e122a23ac736b913244b6238976f55b3a2dcf7230b004aa0fd9",
+  "inputs_sha256": {
+    "data/processed/metadata_processed.csv": "baedaf612234239f044b9240a1e6426e0ac3cc5064a995cda8050eb9db84e11f",
+    "models/best_coronium_v3_1.onnx": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+    "models/coronium_v3_1_manifest.json": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+    "src/processing/model_input.py": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+    "src/processing/observation_time.py": "0e118e06e0e7aac2d6742f2e3e1728de080c8e4b7991e7649d73348e01ea5e75",
+    "models/split_indices_phase1_v1.json": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+    "scripts/select_phase2_history.py": "6d8aafbb0dda20199ea22d32c6c0bbaad9568e5b3eb445c131d254898f57620e"
+  },
+  "environment": {
+    "python": "3.12.7 (main, Jan 27 2026, 21:01:07) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "packages": {
+      "numpy": "1.26.4",
+      "pandas": "3.0.2",
+      "onnxruntime": "1.25.1",
+      "astropy": "7.2.0",
+      "matplotlib": "3.10.8"
+    }
+  },
+  "outputs_sha256": {
+    "selected_magnetograms.png": "455e5a6b8f0845a4f5664bde18607b37c4e47d69b5e077784cfe02b1448524dd",
+    "five_state_windows_up_to_10_days.csv": "bd5b89899467b9d2f18d76e2c62184d0dda5f23785b223b5d37b2761c2d518ff",
+    "recommended_sequence.csv": "4b0035bbdf11228c84c3efc85fe24fcd055893ad473f635a77e4c315dd201619",
+    "candidates.md": "86ec32ff2b149abb1e86d0273a79219f02925d3a59851306cdbaf75bd1f2e170",
+    "README.md": "69d1ecce252ad8565eac652917f6d18f834f80c6cd25bb6bb91acc9de73847f8",
+    "candidates.csv": "eaaf899c18043e25ed0b69bd165e932cb268f2c4aa4ee4370c55fb5504c9488c",
+    "activity_evolution.svg": "f0675ffc2f7ec8e1927d91602ba95eab242d8fbaa2ad304263ccce03be9be0ad",
+    "verification.json": "c384e044fcf408e3b6e1e974a53eb67d39df300e11b2c893ead1d8ec31f48313",
+    "cataloged_mx_events.csv": "93dd83704329ae32f71fd3b022ae670c3fa0b5d738a4dcf763ef9745fae9e2c7",
+    "activity_evolution.png": "deb5dff8e94e1857cf6aa249813cf3585ae73c7736824463e6745b3fc0452a31",
+    "local_inventory.csv": "399316f1a26b5f212b9fe992b0b1c31eef94ba6f983d8412e422a65dce3c94ba"
+  }
+}

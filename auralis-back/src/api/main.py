@@ -21,6 +21,10 @@ from contextlib import asynccontextmanager
 # ---------------------------------------------------------------------------
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from models.train_model import CoroniumV3, ECAAttention  # noqa: E402
+from processing.model_input import prepare_model_input, INPUT_CONTRACT, TARGET_CONTRACT
+from processing.observation_time import filename_time
+from models.active_model import (CHECKPOINT_PATH, ONNX_PATH, MODEL_NAME, MODEL_VERSION,
+                                 METRICS_STATUS, COMPARISON_PATH, MANIFEST_PATH, load_release)
 
 import matplotlib
 matplotlib.use("Agg")
@@ -55,8 +59,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent  # auralis-back/
 DATA_DIR = BASE_DIR / "data" / "processed"
 AIA_DIR = BASE_DIR / "data" / "aia"          # Optional: real AIA 193Å .npy files
 MODELS_DIR = BASE_DIR / "models"
-MODEL_PATH = MODELS_DIR / "best_coronium_v3_pro_augmented.pth"
-ONNX_PATH  = MODELS_DIR / "best_coronium_v3_pro.onnx"
+MODEL_PATH = CHECKPOINT_PATH
 LOG_DIR = BASE_DIR
 EXPERIMENTS_DIR = BASE_DIR / "experiments"
 
@@ -158,39 +161,17 @@ def _get_device() -> torch.device:
 # V3 PRO Preprocessing Helpers
 # ---------------------------------------------------------------------------
 
-def _log_scale(x: np.ndarray) -> np.ndarray:
-    """Symmetric log transform: x' = sign(x) * log(1 + |x|).
-
-    Compresses extreme umbral flux densities (> 2000 G) without discarding
-    them, extending dynamic range by ~1 decade compared to hard clipping.
-    Must mirror ``prepare_dataset.log_scale`` exactly to avoid distribution
-    shift between training and inference.
-    """
-    return np.sign(x) * np.log1p(np.abs(x))
-
-
 def _prepare_tensor(data: np.ndarray, device: torch.device) -> torch.Tensor:
-    """Build a contiguous ``(1, 2, H, W)`` tensor for PyTorch inference.
-
-    Current tensors are already B+/B- split. Legacy single-channel tensors are
-    converted inline so older sample files still work in the demo.
-    """
-    if data.ndim == 2:
-        x = _log_scale(data)
-        b_pos = np.maximum(x, 0.0)
-        b_neg = np.maximum(-x, 0.0)
-        data = np.stack([b_pos, b_neg], axis=0).astype(np.float32)
-    return torch.from_numpy(data).float().unsqueeze(0).contiguous().to(device)
+    """Use the training/evaluation contract, without stochastic augmentation."""
+    return torch.from_numpy(_prepare_numpy(data)).to(device)
 
 
 def _prepare_numpy(data: np.ndarray) -> np.ndarray:
-    """Build a ``(1, 2, H, W)`` float32 NumPy array for ONNX Runtime."""
-    if data.ndim == 2:
-        x = _log_scale(data)
-        b_pos = np.maximum(x, 0.0)
-        b_neg = np.maximum(-x, 0.0)
-        data = np.stack([b_pos, b_neg], axis=0).astype(np.float32)
-    return np.expand_dims(data.astype(np.float32), axis=0)   # (1, 2, H, W)
+    """Use the shared clip400 polarity input contract for ONNX and uploads."""
+    try:
+        return prepare_model_input(data)[None]
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # ---------------------------------------------------------------------------
@@ -213,6 +194,10 @@ def _load_model() -> None:
     """
     global _model, _device, _ort_session, _ort_input_name
 
+    # No legacy fallback: checkpoint, ONNX, metrics and scatter must match.
+    load_release()
+    _predict_cache.clear()
+    _xai_cache.clear()
     _device = _get_device()
     logger.info("Device selected: %s", _device)
 
@@ -227,7 +212,7 @@ def _load_model() -> None:
 
     total_params = sum(p.numel() for p in _model.parameters())
     logger.info(
-        "CoroniumV3 loaded: %s parameters, checkpoint: %s, device: %s",
+        "Coronium V3.1 loaded: %s parameters, checkpoint: %s, device: %s",
         f"{total_params:,}", MODEL_PATH.name, _device,
     )
 
@@ -257,6 +242,11 @@ class ImageListItem(BaseModel):
     filename: str
     date: Optional[str] = None
     size_bytes: int
+    date_original: Optional[str] = None
+    date_scale: Optional[str] = None
+    date_source: str = "filename_record_time"
+    date_utc: Optional[str] = None
+    aia_source: str = "synthetic_hmi_proxy"
 
 
 class ImageListResponse(BaseModel):
@@ -270,10 +260,20 @@ class ClassificationInfo(BaseModel):
     # Legacy API field retained for compatibility. Values are activity-band
     # symbols only and have not been validated against GOES flare classes.
     flare_class: str  # "C" | "M" | "X"
+    interpretation: str = "Historical internal activity bands; not calibrated for V3.1 or GOES flare classes"
     hex_color: str    # "#22c55e" | "#f97316" | "#ef4444"
 
 
 class PredictionResult(BaseModel):
+    model_name: str = MODEL_NAME
+    model_version: str = MODEL_VERSION
+    input_contract: str = INPUT_CONTRACT
+    target_contract: str = TARGET_CONTRACT
+    output_units: str = "percent of original image pixels with abs(B_LOS) > 200 G"
+    model_status: str = "promoted_clean_phase15_checkpoint"
+    prediction_method: str = "single deterministic ONNX eval-mode pass; rounded to 4 decimals"
+    confidence_method: str = "heuristic; not a calibrated probability"
+    uncertainty_method: str = "synthetic input sensitivity; not MC Dropout or a calibrated interval"
     sunspot_index: float
     risk_level: str
     confidence: float
@@ -282,6 +282,16 @@ class PredictionResult(BaseModel):
 
 
 class SystemStats(BaseModel):
+    model_name: str = MODEL_NAME
+    model_version: str = MODEL_VERSION
+    metrics_status: str = METRICS_STATUS
+    evaluation_protocol: str = "MC Dropout T=20, seed=42, batch=32, MPS; not the deterministic API protocol"
+    validation_observations: int = 263
+    observation_overlap: int = 0
+    mape: float
+    serving_deterministic: Dict[str, Any]
+    historical_v3: Dict[str, Any]
+    metric_units: str = "SI percentage points (MAE/RMSE); dimensionless R2"
     total_images: int
     disk_usage_mb: float
     mae: float
@@ -296,6 +306,10 @@ class LogEntry(BaseModel):
 
 
 class HealthResponse(BaseModel):
+    model_name: str = MODEL_NAME
+    model_version: str = MODEL_VERSION
+    checkpoint: str = CHECKPOINT_PATH.name
+    onnx: str = ONNX_PATH.name
     status: str
     version: str
     model_loaded: bool
@@ -311,10 +325,14 @@ class XAIPoint(BaseModel):
 
 
 class XAIFaithfulnessResult(BaseModel):
+    model_name: str = MODEL_NAME
+    model_version: str = MODEL_VERSION
+    evaluation_protocol: str = "single-image deletion; deterministic PyTorch eval; random seed 42"
+    scope: str = "Uncalibrated deletion diagnostic; no significance test or causal-physics claim"
     filename: str
     baseline_prediction: float
     curve: List[XAIPoint]
-    auc_score: float  # (∫random − ∫GradCAM) / 100; positive → faithful saliency.
+    auc_score: float  # Mean normalized random-minus-guided output gap; dimensionless.
 
 
 class ExperimentHyperparams(BaseModel):
@@ -352,6 +370,7 @@ class ExperimentEnvironment(BaseModel):
 
 
 class ExperimentEntry(BaseModel):
+    evidence_status: str = "historical_artifact_not_validation_of_phase1_split"
     run_id: str
     run_name: str
     date: str
@@ -375,6 +394,9 @@ class ModelBenchmark(BaseModel):
 
 
 class BenchmarkResult(BaseModel):
+    metrics_status: str = "historical_runs_not_validated_on_corrected_split"
+    comparison_valid_for_v31: bool = False
+    comparison_note: str = "Historical references with different splits (352 versus 353 rows), leakage and timing protocols; no ranking or relative improvement evidence for V3.1. Reduction fields are legacy arithmetic only."
     baseline: ModelBenchmark
     proposed: ModelBenchmark
     vgg11: Optional[ModelBenchmark] = None
@@ -386,23 +408,13 @@ class BenchmarkResult(BaseModel):
 # Helpers
 # ---------------------------------------------------------------------------
 
-_DATE_PATTERN = re.compile(
-    r"hmi\.m_45s\.(\d{4})\.(\d{2})\.(\d{2})_(\d{2})_(\d{2})_(\d{2})_TAI"
-)
-
-
 def _extract_date(filename: str) -> Optional[str]:
-    """Parse an ISO timestamp from the HMI filename convention."""
-    match = _DATE_PATTERN.search(filename)
-    if not match:
-        return None
-    y, mo, d, h, mi, s = match.groups()
-    return f"{y}-{mo}-{d}T{h}:{mi}:{s}Z"
+    """UTC conversion of the filename's TAI record time; never append Z to TAI."""
+    return filename_time(filename)["date"]
 
 
-# These thresholds are relative to the promoted V3 PRO ONNX output range.
-# They are not general solar-cycle constants. Recalibrate them when the
-# dataset includes quiet solar-minimum years or when a new model is promoted.
+# Historical demo thresholds retained in raw SI units for V3.1.
+# They are not calibrated V3.1 decision boundaries or GOES flare classes.
 def _classify(sunspot_index: float) -> ClassificationInfo:
     """Classify an ONNX prediction using demo-calibrated thresholds."""
     if sunspot_index < 1.41:
@@ -445,7 +457,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Auralis API",
-    version="3.0.0",
+    version="3.1.0",
     lifespan=lifespan,
 )
 
@@ -502,7 +514,7 @@ async def health_check():
     """
     return HealthResponse(
         status="ok",
-        version="3.0.0",
+        version="3.1.0",
         model_loaded=_model is not None and _ort_session is not None,
         device=str(_device) if _device else "none",
     )
@@ -521,7 +533,8 @@ async def list_images():
         items.append(
             ImageListItem(
                 filename=path.name,
-                date=_extract_date(path.name),
+                **filename_time(path.name),
+                aia_source="local_aia_file_unverified" if (AIA_DIR / path.name).exists() else "synthetic_hmi_proxy",
                 size_bytes=path.stat().st_size,
             )
         )
@@ -542,7 +555,7 @@ async def get_image(filename: str):
     data: np.ndarray = np.load(str(filepath))
 
     # V3 PRO tensors are (2, H, W) [B+, B-]; reconstruct signed magnetogram.
-    # B+ − B− recovers the signed log-scaled field: positive = bright, negative = dark.
+    # B+ − B− recovers the signed clip400-normalized field: positive = bright, negative = dark.
     display = (data[0] - data[1]) if data.ndim == 3 else data
 
     # Percentile clipping for high-contrast grayscale (standard HMI style).
@@ -575,7 +588,8 @@ async def predict(filename: str):
     """Run ONNX inference and return the dashboard prediction payload.
 
     The ONNX graph is eval-mode, so uncertainty is simulated with 20 small
-    input-noise passes rather than MC Dropout. Results are cached by filename.
+    input-noise passes for a separate sensitivity diagnostic. The point estimate
+    is one unperturbed eval-mode pass. Results are cached by filename.
     """
     if _ort_session is None:
         raise HTTPException(status_code=503, detail="ONNX model not loaded")
@@ -594,8 +608,8 @@ async def predict(filename: str):
     # ONNX Runtime inference with input-noise uncertainty simulation.
     # The model was exported in eval mode — Dropout layers are frozen at p=0, so
     # repeated passes return identical results.  Uncertainty is approximated by
-    # injecting small Gaussian noise (σ=0.005) per pass, simulating the ~0.5 %
-    # read-noise floor of HMI Level-1.5 magnetograms.
+    # injecting arbitrary Gaussian noise (σ=0.005). This is an illustrative
+    # sensitivity diagnostic, without instrument-noise calibration.
     MC_PASSES = 20
     rng_mc = np.random.default_rng(seed=42)
 
@@ -605,7 +619,8 @@ async def predict(filename: str):
         output = _ort_session.run(None, {_ort_input_name: noisy})
         mc_predictions.append(float(output[0].ravel()[0]))
 
-    sunspot_index = round(float(np.mean(mc_predictions)), 4)
+    deterministic = _ort_session.run(None, {_ort_input_name: input_np})
+    sunspot_index = round(float(deterministic[0].ravel()[0]), 4)
     uncertainty = round(float(np.std(mc_predictions)), 4)
     classification = _classify(sunspot_index)
 
@@ -648,9 +663,11 @@ async def get_aia_image(filename: str):
     hmi_path = DATA_DIR / filename
 
     if aia_path.exists() and aia_path.suffix == ".npy":
+        source = "local_aia_file_unverified"
         raw: np.ndarray = np.load(str(aia_path))
         intensity = (raw - raw.min()) / (raw.max() - raw.min() + 1e-8)
     elif hmi_path.exists() and hmi_path.suffix == ".npy":
+        source = "synthetic_hmi_proxy"
         # Simulation: EUV intensity ∝ |B|, smoothed to mimic diffuse loop structures.
         # V3 PRO data is (2, H, W) — total field strength = B+ + B-.
         data: np.ndarray = np.load(str(hmi_path))
@@ -671,6 +688,9 @@ async def get_aia_image(filename: str):
 
     fig, ax = plt.subplots(figsize=(6, 6), dpi=120)
     ax.imshow(intensity, cmap=aia_cmap, vmin=0, vmax=1, origin="lower")
+    ax.text(0.5, 0.02, "SYNTHETIC HMI PROXY — NOT OBSERVED EUV" if source == "synthetic_hmi_proxy" else "LOCAL AIA FILE — PROVENANCE UNVERIFIED",
+            transform=ax.transAxes, ha="center", fontsize=8, color="white",
+            bbox={"facecolor": "black", "alpha": 0.8, "pad": 4})
     ax.axis("off")
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
@@ -679,7 +699,7 @@ async def get_aia_image(filename: str):
     plt.close(fig)
     buf.seek(0)
 
-    return StreamingResponse(buf, media_type="image/png")
+    return StreamingResponse(buf, media_type="image/png", headers={"X-Auralis-Image-Source": source})
 
 
 # -- Dual-Channel Prediction -----------------------------------------------
@@ -711,7 +731,8 @@ async def predict_dual(filename: str):
         output = _ort_session.run(None, {_ort_input_name: noisy})
         mc_predictions.append(float(output[0].ravel()[0]))
 
-    sunspot_index = round(float(np.mean(mc_predictions)), 4)
+    deterministic = _ort_session.run(None, {_ort_input_name: input_np})
+    sunspot_index = round(float(deterministic[0].ravel()[0]), 4)
     uncertainty = round(float(np.std(mc_predictions)), 4)
     classification = _classify(sunspot_index)
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
@@ -761,7 +782,7 @@ async def explain(filename: str):
     zoom_factor = spatial_h / heatmap.shape[0]
     heatmap_resized = zoom(heatmap, zoom_factor, order=1)
 
-    # Base display: reconstruct signed log-scaled magnetogram from B+ / B-.
+    # Base display: reconstruct signed clip400-normalized magnetogram from B+ / B-.
     display = (data[0] - data[1]) if data.ndim == 3 else data
 
     fig, ax = plt.subplots(figsize=(6, 6), dpi=120)
@@ -796,8 +817,8 @@ async def explain(filename: str):
 async def explain_panels(filename: str):
     """Generate the dashboard's three-panel Grad-CAM figure.
 
-    Channels are used as stored by ``prepare_dataset``; applying another log
-    transform here would change the visual convention used by the research tab.
+    Channels use the same clip400 polarity representation as training;
+    the normalized heatmap is attribution, not a physical field measurement.
     """
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
@@ -843,7 +864,7 @@ async def explain_panels(filename: str):
 
     fig = plt.figure(figsize=(19, 6.5), facecolor=DARK_BG)
     fig.suptitle(
-        f"Grad-CAM  ·  Coronium V3 PRO\n"
+        f"Grad-CAM  ·  Coronium V3.1\n"
         f"Sample: {stem}     "
         f"Prediction (normalized proxy index): {pred_val:+.5f}",
         fontsize=12, color="white", fontweight="bold", y=1.03,
@@ -871,7 +892,7 @@ async def explain_panels(filename: str):
     ax1.set_ylabel("Pixel Y  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
     _style_ax(ax1)
     _style_cbar(fig.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04),
-                "B+ flux  [a.u. log-norm.]")
+                "B+ flux  [a.u. clip400]")
 
     # Panel 2: B− (cool → cyan background, magenta active regions)
     ax2 = fig.add_subplot(gs[1])
@@ -882,7 +903,7 @@ async def explain_panels(filename: str):
     ax2.set_xlabel("Pixel X  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
     _style_ax(ax2)
     _style_cbar(fig.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04),
-                "B- flux  [a.u. log-norm.]")
+                "B- flux  [a.u. clip400]")
 
     # Panel 3: Grad-CAM (jet α=0.55) over |B| grayscale
     ax3 = fig.add_subplot(gs[2])
@@ -965,6 +986,7 @@ async def explain_layers(filename: str):
         results.append({
             "layer": stage_name,
             "activation_pct": activation_pct,
+            "activation_interpretation": "Normalized Grad-CAM maximum capped at 99; not area, probability or validation",
             "image": base64.b64encode(buf.read()).decode(),
         })
 
@@ -1001,6 +1023,9 @@ async def polarity_series(limit: int = 48):
             m = re.search(r'(\d{4})[.\-](\d{2})[.\-](\d{2})', stem)
             date_part = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else stem[:10]
             points.append({"date": date_part,
+                           "date_scale": "TAI" if filename_time(fp.name)["date_scale"] else None,
+                           "date_source": "filename_record_calendar_date",
+                           "date_utc": filename_time(fp.name)["date_utc"],
                            "b_pos": round(b_pos, 4),
                            "b_neg": round(b_neg, 4)})
         except Exception:
@@ -1021,12 +1046,8 @@ async def get_stats():
     disk_bytes = sum(f.stat().st_size for f in npy_files)
     disk_mb = round(disk_bytes / (1024 * 1024), 2)
 
-    # Promoted-run metrics for exp_005 (best_coronium_v3_pro_augmented.pth).
-    # evaluate_final.py: MC Dropout T=20, log-SI space, 353 hold-out samples.
-    # The random_state=42 split keeps extreme events represented in both sets.
-    mae_value  = 0.1048   # MAE log-SI, 353 hold-out samples (seed=42, reproducible)
-    rmse_value = 0.1272   # RMSE log-SI
-    r2_value   = 0.8634   # R²
+    release = load_release()
+    official = release["official_mc_dropout"]["metrics"]
 
     # mtime of the most recently modified .npy as a UTC ISO-8601 timestamp.
     if npy_files:
@@ -1039,9 +1060,12 @@ async def get_stats():
     return SystemStats(
         total_images=total_images,
         disk_usage_mb=disk_mb,
-        mae=mae_value,
-        rmse=rmse_value,
-        r2_score=r2_value,
+        mae=official["mae"],
+        rmse=official["rmse"],
+        r2_score=official["r2"],
+        mape=official["mape"],
+        serving_deterministic=release["serving_deterministic"],
+        historical_v3=release["historical_v3"],
         last_updated=last_updated,
     )
 
@@ -1186,11 +1210,11 @@ async def get_benchmark():
     """
     import json
 
-    # Promoted-run metrics from exp_005_v3pro_augmented.json.
-    # evaluate_final.py: MC Dropout T=20, log-SI space, 353 hold-out samples.
-    # The random_state=42 split keeps extreme events represented in both sets.
-    proposed_mae = 0.1048          # MAE log-SI, 353 hold-out samples (seed=42, reproducible)
-    proposed_rmse = 0.1272         # RMSE log-SI
+    # Historical V3 benchmark only; never substitute V3.1 on this old split.
+    # evaluate_final.py: MC Dropout T=20, SI percentage points space, 353 historical validation rows (with observation leakage).
+    # The historical random_state=42 split shares 145 observations between sets.
+    proposed_mae = 0.1048          # MAE SI percentage points, 353 historical validation rows (with observation leakage) (seed=42, reproducible)
+    proposed_rmse = 0.1272         # RMSE SI percentage points
     proposed_r2 = 0.8634           # R²
     proposed_params = 206_875      # Verified with sum(p.numel() for p in model.parameters()).
     proposed_inference_ms = 25.11  # ONNX Runtime CPU — 25.11 ms (1.11× vs PyTorch 27.90 ms)
@@ -1253,7 +1277,7 @@ async def get_benchmark():
             inference_ms=baseline_inference_ms,
         ),
         proposed=ModelBenchmark(
-            name="Coronium V3 PRO",
+            name="Coronium V3 PRO (historical)",
             parameters=proposed_params,
             mae=proposed_mae,
             rmse=proposed_rmse,
@@ -1305,23 +1329,36 @@ async def get_experiment_metadata(filename: str):
 
 
 @app.get("/api/results-comparison")
-async def get_results_comparison():
-    """Serve the evaluation CSV used by the predicted-vs-actual scatter plot."""
+async def get_results_comparison(protocol: str = "mc"):
+    """Serve one explicitly selected V3.1 protocol; keep MC as the compatible default."""
     import csv
-    csv_path = BASE_DIR / "reports" / "results_comparison.csv"
+    import hashlib
+    import json
+    if protocol not in ("mc", "deterministic"):
+        raise HTTPException(status_code=422, detail="protocol must be mc or deterministic")
+    csv_path = (COMPARISON_PATH if protocol == "mc" else
+                BASE_DIR / "reports/phase16_coronium_v3_1/coronium_v3_1_deterministic_predictions.csv")
     if not csv_path.exists():
         raise HTTPException(
             status_code=404,
-            detail="results_comparison.csv not found. Run evaluate_final.py first.",
+            detail="Coronium V3.1 evaluation CSV not found. Check the release manifest.",
         )
+    manifest = json.loads(MANIFEST_PATH.read_text())
+    if hashlib.sha256(csv_path.read_bytes()).hexdigest() != manifest["artifacts_sha256"][str(csv_path.relative_to(BASE_DIR))]:
+        raise HTTPException(status_code=503, detail="Evaluation artifact hash mismatch")
     points = []
     with open(csv_path, newline="", encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
+            real = float(row["Real_SSN"] if protocol == "mc" else row["target_si"])
+            predicted = float(row["Predicted_SSN"] if protocol == "mc" else row["onnx_si"])
             points.append({
-                "real":      float(row["Real_SSN"]),
-                "predicted": float(row["Predicted_SSN"]),
-                "error":     float(row["Error_Absoluto"]),
+                "model_version": MODEL_VERSION,
+                "evaluation_protocol": ("MC Dropout T=20; MPS; batch=32; seed=42" if protocol == "mc" else "deterministic ONNX; CPU; batch=1") + "; clean validation used for selection",
+                "units": "SI percent; errors in SI percentage points",
+                "real": real,
+                "predicted": predicted,
+                "error": abs(predicted - real),
             })
     return points
 
@@ -1409,7 +1446,8 @@ async def predict_upload(file: UploadFile = File(...)):
         output = _ort_session.run(None, {_ort_input_name: noisy})
         mc_predictions.append(float(output[0].ravel()[0]))
 
-    sunspot_index = round(float(np.mean(mc_predictions)), 4)
+    deterministic = _ort_session.run(None, {_ort_input_name: input_np})
+    sunspot_index = round(float(deterministic[0].ravel()[0]), 4)
     uncertainty   = round(float(np.std(mc_predictions)), 4)
     classification = _classify(sunspot_index)
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
@@ -1469,7 +1507,7 @@ async def explain_panels_upload(file: UploadFile = File(...)):
     DARK_BG = "#0d0d0d"
     fig = plt.figure(figsize=(19, 6.5), facecolor=DARK_BG)
     fig.suptitle(
-        f"Grad-CAM  ·  Coronium V3 PRO  ·  [Black Box Upload]\n"
+        f"Grad-CAM  ·  Coronium V3.1  ·  [Black Box Upload]\n"
         f"Prediction (normalized proxy index): {pred_val:+.5f}",
         fontsize=12, color="white", fontweight="bold", y=1.03,
     )
@@ -1495,7 +1533,7 @@ async def explain_panels_upload(file: UploadFile = File(...)):
     ax1.set_ylabel("Pixel Y  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
     _style_ax(ax1)
     _style_cbar(fig.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04),
-                "B+ flux  [a.u. log-norm.]")
+                "B+ flux  [a.u. clip400]")
 
     ax2 = fig.add_subplot(gs[1])
     im2 = ax2.imshow(b_neg, cmap="cool", origin="lower", aspect="equal",
@@ -1505,7 +1543,7 @@ async def explain_panels_upload(file: UploadFile = File(...)):
     ax2.set_xlabel("Pixel X  [HMI Level-1.5]", color="#aaaaaa", fontsize=8)
     _style_ax(ax2)
     _style_cbar(fig.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04),
-                "B- flux  [a.u. log-norm.]")
+                "B- flux  [a.u. clip400]")
 
     ax3 = fig.add_subplot(gs[2])
     ax3.imshow(b_mag_norm, cmap="gray", origin="lower", aspect="equal",

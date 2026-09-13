@@ -1,0 +1,11 @@
+{
+  "prototypes/phase4-unity-needle/evidence/phase71/revision2/surface-particles.mp4": "cf48aa5442122232c5c79bb33612b67ce86aee1b46c35c94c5c64429146d5bb7",
+  "prototypes/phase4-unity-needle/evidence/phase71/revision2/surface-particles.webm": "6666edcb6f6c06da94d20164255be29f62566495d9179462a4a611df100423a3",
+  "prototypes/phase4-unity-needle/evidence/phase71/revision2/verification.json": "374cce1d5f149534a72ea1b47a61700dd01920fc09fdd7e326f656d09ad30dfe",
+  "docs/phase71.md": "443d3221d635c70f2e0e7b0c65bab4a08970d54bd5116ff1ca02d5a926eb0435",
+  "prototypes/phase4-unity-needle/web/src/phase5/main.ts": "1393459635aec46b6108a732c2fa3c82fd25a7dbfbc93fa94cbc332960f89244",
+  "prototypes/phase4-unity-needle/web/src/phase5/visual-materials.ts": "b11c19debe1dcb6152639a603d96efcc70d050087037e8c970ff38baa1a6f699",
+  "prototypes/phase4-unity-needle/web/src/phase6/surface-particles.ts": "f69143644125ed0bda7658a96f7eeb824a3cbe90e9f0bc43fb172edbdebf3b8c",
+  "prototypes/phase4-unity-needle/web/src/phase6/surface-shader.ts": "f19743f678a319b46b7baa9824db3b8c35e0b20a3f6cf56da086ce85e459498f",
+  "prototypes/phase4-unity-needle/web/tests/phase71.test.mjs": "7fb9683e8673047a63ceae450d28f0612efe87ea44ace3c3587c0c27fe1b0867"
+}

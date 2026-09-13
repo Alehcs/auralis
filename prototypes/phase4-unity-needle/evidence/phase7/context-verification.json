@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "source": "frozen Phase2/3 only",
+  "states": 5,
+  "events": 6,
+  "source_snapshots": 10,
+  "protected_files_unchanged": 1521,
+  "x13_seconds_after_state5": 63367,
+  "output_hashes": {
+    "sources/20220324SRS.txt": "9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91d",
+    "sources/harp_mapping_attempt_0.txt": "e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f",
+    "sources/20220325SRS.txt": "a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ff",
+    "sources/20220328SRS.txt": "e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2b",
+    "sources/20220329SRS.txt": "e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225c",
+    "sources/20220330SRS.txt": "d6f1477902dfed7836f11db7bd728264d7d4d6dd020bdcae27c332fb08ea5969",
+    "sources/20220328events.txt": "afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0",
+    "sources/20220329events.txt": "ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686",
+    "sources/20220330events.txt": "c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe",
+    "sources/20220331events.txt": "8f10d524d36da91c5c8c3028da87e5314fe8c61d16e7a2912ec990be4636a318",
+    "context.json": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+    "context-evidence.json": "ca5c8ca37ced345e00fb2c9c36a80c05b0532c020972aa0b348ec6dc51b16094"
+  }
+}

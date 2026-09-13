@@ -1,0 +1,34 @@
+{
+  "name": "com.needle.engine-exporter",
+  "version": "5.1.12",
+  "unity": "2021.3",
+  "npm": {
+    "@needle-tools/engine": "5.1.12",
+    "three": "npm:@needle-tools/three@0.169.19",
+    "@types/three": "0.169.0",
+    "@needle-tools/helper": "2.0.0",
+    "@needle-tools/editor-sync": "3.0.x",
+    "@needle-tools/needle-component-compiler": "version-3",
+    "@needle-tools/gltf-build-pipeline": "3.0.1"
+  },
+  "dependencies": {
+    "org.khronos.unitygltf": "2.19.5",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
+    "com.unity.shadergraph": "10.8.0",
+    "com.unity.timeline": "1.5.7",
+    "com.unity.test-framework": "1.1.31",
+    "com.unity.nuget.newtonsoft-json": "3.0.1",
+    "com.unity.sharp-zip-lib": "1.3.2-preview",
+    "com.unity.cloud.draco": "5.2.0",
+    "com.unity.cloud.ktx": "3.5.0",
+    "com.unity.meshopt.decompress": "0.1.0-preview.7"
+  },
+  "dist": {
+    "integrity": "sha512-4NqmdCgzLq7DauJYI0kznfCcty2yi1MkSmTEasaYhh5T7sKvsQ2KOP7+ANrVA1kfeJCVxTK2GLzPneJHoJ6sDQ==",
+    "shasum": "e51b14bb4b3289f0b2d17ecea303953adede6a5d",
+    "tarball": "https://packages.needle.tools/com.needle.engine-exporter/-/com.needle.engine-exporter-5.1.12.tgz"
+  }
+}

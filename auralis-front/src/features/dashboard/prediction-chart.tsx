@@ -53,8 +53,9 @@ export function PredictionChart() {
       .then((res) => {
         const counts: Record<string, number> = {};
         for (const img of res.images) {
-          if (img.date) {
-            const year = img.date.substring(0, 4);
+          const catalogDate = img.date ?? img.date_original;
+          if (catalogDate) {
+            const year = catalogDate.substring(0, 4);
             counts[year] = (counts[year] || 0) + 1;
           }
         }

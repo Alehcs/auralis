@@ -1,0 +1,1202 @@
+{
+  "asset": {
+    "generator": "Needle Engine Unity Integration 5.1.12",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "NEEDLE_gameobject_data",
+    "KHR_materials_unlit",
+    "KHR_texture_transform",
+    "NEEDLE_progressive_mesh_settings",
+    "NEEDLE_components",
+    "EXT_texture_exr",
+    "NEEDLE_lightmaps",
+    "NEEDLE_lighting_settings"
+  ],
+  "extensionsRequired": [
+    "KHR_materials_unlit"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Phase5Solar.glb"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 6321,
+      "type": "VEC3",
+      "max": [
+        0.41999998688697815,
+        0.41999998688697815,
+        1.8358782938321383e-08
+      ],
+      "min": [
+        -0.41999998688697815,
+        -0.41999998688697815,
+        -0.41999998688697815
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 6321,
+      "type": "VEC3",
+      "max": [
+        0.9998326301574707,
+        0.9998326897621155,
+        0.0
+      ],
+      "min": [
+        -0.999565064907074,
+        -0.9998326897621155,
+        -0.9998660683631897
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 6321,
+      "type": "VEC2",
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 36864,
+      "type": "SCALAR",
+      "max": [
+        6320.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 6321,
+      "type": "VEC3",
+      "max": [
+        0.41999998688697815,
+        0.41999998688697815,
+        0.41999998688697815
+      ],
+      "min": [
+        -0.41999998688697815,
+        -0.41999998688697815,
+        -1.8358782938321383e-08
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 6321,
+      "type": "VEC3",
+      "max": [
+        0.9998326301574707,
+        0.9998326897621155,
+        0.9998660683631897
+      ],
+      "min": [
+        -0.999565064907074,
+        -0.9998326897621155,
+        0.0
+      ]
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5126,
+      "count": 6321,
+      "type": "VEC2",
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "bufferView": 8,
+      "componentType": 5123,
+      "count": 36864,
+      "type": "SCALAR",
+      "max": [
+        6320.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 10,
+      "componentType": 5126,
+      "count": 4,
+      "type": "VEC3",
+      "max": [
+        0.5,
+        0.5,
+        3.0616168005906746e-17
+      ],
+      "min": [
+        -0.5,
+        -0.5,
+        -3.0616168005906746e-17
+      ]
+    },
+    {
+      "bufferView": 11,
+      "componentType": 5126,
+      "count": 4,
+      "type": "VEC3",
+      "max": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "min": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 12,
+      "componentType": 5126,
+      "count": 4,
+      "type": "VEC4",
+      "max": [
+        -1.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 13,
+      "componentType": 5126,
+      "count": 4,
+      "type": "VEC2",
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "bufferView": 14,
+      "componentType": 5121,
+      "count": 6,
+      "type": "SCALAR",
+      "max": [
+        3.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 2469056
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 75852,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 75852,
+      "byteLength": 75852,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 151704,
+      "byteLength": 50568,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 202272,
+      "byteLength": 73728,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 276000,
+      "byteLength": 1333788
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1609788,
+      "byteLength": 75852,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1685640,
+      "byteLength": 75852,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1761492,
+      "byteLength": 50568,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1812060,
+      "byteLength": 73728,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1885788,
+      "byteLength": 14068
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1899856,
+      "byteLength": 48,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1899904,
+      "byteLength": 48,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1899952,
+      "byteLength": 64,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1900016,
+      "byteLength": 32,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1900048,
+      "byteLength": 8,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1900056,
+      "byteLength": 9700
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1909756,
+      "byteLength": 172408
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 2082164,
+      "byteLength": 159520
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 2241684,
+      "byteLength": 154608
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 2396292,
+      "byteLength": 72764
+    }
+  ],
+  "cameras": [
+    {
+      "perspective": {
+        "aspectRatio": 1.3333333730697632,
+        "yfov": 0.6283185482025146,
+        "zfar": 29.998048782348633,
+        "znear": 0.019999999552965164
+      },
+      "type": "perspective",
+      "name": "Phase5 Camera"
+    }
+  ],
+  "images": [
+    {
+      "mimeType": "image/jpeg",
+      "bufferView": 4,
+      "name": "solar-illustration"
+    },
+    {
+      "mimeType": "image/png",
+      "bufferView": 9,
+      "name": "no-data-label"
+    },
+    {
+      "mimeType": "image/png",
+      "bufferView": 15,
+      "name": "corona-illustration"
+    },
+    {
+      "mimeType": "image/png",
+      "bufferView": 16,
+      "name": "magnetogram"
+    },
+    {
+      "mimeType": "image/png",
+      "bufferView": 17,
+      "name": "bplus"
+    },
+    {
+      "mimeType": "image/png",
+      "bufferView": 18,
+      "name": "bminus"
+    },
+    {
+      "mimeType": "image/exr",
+      "bufferView": 19,
+      "name": "Skybox"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "name": "SolarUnlit",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "name": "NoData",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "alphaMode": "BLEND",
+      "name": "CoronaUnlit",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "alphaMode": "BLEND",
+      "name": "Data_magnetogram",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 4,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "alphaMode": "BLEND",
+      "name": "Data_bplus",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 5,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "alphaMode": "BLEND",
+      "name": "Data_bminus",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "name": "ReferenceNoData",
+      "extensions": {
+        "KHR_materials_unlit": {}
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        }
+      ],
+      "name": "IllustrativeFront",
+      "extensions": {
+        "NEEDLE_progressive_mesh_settings": {
+          "guid": "4300000_63bee11b16ea24b5e8b50d3be717b22d",
+          "generateLods": true
+        }
+      }
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1
+        }
+      ],
+      "name": "UnobservedBack",
+      "extensions": {
+        "NEEDLE_progressive_mesh_settings": {
+          "guid": "4300000_8af557b4404e747f28258ed2ea68a77e",
+          "generateLods": true
+        }
+      }
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 8,
+            "NORMAL": 9,
+            "TANGENT": 10,
+            "TEXCOORD_0": 11
+          },
+          "indices": 12,
+          "material": 2
+        }
+      ],
+      "name": "SubtleCorona"
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 8,
+            "NORMAL": 9,
+            "TANGENT": 10,
+            "TEXCOORD_0": 11
+          },
+          "indices": 12,
+          "material": 3
+        }
+      ],
+      "name": "Layer_magnetogram"
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 8,
+            "NORMAL": 9,
+            "TANGENT": 10,
+            "TEXCOORD_0": 11
+          },
+          "indices": 12,
+          "material": 4
+        }
+      ],
+      "name": "Layer_bplus"
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 8,
+            "NORMAL": 9,
+            "TANGENT": 10,
+            "TEXCOORD_0": 11
+          },
+          "indices": 12,
+          "material": 5
+        }
+      ],
+      "name": "Layer_bminus"
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 8,
+            "NORMAL": 9,
+            "TANGENT": 10,
+            "TEXCOORD_0": 11
+          },
+          "indices": 12,
+          "material": 6
+        }
+      ],
+      "name": "ReferenceBack"
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1,
+        2,
+        12
+      ],
+      "name": "Phase5Solar",
+      "extensions": {
+        "NEEDLE_gameobject_data": {
+          "guid": "2078263138"
+        }
+      }
+    },
+    {
+      "name": "NeedleExport",
+      "extensions": {
+        "NEEDLE_gameobject_data": {
+          "guid": "1912603091"
+        }
+      }
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "Phase5Placement",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "WebARSessionRoot",
+              "guid": "1828999143",
+              "destroyCancellationToken": {
+                "isCancellationRequested": false,
+                "canBeCanceled": true,
+                "waitHandle": {
+                  "safeWaitHandle": {
+                    "isInvalid": false,
+                    "isClosed": false
+                  }
+                }
+              },
+              "didStart": false,
+              "didAwake": false,
+              "enabled": true,
+              "transformHandle": null
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "guid": "1828999142"
+        }
+      }
+    },
+    {
+      "children": [
+        4,
+        8,
+        9,
+        10,
+        11
+      ],
+      "translation": [
+        0.0,
+        0.5,
+        0.0
+      ],
+      "name": "SolarState",
+      "extensions": {
+        "NEEDLE_gameobject_data": {
+          "guid": "722639034"
+        }
+      }
+    },
+    {
+      "children": [
+        5,
+        6,
+        7
+      ],
+      "name": "SolarIllustration",
+      "extensions": {
+        "NEEDLE_gameobject_data": {
+          "guid": "581271167"
+        }
+      }
+    },
+    {
+      "mesh": 0,
+      "name": "IllustrativeFront",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "1381611598",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/0"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "guid": "1381611597"
+        }
+      }
+    },
+    {
+      "mesh": 1,
+      "name": "UnobservedBack",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "1296134702",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/1"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "guid": "1296134701"
+        }
+      }
+    },
+    {
+      "mesh": 2,
+      "scale": [
+        0.943820238,
+        0.943820238,
+        0.943820238
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.015
+      ],
+      "name": "SubtleCorona",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "1276687585",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/2"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "guid": "1276687584"
+        }
+      }
+    },
+    {
+      "mesh": 3,
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "name": "Layer_magnetogram",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "944310459",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/3"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "activeSelf": false,
+          "guid": "944310458"
+        }
+      }
+    },
+    {
+      "mesh": 4,
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "name": "Layer_bplus",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "35894430",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/4"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "activeSelf": false,
+          "guid": "35894429"
+        }
+      }
+    },
+    {
+      "mesh": 5,
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "name": "Layer_bminus",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "950484985",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/5"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "activeSelf": false,
+          "guid": "950484984"
+        }
+      }
+    },
+    {
+      "mesh": 6,
+      "rotation": [
+        0.0,
+        -1.0,
+        0.0,
+        -4.371139e-08
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.002
+      ],
+      "name": "ReferenceBack",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "MeshRenderer",
+              "guid": "1611826915",
+              "enabled": true,
+              "shadowCastingMode": 1,
+              "receiveShadows": true,
+              "reflectionProbeUsage": 1,
+              "allowOcclusionWhenDynamic": true,
+              "probeAnchor": null,
+              "lightmapIndex": -1,
+              "lightmapScaleOffset": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "sharedMaterials": [
+                "/materials/6"
+              ],
+              "enableInstancing": [
+                false
+              ],
+              "renderOrder": [
+                0
+              ]
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "activeSelf": false,
+          "guid": "1611826914"
+        }
+      }
+    },
+    {
+      "camera": 0,
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "translation": [
+        0.0,
+        0.5,
+        -2.0
+      ],
+      "name": "Phase5 Camera",
+      "extensions": {
+        "NEEDLE_components": {
+          "builtin_components": [
+            {
+              "name": "Camera",
+              "guid": "452203679",
+              "nearClipPlane": 0.02,
+              "farClipPlane": 30.0,
+              "fieldOfView": 36.0,
+              "aspect": 1.33333337,
+              "cullingMask": -1,
+              "backgroundColor": {
+                "r": 0.00193498458,
+                "g": 0.00232198136,
+                "b": 0.00309597515,
+                "a": 0.0
+              },
+              "clearFlags": 2,
+              "targetTexture": null,
+              "enabled": true
+            },
+            {
+              "name": "OrbitControls",
+              "guid": "452203678",
+              "autoTarget": false,
+              "autoFit": false,
+              "enableRotate": true,
+              "autoRotate": false,
+              "autoRotateSpeed": 0.2,
+              "minPolarAngle": 0.0,
+              "maxPolarAngle": 3.14159274,
+              "minAzimuthAngle": -6.28318453,
+              "maxAzimuthAngle": 6.28318548,
+              "enableZoom": true,
+              "minZoom": 0.1,
+              "maxZoom": 500.0,
+              "zoomSpeed": 1.0,
+              "zoomToCursor": false,
+              "enablePan": true,
+              "enableDamping": true,
+              "dampingFactor": 0.1,
+              "targetLerpDuration": 1.0,
+              "enableKeys": false,
+              "middleClickToFocus": true,
+              "doubleClickToFocus": true,
+              "clickBackgroundToFitScene": 2,
+              "allowInterrupt": true,
+              "lookAtTarget": "/nodes/3",
+              "lockLookAtTarget": true,
+              "targetBounds": null,
+              "destroyCancellationToken": {
+                "isCancellationRequested": false,
+                "canBeCanceled": true,
+                "waitHandle": {
+                  "safeWaitHandle": {
+                    "isInvalid": false,
+                    "isClosed": false
+                  }
+                }
+              },
+              "didStart": false,
+              "didAwake": true,
+              "enabled": true,
+              "transformHandle": null,
+              "lookAtConstraint": null
+            }
+          ]
+        },
+        "NEEDLE_gameobject_data": {
+          "tag": "MainCamera",
+          "guid": "452203680"
+        }
+      }
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987,
+      "wrapS": 33071,
+      "wrapT": 33071
+    },
+    {
+      "minFilter": 9729,
+      "wrapS": 33071,
+      "wrapT": 33071
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "solar-illustration"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "no-data-label"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "corona-illustration"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "magnetogram"
+    },
+    {
+      "sampler": 0,
+      "source": 4,
+      "name": "bplus"
+    },
+    {
+      "sampler": 0,
+      "source": 5,
+      "name": "bminus"
+    },
+    {
+      "sampler": 1,
+      "source": 6,
+      "name": "Skybox",
+      "extensions": {
+        "EXT_texture_exr": {
+          "source": 6
+        }
+      }
+    }
+  ],
+  "extensions": {
+    "NEEDLE_lightmaps": {
+      "textures": [
+        {
+          "pointer": "/textures/6",
+          "type": 1,
+          "index": 0
+        }
+      ]
+    },
+    "NEEDLE_lighting_settings": {
+      "ambientMode": 0,
+      "ambientLight": [
+        0.212,
+        0.227,
+        0.259,
+        1.0
+      ],
+      "ambientIntensity": 1.0,
+      "environmentReflectionSource": 0
+    }
+  }
+}

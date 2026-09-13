@@ -1,0 +1,36 @@
+{
+  "health": {
+    "model_name": "Coronium V3.1",
+    "model_version": "3.1",
+    "checkpoint": "best_coronium_v3_1.pth",
+    "onnx": "best_coronium_v3_1.onnx",
+    "status": "ok",
+    "version": "3.1.0",
+    "model_loaded": true,
+    "device": "mps"
+  },
+  "sample": "hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy",
+  "prediction": {
+    "model_name": "Coronium V3.1",
+    "model_version": "3.1",
+    "input_contract": "hmi-clip400-polarity-v1",
+    "target_contract": "strong-field-pixel-percent-200G-v1",
+    "output_units": "percent of original image pixels with abs(B_LOS) > 200 G",
+    "model_status": "promoted_clean_phase15_checkpoint",
+    "prediction_method": "single deterministic ONNX eval-mode pass; rounded to 4 decimals",
+    "confidence_method": "heuristic; not a calibrated probability",
+    "uncertainty_method": "synthetic input sensitivity; not MC Dropout or a calibrated interval",
+    "sunspot_index": 1.3676,
+    "risk_level": "Low",
+    "confidence": 0.99,
+    "uncertainty": 0.0004,
+    "classification": {
+      "level": "Low",
+      "label": "Low / Normal Activity",
+      "flare_class": "C",
+      "interpretation": "Historical internal activity bands; not calibrated for V3.1 or GOES flare classes",
+      "hex_color": "#22c55e"
+    }
+  },
+  "v3_1_experiment_registered": true
+}

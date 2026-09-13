@@ -1,0 +1,47 @@
+2026-09-05 23:03:58,170 - models.train_model - INFO - Dataset loaded: 1763 samples
+2026-09-05 23:03:58,171 - models.train_model - INFO - Sunspot index range: [1.220, 2.979]
+test_all_real_inputs_match_training_evaluation_and_api (test_phase1.Phase1Tests.test_all_real_inputs_match_training_evaluation_and_api) ... 2026-09-05 23:04:11,307 - models.train_model - INFO - Dataset loaded: 1763 samples
+2026-09-05 23:04:11,308 - models.train_model - INFO - Sunspot index range: [1.220, 2.979]
+ok
+test_checkpoint_and_onnx_parity (test_phase1.Phase1Tests.test_checkpoint_and_onnx_parity) ... 2026-09-05 23:04:13,110 - auralis.api - INFO - Prediction for hmi.m_45s.2016.02.03_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.5412, uncertainty=0.0005, class=M, confidence=0.99
+2026-09-05 23:04:14,365 - auralis.api - INFO - Black-box upload: sunspot_index=1.5412, uncertainty=0.0005, class=M
+ok
+test_conflicting_duplicates_and_changed_csv_rejected (test_phase1.Phase1Tests.test_conflicting_duplicates_and_changed_csv_rejected) ... ok
+test_demo_labels_and_catalog (test_phase1.Phase1Tests.test_demo_labels_and_catalog) ... ok
+test_evaluation_does_not_validate_old_weights_on_new_split_by_default (test_phase1.Phase1Tests.test_evaluation_does_not_validate_old_weights_on_new_split_by_default) ... usage: evaluate_final.py [-h] [--legacy-reproduction] [--run-dir RUN_DIR]
+                         [--output-dir OUTPUT_DIR]
+evaluate_final.py: error: Retraining required: use --run-dir; --legacy-reproduction is diagnostic only
+ok
+test_existing_checkpoint_and_report_cannot_be_replaced (test_phase1.Phase1Tests.test_existing_checkpoint_and_report_cannot_be_replaced) ... ok
+test_http_lifecycle_schemas_and_gradcam (test_phase1.Phase1Tests.test_http_lifecycle_schemas_and_gradcam) ... 2026-09-05 23:04:15,459 - auralis.api - INFO - Device selected: cpu
+2026-09-05 23:04:15,466 - auralis.api - INFO - Coronium V3.1 loaded: 206,875 parameters, checkpoint: best_coronium_v3_1.pth, device: cpu
+2026-09-05 23:04:15,469 - auralis.api - INFO - ONNX Runtime session ready: best_coronium_v3_1.onnx
+2026-09-05 23:04:15,481 - httpx - INFO - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2026-09-05 23:04:15,510 - httpx - INFO - HTTP Request: GET http://testserver/api/images/list "HTTP/1.1 200 OK"
+2026-09-05 23:04:15,529 - httpx - INFO - HTTP Request: GET http://testserver/api/stats "HTTP/1.1 200 OK"
+2026-09-05 23:04:16,226 - auralis.api - INFO - Prediction for hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy: sunspot_index=1.4577, uncertainty=0.0005, class=M, confidence=0.99
+2026-09-05 23:04:16,226 - httpx - INFO - HTTP Request: GET http://testserver/api/predict/hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy "HTTP/1.1 200 OK"
+2026-09-05 23:04:16,617 - auralis.api - INFO - Multi-layer Grad-CAM generated for hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy
+2026-09-05 23:04:16,619 - httpx - INFO - HTTP Request: GET http://testserver/api/explain-layers/hmi.m_45s.2026.04.12_00_01_30_TAI.magnetogram_processed.npy "HTTP/1.1 200 OK"
+2026-09-05 23:04:16,625 - httpx - INFO - HTTP Request: POST http://testserver/api/predict-upload "HTTP/1.1 422 Unprocessable Entity"
+2026-09-05 23:04:16,625 - auralis.api - INFO - Shutting down Auralis API
+ok
+test_input_rejects_wrong_representation (test_phase1.Phase1Tests.test_input_rejects_wrong_representation) ... ok
+test_new_fits_preparation_raw_si_and_time_scale (test_phase1.Phase1Tests.test_new_fits_preparation_raw_si_and_time_scale) ... 2026-09-05 23:04:17,192 - predict - INFO - Preprocessing: fixture.fits
+2026-09-05 23:04:17,192 - predict - INFO -   Original shape: (2, 2)  |  range: [-201.00, 201.00] G
+2026-09-05 23:04:17,196 - predict - INFO -   Output tensor shape: (1, 2, 512, 512)
+ok
+test_no_astropy_never_labels_tai_as_utc (test_phase1.Phase1Tests.test_no_astropy_never_labels_tai_as_utc) ... ok
+test_preserved_scientific_artifacts_and_npy_hashes (test_phase1.Phase1Tests.test_preserved_scientific_artifacts_and_npy_hashes) ... ok
+test_split_zero_overlap_and_reproducible_deduplication (test_phase1.Phase1Tests.test_split_zero_overlap_and_reproducible_deduplication) ... ok
+test_tai_utc_leap_seconds_and_original_preserved (test_phase1.Phase1Tests.test_tai_utc_leap_seconds_and_original_preserved) ... ok
+test_nonfinite_epoch_stops (test_phase15.Phase15Tests.test_nonfinite_epoch_stops) ... Validation (MC):   0%|          | 0/1 [00:00<?, ?it/s]                                                      ok
+test_partial_batch_is_weighted_by_samples_train_and_validation (test_phase15.Phase15Tests.test_partial_batch_is_weighted_by_samples_train_and_validation) ... Training:   0%|          | 0/2 [00:00<?, ?it/s]                                               Validation (MC):   0%|          | 0/2 [00:00<?, ?it/s]                                                      ok
+test_export_refuses_existing_graph_and_external_data (test_phase16.Phase16Tests.test_export_refuses_existing_graph_and_external_data) ... ok
+test_mixed_or_corrupt_onnx_is_rejected (test_phase16.Phase16Tests.test_mixed_or_corrupt_onnx_is_rejected) ... ok
+test_release_declares_distinct_evaluation_protocols (test_phase16.Phase16Tests.test_release_declares_distinct_evaluation_protocols) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 19.592s
+
+OK

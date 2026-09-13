@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "protected_files_unchanged": 1497,
+  "states": [
+    {
+      "id": "hmi-2022-03-24",
+      "nonzero_activity_texels": 136775,
+      "back_exactly_unchanged": true,
+      "disk": {
+        "cx": 254.52896925442693,
+        "cy": 255.61954700927532,
+        "radius": 251.86649148061207,
+        "edge_residual_p95_px": 0.6691667877682816,
+        "edge_residual_max_px": 0.9368520376172285,
+        "method": "circle_fit_zero_exterior_filled_support"
+      }
+    },
+    {
+      "id": "hmi-2022-03-25",
+      "nonzero_activity_texels": 140724,
+      "back_exactly_unchanged": true,
+      "disk": {
+        "cx": 254.52720364531197,
+        "cy": 255.62194198603584,
+        "radius": 251.79280886475968,
+        "edge_residual_p95_px": 0.670592718300344,
+        "edge_residual_max_px": 0.9521477503010374,
+        "method": "circle_fit_zero_exterior_filled_support"
+      }
+    },
+    {
+      "id": "hmi-2022-03-28",
+      "nonzero_activity_texels": 171355,
+      "back_exactly_unchanged": true,
+      "disk": {
+        "cx": 254.50860013077295,
+        "cy": 255.65263943470632,
+        "radius": 251.57971199023845,
+        "edge_residual_p95_px": 0.7077043586413183,
+        "edge_residual_max_px": 0.9827919155342215,
+        "method": "circle_fit_zero_exterior_filled_support"
+      }
+    },
+    {
+      "id": "hmi-2022-03-29",
+      "nonzero_activity_texels": 234124,
+      "back_exactly_unchanged": true,
+      "disk": {
+        "cx": 254.5109428240573,
+        "cy": 255.67528695892747,
+        "radius": 251.48984611569568,
+        "edge_residual_p95_px": 0.7459766796541486,
+        "edge_residual_max_px": 1.0005784744417952,
+        "method": "circle_fit_zero_exterior_filled_support"
+      }
+    },
+    {
+      "id": "hmi-2022-03-30",
+      "nonzero_activity_texels": 201940,
+      "back_exactly_unchanged": true,
+      "disk": {
+        "cx": 254.50768522017657,
+        "cy": 255.69330306004736,
+        "radius": 251.42193580149495,
+        "edge_residual_p95_px": 0.7240023597810236,
+        "edge_residual_max_px": 0.9353162529279473,
+        "method": "circle_fit_zero_exterior_filled_support"
+      }
+    }
+  ],
+  "glb_uv": {
+    "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+    "vertices": 12513,
+    "max_position_error": 1.341104507446289e-07,
+    "screen_right": "-X",
+    "screen_up": "+Y",
+    "data_hemisphere": "Z<0"
+  },
+  "output_hashes": {
+    "assets/hmi-2022-03-24/solar-activity.png": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621",
+    "assets/hmi-2022-03-25/solar-activity.png": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20",
+    "assets/hmi-2022-03-28/solar-activity.png": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb",
+    "assets/hmi-2022-03-29/solar-activity.png": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+    "assets/hmi-2022-03-30/solar-activity.png": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+    "activity.json": "ce7457ba28417db1ec40842c24b2e64ed3c324b1a9fbe661dd5f059d585bb113",
+    "activity-evidence.json": "4509d12e6899a071749a3aa540a440f1706cf027b040df9cb7293316fa77fc05"
+  },
+  "total_png_bytes": 21607068
+}

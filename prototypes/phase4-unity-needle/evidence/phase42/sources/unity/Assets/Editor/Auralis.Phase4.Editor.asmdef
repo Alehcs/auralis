@@ -1,0 +1,6 @@
+{
+  "name": "Auralis.Phase4.Editor",
+  "references": ["Needle.Engine", "Needle.Engine.Editor", "Needle.Engine.Common", "Needle.Engine.GltfExport", "Needle.Engine.GltfExport.Editor"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

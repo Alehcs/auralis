@@ -1,0 +1,148 @@
+Verified release hashes, all inputs, identities, clean split and history
+2026-09-05 23:26:50,488 - src.experiments.run_external_baselines - INFO -     Training mean: 1.768321
+Architecture diagram saved: /Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/reports/phase17_coronium_v3_1/analysis_v2/figures/12_architecture.png
+2026-09-05 23:26:58,679 - auralis.gradcam_overlay - INFO - Backend: cpu
+2026-09-05 23:26:58,684 - auralis.gradcam_overlay - INFO - Model loaded: 206875 parameters
+2026-09-05 23:26:58,688 - auralis.gradcam_overlay - INFO - Targeted sample: hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy (token=hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/Users/alejandro/.pyenv/versions/3.12.7/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+ValueError: unsupported format character ')' (0x29) at index 16
+Call stack:
+  File "/Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/scripts/plot_gradcam_overlay.py", line 220, in <module>
+    main()
+  File "/Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/scripts/plot_gradcam_overlay.py", line 215, in main
+    logger.info("Prediction (SI %): %.4f", prediction)
+Message: 'Prediction (SI %): %.4f'
+Arguments: (2.2511813640594482,)
+2026-09-05 23:26:59,915 - auralis.gradcam_overlay - INFO - Saved overlay figure → /Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/reports/phase17_coronium_v3_1/analysis_v2/figures/13_gradcam_largest_deterministic_error.png
+sysctl: sysctl fmt -1 1024 1: Operation not permitted
+sysctl: sysctl fmt -1 1024 1: Operation not permitted
+{
+  "output": "/Users/alejandro/Documents/ProyectosAG/Auralis/auralis-back/reports/phase17_coronium_v3_1/analysis_v2",
+  "metrics": {
+    "mc_si": {
+      "n": 263,
+      "mae": 0.1015576183116028,
+      "rmse": 0.12337954147975747,
+      "r2": 0.8752966390214253,
+      "mape": 5.9870256777635245,
+      "mape_nonzero_n": 263,
+      "bias": 0.0009679748984797373,
+      "median_ae": 0.0947263240814209,
+      "p90_ae": 0.19497356414794922,
+      "p95_ae": 0.23227815628051754,
+      "max_ae": 0.3393280506134033
+    },
+    "onnx_si": {
+      "n": 263,
+      "mae": 0.2040833964547277,
+      "rmse": 0.25823317396733214,
+      "r2": 0.45371921948054406,
+      "mape": 10.497514994433411,
+      "mape_nonzero_n": 263,
+      "bias": -0.18687746914620634,
+      "median_ae": 0.1810309886932373,
+      "p90_ae": 0.41996114253997807,
+      "p95_ae": 0.4878454208374023,
+      "max_ae": 0.6984331607818604
+    },
+    "pytorch_si": {
+      "n": 263,
+      "mae": 0.20408323599811742,
+      "rmse": 0.25823296738954693,
+      "r2": 0.45372009349240605,
+      "mape": 10.497507132398479,
+      "mape_nonzero_n": 263,
+      "bias": -0.1868773014373199,
+      "median_ae": 0.18103039264678955,
+      "p90_ae": 0.4199609279632569,
+      "p95_ae": 0.4878450393676757,
+      "max_ae": 0.6984319686889648
+    },
+    "train_mean_si": {
+      "n": 263,
+      "mae": 0.30440372784726594,
+      "rmse": 0.3496202727749896,
+      "r2": -0.0013480799749923111,
+      "mape": 17.88717669746337,
+      "mape_nonzero_n": 263,
+      "bias": 0.012828087139350878,
+      "median_ae": 0.3075535642204683,
+      "p90_ae": 0.5164852412284613,
+      "p95_ae": 0.5915696965752045,
+      "max_ae": 1.181292091518442
+    }
+  },
+  "paired_comparison": {
+    "same_observations": 263,
+    "deterministic_minus_mc_mae": 0.10252577814312488,
+    "mc_lower_absolute_error_n": 176,
+    "deterministic_lower_absolute_error_n": 87,
+    "ties_n": 0,
+    "mean_mc_minus_deterministic_prediction_si_pp": 0.1878454440446861,
+    "max_abs_pytorch_onnx_difference": 1.1920928955078125e-06,
+    "claim_scope": "Selection validation; no untouched test or temporal generalization; one selected checkpoint and one seeded MC evaluation, no general superiority claim"
+  },
+  "artifacts": {
+    "parameters": 206875,
+    "trainable_parameters": 206875,
+    "files": {
+      "models/best_coronium_v3_1.pth": {
+        "bytes": 848269,
+        "MiB": 0.8089723587036133,
+        "sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51"
+      },
+      "models/best_coronium_v3_1.onnx": {
+        "bytes": 835234,
+        "MiB": 0.7965412139892578,
+        "sha256": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa"
+      }
+    },
+    "onnx_external_data": false
+  },
+  "latency": {
+    "onnx_eval_cpu": {
+      "n": 60,
+      "mean_ms": 24.53860416666667,
+      "std_ms": 0.5526607089988613,
+      "median_ms": 24.437165999999998,
+      "p90_ms": 25.448375,
+      "p95_ms": 25.47942325,
+      "min_ms": 23.267208,
+      "max_ms": 25.897958
+    },
+    "pytorch_eval_cpu": {
+      "n": 60,
+      "mean_ms": 30.843922233333334,
+      "std_ms": 0.5373069644507383,
+      "median_ms": 30.899250000000002,
+      "p90_ms": 31.5604958,
+      "p95_ms": 31.67304965,
+      "min_ms": 29.961,
+      "max_ms": 31.972708
+    },
+    "pytorch_mc20_cpu": {
+      "n": 60,
+      "mean_ms": 640.2160076166666,
+      "std_ms": 9.263133866811675,
+      "median_ms": 639.915063,
+      "p90_ms": 644.0742006,
+      "p95_ms": 645.3785723,
+      "min_ms": 628.133791,
+      "max_ms": 702.104291
+    }
+  },
+  "figures": 13
+}

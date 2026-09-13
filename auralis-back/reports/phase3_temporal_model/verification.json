@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "states": 5,
+  "events": 6,
+  "reserve_enabled": false,
+  "artifact_hashes_checked": 31,
+  "schema": "JSON Schema Draft 2020-12 + frozen-case semantic validation",
+  "onnx_max_absolute_difference": 0.0,
+  "negative_checks": [
+    "false_utc",
+    "duplicate_state",
+    "sixth_state",
+    "wrong_hash",
+    "invented_wcs",
+    "negative_b_minus",
+    "false_flare_capture",
+    "reserve_enabled",
+    "unknown_version",
+    "lost_final_decline",
+    "broken_reference"
+  ],
+  "sequence_sha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+  "schema_sha256": "1b55b42d8cbd5b3fccf86aea493603fdb5ed43d0939f61c75a37b9fdea5b2ccc",
+  "builder_sha256": "7f66e00ebc626a2eb593ba9d61cb404a6f6d9bae0ee68128d21d2a524d2e94fd",
+  "environment": {
+    "numpy": "1.26.4",
+    "jsonschema": "4.26.0",
+    "astropy": "7.2.0",
+    "onnxruntime": "1.25.1"
+  }
+}

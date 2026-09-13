@@ -1,0 +1,20 @@
+{
+  "python": "3.12.7 (main, Jan 27 2026, 21:01:07) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python_executable": "/Users/alejandro/.pyenv/versions/3.12.7/bin/python3",
+  "seed": 42,
+  "torch_threads": 4,
+  "deterministic_algorithms": true,
+  "python_hash_seed": "42",
+  "mps_high_watermark_ratio": "1.0",
+  "mps_low_watermark_ratio": "0.9",
+  "mps_available": true,
+  "versions": {
+    "torch": "2.11.0",
+    "torchvision": "0.26.0",
+    "numpy": "1.26.4",
+    "pandas": "3.0.2",
+    "scikit-learn": "1.8.0"
+  }
+}

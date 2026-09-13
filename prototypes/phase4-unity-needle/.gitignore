@@ -1,0 +1,12 @@
+web/node_modules/
+web/dist/
+web/.git/
+web/.needle/
+unity/Library/
+unity/Logs/
+unity/Temp/
+unity/Obj/
+unity/UserSettings/
+*.log
+.DS_Store
+__pycache__/

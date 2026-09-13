@@ -1,0 +1,23 @@
+{
+  "build": "phase71-v4",
+  "files": {
+    "web/src/phase5/main.ts": "2fb4fdfe363d386edcdd48c61445c2b6c9a1009686490bdbf6404a72c12d26ff",
+    "web/src/phase5/visual-materials.ts": "94f2cf3a1939ff4b52f319138f0b8d50ec80ef42e4cf5774a7f9a49d6c719576",
+    "web/src/phase6/surface-shader.ts": "0ab2c414aee14eeb7a7ba80c3b305f5d1ebf64c23ea54593b9887395b9327cbd",
+    "web/src/phase6/surface-particles.ts": "304fa11cfdd3b5e45395f0b4af43b6e74c097d03ec9aab1f3d17b3dae609b992",
+    "web/tests/phase71.test.mjs": "fa5ebafb166f6de4d759748130399b5bf4794ef765ffe8aecef71fe66e10e69c",
+    "web/dev/phase71-capture.mjs": "3515a8ac1caca74601dbbb5565c9d60d1e87e718979e849b6128b74f7e741aa0"
+  },
+  "tests": {
+    "passed": 26,
+    "failed": 0
+  },
+  "buildPassed": true,
+  "comparisonSha256": "62b6eff333627a3289734ed9cfee9697bbeb2f477e9285b599df38d5fc62dc19",
+  "visualAcceptance": "pending_user_review",
+  "physicalAR": "not_tested",
+  "publication": false,
+  "commit": false,
+  "push": false,
+  "laterPhase": false
+}

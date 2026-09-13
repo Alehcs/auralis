@@ -1,0 +1,12 @@
+{
+  "build": "phase73-v1",
+  "state": "hmi-2022-03-29",
+  "hashes": {
+    "phase6/index.html": "ce099c48914bac3a3e330cd7873963009c5271eb19e918ecc964e8baf226f070",
+    "src/phase5/visual-materials.ts": "2ee09b8d8d89eb44a88b97ccbd1662f3287916c855ef8a19b7e20812b434ffce",
+    "src/phase5/main.ts": "d20988b639d6e3dd1cf4494f5db102ae4d6558b27c2f4a6d5dac9484014ede2d",
+    "src/phase6/surface-particles.ts": "543d57d9554c320aed49b47cde06bc25cd1a31b3c2b41302aa230abb25dc0ed0",
+    "src/phase6/surface-shader.ts": "88cba3ebe8449ac89c8a597979e28ba125bde90c2ddc45e1b22d8203dcee888e",
+    "src/phase6/temporal.ts": "112861e7609590140a1cc31d9a9f200aca456ba81c269ecc0c1624142c91a161"
+  }
+}

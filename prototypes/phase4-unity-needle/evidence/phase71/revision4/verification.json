@@ -1,0 +1,114 @@
+{
+  "protected": {
+    "passed": true,
+    "protected_files_unchanged": 1590,
+    "states": 5,
+    "final_si_decline_preserved": true,
+    "unity_glb_sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5"
+  },
+  "full": {
+    "sameScienceAndCamera": true,
+    "nativeVideos": [
+      {
+        "width": 1206,
+        "height": 855,
+        "r_frame_rate": "30/1"
+      },
+      {
+        "width": 1206,
+        "height": 855,
+        "r_frame_rate": "359/12"
+      }
+    ],
+    "distance": 2,
+    "recordedSecondsOfSurfaceTime": 7.99599999999999
+  },
+  "close": {
+    "sameScienceAndCamera": true,
+    "nativeVideos": [
+      {
+        "width": 1206,
+        "height": 855,
+        "r_frame_rate": "119/4"
+      },
+      {
+        "width": 1206,
+        "height": 855,
+        "r_frame_rate": "30/1"
+      }
+    ],
+    "distance": 1.15,
+    "recordedSecondsOfSurfaceTime": 7.996199999988064
+  },
+  "exactPixels": {
+    "forward-24 / reverse-24": 0,
+    "forward-25 / reverse-25": 0,
+    "forward-28 / reverse-28": 0,
+    "forward-29 / reverse-29": 0,
+    "forward-30 / reverse-30": 0,
+    "paused-a / paused-b": 0,
+    "magnetogram-a / magnetogram-b": 0,
+    "bplus-a / bplus-b": 0,
+    "bminus-a / bminus-b": 0,
+    "before-full-frozen-0 / before-full-frozen-1": 0,
+    "before-close-frozen-0 / before-close-frozen-1": 0,
+    "after-full-frozen-0 / after-full-frozen-1": 0,
+    "after-close-frozen-0 / after-close-frozen-1": 0
+  },
+  "performance-before": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase71-v2",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-24",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "frames": 1800,
+    "durationMs": 30001.69999998808,
+    "renderHz": 59.99660019267959,
+    "medianIntervalMs": 16.69999998807907,
+    "p95IntervalMs": 18.5,
+    "intervalsOver50ms": 0,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "performance-after": {
+    "mode": "web3d",
+    "status": "completed",
+    "layer": "solar",
+    "build": "phase71-v4",
+    "surfaceMotion": true,
+    "stateId": "hmi-2022-03-24",
+    "pixelRatio": 1.5,
+    "cameraPosition": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "frames": 1800,
+    "durationMs": 30001,
+    "renderHz": 59.998000066664446,
+    "medianIntervalMs": 16.69999998807907,
+    "p95IntervalMs": 18.599999994039536,
+    "intervalsOver50ms": 0,
+    "method": "Needle post_render_callbacks wall-clock cadence; not GPU time or physical tracking quality"
+  },
+  "controls": {
+    "historicalEndpoints": true,
+    "independentSurfacePause": true,
+    "scienceLayersFreezeClock": true,
+    "releaseRetry": true,
+    "resumeTimeDelta": 1.1234000000059603
+  },
+  "comparison": {
+    "duration": "18.000000",
+    "size": "15399163",
+    "sha256": "62b6eff333627a3289734ed9cfee9697bbeb2f477e9285b599df38d5fc62dc19"
+  },
+  "physicalAR": "not_tested",
+  "visualAcceptance": "pending_user_review"
+}

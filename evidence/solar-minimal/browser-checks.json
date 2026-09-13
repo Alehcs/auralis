@@ -1,0 +1,32 @@
+{
+  "datesAfterTransition": [
+    {
+      "day": "24",
+      "share": "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-24"
+    },
+    {
+      "day": "25",
+      "share": "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-25"
+    },
+    {
+      "day": "28",
+      "share": "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-28"
+    },
+    {
+      "day": "29",
+      "share": "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-29"
+    },
+    {
+      "day": "30",
+      "share": "http://127.0.0.1:4184/phase6/?state=hmi-2022-03-30"
+    }
+  ],
+  "layers": [
+    "solar",
+    "magnetogram",
+    "bplus",
+    "bminus"
+  ],
+  "surfacePauseResume": "passed",
+  "errors": []
+}

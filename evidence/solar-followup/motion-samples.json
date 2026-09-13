@@ -1,0 +1,142 @@
+[
+  {
+    "label": "running-start",
+    "state": "hmi-2022-03-29",
+    "time": 78.1739000000066,
+    "frames": 4686,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "running-second",
+    "state": "hmi-2022-03-29",
+    "time": 78.1739000000066,
+    "frames": 4686,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "visible-running-a",
+    "state": "hmi-2022-03-29",
+    "time": 86.66580000001204,
+    "frames": 5196,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "visible-running-b",
+    "state": "hmi-2022-03-29",
+    "time": 86.66580000001204,
+    "frames": 5196,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "canvas-visible-a",
+    "state": "hmi-2022-03-29",
+    "time": 104.91459999999336,
+    "frames": 6292,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "canvas-visible-b",
+    "state": "hmi-2022-03-29",
+    "time": 104.91459999999336,
+    "frames": 6292,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "foreground-a",
+    "state": "hmi-2022-03-29",
+    "time": 122.19830000001046,
+    "frames": 7330,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "foreground-b",
+    "state": "hmi-2022-03-29",
+    "time": 122.19830000001046,
+    "frames": 7330,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "live-after-pointer-refresh",
+    "state": "hmi-2022-03-29",
+    "time": 122.19830000001046,
+    "frames": 7330,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  },
+  {
+    "label": "paused",
+    "state": "hmi-2022-03-29",
+    "time": 139.4405999999935,
+    "frames": 9256,
+    "errors": [],
+    "camera": [
+      2.4492935982947064e-16,
+      0.49999999999999967,
+      -2
+    ],
+    "dpr": 1.5,
+    "source": "unity-glb-loaded"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "a": "frozen-24-a.png",
+    "b": "frozen-24-7.png",
+    "region_xyxy": [
+      200,
+      150,
+      710,
+      590
+    ],
+    "max_rgb_difference": 0.0,
+    "mean_rgb_difference": 0.0
+  },
+  {
+    "a": "frozen-25-0.png",
+    "b": "frozen-25-6.png",
+    "region_xyxy": [
+      200,
+      150,
+      710,
+      590
+    ],
+    "max_rgb_difference": 0.0,
+    "mean_rgb_difference": 0.0
+  },
+  {
+    "a": "frozen-28-1.png",
+    "b": "frozen-28-5.png",
+    "region_xyxy": [
+      200,
+      150,
+      710,
+      590
+    ],
+    "max_rgb_difference": 0.0,
+    "mean_rgb_difference": 0.0
+  },
+  {
+    "a": "frozen-29-2.png",
+    "b": "frozen-29-4.png",
+    "region_xyxy": [
+      200,
+      150,
+      710,
+      590
+    ],
+    "max_rgb_difference": 0.0,
+    "mean_rgb_difference": 0.0
+  },
+  {
+    "a": "frozen-30-a.png",
+    "b": "frozen-30-b.png",
+    "region_xyxy": [
+      200,
+      150,
+      710,
+      590
+    ],
+    "max_rgb_difference": 0.0,
+    "mean_rgb_difference": 0.0
+  },
+  {
+    "a": "magnetogram-a.png",
+    "b": "magnetogram-b.png",
+    "region_xyxy": [
+      200,
+      150,
+      710,
+      590
+    ],
+    "max_rgb_difference": 0.0,
+    "mean_rgb_difference": 0.0
+  }
+]

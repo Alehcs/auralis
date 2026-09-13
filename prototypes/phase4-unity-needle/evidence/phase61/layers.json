@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Magnetograma",
+    "title": "Campo magnético firmado",
+    "image": "blob:http://localhost:5184/fc6d9564-5e8c-4504-aed6-0951bd4ae8e0"
+  },
+  {
+    "label": "B+",
+    "title": "Polaridad positiva · B+",
+    "image": "blob:http://localhost:5184/6155b569-c07d-4399-a5e7-c1aadc45c884"
+  },
+  {
+    "label": "B−",
+    "title": "Polaridad negativa · |B−|",
+    "image": "blob:http://localhost:5184/262fadca-aafa-4d88-8f19-a273c6ab4a11"
+  },
+  {
+    "label": "☀ Vista solar",
+    "title": "Actividad magnética · recreación 3D",
+    "image": "blob:http://localhost:5184/fc6d9564-5e8c-4504-aed6-0951bd4ae8e0"
+  }
+]

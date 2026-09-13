@@ -1,0 +1,129 @@
+{
+  "build": "phase4.1-20260909-a",
+  "source_commit": "0b7869bea536ce5267d84ba4070975fdd8b7aa22",
+  "scene": "typescript-provisional",
+  "genuine_unity_glb": false,
+  "total_bytes": 11834457,
+  "files": [
+    {
+      "path": "assets/GenerateMeshBVHWorker-Dxplky4S.js",
+      "bytes": 2085,
+      "sha256": "ee965fac32834585840b4bffb3e79058d965507be29522d3c1d630a54e1a840e"
+    },
+    {
+      "path": "assets/JsMaterialXCore-DvsYbWVa.js",
+      "bytes": 95,
+      "sha256": "18afcd32bc5a692de1c76badaf1d153badcc1a615e9914bd5c2997f67f181919"
+    },
+    {
+      "path": "assets/JsMaterialXCore-N9PhV8rN.wasm",
+      "bytes": 1156513,
+      "sha256": "4d8ddd4df7a64a90a515161d306f73d94555cc12eb3e9da2779e79a95b110406"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader-2LPW2QoU.wasm",
+      "bytes": 2259524,
+      "sha256": "854a0d0de4897b571c17679107d16ad959cc1bc4366999c99a389c8ffdfa9813"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader-CtJs9m7t.js",
+      "bytes": 100,
+      "sha256": "51f2a975f8bc299b839dfe49257986510f9da4774664429cd5acd47e811927b5"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader.data-Bh2un-82.txt",
+      "bytes": 1481722,
+      "sha256": "321b2025fb83b918777e2bb281b5699341686e53506dfe6e4aeb93f9d6a30665"
+    },
+    {
+      "path": "assets/JsMaterialXGenShader.data-C5NzNKnl.js",
+      "bytes": 104,
+      "sha256": "368b662fff98206fe66cd53d08a78dc8ac8df688ffc0f5061d330fe1f155c3a0"
+    },
+    {
+      "path": "assets/MeshBVH-BHvgg7LW.js",
+      "bytes": 47793,
+      "sha256": "6012803c8e2032140d7a6432ff854aa25d6f050488a9b3c1fb1d6d1437171a9b"
+    },
+    {
+      "path": "assets/N8AO-mw1Nq22y.js",
+      "bytes": 163717,
+      "sha256": "e8d61fea9d89f416afb4b035708886381a9e620908b62db49c7619a61738b961"
+    },
+    {
+      "path": "assets/__vite-browser-external-BIHI7g3E.js",
+      "bytes": 33,
+      "sha256": "82507b0bb9ac4affaeb17c40968d830cbd6d14a2ffa04d8994faf1a78e58e1b5"
+    },
+    {
+      "path": "assets/bundler-D2qkRaP7.js",
+      "bytes": 142114,
+      "sha256": "89bb2c3f49f6d5f3f76ec57ca33eac8887ebd64e123510f607a34352c2f1a03b"
+    },
+    {
+      "path": "assets/generateMeshBVH.worker-kOUnIokO.js",
+      "bytes": 231134,
+      "sha256": "8cfcbd738e09c4583715db04575855daa1bcc4be75ac51fa6b68b0550c600071"
+    },
+    {
+      "path": "assets/gltf-progressive.worker-B0UCwfHD.js",
+      "bytes": 391244,
+      "sha256": "612eea41fd4378a4517b5d8e6e362ea61b1b746859e7fe81c3396f3ac19b81a8"
+    },
+    {
+      "path": "assets/index-38ob0SFN.js",
+      "bytes": 8749,
+      "sha256": "45ab1cef1089de4c75ccdc9d8630b3fe72b59125f9867fcd11d4f709e0990c2e"
+    },
+    {
+      "path": "assets/index-6CJ-uumg.js",
+      "bytes": 10241,
+      "sha256": "cb0d006f40d9d716c666f5f83a014184d482f00bce7d20028df67662bc8da1ff"
+    },
+    {
+      "path": "assets/index-BJN_GHev.js",
+      "bytes": 321961,
+      "sha256": "ba6f5a94afbf1766fbe3f6fb3fe0e3f0cd997b060c75feb4719f33e2c52052e0"
+    },
+    {
+      "path": "assets/index-BN5JLsjq.css",
+      "bytes": 2488,
+      "sha256": "0310635851d7952c87f7c7c2917cf10c809e83682d319a067f7f4e7fc33dd983"
+    },
+    {
+      "path": "assets/index-Bgx1kra7.js",
+      "bytes": 167930,
+      "sha256": "1d813772513fb79ffedc74010e52aaa1881ace5af074c378537f10e458b52c3a"
+    },
+    {
+      "path": "assets/index-C814i-r3.js",
+      "bytes": 37323,
+      "sha256": "cdd2acd6a631ec5fb42204800f6736fd59b68be22e288861457c5af960342aa1"
+    },
+    {
+      "path": "assets/index-chLJirH2.js",
+      "bytes": 3062512,
+      "sha256": "46dfbbf4de5497fec2a5c8e5d4fbb26bff48d55d390a83b7e5182d502869d7a1"
+    },
+    {
+      "path": "assets/mikktspace.module-DO88SLib.js",
+      "bytes": 46452,
+      "sha256": "77e7baea73ba4d5b18faf66dae8fc51932fda3628f24e27793a7abdd17c30b89"
+    },
+    {
+      "path": "assets/rapier-DBjBuyhF.js",
+      "bytes": 2237380,
+      "sha256": "48d676dc3d074046ffd218cbadcc9455b971a3b355f402885de179ef229b9d51"
+    },
+    {
+      "path": "assets/scroll-timeline-BTfoavoS.js",
+      "bytes": 59781,
+      "sha256": "ab171280c26bfc7cf703fa1b5d833ea6b69556fa97b9499ba1a8abeed1af24a9"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3462,
+      "sha256": "a12758feca2c1dbfe9b9c70db220e4a080db44a2ec9f971375983d81b002dc23"
+    }
+  ]
+}

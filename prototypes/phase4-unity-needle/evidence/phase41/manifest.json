@@ -1,0 +1,78 @@
+{
+  "PRUEBA-HUMANA.md": {
+    "bytes": 5884,
+    "sha256": "3b6f004044b36389d4381ec76be1fa03e6ef4ecf71be1d168b0fb186293018a5"
+  },
+  "build-artifacts.json": {
+    "bytes": 4230,
+    "sha256": "3679562dd468d01b91ab6707ed0086d6f20a3a5a4d3a733fe6be58a7c569ae60"
+  },
+  "deployment.json": {
+    "bytes": 488,
+    "sha256": "a03e4909b8858ac02179ec256dacc6f7fb651c1f211ad796cf921caa6c1eacf3"
+  },
+  "desktop-render-sample.json": {
+    "bytes": 383,
+    "sha256": "0a5490403a5b25caf7977b9c84d8a7a970d111c2c0c4487dbceee5c2859e3b48"
+  },
+  "phase41-unity-source-kit.zip": {
+    "bytes": 40128,
+    "sha256": "56dd469688de2e71f3883b497b1c3759d9851ce06aa71ac1e7c91f53fd96e2f6"
+  },
+  "phase41-web-build.zip": {
+    "bytes": 3228957,
+    "sha256": "6cf9231582f1c137326e143c115abf7033538f4dfcf6ac113b0a07af8d075f2a"
+  },
+  "public-http-first-attempt.json": {
+    "bytes": 9566,
+    "sha256": "cb28fbe58a3b2336491fbbf2f85ca2e154033639ae9eba7809bba6eb850f4f0d"
+  },
+  "public-http-verification.json": {
+    "bytes": 12627,
+    "sha256": "1c87b01624d63aebee38e539cfe60348c0215c7a5711759047df35cc26e1084f"
+  },
+  "public-orbit-after.png": {
+    "bytes": 27775,
+    "sha256": "e1a043dbbc7076371841af4df176387ce150437da82a6180c27d4d1c509e5b3b"
+  },
+  "public-orbit-before.png": {
+    "bytes": 28966,
+    "sha256": "a253775748fef45c34351f4214710d14defe429f7b01e269a629ac71ed2b1e74"
+  },
+  "public-orbit.json": {
+    "bytes": 1132,
+    "sha256": "1e6c9628740323ca8441e0b4337a40f032d196cc0ef3831a06aaba1b6e69909f"
+  },
+  "public-unity-missing-dom.txt": {
+    "bytes": 2460,
+    "sha256": "3885e1d7f365bc045a6b4049dbcae80963214682e28af2cc53d8a858047cadae"
+  },
+  "qr-decoded.txt": {
+    "bytes": 315,
+    "sha256": "a23a9ef710906e1fb5238b4849ae4aebcd70d96861afd766305db91a5830f125"
+  },
+  "qr-ios-needle-go.png": {
+    "bytes": 5702,
+    "sha256": "5cf26a1ad2c11c469677dbf9b759572b255f631a2a891d8180277dbaaa7765ca"
+  },
+  "qr-public.png": {
+    "bytes": 4784,
+    "sha256": "9848f7b1b01c2da608e82cdaf07dda750fed564bce07339b2dee220c8df4e5f8"
+  },
+  "unity-missing-dom.txt": {
+    "bytes": 2254,
+    "sha256": "65ae7bcacf6a8763f34a738dbe51b7c614a7b599135a68e33fa6c5c809930d30"
+  },
+  "unity-missing.png": {
+    "bytes": 28641,
+    "sha256": "6827c0b108f90d0391cc4405d49d47daa6ef32c0ec4fe2448685ecfefca7befc"
+  },
+  "unity-preflight.txt": {
+    "bytes": 133,
+    "sha256": "c5c6824a60d2a1579a05ec104a17545b550fb0f3bc2cd8178603a192af8a2887"
+  },
+  "verification.json": {
+    "bytes": 1317,
+    "sha256": "e6f326cc188314bd0bcecb2c5d13ba358db163eb8f5e01aa69386feccfdeb3c7"
+  }
+}

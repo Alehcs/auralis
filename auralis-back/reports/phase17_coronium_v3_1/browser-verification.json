@@ -1,0 +1,29 @@
+{
+  "status": "verified",
+  "url": "http://localhost:5173/dashboard",
+  "api": "http://127.0.0.1:8001",
+  "checks": {
+    "mc_selector": "mc; badge V3.1 MC T=20 MPS N=263",
+    "deterministic_selector": "deterministic; badge V3.1 ONNX eval CPU N=263",
+    "mc_metric_row": [
+      0.1016,
+      0.1234,
+      0.8753,
+      5.99
+    ],
+    "deterministic_metric_row": [
+      0.2041,
+      0.2582,
+      0.4537,
+      10.5
+    ],
+    "dataset_range": "2016 — 2026 (TAI)",
+    "catalog": "SDO / HMI · local catalog",
+    "historical_benchmark_warning": true,
+    "kfold_illustrative_warning": true,
+    "xai_gap_value": 0.0149,
+    "xai_fixed_significance_claim_removed": true,
+    "console_errors": []
+  },
+  "note": "Initial 127.0.0.1 frontend origin was outside existing CORS policy; tested configured localhost origin successfully without changing CORS."
+}

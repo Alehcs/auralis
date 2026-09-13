@@ -1,0 +1,32 @@
+{
+  "version": {
+    "id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c~appgver_5c17b22cd79c81919edb53ba3c10655d",
+    "project_id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c",
+    "version_number": 10,
+    "source": {
+      "commit_sha": "736589f4e0a17332c91b8431804ed67e723c5b9c"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_000000005200820eb72a3e4c0e25063a",
+      "content_hash": "sha256:412816734e80ea44336e092ad97a9febcebaf21318791539f7439b9cd903572f",
+      "size_bytes": 42280960,
+      "file_count": 62
+    },
+    "screenshot_url": null
+  },
+  "deploy": {
+    "id": "appgdep_6aa1d7c705008191b8ff8d645c233537",
+    "project_id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c",
+    "title": "Auralis · Prueba técnica Fase 4",
+    "version_id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c~appgver_5c17b22cd79c81919edb53ba3c10655d",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://auralis-phase4-needle-probe.alejandro-cornejog4.chatgpt.site",
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6a9dbce56b108191af6d13c5cdd1428c",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-09-09T22:04:13.268738+00:00"
+  }
+}
