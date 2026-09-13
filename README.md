@@ -1,11 +1,5 @@
 # Auralis
 
-> **Phase 1.7:** [Scientific audit and conclusions](docs/phase17.md) · [Versioned metrics and 13 publication figures](auralis-back/reports/phase17_coronium_v3_1/analysis_v2/report.md) · [Inventory](docs/phase17_inventory.md).
-
-> **Active model: Coronium V3.1.** [Phase 1.6 promotion and verification](docs/phase16.md) records the clean checkpoint, ONNX, hashes and separate MC/serving metrics. Coronium V3 remains historical.
-
-> **Phase 1 scientific correction:** [Audited contract and reproducibility report](docs/phase1.md) supersedes historical input/target and validation claims below. The local checkpoint uses clip400 polarity inputs and raw SI pixel percentages, without log or Z-score. The old split shares 145 observations; its metrics do not establish independent generalization. Original artifacts remain preserved.
-
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20620546-blue)](https://doi.org/10.5281/zenodo.20620546)
 
 Auralis is a local research/demo system for estimating the current solar activity
@@ -240,46 +234,6 @@ model files are present.
 | `GET` | `/api/experiments` | Training run metadata. |
 | `GET` | `/api/polarity-series` | Recent B+ / B- mean flux series. |
 | `POST` | `/api/predict-upload` | Black-box inference for uploaded `.npy` files. |
-
-## Important Workflows
-
-### Promote a New Model
-
-1. Train or evaluate the candidate checkpoint.
-2. Save the promoted PyTorch weights under `auralis-back/models/`.
-3. Export the matching ONNX model.
-4. Write versioned metrics and hashes; update `src/models/active_model.py`.
-5. Update `auralis-front/src/lib/types.ts` only if response schemas changed.
-6. Add or update the experiment JSON in `auralis-back/experiments/`.
-7. Update this README and `docs/architecture.md` with the new model identity,
-   metrics, and any changed assumptions.
-
-### Add a Backend Endpoint
-
-Keep request validation and filesystem access in `src/api/main.py`. Add a
-Pydantic response model when the endpoint returns structured data, then mirror
-that schema in `auralis-front/src/lib/types.ts` and expose the call through
-`auralis-front/src/lib/api.ts`.
-
-### Add a Dashboard View
-
-Use `DashboardPage` as the tab shell. The dashboard should treat the API as the
-source of truth for model metrics, classifications, and experiment data. Avoid
-duplicating thresholds or model constants in React components.
-
-## Development Notes
-
-- Work on `main`; this repository is not currently using isolated worktrees.
-- `landing-hero.tsx` is the active landing hero. The old `hero.tsx` component was
-  removed.
-- Do not reintroduce a "72 hour forecast" claim. The model estimates the current
-  index for the selected magnetogram.
-- The dashboard's "Current Solar State" is derived from the most recent `.npy`
-  file in the local dataset, not from live NASA telemetry.
-- Historical demo thresholds are retained, without V3.1 or GOES calibration:
-  `< 1.41` is Low, `1.41` to `< 1.75` is Medium, and `>= 1.75` is High.
-- Grad-CAM uses `stage4.conv` as the default target because it captures the last
-  spatial feature map before global pooling.
 
 ## Citation
 
