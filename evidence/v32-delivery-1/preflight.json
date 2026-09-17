@@ -1,0 +1,10 @@
+{
+  "approved_head": "c159a67a89a6217c4d3de8224e22cf28a82cbfb9",
+  "remote_ahead": 0,
+  "local_ahead": 3,
+  "new_path_count": 259,
+  "credential_pattern_hits": [],
+  "protected_hashes_unchanged": 273,
+  "env_public_existing_requires_user_exception": false,
+  "env_exception": "User delegated the decision; retained existing non-secret Vite public origin and VITE_DEFAULT_RELEASE=3.2 without rewriting approved history."
+}

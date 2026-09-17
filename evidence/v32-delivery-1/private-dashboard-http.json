@@ -1,0 +1,44 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "sha256": "a641ce60765b35eab1e57b967cc7a12b13b9287c83a1b7f70f64a7a7b4aaad49",
+    "exact_static_bytes": false
+  },
+  {
+    "path": "/dashboard/",
+    "status": 200,
+    "sha256": "8665f5cfa2cfd9ac9270d0399ef67858e29fd4949a835fc5da06d183c7e6b9a1",
+    "exact_static_bytes": false
+  },
+  {
+    "path": "/demo/responses.json",
+    "status": 200,
+    "sha256": "255a9a86beb38d2e0a101bfc608e4cfc177c42793844e0390493585a4b34834c",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/demo/manifest.json",
+    "status": 200,
+    "sha256": "63f9d370cb9de5a26ee987a2fbe5bd3a3a5fe4d10ec2ab035cc578fcf6a574e5",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/demo/predictions-v32.json",
+    "status": 200,
+    "sha256": "6bddce864cadb1d6d16f52a4401fca342ca96a18bfcf1ff9bd081ab91b015bce",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/assets/index-BNkL0tnz.css",
+    "status": 200,
+    "sha256": "b408432fec11b3323e3fe20b9a508d05708ebcd8878bd53ba12ea4ccfb60d382",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/assets/index-C5CmbnGc.js",
+    "status": 200,
+    "sha256": "3451d654ee754aea021ce5e98337069c632d5fd2de44fb319eaf7e6df67ba1a2",
+    "exact_static_bytes": true
+  }
+]

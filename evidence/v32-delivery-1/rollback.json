@@ -1,0 +1,13 @@
+{
+  "dashboard_previous": {
+    "version": 5,
+    "id": "appgprj_6aa5a31246f881919aec7fcca839323e~appgver_d7f184a219d88191b88a58f69d29d01b",
+    "commit": "527900441a39352d05ea1752f8637b8752ef665c"
+  },
+  "solar_previous": {
+    "version": 14,
+    "id": "appgprj_6a9dbce56b108191af6d13c5cdd1428c~appgver_84ae27c0b0588191940816baf086a20c",
+    "commit": "8810f6c694036ac252a97a9f76e4dac0f7512482"
+  },
+  "model_recovery": "AURALIS_RELEASE=3.1; see auralis-back/experiments/v32h_release_v1/RUNBOOK.md"
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "sha256": "afb0d6038337f26014f32843ea7459b8a2990b6a6ac13443d1e9b8b559550b2c",
+    "exact_static_bytes": false
+  },
+  {
+    "path": "/phase6/",
+    "status": 200,
+    "sha256": "daabe6acb169bf06b23786da7471aef66ad2dc34df5be403f63004db57266cb6",
+    "exact_static_bytes": false
+  },
+  {
+    "path": "/phase6/releases/coronium-v3.2-r1.json",
+    "status": 200,
+    "sha256": "915bdca52e0db568556620e78a70b84cc9f2a0056c27e4ea2c5d8fcf1207f1ed",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/phase6/sequence.json",
+    "status": 200,
+    "sha256": "57c875f1a19eee539f5c491103b319c35c40fc7a7d185b6a1332ab23d2dab055",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/phase6/activity.json",
+    "status": 200,
+    "sha256": "ce7457ba28417db1ec40842c24b2e64ed3c324b1a9fbe661dd5f059d585bb113",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/assets/main-Czu8Yg0m.css",
+    "status": 200,
+    "sha256": "804befab641589ec6ce4cdb274bc9174d232f5bf7f0dd21c4237d4cb51b3a61b",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/assets/main-W9xK5Eqh.js",
+    "status": 200,
+    "sha256": "d087c4bbeaec02366d7ed2387908e03506bedcb27a5c4bf9544e499a09f54e25",
+    "exact_static_bytes": true
+  },
+  {
+    "path": "/assets/phase6-BbAXh-Y5.js",
+    "status": 200,
+    "sha256": "199c10ac79c968e13c8b1da2cb937020054b6681456423e22f2fe2a62bd38e0c",
+    "exact_static_bytes": true
+  }
+]

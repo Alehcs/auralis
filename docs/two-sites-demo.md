@@ -190,3 +190,9 @@ no se afirma prueba física del teléfono o AR. Evidencia en `evidence/sites-v32
 Solo hubo commits/push en los dos repositorios de entrega de Sites; ninguno en
 el repositorio principal. Backend8000 y frontend5173 solicitados permanecen activos.
 Las limitaciones de validation de selección, baja actividad y XAI continúan.
+
+## Entrega estable V3.2 — 2026-09-17
+
+Dashboard privado actualizado a v6 (commit de Site `270284bec2c80c69b23cd59ba1d89dc9534d30b7`), con coherencia y TypeScript de `c159a67a`. El visor público aprobado se volvió a verificar/publicar sin cambios como v14. Ambos sirven resultados precalculados; no se publica una API de inferencia. Dominios, QR, controles y recursos solares conservados.
+
+[Registro de entrega y recuperación](../evidence/v32-delivery-1/REPORT.md): typecheck sin errores, builds aprobados,40 pruebas,115 recursos HTTPS idénticos y revisión visual en390×844/1280×900. Login privado completado por el usuario; pruebas físicas anteriores conservadas como confirmación humana, sin nueva sesión AR. La etiqueta de entrega `coronium-v3.2-delivery-1` identifica el commit documental posterior a las correcciones; `coronium-v3.2` permanece intacta. Sin GitHub Release ni Zenodo.

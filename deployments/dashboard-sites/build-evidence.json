@@ -2,10 +2,10 @@
   "source": "../../auralis-front",
   "mode": "sites",
   "files": {
-    "assets/SolarTwinPanel-BCGUf_wZ.js": "affa3f9b91b5b2085edb799326e273e0a5d57612fb882b1bec7bb2bb35174ed1",
-    "assets/index-BL16yUkf.js": "c2d9bbaa119c2ab36f561681e7069cb372f86945fd57e0461bcf6a91432f760d",
+    "assets/SolarTwinPanel-BPrcSwJf.js": "48807a36db17fb42d5c2830139baf1eefbc2e279d1a138c676189a458203f4cc",
     "assets/index-BNkL0tnz.css": "b408432fec11b3323e3fe20b9a508d05708ebcd8878bd53ba12ea4ccfb60d382",
-    "dashboard/index.html": "6bc7f3b94652162341e4af1c709dcbffab3ee751616a2305068d8df5c32a77bc",
+    "assets/index-C5CmbnGc.js": "3451d654ee754aea021ce5e98337069c632d5fd2de44fb319eaf7e6df67ba1a2",
+    "dashboard/index.html": "eac3f64b0f03bbd4bcc817f99521f6bb71b14affca908549ffc3fc9bdc8ddacc",
     "demo/aia/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy.png": "dc77d5568e67225a82045672ab3ac49bbc818ee0baa689913fe127eff2d227e0",
     "demo/aia/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy.png": "33f78a02071d80b4d26db44310b76d210bcb5e3af7f9706087019d832c79132a",
     "demo/aia/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy.png": "ba2b585ed3dee16278d9e54993816b2181ab727a58149f3cbeaf002ff91acac1",
@@ -47,7 +47,7 @@
     "demo/manifest.json": "63f9d370cb9de5a26ee987a2fbe5bd3a3a5fe4d10ec2ab035cc578fcf6a574e5",
     "demo/predictions-v32.json": "6bddce864cadb1d6d16f52a4401fca342ca96a18bfcf1ff9bd081ab91b015bce",
     "demo/responses.json": "255a9a86beb38d2e0a101bfc608e4cfc177c42793844e0390493585a4b34834c",
-    "index.html": "6bc7f3b94652162341e4af1c709dcbffab3ee751616a2305068d8df5c32a77bc",
+    "index.html": "eac3f64b0f03bbd4bcc817f99521f6bb71b14affca908549ffc3fc9bdc8ddacc",
     "solar-storm.gif": "a8dfd9e8ddb55a2a4074c03a94e0d49e5537d3f3ca84944bd47fbffaddf63bd6",
     "sun.gif": "3ee3d5b4d452980e966d0a8e6c6dc20e5783b3545676745dbfae699a0c9dc158"
   }

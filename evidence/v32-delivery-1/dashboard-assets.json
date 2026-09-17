@@ -1,0 +1,232 @@
+[
+  {
+    "path": "/assets/SolarTwinPanel-BPrcSwJf.js",
+    "sha256": "48807a36db17fb42d5c2830139baf1eefbc2e279d1a138c676189a458203f4cc",
+    "status": 200
+  },
+  {
+    "path": "/assets/index-BNkL0tnz.css",
+    "sha256": "b408432fec11b3323e3fe20b9a508d05708ebcd8878bd53ba12ea4ccfb60d382",
+    "status": 200
+  },
+  {
+    "path": "/assets/index-C5CmbnGc.js",
+    "sha256": "3451d654ee754aea021ce5e98337069c632d5fd2de44fb319eaf7e6df67ba1a2",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "dc77d5568e67225a82045672ab3ac49bbc818ee0baa689913fe127eff2d227e0",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "33f78a02071d80b4d26db44310b76d210bcb5e3af7f9706087019d832c79132a",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "ba2b585ed3dee16278d9e54993816b2181ab727a58149f3cbeaf002ff91acac1",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "c29ab52ca05f1bc94313adae05d605d53480cb43ab60abcb968aeee7ec14ed32",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "bf6e818ec304a2dedcdc8fb7351053f837d315bc7c46c54d3de02f82449c699a",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "ad302eab6e1e6508cfe5200ead0da944d0ab4acf15d0d1d7392c041441929adc",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "f57c35e22f0c12535d585ffae2d9e1c5a1d7f6eb6cde2d7751dfb761413106b7",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "2e70e8530eb3e5573c933645f9c17a2d3f38517141a1f461638aed495f8558c2",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "ecc370963ef2be8198b4ca409a7ab23381be0fc59bf2f86eaa4f81a7d2e90387",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "6b37548e395b92e33708cb4cfa4f1a067dc44a3db4292913b2746c1deb63ca1c",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "142bc29f5e427ac760713d12bc9f795811384793d264738032f2224668c5f637",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "26c050a01acb48771264e59d57201dd4141198817745b5cbe9559e04fa81b8b7",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "f693ec06b5c030eec3c859049eff6e53afb388850fca68c3501d3ab5db299eb3",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "f03966d687f77e41497851a3e0483d15913deba1eade91b4e556a6390910686e",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "e58270667581c98011ddca46463c4d1326906c614f94233aad1d5f0382748483",
+    "status": 200
+  },
+  {
+    "path": "/demo/aia/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "058eedcdcde6c6aa1ff19a17f995a2629bacbdff704c75e1776679b6d7d5dc16",
+    "status": 200
+  },
+  {
+    "path": "/demo/gradcam/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "0b5c91c7291c4c54f95a678c7be3ca4d409b8dc92db31537e090c44f333df08b",
+    "status": 200
+  },
+  {
+    "path": "/demo/gradcam/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "0f1748b6e20dc9851b59c8755c4b8126e531dd817cae88789c44f892eb62e191",
+    "status": 200
+  },
+  {
+    "path": "/demo/gradcam/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "71057e8c8c5c25034eebe756a17f07622f180f6a4ee3f8f85278d4ba398e3bb1",
+    "status": 200
+  },
+  {
+    "path": "/demo/gradcam/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "00511a000f72b653b6dcfba068486fbc3e848d4f7466fd9756d40c1d071c01ee",
+    "status": 200
+  },
+  {
+    "path": "/demo/gradcam/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "bd9e4c45cccbfe69e3a529d219cf37960498add2e2d9a928dd8b1d518cb91aa0",
+    "status": 200
+  },
+  {
+    "path": "/demo/gradcam-provenance.json",
+    "sha256": "2c12601281b3b2a6855f0121100a938f9ce17f8fbaf3224c38b5417a7f9350ea",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "0d0b78c0f113835600530b0a874398d69cb8d5047150ad8b5a3ddd28b12b06a4",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "9355b565bd8627bb9768b702e488d117fc3785f05739563525d97f72b57891f4",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "3a1b06bfeba7971f93d5054c7e9b4144d3cd63d8926c520954ae447c51d8ae18",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "0f1aa7ad07752b733944d55c0e3034ffafec95eebeb62cbb53c6e122007771fd",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "386dc93e6b975c7d3e995172d1f62b1051d99d94f0f33171a46429d545821df0",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "7af00d7f42ce34aa9922dfaf8a7fc13de1ca12f52c02816ac8e4b88daef21d02",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "23c35dbcc82f3edf840a192740c9ff99e4c0cfc4ac46287b6e6d7c51b262f1eb",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "d38e822bb005181bc1bcfea0666cd423d521cd05f08649653b82cb24a9dc56d7",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "017c8a470f9578d72e7ee91f3359791e451b051a2422eebec9db2dc39d1f4c2c",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "50150fafc59075dfcaf228d762e271d9006d506f13c020fa209c6464928be92a",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "05e0b244acf3c7bb66e729ffabf60e50396e71d45cdd2d78f483016f76d0ab3d",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "855bf6f53fa26f3a68feae164daeacd6c6ad018ed367d5074a1e4ef7c0902a06",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "a0e0dbf3d890478cdddf36ce01fc1d7cccd6711602a999e0d999406a902d7056",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "4bc7b21f27065d0e60e5db1bc797300043ca7e6d664ff2851ec81d4d27579ba8",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "1daa538b1369be627fedc7f132257ba803524dca8d7682cacebf6c84a336e692",
+    "status": 200
+  },
+  {
+    "path": "/demo/images/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy.png",
+    "sha256": "962b762f0d19b06920b3415e5226d1157abcd90ee1122deafd62ca1ca0946827",
+    "status": 200
+  },
+  {
+    "path": "/demo/manifest.json",
+    "sha256": "63f9d370cb9de5a26ee987a2fbe5bd3a3a5fe4d10ec2ab035cc578fcf6a574e5",
+    "status": 200
+  },
+  {
+    "path": "/demo/predictions-v32.json",
+    "sha256": "6bddce864cadb1d6d16f52a4401fca342ca96a18bfcf1ff9bd081ab91b015bce",
+    "status": 200
+  },
+  {
+    "path": "/demo/responses.json",
+    "sha256": "255a9a86beb38d2e0a101bfc608e4cfc177c42793844e0390493585a4b34834c",
+    "status": 200
+  },
+  {
+    "path": "/solar-storm.gif",
+    "sha256": "a8dfd9e8ddb55a2a4074c03a94e0d49e5537d3f3ca84944bd47fbffaddf63bd6",
+    "status": 200
+  },
+  {
+    "path": "/sun.gif",
+    "sha256": "3ee3d5b4d452980e966d0a8e6c6dc20e5783b3545676745dbfae699a0c9dc158",
+    "status": 200
+  }
+]
