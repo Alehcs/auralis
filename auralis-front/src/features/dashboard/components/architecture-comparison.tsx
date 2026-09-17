@@ -37,7 +37,7 @@ function useBenchmark() {
 
 export function ModelComparisonChart() {
   const { data, loading, error } = useBenchmark();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const e = t.experiments;
 
   // Normalise params to [0, 1] so all three bars share the same X axis
@@ -94,7 +94,7 @@ export function ModelComparisonChart() {
       </div>
 
       <div className="p-5">
-        <p className="text-[11px] text-amber-300/80 mb-3">Historical V3 / ResNet18 / VGG11 · different splits and protocols; no controlled ranking or V3.1 comparison. MAE/RMSE in SI pp; parameter counts in the table.</p>
+        <p className="text-[11px] text-amber-300/80 mb-3">{language === 'es' ? 'V3 / ResNet18 / VGG11 históricos · particiones y protocolos distintos; sin comparación controlada con el release activo. MAE/RMSE: SI pp.' : 'Historical V3 / ResNet18 / VGG11 · different splits/protocols; no controlled active-release comparison. MAE/RMSE: SI pp.'}</p>
         {loading && (
           <div className="flex items-center justify-center h-60 text-neutral-600 text-sm">{e.loading}</div>
         )}
@@ -162,7 +162,7 @@ export function ModelComparisonChart() {
 
 export function ModelComparisonTable() {
   const { data, loading, error } = useBenchmark();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const e = t.experiments;
 
   const rows = data
@@ -180,7 +180,7 @@ export function ModelComparisonTable() {
       <div className="px-5 py-4 border-b border-neutral-800 flex items-start justify-between">
         <div>
           <div className="text-[15px] font-semibold text-white">{e.modelTable}</div>
-          <p className="text-[11px] text-amber-300/80 mt-1">Historical results · different splits · no evidence of V3.1 performance. Errors: SI pp.</p>
+          <p className="text-[11px] text-amber-300/80 mt-1">{language === 'es' ? 'Resultados históricos · particiones distintas · no corresponden al release activo. Errores: SI pp.' : 'Historical results · different splits · not active-release performance. Errors: SI pp.'}</p>
         </div>
         <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
           {count} {e.candidates}

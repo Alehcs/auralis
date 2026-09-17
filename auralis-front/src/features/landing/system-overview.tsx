@@ -1,11 +1,15 @@
+import { releasePresentation } from '@/lib/release-presentation';
+import { useLanguage } from '@/lib/i18n/language-context';
 import { useModelStats } from '@/lib/model-labels';
 export function SystemOverview() {
   const stats = useModelStats();
+  const { language } = useLanguage();
+  const release = releasePresentation(stats);
   const specs = [
     {
       label: 'Model Architecture',
       value: stats?.model_name ?? '—',
-      detail: 'Custom 4-stage residual CNN, ~207K params, dual-channel B+/B− · ONNX 815.7 KiB'
+      detail: release ? `${release.parameters.toLocaleString()} ${language === 'es' ? 'parámetros' : 'parameters'} · B+/B− · ONNX ${release.onnx_bytes.toLocaleString()} B` : '—'
     },
     {
       label: 'Data Source',

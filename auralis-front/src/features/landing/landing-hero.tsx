@@ -1,3 +1,5 @@
+import { releaseLabel } from '@/lib/release-presentation';
+import { useLanguage } from '@/lib/i18n/language-context';
 import { metricProtocol } from '@/lib/model-labels';
 import { ArrowRight, Github, ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,7 @@ interface LandingHeroProps {
  * @param props.onEnterDashboard - Callback fired when the "Enter dashboard" CTA is clicked.
  */
 export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
+  const { language } = useLanguage();
   const [stats, setStats] = useState<SystemStats | null>(null);
 
   useEffect(() => {
@@ -129,8 +132,8 @@ export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
         </div>
 
         <p className="mt-5 text-xs text-amber-200 max-w-xl">
-          {stats?.model_name ?? '—'}: 263 clean validation observations, used for model selection; no independent or temporal test.
-          MC Dropout MAE: 0.10156 SI pp. Deterministic API MAE: 0.20408 SI pp. Historical V3 remains separate.
+          {releaseLabel(stats, language)} · {stats?.validation_observations ?? '—'} {language === 'es' ? 'observaciones de validación de selección; sin test independiente.' : 'selection-validation observations; no independent test.'}
+          {' '}{metricProtocol(stats)} MAE: {stats?.mae.toFixed(5) ?? '—'} SI pp. {language === 'es' ? 'Baja actividad y XAI: limitaciones pendientes.' : 'Low activity and XAI: limitations remain.'}
         </p>
 
         {/* Tech strip */}

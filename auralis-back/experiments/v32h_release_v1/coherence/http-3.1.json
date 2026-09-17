@@ -1,0 +1,4284 @@
+{
+  "/health": {
+    "status": 200,
+    "body": {
+      "model_name": "Coronium V3.1",
+      "model_version": "3.1",
+      "checkpoint": "best_coronium_v3_1.pth",
+      "onnx": "best_coronium_v3_1.onnx",
+      "status": "ok",
+      "version": "3.1.0",
+      "model_loaded": true,
+      "device": "mps"
+    }
+  },
+  "/api/stats": {
+    "status": 200,
+    "body": {
+      "model_name": "Coronium V3.1",
+      "model_version": "3.1",
+      "metrics_status": "clean_observation_validation_used_for_selection_not_independent_test_or_temporal_validation",
+      "evaluation_protocol": "MC Dropout T=20, seed=42, batch=32, MPS; not the deterministic API protocol",
+      "available_protocols": [
+        "mc",
+        "deterministic"
+      ],
+      "validation_observations": 263,
+      "observation_overlap": 0,
+      "mape": 5.987025052309036,
+      "serving_deterministic": {
+        "protocol": "single eval-mode pass, CPU, batch=1; no input noise in point estimate",
+        "pytorch": {
+          "mae": 0.20408323599811742,
+          "rmse": 0.25823296738954693,
+          "r2": 0.45372009349240605,
+          "mape": 10.497507132398479
+        },
+        "onnx": {
+          "mae": 0.2040833964547277,
+          "rmse": 0.25823317396733214,
+          "r2": 0.45371921948054406,
+          "mape": 10.497514994433411
+        }
+      },
+      "historical_v3": {
+        "model_name": "Coronium V3 PRO",
+        "status": "historical_contaminated_validation_not_generalization_evidence",
+        "source": "experiments/exp_005_v3pro_augmented.json",
+        "validation_rows": 353,
+        "observation_overlap": 145,
+        "metrics": {
+          "mae": 0.1048,
+          "rmse": 0.1272,
+          "r2": 0.8634,
+          "mape": 6.07
+        }
+      },
+      "metric_units": "SI percentage points (MAE/RMSE); dimensionless R2",
+      "total_images": 1314,
+      "disk_usage_mb": 1314.16,
+      "mae": 0.10155761986970901,
+      "rmse": 0.12337954342365265,
+      "r2_score": 0.875296638661553,
+      "last_updated": "2026-04-26T22:44:49.130897+00:00"
+    }
+  },
+  "/api/results-comparison?protocol=deterministic": {
+    "status": 200,
+    "body": [
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.053314447402954,
+        "predicted": 1.794657826423645,
+        "error": 0.2586566209793091
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3513028621673584,
+        "predicted": 1.3714486360549927,
+        "error": 0.020145773887634277
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1192550659179688,
+        "predicted": 1.7556434869766235,
+        "error": 0.3636115789413452
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.274031400680542,
+        "predicted": 1.3639274835586548,
+        "error": 0.08989608287811279
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.256971597671509,
+        "predicted": 1.7339588403701782,
+        "error": 0.5230127573013306
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9813179969787598,
+        "predicted": 1.7251635789871216,
+        "error": 0.2561544179916382
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1776795387268066,
+        "predicted": 1.8503154516220093,
+        "error": 0.32736408710479736
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.882094144821167,
+        "predicted": 1.5583304166793823,
+        "error": 0.32376372814178467
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.416623592376709,
+        "predicted": 1.3907482624053955,
+        "error": 0.025875329971313477
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9982576370239258,
+        "predicted": 1.6552499532699585,
+        "error": 0.3430076837539673
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.186703681945801,
+        "predicted": 1.7844030857086182,
+        "error": 0.4023005962371826
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3957083225250244,
+        "predicted": 1.4291226863861084,
+        "error": 0.033414363861083984
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4149665832519531,
+        "predicted": 1.3596758842468262,
+        "error": 0.05529069900512695
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.411890983581543,
+        "predicted": 1.3396435976028442,
+        "error": 0.07224738597869873
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.877206563949585,
+        "predicted": 1.7093528509140015,
+        "error": 0.1678537130355835
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0009100437164307,
+        "predicted": 1.6261882781982422,
+        "error": 0.3747217655181885
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9275903701782227,
+        "predicted": 1.6874362230300903,
+        "error": 0.24015414714813232
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5886783599853516,
+        "predicted": 1.4947675466537476,
+        "error": 0.093910813331604
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.324141025543213,
+        "predicted": 1.3765952587127686,
+        "error": 0.052454233169555664
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4247238636016846,
+        "predicted": 1.4443544149398804,
+        "error": 0.0196305513381958
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2808194160461426,
+        "predicted": 1.907862663269043,
+        "error": 0.3729567527770996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.971501111984253,
+        "predicted": 1.771309494972229,
+        "error": 0.20019161701202393
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4080345630645752,
+        "predicted": 1.425520658493042,
+        "error": 0.017486095428466797
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7235636711120605,
+        "predicted": 1.5441442728042603,
+        "error": 0.1794193983078003
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3445377349853516,
+        "predicted": 1.390651822090149,
+        "error": 0.04611408710479736
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3880252838134766,
+        "predicted": 1.4323714971542358,
+        "error": 0.04434621334075928
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7548441886901855,
+        "predicted": 1.5745035409927368,
+        "error": 0.18034064769744873
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2508392333984375,
+        "predicted": 1.3503321409225464,
+        "error": 0.09949290752410889
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.089184522628784,
+        "predicted": 1.800808310508728,
+        "error": 0.28837621212005615
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.435321569442749,
+        "predicted": 1.3679109811782837,
+        "error": 0.06741058826446533
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2922098636627197,
+        "predicted": 1.715816617012024,
+        "error": 0.5763932466506958
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5226006507873535,
+        "predicted": 1.4469715356826782,
+        "error": 0.07562911510467529
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2875139713287354,
+        "predicted": 1.3712871074676514,
+        "error": 0.08377313613891602
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6812920570373535,
+        "predicted": 1.3818304538726807,
+        "error": 0.29946160316467285
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1649718284606934,
+        "predicted": 1.7816972732543945,
+        "error": 0.38327455520629883
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3447811603546143,
+        "predicted": 1.9815164804458618,
+        "error": 0.36326467990875244
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0726561546325684,
+        "predicted": 1.6078612804412842,
+        "error": 0.4647948741912842
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.477283239364624,
+        "predicted": 1.364472508430481,
+        "error": 0.11281073093414307
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4928042888641357,
+        "predicted": 1.3384968042373657,
+        "error": 0.15430748462677002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2998342514038086,
+        "predicted": 1.3575048446655273,
+        "error": 0.05767059326171875
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8188118934631348,
+        "predicted": 1.661301612854004,
+        "error": 0.15751028060913086
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0141005516052246,
+        "predicted": 1.597143292427063,
+        "error": 0.4169572591781616
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9435763359069824,
+        "predicted": 1.7493836879730225,
+        "error": 0.19419264793395996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6411066055297852,
+        "predicted": 1.5212482213974,
+        "error": 0.11985838413238525
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4998435974121094,
+        "predicted": 1.4838539361953735,
+        "error": 0.01598966121673584
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3566722869873047,
+        "predicted": 1.7914481163024902,
+        "error": 0.5652241706848145
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4202415943145752,
+        "predicted": 1.4308940172195435,
+        "error": 0.010652422904968262
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6164898872375488,
+        "predicted": 1.5204930305480957,
+        "error": 0.09599685668945312
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.263284683227539,
+        "predicted": 1.3467961549758911,
+        "error": 0.08351147174835205
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.072572708129883,
+        "predicted": 1.7771209478378296,
+        "error": 0.2954517602920532
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2564470767974854,
+        "predicted": 1.7726871967315674,
+        "error": 0.48375988006591797
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3659656047821045,
+        "predicted": 1.354213833808899,
+        "error": 0.011751770973205566
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7862141132354736,
+        "predicted": 1.5775758028030396,
+        "error": 0.20863831043243408
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0826637744903564,
+        "predicted": 1.7631769180297852,
+        "error": 0.3194868564605713
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.4287819862365723,
+        "predicted": 1.8402434587478638,
+        "error": 0.5885385274887085
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9482195377349854,
+        "predicted": 1.527548909187317,
+        "error": 0.42067062854766846
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2483646869659424,
+        "predicted": 1.8203436136245728,
+        "error": 0.42802107334136963
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0414233207702637,
+        "predicted": 1.7409948110580444,
+        "error": 0.30042850971221924
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9172906875610352,
+        "predicted": 1.6386133432388306,
+        "error": 0.2786773443222046
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.236664295196533,
+        "predicted": 1.8432354927062988,
+        "error": 0.3934288024902344
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9301354885101318,
+        "predicted": 1.5886881351470947,
+        "error": 0.3414473533630371
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6829490661621094,
+        "predicted": 1.353697419166565,
+        "error": 0.32925164699554443
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6541838645935059,
+        "predicted": 1.550637125968933,
+        "error": 0.10354673862457275
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4796793460845947,
+        "predicted": 1.4773197174072266,
+        "error": 0.002359628677368164
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.375209331512451,
+        "predicted": 1.8014122247695923,
+        "error": 0.5737971067428589
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.598513126373291,
+        "predicted": 1.5185470581054688,
+        "error": 0.07996606826782227
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4463722705841064,
+        "predicted": 1.3653489351272583,
+        "error": 0.08102333545684814
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4797210693359375,
+        "predicted": 1.4149019718170166,
+        "error": 0.0648190975189209
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6978442668914795,
+        "predicted": 1.5473436117172241,
+        "error": 0.15050065517425537
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.440589666366577,
+        "predicted": 2.013467788696289,
+        "error": 0.4271218776702881
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2943089008331299,
+        "predicted": 1.3695948123931885,
+        "error": 0.0752859115600586
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2716104984283447,
+        "predicted": 1.7121822834014893,
+        "error": 0.5594282150268555
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.236950397491455,
+        "predicted": 1.7880998849868774,
+        "error": 0.44885051250457764
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3107776641845703,
+        "predicted": 1.393127679824829,
+        "error": 0.08235001564025879
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8971264362335205,
+        "predicted": 1.5768202543258667,
+        "error": 0.3203061819076538
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4110684394836426,
+        "predicted": 1.4298909902572632,
+        "error": 0.018822550773620605
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.583009958267212,
+        "predicted": 1.3382899761199951,
+        "error": 0.2447199821472168
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4405786991119385,
+        "predicted": 1.4749959707260132,
+        "error": 0.03441727161407471
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.880711317062378,
+        "predicted": 1.5851223468780518,
+        "error": 0.29558897018432617
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.367144823074341,
+        "predicted": 1.9379295110702515,
+        "error": 0.42921531200408936
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.621764898300171,
+        "predicted": 1.3874297142028809,
+        "error": 0.23433518409729004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5255391597747803,
+        "predicted": 1.491179347038269,
+        "error": 0.03435981273651123
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3710319995880127,
+        "predicted": 1.3815205097198486,
+        "error": 0.010488510131835938
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9269287586212158,
+        "predicted": 1.5784975290298462,
+        "error": 0.34843122959136963
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3165652751922607,
+        "predicted": 1.3567450046539307,
+        "error": 0.04017972946166992
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3735413551330566,
+        "predicted": 1.3798573017120361,
+        "error": 0.006315946578979492
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4941275119781494,
+        "predicted": 1.3490668535232544,
+        "error": 0.14506065845489502
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.370537281036377,
+        "predicted": 1.3465015888214111,
+        "error": 0.02403569221496582
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0921528339385986,
+        "predicted": 1.7351375818252563,
+        "error": 0.3570152521133423
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4034152030944824,
+        "predicted": 1.3611496686935425,
+        "error": 0.04226553440093994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.062845230102539,
+        "predicted": 1.7496269941329956,
+        "error": 0.31321823596954346
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4132559299468994,
+        "predicted": 1.4748576879501343,
+        "error": 0.06160175800323486
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4508068561553955,
+        "predicted": 1.3814698457717896,
+        "error": 0.06933701038360596
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0181119441986084,
+        "predicted": 1.7876242399215698,
+        "error": 0.23048770427703857
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4042139053344727,
+        "predicted": 1.3488855361938477,
+        "error": 0.055328369140625
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.206796407699585,
+        "predicted": 1.9020698070526123,
+        "error": 0.30472660064697266
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5799999237060547,
+        "predicted": 1.4389688968658447,
+        "error": 0.14103102684020996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.360248565673828,
+        "predicted": 1.8178750276565552,
+        "error": 0.542373538017273
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.389312744140625,
+        "predicted": 1.401166558265686,
+        "error": 0.011853814125061035
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.458740234375,
+        "predicted": 1.4223030805587769,
+        "error": 0.036437153816223145
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6596853733062744,
+        "predicted": 1.585374116897583,
+        "error": 0.0743112564086914
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.074974775314331,
+        "predicted": 1.7909493446350098,
+        "error": 0.2840254306793213
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7347872257232666,
+        "predicted": 1.4709066152572632,
+        "error": 0.2638806104660034
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1407723426818848,
+        "predicted": 1.874606966972351,
+        "error": 0.2661653757095337
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4978647232055664,
+        "predicted": 1.3763561248779297,
+        "error": 0.12150859832763672
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4149248600006104,
+        "predicted": 1.383002519607544,
+        "error": 0.031922340393066406
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7225325107574463,
+        "predicted": 1.4875277280807495,
+        "error": 0.23500478267669678
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.812988519668579,
+        "predicted": 1.5118123292922974,
+        "error": 0.30117619037628174
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9019663333892822,
+        "predicted": 1.6576430797576904,
+        "error": 0.2443232536315918
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4944016933441162,
+        "predicted": 1.4650501012802124,
+        "error": 0.02935159206390381
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4124035835266113,
+        "predicted": 1.4237771034240723,
+        "error": 0.011373519897460938
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.778256893157959,
+        "predicted": 1.6210514307022095,
+        "error": 0.1572054624557495
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.949613332748413,
+        "predicted": 2.2511801719665527,
+        "error": 0.6984331607818604
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2903451919555664,
+        "predicted": 1.3525348901748657,
+        "error": 0.062189698219299316
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8329620361328125,
+        "predicted": 1.4792754650115967,
+        "error": 0.3536865711212158
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7635107040405273,
+        "predicted": 1.5575875043869019,
+        "error": 0.2059231996536255
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9463121891021729,
+        "predicted": 1.6425144672393799,
+        "error": 0.30379772186279297
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1289467811584473,
+        "predicted": 1.8178828954696655,
+        "error": 0.31106388568878174
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2203633785247803,
+        "predicted": 1.3675587177276611,
+        "error": 0.14719533920288086
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.5049924850463867,
+        "predicted": 1.9982948303222656,
+        "error": 0.5066976547241211
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.058035135269165,
+        "predicted": 1.8168226480484009,
+        "error": 0.24121248722076416
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.467043161392212,
+        "predicted": 1.4070861339569092,
+        "error": 0.059957027435302734
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.4043679237365723,
+        "predicted": 1.960816740989685,
+        "error": 0.4435511827468872
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.987212896347046,
+        "predicted": 1.628700613975525,
+        "error": 0.358512282371521
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9233942031860352,
+        "predicted": 1.7046626806259155,
+        "error": 0.21873152256011963
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.619100570678711,
+        "predicted": 1.537817120552063,
+        "error": 0.08128345012664795
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.441352605819702,
+        "predicted": 1.8189431428909302,
+        "error": 0.622409462928772
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.094036340713501,
+        "predicted": 1.8003140687942505,
+        "error": 0.2937222719192505
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4214932918548584,
+        "predicted": 1.373340368270874,
+        "error": 0.048152923583984375
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3309171199798584,
+        "predicted": 1.8456745147705078,
+        "error": 0.4852426052093506
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3686060905456543,
+        "predicted": 1.3765896558761597,
+        "error": 0.007983565330505371
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5854060649871826,
+        "predicted": 1.3492249250411987,
+        "error": 0.2361811399459839
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4175474643707275,
+        "predicted": 1.3642067909240723,
+        "error": 0.05334067344665527
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3481974601745605,
+        "predicted": 1.3651962280273438,
+        "error": 0.016998767852783203
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.095085382461548,
+        "predicted": 1.7615655660629272,
+        "error": 0.3335198163986206
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0939886569976807,
+        "predicted": 1.6367639303207397,
+        "error": 0.4572247266769409
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4164984226226807,
+        "predicted": 1.4126235246658325,
+        "error": 0.0038748979568481445
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4693617820739746,
+        "predicted": 1.3987886905670166,
+        "error": 0.07057309150695801
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9859492778778076,
+        "predicted": 1.685948371887207,
+        "error": 0.3000009059906006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.56746506690979,
+        "predicted": 1.342448115348816,
+        "error": 0.22501695156097412
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9267916679382324,
+        "predicted": 1.73646879196167,
+        "error": 0.1903228759765625
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9832253456115723,
+        "predicted": 1.6035747528076172,
+        "error": 0.3796505928039551
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0997941493988037,
+        "predicted": 1.7226923704147339,
+        "error": 0.3771017789840698
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3774454593658447,
+        "predicted": 1.3881773948669434,
+        "error": 0.010731935501098633
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4910459518432617,
+        "predicted": 1.4673397541046143,
+        "error": 0.02370619773864746
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6231358051300049,
+        "predicted": 1.5055917501449585,
+        "error": 0.11754405498504639
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3186087608337402,
+        "predicted": 1.8304741382598877,
+        "error": 0.48813462257385254
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2437105178833008,
+        "predicted": 1.348819613456726,
+        "error": 0.10510909557342529
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4126777648925781,
+        "predicted": 1.345725655555725,
+        "error": 0.06695210933685303
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.878678798675537,
+        "predicted": 1.4754774570465088,
+        "error": 0.4032013416290283
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3146698474884033,
+        "predicted": 1.3682172298431396,
+        "error": 0.05354738235473633
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.873779296875,
+        "predicted": 1.743424415588379,
+        "error": 0.1303548812866211
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.142089605331421,
+        "predicted": 1.8112233877182007,
+        "error": 0.3308662176132202
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4661669731140137,
+        "predicted": 1.4132593870162964,
+        "error": 0.052907586097717285
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4258503913879395,
+        "predicted": 1.3416318893432617,
+        "error": 0.08421850204467773
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3370087146759033,
+        "predicted": 2.0451643466949463,
+        "error": 0.29184436798095703
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2143185138702393,
+        "predicted": 1.8715225458145142,
+        "error": 0.3427959680557251
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7675161361694336,
+        "predicted": 1.6618826389312744,
+        "error": 0.10563349723815918
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5239477157592773,
+        "predicted": 1.3533458709716797,
+        "error": 0.17060184478759766
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4488577842712402,
+        "predicted": 1.4221508502960205,
+        "error": 0.026706933975219727
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8259704113006592,
+        "predicted": 1.6651610136032104,
+        "error": 0.16080939769744873
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0168662071228027,
+        "predicted": 1.7154709100723267,
+        "error": 0.3013952970504761
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8768489360809326,
+        "predicted": 1.64520263671875,
+        "error": 0.23164629936218262
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.4387896060943604,
+        "predicted": 1.8681889772415161,
+        "error": 0.5706006288528442
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6188561916351318,
+        "predicted": 1.403428316116333,
+        "error": 0.21542787551879883
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.930147409439087,
+        "predicted": 1.628509759902954,
+        "error": 0.3016376495361328
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2361695766448975,
+        "predicted": 1.8543016910552979,
+        "error": 0.3818678855895996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2053539752960205,
+        "predicted": 1.9258458614349365,
+        "error": 0.279508113861084
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.685953140258789,
+        "predicted": 1.4624348878860474,
+        "error": 0.2235182523727417
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.434868574142456,
+        "predicted": 1.3604673147201538,
+        "error": 0.07440125942230225
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9766390323638916,
+        "predicted": 1.7928786277770996,
+        "error": 0.183760404586792
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8056809902191162,
+        "predicted": 1.624650001525879,
+        "error": 0.1810309886932373
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4719843864440918,
+        "predicted": 1.4152101278305054,
+        "error": 0.056774258613586426
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4044761657714844,
+        "predicted": 1.4242273569107056,
+        "error": 0.01975119113922119
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6602873802185059,
+        "predicted": 1.4519898891448975,
+        "error": 0.2082974910736084
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6558647155761719,
+        "predicted": 1.4806805849075317,
+        "error": 0.17518413066864014
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7937839031219482,
+        "predicted": 1.6866542100906372,
+        "error": 0.10712969303131104
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.394188404083252,
+        "predicted": 1.3691233396530151,
+        "error": 0.025065064430236816
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4514744281768799,
+        "predicted": 1.35512113571167,
+        "error": 0.09635329246520996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4415323734283447,
+        "predicted": 1.3852579593658447,
+        "error": 0.0562744140625
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.407640218734741,
+        "predicted": 1.9317965507507324,
+        "error": 0.4758436679840088
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9804418087005615,
+        "predicted": 1.6986247301101685,
+        "error": 0.28181707859039307
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.204561233520508,
+        "predicted": 1.849997878074646,
+        "error": 0.3545633554458618
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4317750930786133,
+        "predicted": 1.4243953227996826,
+        "error": 0.007379770278930664
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5210390090942383,
+        "predicted": 1.4874389171600342,
+        "error": 0.0336000919342041
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2712478637695312,
+        "predicted": 1.3884257078170776,
+        "error": 0.11717784404754639
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6047775745391846,
+        "predicted": 1.4191536903381348,
+        "error": 0.1856238842010498
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4169096946716309,
+        "predicted": 1.366007685661316,
+        "error": 0.05090200901031494
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4129459857940674,
+        "predicted": 1.345707654953003,
+        "error": 0.06723833084106445
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.765376329421997,
+        "predicted": 1.641939640045166,
+        "error": 0.12343668937683105
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.469576358795166,
+        "predicted": 1.3936259746551514,
+        "error": 0.07595038414001465
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.680833101272583,
+        "predicted": 1.5274872779846191,
+        "error": 0.15334582328796387
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8595755100250244,
+        "predicted": 1.5485299825668335,
+        "error": 0.3110455274581909
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9119858741760254,
+        "predicted": 1.5343559980392456,
+        "error": 0.3776298761367798
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3325035572052002,
+        "predicted": 1.357561469078064,
+        "error": 0.02505791187286377
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.502763271331787,
+        "predicted": 2.0638105869293213,
+        "error": 0.4389526844024658
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3307323455810547,
+        "predicted": 1.9063881635665894,
+        "error": 0.42434418201446533
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0181119441986084,
+        "predicted": 1.6370911598205566,
+        "error": 0.38102078437805176
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5829384326934814,
+        "predicted": 1.3409273624420166,
+        "error": 0.24201107025146484
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.348954439163208,
+        "predicted": 1.4187841415405273,
+        "error": 0.06982970237731934
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.755976676940918,
+        "predicted": 1.6244615316390991,
+        "error": 0.13151514530181885
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4279842376708984,
+        "predicted": 1.4484772682189941,
+        "error": 0.020493030548095703
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.829308271408081,
+        "predicted": 1.675162672996521,
+        "error": 0.15414559841156006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.23846435546875,
+        "predicted": 1.9201383590698242,
+        "error": 0.3183259963989258
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.690751314163208,
+        "predicted": 1.5464715957641602,
+        "error": 0.14427971839904785
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1337270736694336,
+        "predicted": 1.7435295581817627,
+        "error": 0.3901975154876709
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1333932876586914,
+        "predicted": 1.843822956085205,
+        "error": 0.28957033157348633
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4568567276000977,
+        "predicted": 1.4037442207336426,
+        "error": 0.05311250686645508
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8128752708435059,
+        "predicted": 1.567853331565857,
+        "error": 0.24502193927764893
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2728691101074219,
+        "predicted": 1.3571659326553345,
+        "error": 0.0842968225479126
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4182448387145996,
+        "predicted": 1.3908283710479736,
+        "error": 0.027416467666625977
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1518707275390625,
+        "predicted": 1.812759280204773,
+        "error": 0.33911144733428955
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5549898147583008,
+        "predicted": 1.510884404182434,
+        "error": 0.0441054105758667
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.224207878112793,
+        "predicted": 1.3564410209655762,
+        "error": 0.1322331428527832
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5897572040557861,
+        "predicted": 1.3440625667572021,
+        "error": 0.24569463729858398
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4122188091278076,
+        "predicted": 1.3936342000961304,
+        "error": 0.018584609031677246
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7152667045593262,
+        "predicted": 1.5887706279754639,
+        "error": 0.1264960765838623
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.099066972732544,
+        "predicted": 1.708125114440918,
+        "error": 0.390941858291626
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.855027675628662,
+        "predicted": 1.6819261312484741,
+        "error": 0.173101544380188
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8904507160186768,
+        "predicted": 1.6473941802978516,
+        "error": 0.2430565357208252
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6345739364624023,
+        "predicted": 1.5841318368911743,
+        "error": 0.05044209957122803
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2857377529144287,
+        "predicted": 1.3971171379089355,
+        "error": 0.11137938499450684
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4971256256103516,
+        "predicted": 1.46457839012146,
+        "error": 0.0325472354888916
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.719599962234497,
+        "predicted": 1.4649934768676758,
+        "error": 0.2546064853668213
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.018076181411743,
+        "predicted": 1.755721926689148,
+        "error": 0.2623542547225952
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3602375984191895,
+        "predicted": 1.3534786701202393,
+        "error": 0.006758928298950195
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8023371696472168,
+        "predicted": 1.5958220958709717,
+        "error": 0.20651507377624512
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3243675231933594,
+        "predicted": 1.3638783693313599,
+        "error": 0.03951084613800049
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3547539710998535,
+        "predicted": 1.3955646753311157,
+        "error": 0.04081070423126221
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9964218139648438,
+        "predicted": 1.7280710935592651,
+        "error": 0.2683507204055786
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0130395889282227,
+        "predicted": 1.7880778312683105,
+        "error": 0.2249617576599121
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2885918617248535,
+        "predicted": 1.8714686632156372,
+        "error": 0.4171231985092163
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4504790306091309,
+        "predicted": 1.4750558137893677,
+        "error": 0.024576783180236816
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0273029804229736,
+        "predicted": 1.6473190784454346,
+        "error": 0.37998390197753906
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6319811344146729,
+        "predicted": 1.5580674409866333,
+        "error": 0.07391369342803955
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5942037105560303,
+        "predicted": 1.3557579517364502,
+        "error": 0.23844575881958008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3515114784240723,
+        "predicted": 1.4250396490097046,
+        "error": 0.07352817058563232
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9479870796203613,
+        "predicted": 1.6562585830688477,
+        "error": 0.29172849655151367
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.468287944793701,
+        "predicted": 2.1168861389160156,
+        "error": 0.35140180587768555
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4614224433898926,
+        "predicted": 1.408536434173584,
+        "error": 0.052886009216308594
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.560431718826294,
+        "predicted": 1.460707426071167,
+        "error": 0.09972429275512695
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3582408428192139,
+        "predicted": 1.349058985710144,
+        "error": 0.009181857109069824
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3134589195251465,
+        "predicted": 1.9232381582260132,
+        "error": 0.3902207612991333
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.105504274368286,
+        "predicted": 1.5755298137664795,
+        "error": 0.5299744606018066
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4354884624481201,
+        "predicted": 1.3625465631484985,
+        "error": 0.07294189929962158
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.513528823852539,
+        "predicted": 1.4983489513397217,
+        "error": 0.015179872512817383
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0758748054504395,
+        "predicted": 1.7358099222183228,
+        "error": 0.3400648832321167
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7169952392578125,
+        "predicted": 1.5176328420639038,
+        "error": 0.1993623971939087
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9180774688720703,
+        "predicted": 1.6359726190567017,
+        "error": 0.28210484981536865
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4719069004058838,
+        "predicted": 1.4598323106765747,
+        "error": 0.012074589729309082
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.477240562438965,
+        "predicted": 1.9623750448226929,
+        "error": 0.514865517616272
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4507591724395752,
+        "predicted": 1.4353561401367188,
+        "error": 0.015403032302856445
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5053510665893555,
+        "predicted": 1.5155901908874512,
+        "error": 0.010239124298095703
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3003408908843994,
+        "predicted": 1.3520443439483643,
+        "error": 0.051703453063964844
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9038140773773193,
+        "predicted": 1.6417045593261719,
+        "error": 0.26210951805114746
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4737844467163086,
+        "predicted": 1.43239164352417,
+        "error": 0.04139280319213867
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.935410499572754,
+        "predicted": 1.6629760265350342,
+        "error": 0.2724344730377197
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9731700420379639,
+        "predicted": 1.5957286357879639,
+        "error": 0.37744140625
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8853724002838135,
+        "predicted": 1.6098963022232056,
+        "error": 0.2754760980606079
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5796244144439697,
+        "predicted": 1.3593422174453735,
+        "error": 0.2202821969985962
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6264915466308594,
+        "predicted": 1.3533753156661987,
+        "error": 0.27311623096466064
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6140639781951904,
+        "predicted": 1.3431987762451172,
+        "error": 0.27086520195007324
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "deterministic ONNX; CPU; batch=1; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3578712940216064,
+        "predicted": 1.3848298788070679,
+        "error": 0.026958584785461426
+      }
+    ]
+  },
+  "/api/results-comparison?protocol=mc": {
+    "status": 200,
+    "body": [
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.053314,
+        "predicted": 2.068228,
+        "error": 0.014914000000000094
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.351303,
+        "predicted": 1.419094,
+        "error": 0.06779100000000016
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.119255,
+        "predicted": 2.035236,
+        "error": 0.08401900000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.274031,
+        "predicted": 1.397429,
+        "error": 0.12339800000000012
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.256972,
+        "predicted": 2.072522,
+        "error": 0.18445
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.981318,
+        "predicted": 2.044067,
+        "error": 0.06274900000000017
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.17768,
+        "predicted": 2.112432,
+        "error": 0.06524799999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.882094,
+        "predicted": 1.792076,
+        "error": 0.09001799999999993
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.416624,
+        "predicted": 1.459239,
+        "error": 0.04261499999999985
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.998258,
+        "predicted": 1.937487,
+        "error": 0.06077100000000013
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.186704,
+        "predicted": 2.074252,
+        "error": 0.11245200000000022
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.395708,
+        "predicted": 1.578898,
+        "error": 0.18318999999999996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.414967,
+        "predicted": 1.381678,
+        "error": 0.033289000000000124
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.411891,
+        "predicted": 1.313704,
+        "error": 0.09818700000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.877207,
+        "predicted": 2.005019,
+        "error": 0.12781199999999981
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.00091,
+        "predicted": 1.85493,
+        "error": 0.14598000000000022
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.92759,
+        "predicted": 1.951165,
+        "error": 0.023575000000000124
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.588678,
+        "predicted": 1.679882,
+        "error": 0.09120400000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.324141,
+        "predicted": 1.472624,
+        "error": 0.14848299999999992
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.424724,
+        "predicted": 1.521352,
+        "error": 0.09662799999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.28082,
+        "predicted": 2.299733,
+        "error": 0.018912999999999958
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.971501,
+        "predicted": 2.200031,
+        "error": 0.22853000000000012
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.408035,
+        "predicted": 1.507606,
+        "error": 0.09957100000000008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.723564,
+        "predicted": 1.760936,
+        "error": 0.03737199999999996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.344538,
+        "predicted": 1.537224,
+        "error": 0.1926859999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.388025,
+        "predicted": 1.527339,
+        "error": 0.13931399999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.754844,
+        "predicted": 1.738132,
+        "error": 0.01671200000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.250839,
+        "predicted": 1.352493,
+        "error": 0.10165399999999991
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.089184,
+        "predicted": 2.109991,
+        "error": 0.02080700000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.435322,
+        "predicted": 1.408647,
+        "error": 0.026675000000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.29221,
+        "predicted": 2.056164,
+        "error": 0.23604599999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.522601,
+        "predicted": 1.555612,
+        "error": 0.0330109999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.287514,
+        "predicted": 1.450256,
+        "error": 0.16274199999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.681292,
+        "predicted": 1.489025,
+        "error": 0.19226699999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.164972,
+        "predicted": 2.057717,
+        "error": 0.10725500000000032
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.344781,
+        "predicted": 2.42365,
+        "error": 0.07886900000000008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.072656,
+        "predicted": 1.77468,
+        "error": 0.2979759999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.477283,
+        "predicted": 1.387535,
+        "error": 0.08974799999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.492804,
+        "predicted": 1.35279,
+        "error": 0.14001400000000008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.299834,
+        "predicted": 1.416393,
+        "error": 0.11655900000000008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.818812,
+        "predicted": 1.996337,
+        "error": 0.17752499999999993
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0141,
+        "predicted": 1.772242,
+        "error": 0.2418579999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.943576,
+        "predicted": 2.004051,
+        "error": 0.060475000000000056
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.641107,
+        "predicted": 1.631947,
+        "error": 0.009160000000000057
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.499844,
+        "predicted": 1.587304,
+        "error": 0.0874600000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.356672,
+        "predicted": 2.196483,
+        "error": 0.16018899999999991
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.420242,
+        "predicted": 1.573558,
+        "error": 0.153316
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.61649,
+        "predicted": 1.66982,
+        "error": 0.0533300000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.263285,
+        "predicted": 1.386705,
+        "error": 0.12342000000000009
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.072573,
+        "predicted": 2.098521,
+        "error": 0.025947999999999638
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.256447,
+        "predicted": 2.072557,
+        "error": 0.1838899999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.365966,
+        "predicted": 1.372284,
+        "error": 0.006318000000000046
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.786214,
+        "predicted": 1.835054,
+        "error": 0.048839999999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.082664,
+        "predicted": 2.015298,
+        "error": 0.06736599999999981
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.428782,
+        "predicted": 2.171173,
+        "error": 0.257609
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.94822,
+        "predicted": 1.834937,
+        "error": 0.11328300000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.248365,
+        "predicted": 2.080608,
+        "error": 0.16775700000000038
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.041423,
+        "predicted": 1.95261,
+        "error": 0.08881300000000003
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.917291,
+        "predicted": 1.935915,
+        "error": 0.018623999999999974
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.236664,
+        "predicted": 2.214194,
+        "error": 0.022470000000000212
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.930136,
+        "predicted": 1.835409,
+        "error": 0.094727
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.682949,
+        "predicted": 1.396564,
+        "error": 0.2863850000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.654184,
+        "predicted": 1.74033,
+        "error": 0.08614599999999983
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.479679,
+        "predicted": 1.618959,
+        "error": 0.13928000000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.375209,
+        "predicted": 2.130988,
+        "error": 0.24422100000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.598513,
+        "predicted": 1.666677,
+        "error": 0.06816399999999989
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.446372,
+        "predicted": 1.358589,
+        "error": 0.08778299999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.479721,
+        "predicted": 1.475237,
+        "error": 0.0044840000000001545
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.697844,
+        "predicted": 1.741508,
+        "error": 0.04366400000000015
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.44059,
+        "predicted": 2.441897,
+        "error": 0.0013070000000001691
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.294309,
+        "predicted": 1.415941,
+        "error": 0.12163199999999996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.27161,
+        "predicted": 2.00087,
+        "error": 0.27074
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.23695,
+        "predicted": 2.063068,
+        "error": 0.17388200000000031
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.310778,
+        "predicted": 1.472216,
+        "error": 0.16143799999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.897126,
+        "predicted": 1.702074,
+        "error": 0.195052
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.411068,
+        "predicted": 1.554886,
+        "error": 0.143818
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.58301,
+        "predicted": 1.40781,
+        "error": 0.17520000000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.440579,
+        "predicted": 1.643046,
+        "error": 0.20246699999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.880711,
+        "predicted": 1.801692,
+        "error": 0.07901899999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.367145,
+        "predicted": 2.254203,
+        "error": 0.11294199999999988
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.621765,
+        "predicted": 1.451416,
+        "error": 0.17034899999999986
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.525539,
+        "predicted": 1.633447,
+        "error": 0.10790800000000011
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.371032,
+        "predicted": 1.449994,
+        "error": 0.07896199999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.926929,
+        "predicted": 1.824258,
+        "error": 0.10267099999999996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.316565,
+        "predicted": 1.400271,
+        "error": 0.08370600000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.373541,
+        "predicted": 1.416499,
+        "error": 0.04295800000000005
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.494128,
+        "predicted": 1.386029,
+        "error": 0.10809899999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.370537,
+        "predicted": 1.31637,
+        "error": 0.054166999999999854
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.092153,
+        "predicted": 1.982057,
+        "error": 0.1100960000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.403415,
+        "predicted": 1.445334,
+        "error": 0.04191899999999982
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.062845,
+        "predicted": 2.008617,
+        "error": 0.05422799999999972
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.413256,
+        "predicted": 1.521404,
+        "error": 0.10814799999999991
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.450807,
+        "predicted": 1.479793,
+        "error": 0.028985999999999956
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.018112,
+        "predicted": 2.065093,
+        "error": 0.04698100000000016
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.404214,
+        "predicted": 1.326662,
+        "error": 0.07755200000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.206796,
+        "predicted": 2.220295,
+        "error": 0.013498999999999928
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.58,
+        "predicted": 1.518277,
+        "error": 0.06172299999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.360248,
+        "predicted": 2.085038,
+        "error": 0.27520999999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.389313,
+        "predicted": 1.538515,
+        "error": 0.14920200000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.45874,
+        "predicted": 1.577018,
+        "error": 0.1182780000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.659685,
+        "predicted": 1.811942,
+        "error": 0.15225699999999986
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.074975,
+        "predicted": 2.126694,
+        "error": 0.05171900000000029
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.734787,
+        "predicted": 1.634454,
+        "error": 0.100333
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.140772,
+        "predicted": 2.280667,
+        "error": 0.1398950000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.497865,
+        "predicted": 1.403495,
+        "error": 0.09437000000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.414925,
+        "predicted": 1.38904,
+        "error": 0.025884999999999936
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.722532,
+        "predicted": 1.619764,
+        "error": 0.10276799999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.812988,
+        "predicted": 1.695288,
+        "error": 0.11770000000000014
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.901966,
+        "predicted": 1.928946,
+        "error": 0.026980000000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.494402,
+        "predicted": 1.550245,
+        "error": 0.05584300000000009
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.412404,
+        "predicted": 1.523044,
+        "error": 0.11064000000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.778257,
+        "predicted": 1.879146,
+        "error": 0.100889
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.949613,
+        "predicted": 2.717152,
+        "error": 0.2324609999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.290345,
+        "predicted": 1.389916,
+        "error": 0.09957099999999985
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.832962,
+        "predicted": 1.649204,
+        "error": 0.1837580000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.763511,
+        "predicted": 1.840122,
+        "error": 0.07661099999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.946312,
+        "predicted": 1.951603,
+        "error": 0.005290999999999935
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.128947,
+        "predicted": 2.204151,
+        "error": 0.07520399999999983
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.220363,
+        "predicted": 1.450996,
+        "error": 0.23063299999999987
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.504992,
+        "predicted": 2.514066,
+        "error": 0.009074000000000026
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.058035,
+        "predicted": 2.172568,
+        "error": 0.11453300000000022
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.467043,
+        "predicted": 1.438585,
+        "error": 0.028458000000000094
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.404368,
+        "predicted": 2.323257,
+        "error": 0.08111099999999993
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.987213,
+        "predicted": 1.909242,
+        "error": 0.07797099999999979
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.923394,
+        "predicted": 1.98063,
+        "error": 0.05723599999999984
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.619101,
+        "predicted": 1.763293,
+        "error": 0.1441920000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.441352,
+        "predicted": 2.291006,
+        "error": 0.1503460000000003
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.094036,
+        "predicted": 2.13655,
+        "error": 0.04251400000000016
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.421493,
+        "predicted": 1.433017,
+        "error": 0.01152400000000009
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.330917,
+        "predicted": 2.169753,
+        "error": 0.16116399999999986
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.368606,
+        "predicted": 1.476374,
+        "error": 0.10776800000000009
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.585406,
+        "predicted": 1.375897,
+        "error": 0.20950900000000017
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.417548,
+        "predicted": 1.423558,
+        "error": 0.006010000000000071
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.348198,
+        "predicted": 1.446232,
+        "error": 0.09803399999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.095085,
+        "predicted": 2.239072,
+        "error": 0.1439870000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.093989,
+        "predicted": 1.879572,
+        "error": 0.21441700000000008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.416498,
+        "predicted": 1.477636,
+        "error": 0.061137999999999915
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.469362,
+        "predicted": 1.552257,
+        "error": 0.08289499999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.985949,
+        "predicted": 1.94281,
+        "error": 0.04313900000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.567465,
+        "predicted": 1.363833,
+        "error": 0.20363200000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.926792,
+        "predicted": 2.046925,
+        "error": 0.12013299999999982
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.983225,
+        "predicted": 1.731356,
+        "error": 0.2518690000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.099794,
+        "predicted": 2.008825,
+        "error": 0.0909690000000003
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.377446,
+        "predicted": 1.444164,
+        "error": 0.06671800000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.491046,
+        "predicted": 1.55904,
+        "error": 0.06799399999999989
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.623136,
+        "predicted": 1.749348,
+        "error": 0.126212
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.318609,
+        "predicted": 2.212875,
+        "error": 0.105734
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.24371,
+        "predicted": 1.355062,
+        "error": 0.1113519999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.412678,
+        "predicted": 1.329189,
+        "error": 0.08348900000000015
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.878679,
+        "predicted": 1.694671,
+        "error": 0.18400799999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.31467,
+        "predicted": 1.391173,
+        "error": 0.07650299999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.873779,
+        "predicted": 2.145501,
+        "error": 0.2717219999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.14209,
+        "predicted": 2.17127,
+        "error": 0.02917999999999976
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.466167,
+        "predicted": 1.617368,
+        "error": 0.15120099999999992
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.42585,
+        "predicted": 1.36499,
+        "error": 0.060860000000000136
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.337009,
+        "predicted": 2.504575,
+        "error": 0.16756599999999988
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.214318,
+        "predicted": 2.23508,
+        "error": 0.020761999999999947
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.767516,
+        "predicted": 1.911914,
+        "error": 0.1443979999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.523948,
+        "predicted": 1.372372,
+        "error": 0.15157600000000016
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.448858,
+        "predicted": 1.510396,
+        "error": 0.06153800000000009
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.82597,
+        "predicted": 1.890856,
+        "error": 0.064886
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.016866,
+        "predicted": 2.017828,
+        "error": 0.0009620000000003515
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.876849,
+        "predicted": 1.838037,
+        "error": 0.03881200000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.43879,
+        "predicted": 2.234459,
+        "error": 0.20433099999999982
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.618856,
+        "predicted": 1.500282,
+        "error": 0.11857400000000018
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.930147,
+        "predicted": 1.827043,
+        "error": 0.10310400000000008
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.23617,
+        "predicted": 2.230596,
+        "error": 0.00557400000000019
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.205354,
+        "predicted": 2.299668,
+        "error": 0.09431400000000023
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.685953,
+        "predicted": 1.625749,
+        "error": 0.060203999999999924
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.434869,
+        "predicted": 1.369539,
+        "error": 0.06532999999999989
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.976639,
+        "predicted": 2.100494,
+        "error": 0.12385499999999983
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.805681,
+        "predicted": 1.865898,
+        "error": 0.060216999999999965
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.471984,
+        "predicted": 1.513922,
+        "error": 0.04193800000000003
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.404476,
+        "predicted": 1.483704,
+        "error": 0.07922799999999985
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.660287,
+        "predicted": 1.563576,
+        "error": 0.09671099999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.655865,
+        "predicted": 1.626223,
+        "error": 0.029641999999999946
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.793784,
+        "predicted": 1.911848,
+        "error": 0.11806399999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.394188,
+        "predicted": 1.43155,
+        "error": 0.03736200000000012
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.451474,
+        "predicted": 1.419001,
+        "error": 0.032472999999999974
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.441532,
+        "predicted": 1.449544,
+        "error": 0.008011999999999908
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.40764,
+        "predicted": 2.393644,
+        "error": 0.013995999999999675
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.980442,
+        "predicted": 1.961837,
+        "error": 0.018604999999999983
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.204561,
+        "predicted": 2.090091,
+        "error": 0.11446999999999985
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.431775,
+        "predicted": 1.578646,
+        "error": 0.14687099999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.521039,
+        "predicted": 1.623823,
+        "error": 0.10278399999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.271248,
+        "predicted": 1.43975,
+        "error": 0.16850200000000015
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.604778,
+        "predicted": 1.565296,
+        "error": 0.03948200000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.41691,
+        "predicted": 1.428661,
+        "error": 0.011751000000000067
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.412946,
+        "predicted": 1.375579,
+        "error": 0.03736699999999993
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.765376,
+        "predicted": 1.942969,
+        "error": 0.1775929999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.469576,
+        "predicted": 1.492899,
+        "error": 0.023322999999999983
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.680833,
+        "predicted": 1.689399,
+        "error": 0.008566000000000074
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.859576,
+        "predicted": 1.794091,
+        "error": 0.0654849999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.911986,
+        "predicted": 1.79005,
+        "error": 0.12193600000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.332504,
+        "predicted": 1.43437,
+        "error": 0.10186600000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.502763,
+        "predicted": 2.515689,
+        "error": 0.012926000000000215
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.330732,
+        "predicted": 2.321782,
+        "error": 0.008950000000000014
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.018112,
+        "predicted": 1.862497,
+        "error": 0.15561499999999984
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.582938,
+        "predicted": 1.332484,
+        "error": 0.25045399999999995
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.348954,
+        "predicted": 1.56477,
+        "error": 0.215816
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.755977,
+        "predicted": 1.78705,
+        "error": 0.03107300000000013
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.427984,
+        "predicted": 1.541946,
+        "error": 0.11396200000000012
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.829308,
+        "predicted": 2.026516,
+        "error": 0.19720800000000005
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.238464,
+        "predicted": 2.247829,
+        "error": 0.009364999999999846
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.690751,
+        "predicted": 1.742261,
+        "error": 0.05151000000000017
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.133727,
+        "predicted": 1.961716,
+        "error": 0.17201099999999991
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.133393,
+        "predicted": 2.151858,
+        "error": 0.018464999999999954
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.456857,
+        "predicted": 1.555693,
+        "error": 0.09883599999999992
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.812875,
+        "predicted": 1.806423,
+        "error": 0.006452000000000124
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.272869,
+        "predicted": 1.374295,
+        "error": 0.10142600000000002
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.418245,
+        "predicted": 1.439601,
+        "error": 0.02135599999999993
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.151871,
+        "predicted": 2.15558,
+        "error": 0.0037090000000001844
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.55499,
+        "predicted": 1.684346,
+        "error": 0.1293559999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.224208,
+        "predicted": 1.437904,
+        "error": 0.2136960000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.589757,
+        "predicted": 1.378532,
+        "error": 0.211225
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.412219,
+        "predicted": 1.433834,
+        "error": 0.021615000000000162
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.715267,
+        "predicted": 1.805598,
+        "error": 0.09033099999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.099067,
+        "predicted": 2.010703,
+        "error": 0.08836399999999989
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.855028,
+        "predicted": 1.99139,
+        "error": 0.1363620000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.890451,
+        "predicted": 1.845189,
+        "error": 0.045262000000000135
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.634574,
+        "predicted": 1.773084,
+        "error": 0.13851000000000013
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.285738,
+        "predicted": 1.462048,
+        "error": 0.17630999999999997
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.497126,
+        "predicted": 1.605178,
+        "error": 0.10805200000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7196,
+        "predicted": 1.550064,
+        "error": 0.1695359999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.018076,
+        "predicted": 2.031906,
+        "error": 0.013830000000000009
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.360238,
+        "predicted": 1.455138,
+        "error": 0.09489999999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.802337,
+        "predicted": 1.822847,
+        "error": 0.020510000000000028
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.324368,
+        "predicted": 1.433808,
+        "error": 0.10943999999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.354754,
+        "predicted": 1.502209,
+        "error": 0.1474549999999999
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.996422,
+        "predicted": 2.166566,
+        "error": 0.17014400000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.01304,
+        "predicted": 2.16532,
+        "error": 0.15227999999999975
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.288592,
+        "predicted": 2.271506,
+        "error": 0.017085999999999935
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.450479,
+        "predicted": 1.635774,
+        "error": 0.185295
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.027303,
+        "predicted": 1.865426,
+        "error": 0.16187699999999983
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.631981,
+        "predicted": 1.726289,
+        "error": 0.09430800000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.594204,
+        "predicted": 1.399544,
+        "error": 0.19466000000000006
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.351512,
+        "predicted": 1.510926,
+        "error": 0.15941399999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.947987,
+        "predicted": 1.949215,
+        "error": 0.0012280000000000069
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.468288,
+        "predicted": 2.626052,
+        "error": 0.15776400000000024
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.461422,
+        "predicted": 1.493361,
+        "error": 0.03193899999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.560432,
+        "predicted": 1.60666,
+        "error": 0.046227999999999936
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.358241,
+        "predicted": 1.350537,
+        "error": 0.007703999999999933
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.313459,
+        "predicted": 2.25669,
+        "error": 0.05676900000000007
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.105504,
+        "predicted": 1.766176,
+        "error": 0.33932799999999985
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.435488,
+        "predicted": 1.345805,
+        "error": 0.08968300000000018
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.513529,
+        "predicted": 1.655992,
+        "error": 0.142463
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.075875,
+        "predicted": 1.992424,
+        "error": 0.08345099999999994
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.716995,
+        "predicted": 1.742958,
+        "error": 0.02596299999999996
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.918078,
+        "predicted": 1.896313,
+        "error": 0.021765000000000034
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.471907,
+        "predicted": 1.50761,
+        "error": 0.03570299999999982
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.47724,
+        "predicted": 2.361736,
+        "error": 0.11550400000000005
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.450759,
+        "predicted": 1.493403,
+        "error": 0.042644000000000126
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.505351,
+        "predicted": 1.701462,
+        "error": 0.19611099999999992
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.300341,
+        "predicted": 1.405956,
+        "error": 0.10561500000000001
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.903814,
+        "predicted": 1.898209,
+        "error": 0.00560499999999986
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.473784,
+        "predicted": 1.4944,
+        "error": 0.020615999999999968
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.93541,
+        "predicted": 1.868602,
+        "error": 0.06680799999999998
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.97317,
+        "predicted": 1.838138,
+        "error": 0.13503200000000004
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.885372,
+        "predicted": 1.852172,
+        "error": 0.03320000000000012
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.579624,
+        "predicted": 1.427216,
+        "error": 0.15240799999999988
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.626492,
+        "predicted": 1.446566,
+        "error": 0.17992600000000003
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.614064,
+        "predicted": 1.308858,
+        "error": 0.30520599999999987
+      },
+      {
+        "model_version": "3.1",
+        "evaluation_protocol": "MC Dropout T=20; MPS; batch=32; seed=42; clean validation used for selection",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.357871,
+        "predicted": 1.45034,
+        "error": 0.09246899999999991
+      }
+    ]
+  }
+}

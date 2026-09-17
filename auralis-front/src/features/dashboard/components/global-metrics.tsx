@@ -1,3 +1,4 @@
+import { releaseLabel } from '@/lib/release-presentation';
 import { metricProtocol } from '@/lib/model-labels';
 import { useState, useEffect } from 'react';
 import { Activity, BarChart2 } from 'lucide-react';
@@ -20,7 +21,7 @@ function r2IconColor(val: number | null): string {
 }
 
 export function GlobalMetrics() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const e = t.experiments;
 
   const [stats,   setStats]   = useState<SystemStats | null>(null);
@@ -60,7 +61,7 @@ export function GlobalMetrics() {
     {
       label: `${stats?.model_name ?? '—'} ${metricProtocol(stats)} MAPE`,
       value: loading ? '—' : (stats ? `${stats.mape.toFixed(2)}%` : '—'),
-      sub: 'Nonzero targets · relative error',
+      sub: language === 'es' ? 'Error relativo · objetivos no nulos' : 'Nonzero targets · relative error',
       Icon: BarChart2,
       iconBg: 'bg-sky-500/20',
       iconColor: 'text-sky-400',
@@ -94,16 +95,16 @@ export function GlobalMetrics() {
       ))}
     </div>
     <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 overflow-x-auto">
-      <p className="text-sm text-white mb-2">{stats?.model_name ?? '—'} · protocols on the same 263 observations</p>
+      <p className="text-sm text-white mb-2">{releaseLabel(stats, language)} · N={stats?.validation_observations ?? '—'}</p>
       <p className="text-[11px] text-neutral-500 mb-3">{stats?.evaluation_protocol ?? 'Protocol unavailable'} · overlap 0 · no independent or temporal test.</p>
       <table className="w-full text-xs text-neutral-300 font-mono">
         <thead><tr className="text-neutral-500 text-right"><th className="text-left py-2">Protocol</th><th>MAE (SI pp)</th><th>RMSE (SI pp)</th><th>R²</th><th>MAPE (%)</th></tr></thead>
         <tbody>
-          {metricProtocol(stats) === 'MC T=20' ? <tr className="text-right"><td className="text-left py-2">MC Dropout T=20</td><td>{stats?.mae.toFixed(4) ?? '—'}</td><td>{stats?.rmse.toFixed(4) ?? '—'}</td><td>{stats?.r2_score.toFixed(4) ?? '—'}</td><td>{stats?.mape.toFixed(2) ?? '—'}</td></tr> : <tr><td className="py-2">MC Dropout</td><td colSpan={4}>Not evaluated for this release</td></tr>}
+          {metricProtocol(stats) === 'MC T=20' ? <tr className="text-right"><td className="text-left py-2">MC Dropout T=20</td><td>{stats?.mae.toFixed(4) ?? '—'}</td><td>{stats?.rmse.toFixed(4) ?? '—'}</td><td>{stats?.r2_score.toFixed(4) ?? '—'}</td><td>{stats?.mape.toFixed(2) ?? '—'}</td></tr> : <tr><td className="py-2">MC Dropout</td><td colSpan={4}>{language === 'es' ? 'No evaluado para este release' : 'Not evaluated for this release'}</td></tr>}
           <tr className="text-right"><td className="text-left py-2">Deterministic ONNX</td>{['mae', 'rmse', 'r2', 'mape'].map((key) => <td key={key}>{stats?.serving_deterministic.onnx[key]?.toFixed(key === 'mape' ? 2 : 4) ?? '—'}</td>)}</tr>
         </tbody>
       </table>
-      {stats?.model_version.startsWith("3.2") && <p className="text-[11px] text-neutral-500 mt-3">Low activity: tolerated MAE deterioration and negative R². Border/background XAI concerns remain.</p>}
+      {stats?.model_version.startsWith("3.2") && <p className="text-[11px] text-neutral-500 mt-3">{language === 'es' ? 'Baja actividad: deterioro MAE tolerado y R² negativo. Persisten dudas XAI sobre borde/fondo.' : 'Low activity: tolerated MAE deterioration and negative R². Border/background XAI concerns remain.'}</p>}
     </div>
     </div>
   );

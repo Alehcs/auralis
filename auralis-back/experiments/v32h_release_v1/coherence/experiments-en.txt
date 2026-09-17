@@ -1,0 +1,205 @@
+- complementary:
+  - generic: Auralis
+  - generic: SOLAR INTELLIGENCE
+  - generic: WORKSPACE
+  - navigation:
+    - button "Dashboard":
+      - generic: Dashboard
+    - button "Monitoring":
+      - generic: Monitoring
+    - button "Data Pipeline":
+      - generic: Data Pipeline
+    - button "Experiments" [active]:
+      - generic: Experiments
+    - button "Agent Lab":
+      - generic: Agent Lab
+    - button "Simulation":
+      - generic: Simulation
+    - button "Logs":
+      - generic: Logs
+    - button "Settings":
+      - generic: Settings
+- main:
+  - button "Solar Activity Analysis Auralis › SDO-HMI":
+    - generic: Solar Activity Analysis
+    - generic: Auralis
+    - generic: ›
+    - generic: SDO-HMI
+  - generic: Coronium V3.2 ONNX eval MAE
+  - generic: Σ
+  - generic: "0.0483"
+  - generic: mean absolute error · SI pp
+  - generic: Coronium V3.2 ONNX eval RMSE
+  - generic: "0.0591"
+  - generic: root mean squared · SI pp
+  - generic: Coronium V3.2 ONNX eval R²
+  - generic: "0.971"
+  - generic: coefficient of det.
+  - generic: Coronium V3.2 ONNX eval MAPE
+  - generic: 2.91%
+  - generic: Nonzero targets · relative error
+  - paragraph: Coronium V3.2 C1 · s42 · epoch 27 · N=263
+  - paragraph: deterministic ONNX CPU FP32 batch1; intra4/inter1; mlas.disable_kleidiai=1; seed42 epoch27; selection validation, not independent or temporal test · overlap 0 · no independent or temporal test.
+  - table:
+    - rowgroup:
+      - row "Protocol MAE (SI pp) RMSE (SI pp) R² MAPE (%)":
+        - columnheader "Protocol"
+        - columnheader "MAE (SI pp)"
+        - columnheader "RMSE (SI pp)"
+        - columnheader "R²"
+        - columnheader "MAPE (%)"
+    - rowgroup:
+      - row "MC Dropout Not evaluated for this release":
+        - cell "MC Dropout"
+        - cell "Not evaluated for this release"
+      - row "Deterministic ONNX 0.0483 0.0591 0.9714 2.91":
+        - cell "Deterministic ONNX"
+        - cell "0.0483"
+        - cell "0.0591"
+        - cell "0.9714"
+        - cell "2.91"
+  - paragraph: "Low activity: tolerated MAE deterioration and negative R². Border/background XAI concerns remain."
+  - generic: Prediction vs. Real
+  - generic: Diagonal y=x represents perfect prediction
+  - generic: Coronium V3.2 · ONNX eval · CPU · N=263
+  - text: Protocol
+  - combobox "Evaluation protocol":
+    - option "MC Dropout — not evaluated for this release" [disabled]
+    - option "Deterministic ONNX · batch 1" [selected]
+  - paragraph: Selection validation · no independent or temporal test. SI = % of original pixels with |B LOS| > 200 G.
+  - application:
+    - generic: "1.1"
+    - generic: "1.6"
+    - generic: "2.1"
+    - generic: "2.6"
+    - generic: "3.0"
+    - generic: Target SI (%)
+    - generic: "1.1"
+    - generic: "1.6"
+    - generic: "2.1"
+    - generic: "2.6"
+    - generic: "3.0"
+    - generic: Predicted SI (%)
+  - generic: Historical model references
+  - generic: Historical MAE / RMSE · different evaluation protocols
+  - paragraph: "Historical V3 / ResNet18 / VGG11 · different splits/protocols; no controlled active-release comparison. MAE/RMSE: SI pp."
+  - application:
+    - generic: "0.00"
+    - generic: "0.04"
+    - generic: "0.07"
+    - generic: "0.10"
+    - generic: "0.14"
+    - generic: VGG-11(Baseline)
+    - generic: ResNet18(Baseline)
+    - generic: CoroniumV3 PRO(historical)
+  - generic: mae
+  - generic: rmse
+  - generic: Historical model references · table
+  - paragraph: "Historical results · different splits · not active-release performance. Errors: SI pp."
+  - generic: 3 REFERENCES
+  - table:
+    - rowgroup:
+      - row "MODEL MAE RMSE R² PARAMS":
+        - columnheader "MODEL"
+        - columnheader "MAE"
+        - columnheader "RMSE"
+        - columnheader "R²"
+        - columnheader "PARAMS"
+    - rowgroup:
+      - row "Coronium V3 PRO (historical) 0.1048 0.1272 0.863 207K":
+        - cell "Coronium V3 PRO (historical)"
+        - cell "0.1048"
+        - cell "0.1272"
+        - cell "0.863"
+        - cell "207K"
+      - row "VGG-11 (Baseline) 0.1079 0.1239 0.862 9M":
+        - cell "VGG-11 (Baseline)"
+        - cell "0.1079"
+        - cell "0.1239"
+        - cell "0.862"
+        - cell "9M"
+      - row "ResNet18 (Baseline) 0.0755 0.0898 0.928 11M":
+        - cell "ResNet18 (Baseline)"
+        - cell "0.0755"
+        - cell "0.0898"
+        - cell "0.928"
+        - cell "11M"
+  - generic: K-Fold illustration
+  - paragraph: Illustrative example with fixed values. K-fold validation was not run; these values are not scientific evidence.
+  - generic: K = 5
+  - table:
+    - rowgroup:
+      - row "FOLD MAE RMSE R²":
+        - columnheader "FOLD"
+        - columnheader "MAE"
+        - columnheader "RMSE"
+        - columnheader "R²"
+    - rowgroup:
+      - row "FOLD 1 0.1031 0.1349 0.8124":
+        - cell "FOLD 1"
+        - cell "0.1031"
+        - cell "0.1349"
+        - cell "0.8124"
+      - row "FOLD 2 0.1048 0.1371 0.8092":
+        - cell "FOLD 2"
+        - cell "0.1048"
+        - cell "0.1371"
+        - cell "0.8092"
+      - row "FOLD 3 0.1018 0.1332 0.8156":
+        - cell "FOLD 3"
+        - cell "0.1018"
+        - cell "0.1332"
+        - cell "0.8156"
+      - row "FOLD 4 0.1025 0.1341 0.8138":
+        - cell "FOLD 4"
+        - cell "0.1025"
+        - cell "0.1341"
+        - cell "0.8138"
+      - row "FOLD 5 0.1008 0.1318 0.8179":
+        - cell "FOLD 5"
+        - cell "0.1008"
+        - cell "0.1318"
+        - cell "0.8179"
+      - row "Average ± Std 0.1026± 0.0014 0.1342± 0.0019 0.8138± 0.0030":
+        - cell "Average ± Std"
+        - cell "0.1026± 0.0014":
+          - text: "0.1026"
+          - generic: ± 0.0014
+        - cell "0.1342± 0.0019":
+          - text: "0.1342"
+          - generic: ± 0.0019
+        - cell "0.8138± 0.0030":
+          - text: "0.8138"
+          - generic: ± 0.0030
+  - generic: Experiment history
+  - generic: LAST 5 RUNS
+  - generic: Coronium V3.1 — clean Phase 1.5 checkpoint promotion
+  - text: PHASE16_CORO · 2026-09-06
+  - generic: V3.1 MC T=20 · selection validation
+  - generic: MAE (SI pp)
+  - generic: "0.1016"
+  - generic: Coronium V3 PRO — ExtremeAugmentation
+  - text: EXP_005 · 2026-05-01
+  - generic: Historical artifact · protocols differ
+  - generic: MAE (recorded)
+  - generic: "0.1048"
+  - generic: Coronium V2 PRO — Deployment Candidate
+  - text: EXP_003 · 2026-02-15
+  - generic: Historical artifact · protocols differ
+  - generic: MAE (recorded)
+  - generic: "0.1416"
+  - generic: Coronium V2 — Reduced LR + Scheduler
+  - text: EXP_002 · 2026-02-03
+  - generic: Historical artifact · protocols differ
+  - generic: MAE (recorded)
+  - generic: "0.1834"
+  - generic: Coronium V1 — Baseline
+  - text: EXP_001 · 2026-01-22
+  - generic: Historical artifact · protocols differ
+  - generic: MAE (recorded)
+  - generic: "0.2847"
+  - generic: XAI Faithfulness
+  - generic: Sensitivity analysis — progressive removal of high-importance regions detected by Grad-CAM
+  - generic: GRAD-CAM
+  - generic: No compatible service faithfulness curve saved for this release. D/F XAI remains separate; border/background concerns unresolved. Grad-CAM tools remain available.
+- generic: "1.1"

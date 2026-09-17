@@ -1,0 +1,90 @@
+- img "Sun"
+- heading "Auralis" [level=1]
+- paragraph: Solar Activity Analysis System
+- paragraph: AI · NASA SDO/HMI · Coronium V3.1
+- button "View Dashboard":
+  - text: View Dashboard
+- link "GitHub":
+  - /url: https://github.com/Alehcs
+  - generic: GitHub
+- paragraph: "Coronium V3.1 · s42 · epoch 40 · 263 selection-validation observations; no independent test. MC T=20 MAE: 0.10156 SI pp. Low activity and XAI: limitations remain."
+- generic: "Data Source:"
+- generic: NASA SDO/HMI
+- generic: ·
+- generic: "Dataset:"
+- generic: 1,314 imgs
+- generic: ·
+- generic: "Model:"
+- generic: Coronium V3.1
+- generic: ·
+- generic: "MC T=20 MAPE:"
+- generic: 5.99%
+- generic: ·
+- generic: "MC T=20 R²:"
+- generic: R² 0.88
+- heading "System Overview" [level=2]
+- paragraph: Core technical specifications
+- generic: Model Architecture
+- generic: Coronium V3.1
+- generic: 206,875 parameters · B+/B− · ONNX 835,234 B
+- generic: Data Source
+- generic: NASA SDO/HMI
+- generic: Solar Dynamics Observatory magnetograms at 6173 Å
+- generic: Pipeline Status
+- generic: Local demo
+- generic: Inference runs against the processed dataset on localhost
+- generic: Inference Target
+- generic: Current index
+- generic: Estimates the activity index for the selected magnetogram
+- heading "Pipeline Architecture" [level=2]
+- paragraph: End-to-end ML workflow
+- generic: Data Ingestion
+- generic: SDO/HMI Stream
+- generic: Preprocessing
+- generic: clip400 · B+/B−
+- generic: CNN Model
+- generic: SI Regression
+- generic: Inference
+- generic: Current Index
+- generic: "Coronium V3.1 ONNX:"
+- generic: Deterministic · CPU
+- generic: "Model Size:"
+- generic: 835,234 B · complete
+- generic: "MC T=20 MAE (selection validation; SI pp):"
+- generic: "0.10156"
+- heading "About the Project" [level=2]
+- paragraph: Auralis is an end-to-end machine learning and data engineering system for estimating solar activity from NASA SDO/HMI magnetograms.
+- paragraph: The platform processes local solar imagery, estimates a global strong-field pixel index, and reports the current activity index with an illustrative sensitivity diagnostic. Current validation is used for checkpoint selection, not an independent or temporal test. Low-activity and border/background XAI limitations remain.
+- heading "Use Cases" [level=3]
+- generic: Space weather research and monitoring
+- generic: Solar activity index estimation
+- generic: Machine-learning engineering portfolio demonstration
+- generic: Data pipeline and MLOps case study
+- heading "Key Metrics" [level=3]
+- generic: Dataset Size
+- generic: 1,314 unique / 1,763 rows
+- generic: Coronium V3.1 MC T=20 MAPE (selection validation)
+- generic: 5.9870%
+- generic: MC T=20 MAE (SI percentage points)
+- generic: "0.10156"
+- generic: Deterministic API MAE (SI pp)
+- generic: "0.20408"
+- generic: Synthetic noise sensitivity
+- generic: 20-pass ONNX
+- generic: SDO/HMI Cadence
+- generic: 45 s
+- heading "Technology Stack" [level=3]
+- generic: Python
+- generic: PyTorch
+- generic: ONNX Runtime
+- generic: FastAPI
+- generic: NumPy / SciPy
+- generic: Coronium V3.1
+- generic: Grad-CAM
+- generic: React
+- generic: Recharts
+- heading "Explore the Dashboard" [level=2]
+- paragraph: Inspect local magnetograms, current-index inference, model metrics, and research artifacts from the pipeline.
+- button "Enter Dashboard":
+  - text: Enter Dashboard
+- paragraph: Auralis • Data Engineering & Machine Learning Project • 2026

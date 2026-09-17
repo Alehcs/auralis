@@ -1,0 +1,66 @@
+{
+  "3.1": {
+    "model_name": "Coronium V3.1",
+    "seed": 42,
+    "epoch": 40,
+    "parameters": 206875,
+    "onnx_bytes": 835234,
+    "input_contract": "hmi-clip400-polarity-v1",
+    "target_contract": "strong-field-pixel-percent-200G-v1",
+    "runtime": null,
+    "manifest_sha256": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+    "onnx_sha256": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+    "metrics": {
+      "deterministic": {
+        "mae": 0.2040833964547277,
+        "rmse": 0.25823317396733214,
+        "r2": 0.45371921948054406,
+        "mape": 10.497514994433411
+      },
+      "mc": {
+        "mae": 0.10155761986970901,
+        "rmse": 0.12337954342365265,
+        "r2": 0.875296638661553,
+        "mape": 5.987025052309036
+      }
+    }
+  },
+  "3.2": {
+    "model_name": "Coronium V3.2",
+    "seed": 42,
+    "epoch": 27,
+    "parameters": 206875,
+    "onnx_bytes": 835234,
+    "input_contract": "hmi-clip400-polarity-v1",
+    "target_contract": "strong-field-pixel-percent-200G-v1",
+    "runtime": {
+      "name": "kleidiai_off",
+      "session_config": {
+        "mlas.disable_kleidiai": "1"
+      },
+      "intra_op_threads": 4,
+      "inter_op_threads": 1,
+      "provider": "CPUExecutionProvider",
+      "execution_mode": "ORT_SEQUENTIAL",
+      "optimization": "ORT_ENABLE_ALL",
+      "ort_version": "1.25.1",
+      "native_binary_sha256": "f9da2c8572f02d65ae9f871034e15d1cc8c6ee2c55bae52c01f7e9c112616bea",
+      "validated_environment": "Apple M5 24GiB macOS26.6.2 arm64; Python3.12.7; torch2.11.0; numpy1.26.4"
+    },
+    "manifest_sha256": "ff0ee69cfa38683d3b975690e8d4f4fbb392c6f81bf890619ed3de95f4a90bf7",
+    "onnx_sha256": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a",
+    "metrics": {
+      "deterministic": {
+        "n": 263,
+        "mae": 0.04833447615909939,
+        "rmse": 0.05905530431219216,
+        "r2": 0.9714300369736174,
+        "mape": 2.908886965683121,
+        "bias": 0.013237384788890291,
+        "p95_absolute_error": 0.10974993705749511,
+        "max_absolute_error": 0.255906343460083
+      },
+      "mc": null
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import { useModelStats } from '@/lib/model-labels';
+import { releasePresentation } from '@/lib/release-presentation';
 import { IS_FROZEN_DEMO } from '@/lib/frozen-demo';
 import { useState } from 'react';
 import { Globe, Bell, Cpu, Lock, Check } from 'lucide-react';
@@ -51,12 +53,14 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
 export function ConfigPanel() {
   const { language, setLanguage, t } = useLanguage();
   const s = t.settings;
+  const stats = useModelStats();
+  const release = releasePresentation(stats);
 
   const [notif, setNotif] = useState({ highRisk: true, slackFail: true, digest: false });
 
-  const DEVICE    = IS_FROZEN_DEMO ? 'Resultados guardados' : 'ONNX Runtime · CPU (edge)';
-  const BATCH     = IS_FROZEN_DEMO ? 'No disponible' : '32';
-  const PRECISION = 'float32';
+  const DEVICE = !release ? '—' : IS_FROZEN_DEMO ? (language === 'es' ? 'Resultados guardados' : 'Saved results') : 'ONNX Runtime · CPU';
+  const BATCH = !release || IS_FROZEN_DEMO ? '—' : stats?.serving_deterministic.protocol.match(/batch\s*=?\s*(\d+)/i)?.[1] ?? '—';
+  const PRECISION = release ? 'float32' : '—';
   const API_KEY   = 'Not configured';
 
   return (
@@ -98,7 +102,7 @@ export function ConfigPanel() {
 
       {/* ── TOP-RIGHT: Runtime ──────────────────────────────────── */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
-        <SectionHeader icon={Cpu} title={s.runtime} description={s.runtimeDesc} />
+        <SectionHeader icon={Cpu} title={s.runtime} description={release?.runtime ? `CPU ${release.runtime.intra_op_threads}/${release.runtime.inter_op_threads} · mlas.disable_kleidiai=${release.runtime.session_config['mlas.disable_kleidiai']}` : s.runtimeDesc} />
         <div className="space-y-2">
           <Row label={s.device}>
             <span className="text-[13px] font-mono text-neutral-300">{DEVICE}</span>

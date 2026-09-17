@@ -739,7 +739,7 @@ export function MagnetogramPanel() {
 
                     <div className="flex items-center gap-1.5 text-[11px] text-neutral-500 py-2 border-t border-neutral-800">
                       <Cpu className="w-3.5 h-3.5" />
-                      <span>{prediction?.model_name ?? '—'} · ONNX Runtime · 815.7 KiB</span>
+                      <span>{prediction?.model_name ?? '—'} · ONNX eval · FP32</span>
                     </div>
                   </>
                 ) : null}

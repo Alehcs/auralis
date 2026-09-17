@@ -413,7 +413,7 @@ class ModelBenchmark(BaseModel):
 class BenchmarkResult(BaseModel):
     metrics_status: str = "historical_runs_not_validated_on_corrected_split"
     comparison_valid_for_v31: bool = False
-    comparison_note: str = "Historical references with different splits (352 versus 353 rows), leakage and timing protocols; no ranking or relative improvement evidence for V3.1. Reduction fields are legacy arithmetic only."
+    comparison_note: str = "Historical references with different splits (352 versus 353 rows), leakage and timing protocols; no ranking or relative improvement evidence for the active release. Reduction fields are legacy arithmetic only."
     baseline: ModelBenchmark
     proposed: ModelBenchmark
     vgg11: Optional[ModelBenchmark] = None
@@ -772,7 +772,7 @@ async def predict_dual(filename: str):
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
 
     logger.info(
-        "Predict-dual (V3 PRO B+/B-) for %s: sunspot_index=%.4f, uncertainty=%.4f, class=%s",
+        f"Predict-dual ({MODEL_NAME} B+/B-) for %s: sunspot_index=%.4f, uncertainty=%.4f, class=%s",
         filename, sunspot_index, uncertainty, classification.flare_class,
     )
 
@@ -900,7 +900,7 @@ async def explain_panels(filename: str):
     fig.suptitle(
         f"Grad-CAM  ·  {MODEL_NAME}\n"
         f"Sample: {stem}     "
-        f"Prediction (normalized proxy index): {pred_val:+.5f}",
+        f"Prediction (SI %): {pred_val:+.5f}",
         fontsize=12, color="white", fontweight="bold", y=1.03,
     )
     gs = gridspec.GridSpec(1, 3, figure=fig, wspace=0.10, left=0.04, right=0.97)
@@ -1554,7 +1554,7 @@ async def explain_panels_upload(file: UploadFile = File(...)):
     fig = plt.figure(figsize=(19, 6.5), facecolor=DARK_BG)
     fig.suptitle(
         f"Grad-CAM  ·  {MODEL_NAME}  ·  [Black Box Upload]\n"
-        f"Prediction (normalized proxy index): {pred_val:+.5f}",
+        f"Prediction (SI %): {pred_val:+.5f}",
         fontsize=12, color="white", fontweight="bold", y=1.03,
     )
     gs = gridspec.GridSpec(1, 3, figure=fig, wspace=0.10, left=0.04, right=0.97)

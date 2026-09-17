@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: both releases keep their own protocol, epoch, parameters and bytes
+ok 1 - both releases keep their own protocol, epoch, parameters and bytes
+  ---
+  duration_ms: 0.345959
+  type: 'test'
+  ...
+# Subtest: unavailable identity never yields substitute metrics
+ok 2 - unavailable identity never yields substitute metrics
+  ---
+  duration_ms: 0.048
+  type: 'test'
+  ...
+# Subtest: reject V3.1 metrics under V3.2 identity and unevaluated MC
+ok 3 - reject V3.1 metrics under V3.2 identity and unevaluated MC
+  ---
+  duration_ms: 0.062125
+  type: 'test'
+  ...
+# Subtest: reject mixed deterministic values and nonfinite display numbers
+ok 4 - reject mixed deterministic values and nonfinite display numbers
+  ---
+  duration_ms: 0.03725
+  type: 'test'
+  ...
+# Subtest: actual HTTP control responses and frozen Site retain matching identity
+ok 5 - actual HTTP control responses and frozen Site retain matching identity
+  ---
+  duration_ms: 3.2535
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 233.340167

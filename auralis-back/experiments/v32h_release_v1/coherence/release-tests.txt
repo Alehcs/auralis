@@ -1,0 +1,11 @@
+test_agent_join_and_mc_constructor (__main__.ActivatedReleaseTests.test_agent_join_and_mc_constructor) ... ok
+test_corrupt_or_missing_release_fails (__main__.ActivatedReleaseTests.test_corrupt_or_missing_release_fails) ... ok
+test_default_preserved (__main__.ActivatedReleaseTests.test_default_preserved) ... ok
+test_experimental_candidates_still_explicit (__main__.ActivatedReleaseTests.test_experimental_candidates_still_explicit) ... ok
+test_staged_release_metrics_and_native_option (__main__.ActivatedReleaseTests.test_staged_release_metrics_and_native_option) ... ok
+test_unknown_or_conflicting_selection_rejected (__main__.ActivatedReleaseTests.test_unknown_or_conflicting_selection_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.444s
+
+OK

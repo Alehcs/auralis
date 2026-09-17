@@ -1,8 +1,12 @@
+import { releasePresentation } from '@/lib/release-presentation';
+import { useLanguage } from '@/lib/i18n/language-context';
 import { useModelStats, metricProtocol } from '@/lib/model-labels';
 import { Database, Cpu, Brain, LineChart, ArrowRight } from 'lucide-react';
 
 export function ArchitectureDiagram() {
   const stats = useModelStats();
+  const { language } = useLanguage();
+  const release = releasePresentation(stats);
   const stages = [
     {
       icon: Database,
@@ -12,12 +16,12 @@ export function ArchitectureDiagram() {
     {
       icon: Cpu,
       label: 'Preprocessing',
-      detail: 'Image Pipeline'
+      detail: 'clip400 · B+/B−'
     },
     {
       icon: Brain,
       label: 'CNN Model',
-      detail: 'Detection'
+      detail: language === 'es' ? 'Regresión SI' : 'SI Regression'
     },
     {
       icon: LineChart,
@@ -66,7 +70,7 @@ export function ArchitectureDiagram() {
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-500">Model Size:</span>
-              <span className="text-white">815.7 KiB · self-contained</span>
+              <span className="text-white">{release ? `${release.onnx_bytes.toLocaleString()} B` : '—'} · {language === 'es' ? 'completo' : 'complete'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-500">{metricProtocol(stats)} MAE (selection validation; SI pp):</span>

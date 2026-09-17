@@ -1,3 +1,5 @@
+> **Content correction — 2026-09-17:** the landing-label issue and related consumer inconsistencies were corrected in the subsequent [presentation consistency audit](../coherence/REPORT.md). The original closure outcome below is retained as history; the model tag is unchanged.
+
 # Coronium V3.2 — final local closure and release notes
 
 Recorded 2026-09-17. **Release prepared, functional QA passed, locally promoted; PC and phone/AR acceptance confirmed by the user.** This records the existing release; no runtime, inference, architecture, weights, preprocessing, dataset or visual change was made during closure.

@@ -11,6 +11,39 @@
 > **Phase 1.7 audit:** This dossier is retained as a historical record, not a valid V3.1 thesis source. Its log-SI, independent hold-out, 86.6 KB full-model and accuracy/generalization claims are superseded. Use [the V3.1 audit](docs/phase17.md) and [versioned figures](auralis-back/reports/phase17_coronium_v3_1/analysis_v2/report.md). The historical graph size excludes external weights; historical timings are not current measurements.
 
 > **Phase 1 scientific correction:** [Audited contract and reproducibility report](docs/phase1.md) supersedes historical input/target and validation claims below. The local checkpoint uses clip400 polarity inputs and raw SI pixel percentages, without log or Z-score. The old split shares 145 observations; its metrics do not establish independent generalization. Original artifacts remain preserved.
+## Current release addendum — Coronium V3.2 C1_s42, epoch27
+
+The user selected this individual checkpoint after B–G and authorized local promotion.
+The [release manifest](auralis-back/models/coronium_v3_2_manifest.json) and
+[full-precision metrics](auralis-back/models/coronium_v3_2_metrics.json) are authoritative.
+CoroniumV3 residual CNN/ECA retains 206,875 parameters, backbone dropout0/head0.3;
+evaluation disables dropout and freezes BatchNorm. Input is float32 clip400/B+/B−
+`(N,2,512,512)`. Output is original SI pixel percent; no logarithm or Z-score.
+
+On 263 selection-validation observations, the individual mitigated ONNX has
+MAE0.04833447615909939, RMSE0.05905530431219216, bias0.013237384788890291 and
+p95 absolute error0.10974993705749511 **SI percentage points**; MAPE2.908886965683121%
+and dimensionless R²0.9714300369736174. These are neither a seed average nor an
+independent/temporal test. Low-activity deterioration, negative low-band R² and
+border/background XAI doubts remain. No percentage of accuracy is inferred.
+
+Checkpoint846,093 bytes; complete self-contained ONNX835,234 bytes. These sizes
+are not process RSS. CPU FP32, intra4/inter1, sequential ORT1.25.1 and exactly
+`mlas.disable_kleidiai=1` were validated on Apple M5/24 GiB, macOS26.6.2 arm64.
+The native binary is hash-checked; portability requires validation. Mac timings
+do not establish mobile inference performance. Forward, full HTTP and cached HTTP
+remain separate; original-runtime E and mitigated E.1/E.2 evidence are not pooled.
+The service keeps noise20 plus deterministic1; noise spread is not MC Dropout or
+calibrated uncertainty. V3.2 MC evaluation is unavailable.
+
+[Execution and V3.1 recovery](auralis-back/experiments/v32h_release_v1/RUNBOOK.md)
+use normal V3.2 startup or explicit `AURALIS_RELEASE=3.1`, respectively.
+The [F index](auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md)
+retains all candidates and protocols, not exclusively s42. Temporary Sites show
+saved results; no definitive publication is implied. The archived text below,
+including its original erroneous log-SI/accuracy/size claims, is historical and
+superseded by the correction notices and this addendum; DOI and citations are unchanged.
+
 ## Coronium V3 PRO: A Residual Convolutional Neural Network for Solar Magnetic Activity Index Estimation from Dual-Channel HMI/SDO Magnetograms
 
 **Classification:** Technical Research Report  

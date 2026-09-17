@@ -6,6 +6,8 @@
  * place when backend schemas change.
  */
 
+import { releasePresentation } from './release-presentation';
+
 import type {
     ImageListResponse,
     PredictionResult,
@@ -76,7 +78,10 @@ export function predict(filename: string): Promise<DisplayPredictionResult> {
 
 /** Fetch dataset statistics (image count, disk usage, MAE). */
 export function getStats(): Promise<SystemStats> {
-    return fetchJson<SystemStats>('/api/stats');
+    return fetchJson<SystemStats>('/api/stats').then(stats => {
+        if (!releasePresentation(stats)) throw new Error('Model identity / metric protocol unavailable or inconsistent');
+        return stats;
+    });
 }
 
 /** Fetch the last 50 lines from each .log file. */
@@ -113,7 +118,7 @@ export function getAiaUrl(filename: string): string {
 /**
  * Run the compatibility dual endpoint.
  *
- * The current backend implementation uses the same Coronium V3.1 B+ / B-
+ * The current backend implementation uses the same selected-release B+ / B-
  * ONNX path as `/api/predict/{filename}`. The route remains because older UI
  * panels were wired to `predict-dual`.
  */
@@ -128,9 +133,15 @@ export function getExperimentMetadata(filename: string): Promise<unknown> {
     return fetchJson<unknown>(`/api/experiments/${encodeURIComponent(filename)}`);
 }
 
-/** Fetch predicted-vs-actual comparison data from the V3.1 clean MC validation used for checkpoint selection. */
-export function getResultsComparison(protocol: 'mc' | 'deterministic' = 'mc'): Promise<{ real: number; predicted: number; error: number }[]> {
-    return fetchJson<{ real: number; predicted: number; error: number }[]>(`/api/results-comparison?protocol=${protocol}`);
+/** Fetch explicitly selected, identity-checked selection-validation results. */
+export async function getResultsComparison(protocol: 'mc' | 'deterministic' = 'deterministic'): Promise<{ real: number; predicted: number; error: number }[]> {
+    const stats = await getStats();
+    const source = releasePresentation(stats)!.metrics[protocol];
+    if (!source) throw new Error('Protocol not evaluated for this release');
+    const rows = await fetchJson<{ real: number; predicted: number; error: number; model_version?: string }[]>(`/api/results-comparison?protocol=${protocol}`);
+    const mae = rows.reduce((sum, row) => sum + Math.abs(row.predicted - row.real), 0) / rows.length;
+    if (rows.length !== stats.validation_observations || !Number.isFinite(mae) || Math.abs(mae - source.mae) > 1e-6 || rows.some(row => row.model_version && row.model_version !== stats.model_version)) throw new Error('Comparison does not match the selected release/protocol');
+    return rows;
 }
 
 /**

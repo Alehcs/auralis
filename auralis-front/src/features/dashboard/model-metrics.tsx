@@ -98,7 +98,7 @@ export function ModelMetrics() {
   const o = t.overview;
 
   const [stats, setStats]           = useState<SystemStats | null>(null);
-  const [prediction, setPrediction] = useState<DisplayPredictionResult | null>(null);
+  const [observedPrediction, setPrediction] = useState<DisplayPredictionResult | null>(null);
   const [latestFile, setLatestFile] = useState<string>('—');
   const [statsLoading, setStatsLoading] = useState(true);
 
@@ -119,6 +119,8 @@ export function ModelMetrics() {
       })
       .catch(console.error);
   }, []);
+
+  const prediction = stats && observedPrediction?.model_version === stats.model_version ? observedPrediction : null;
 
   // Derived
   const activityIndex  = prediction?.sunspot_index?.toFixed(2) ?? '—';

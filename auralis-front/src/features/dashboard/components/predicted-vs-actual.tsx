@@ -48,7 +48,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 }
 
 export function PredictedVsActual() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const e = t.experiments;
   const stats = useModelStats();
   const supportsMC = stats?.available_protocols?.includes('mc') ?? stats?.model_version === '3.1';
@@ -64,12 +64,14 @@ export function PredictedVsActual() {
     let active = true;
     setLoading(true);
     setError(null);
+    setData([]);
+    if (!stats) { setLoading(false); return; }
     getResultsComparison(protocol)
       .then((values) => { if (active) setData(values); })
       .catch((err) => { if (active) setError(err.message); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
-  }, [protocol]);
+  }, [protocol, stats?.model_version]);
 
   const values = data.flatMap((point) => [point.real, point.predicted]);
   const axisMin = values.length ? Math.floor((Math.min(...values) - 0.05) * 10) / 10 : 0;
@@ -99,7 +101,7 @@ export function PredictedVsActual() {
         <label className="text-xs text-neutral-400 flex items-center gap-3 mb-3">
           Protocol
           <select aria-label="Evaluation protocol" value={protocol} onChange={(event) => setProtocol(event.target.value as 'mc' | 'deterministic')} className="bg-neutral-800 rounded px-2 py-1 text-white">
-            <option value="mc" disabled={!supportsMC}>{supportsMC ? 'MC Dropout T=20 · batch 32 · seed 42' : 'MC Dropout — not evaluated for this release'}</option>
+            <option value="mc" disabled={!supportsMC}>{supportsMC ? 'MC Dropout T=20 · batch 32 · seed 42' : (language === 'es' ? 'MC Dropout — no evaluado para este release' : 'MC Dropout — not evaluated for this release')}</option>
             <option value="deterministic">Deterministic ONNX · batch 1</option>
           </select>
         </label>

@@ -1,0 +1,28 @@
+{
+  "protected_files": 271,
+  "backend_changes": "four exact display-text substitutions only",
+  "layout_classes_styles_unchanged": [
+    "auralis-front/src/features/dashboard/components/architecture-comparison.tsx",
+    "auralis-front/src/features/dashboard/components/config-panel.tsx",
+    "auralis-front/src/features/dashboard/components/global-metrics.tsx",
+    "auralis-front/src/features/dashboard/components/predicted-vs-actual.tsx",
+    "auralis-front/src/features/dashboard/components/xai-faithfulness.tsx",
+    "auralis-front/src/features/dashboard/magnetogram-panel.tsx",
+    "auralis-front/src/features/dashboard/model-metrics.tsx",
+    "auralis-front/src/features/landing/architecture-diagram.tsx",
+    "auralis-front/src/features/landing/landing-hero.tsx",
+    "auralis-front/src/features/landing/system-overview.tsx"
+  ],
+  "typescript_prior": 15,
+  "typescript_current": 15,
+  "new_diagnostics": 0,
+  "tag_unchanged": true,
+  "documentation_links": 37,
+  "presentation_tests": 5,
+  "release_tests": 6,
+  "solar_tests": 29,
+  "builds": "main frontend and Needle passed",
+  "desktop_visual": "1280x720, no document horizontal overflow; EN/ES, eight tabs, V3.1 landing",
+  "mobile_width": "390px override did not apply; not verified this run",
+  "new_research_or_benchmarks": false
+}

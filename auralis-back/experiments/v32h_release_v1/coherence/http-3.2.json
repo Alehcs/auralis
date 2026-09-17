@@ -1,0 +1,2230 @@
+{
+  "/health": {
+    "status": 200,
+    "body": {
+      "model_name": "Coronium V3.2",
+      "model_version": "3.2",
+      "checkpoint": "best_coronium_v3_2.pth",
+      "onnx": "best_coronium_v3_2.onnx",
+      "status": "ok",
+      "version": "3.1.0",
+      "model_loaded": true,
+      "device": "cpu"
+    }
+  },
+  "/api/stats": {
+    "status": 200,
+    "body": {
+      "model_name": "Coronium V3.2",
+      "model_version": "3.2",
+      "metrics_status": "clean_observation_validation_used_for_selection_not_independent_test_or_temporal_validation",
+      "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; intra4/inter1; mlas.disable_kleidiai=1; seed42 epoch27; selection validation, not independent or temporal test",
+      "available_protocols": [
+        "deterministic"
+      ],
+      "validation_observations": 263,
+      "observation_overlap": 0,
+      "mape": 2.908886965683121,
+      "serving_deterministic": {
+        "protocol": "deterministic ONNX CPU FP32 batch1; intra4/inter1; mlas.disable_kleidiai=1; seed42 epoch27; selection validation, not independent or temporal test",
+        "onnx": {
+          "n": 263,
+          "mae": 0.04833447615909939,
+          "rmse": 0.05905530431219216,
+          "r2": 0.9714300369736174,
+          "mape": 2.908886965683121,
+          "bias": 0.013237384788890291,
+          "p95_absolute_error": 0.10974993705749511,
+          "max_absolute_error": 0.255906343460083
+        },
+        "groups": {
+          "all": {
+            "n": 263,
+            "mae": 0.04833447615909939,
+            "rmse": 0.05905530431219216,
+            "r2": 0.9714300369736174,
+            "mape": 2.908886965683121,
+            "bias": 0.013237384788890291,
+            "p95_absolute_error": 0.10974993705749511,
+            "max_absolute_error": 0.255906343460083
+          },
+          "low": {
+            "n": 43,
+            "mae": 0.058247455330782134,
+            "rmse": 0.0652538389705834,
+            "r2": -0.6164045953225932,
+            "mape": 4.430337536146118,
+            "bias": 0.056832402251487536,
+            "p95_absolute_error": 0.10704808235168434,
+            "max_absolute_error": 0.11747908592224121
+          },
+          "medium": {
+            "n": 96,
+            "mae": 0.04827523231506348,
+            "rmse": 0.061611151529364375,
+            "r2": 0.6182584518854337,
+            "mape": 3.1564177730916043,
+            "bias": 0.018362596631050106,
+            "p95_absolute_error": 0.11657881736755371,
+            "max_absolute_error": 0.255906343460083
+          },
+          "high": {
+            "n": 124,
+            "mae": 0.04494277700301139,
+            "rmse": 0.05460368389765595,
+            "r2": 0.9338990585188812,
+            "mape": 2.1896504169643842,
+            "bias": -0.005848148176746995,
+            "p95_absolute_error": 0.10862995386123656,
+            "max_absolute_error": 0.12504911422729492
+          },
+          "SI_gt_2": {
+            "n": 71,
+            "mae": 0.04416566835322849,
+            "rmse": 0.05396589378467327,
+            "r2": 0.8958558438037788,
+            "mape": 1.9892311179891704,
+            "bias": -0.018075959783204837,
+            "p95_absolute_error": 0.10779786109924316,
+            "max_absolute_error": 0.12504911422729492
+          }
+        },
+        "runtime": "kleidiai_off",
+        "checkpoint_sha256": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+        "onnx_sha256": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a"
+      },
+      "historical_v3": {
+        "model_name": "Coronium V3 PRO",
+        "status": "historical_contaminated_validation_not_generalization_evidence",
+        "source": "experiments/exp_005_v3pro_augmented.json",
+        "validation_rows": 353,
+        "observation_overlap": 145,
+        "metrics": {
+          "mae": 0.1048,
+          "rmse": 0.1272,
+          "r2": 0.8634,
+          "mape": 6.07
+        }
+      },
+      "metric_units": "SI percentage points (MAE/RMSE); dimensionless R2",
+      "total_images": 1314,
+      "disk_usage_mb": 1314.16,
+      "mae": 0.04833447615909939,
+      "rmse": 0.05905530431219216,
+      "r2_score": 0.9714300369736174,
+      "last_updated": "2026-04-26T22:44:49.130897+00:00"
+    }
+  },
+  "/api/results-comparison?protocol=deterministic": {
+    "status": 200,
+    "body": [
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.053314447402954,
+        "predicted": 2.1247169971466064,
+        "error": 0.07140254974365234
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3513028621673584,
+        "predicted": 1.3836841583251953,
+        "error": 0.032381296157836914
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1192550659179688,
+        "predicted": 2.1194262504577637,
+        "error": 0.00017118453979492188
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.274031400680542,
+        "predicted": 1.3468575477600098,
+        "error": 0.07282614707946777
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.256971597671509,
+        "predicted": 2.2305948734283447,
+        "error": 0.026376724243164062
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.98131799697876,
+        "predicted": 1.9708890914916992,
+        "error": 0.010428905487060769
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.177679538726806,
+        "predicted": 2.2259554862976074,
+        "error": 0.048275947570801225
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.882094144821167,
+        "predicted": 1.9319617748260498,
+        "error": 0.04986763000488281
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.416623592376709,
+        "predicted": 1.4636549949645996,
+        "error": 0.047031402587890625
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9982576370239256,
+        "predicted": 1.9608802795410156,
+        "error": 0.037377357482909934
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.186703681945801,
+        "predicted": 2.1444530487060547,
+        "error": 0.042250633239746094
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3957083225250244,
+        "predicted": 1.4771780967712402,
+        "error": 0.08146977424621582
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4149665832519531,
+        "predicted": 1.374272108078003,
+        "error": 0.040694475173950195
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.411890983581543,
+        "predicted": 1.4123876094818115,
+        "error": 0.0004966259002685547
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.877206563949585,
+        "predicted": 1.9383418560028076,
+        "error": 0.061135292053222656
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0009100437164307,
+        "predicted": 1.9351592063903809,
+        "error": 0.0657508373260498
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9275903701782229,
+        "predicted": 1.9725077152252197,
+        "error": 0.04491734504699685
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5886783599853516,
+        "predicted": 1.6497323513031006,
+        "error": 0.06105399131774902
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.324141025543213,
+        "predicted": 1.3858015537261963,
+        "error": 0.0616605281829834
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4247238636016846,
+        "predicted": 1.4552950859069824,
+        "error": 0.03057122230529785
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2808194160461426,
+        "predicted": 2.2282776832580566,
+        "error": 0.05254173278808594
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.971501111984253,
+        "predicted": 1.956789493560791,
+        "error": 0.014711618423461914
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4080345630645752,
+        "predicted": 1.4721741676330566,
+        "error": 0.06413960456848145
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7235636711120603,
+        "predicted": 1.744140386581421,
+        "error": 0.020576715469360574
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3445377349853516,
+        "predicted": 1.3993496894836426,
+        "error": 0.054811954498291016
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3880252838134766,
+        "predicted": 1.4225893020629883,
+        "error": 0.03456401824951172
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7548441886901855,
+        "predicted": 1.7985219955444336,
+        "error": 0.04367780685424805
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2508392333984375,
+        "predicted": 1.323972463607788,
+        "error": 0.07313323020935059
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.089184522628784,
+        "predicted": 2.131737470626831,
+        "error": 0.042552947998046875
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.435321569442749,
+        "predicted": 1.4485931396484375,
+        "error": 0.013271570205688477
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2922098636627197,
+        "predicted": 2.2228708267211914,
+        "error": 0.06933903694152832
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5226006507873535,
+        "predicted": 1.5709595680236816,
+        "error": 0.048358917236328125
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2875139713287354,
+        "predicted": 1.3760054111480713,
+        "error": 0.08849143981933594
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6812920570373535,
+        "predicted": 1.5630738735198975,
+        "error": 0.11821818351745605
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.164971828460694,
+        "predicted": 2.1780364513397217,
+        "error": 0.013064622879027876
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3447811603546143,
+        "predicted": 2.332042694091797,
+        "error": 0.012738466262817383
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0726561546325684,
+        "predicted": 1.9587397575378418,
+        "error": 0.11391639709472656
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.477283239364624,
+        "predicted": 1.439554214477539,
+        "error": 0.03772902488708496
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4928042888641355,
+        "predicted": 1.4376640319824219,
+        "error": 0.055140256881713645
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2998342514038086,
+        "predicted": 1.3242542743682861,
+        "error": 0.02442002296447754
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8188118934631348,
+        "predicted": 1.8229753971099854,
+        "error": 0.004163503646850586
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0141005516052246,
+        "predicted": 1.9917118549346924,
+        "error": 0.022388696670532227
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9435763359069824,
+        "predicted": 2.0443458557128906,
+        "error": 0.1007695198059082
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6411066055297852,
+        "predicted": 1.6771142482757568,
+        "error": 0.03600764274597168
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4998435974121094,
+        "predicted": 1.549394130706787,
+        "error": 0.049550533294677734
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3566722869873047,
+        "predicted": 2.3011386394500732,
+        "error": 0.055533647537231445
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4202415943145752,
+        "predicted": 1.5328378677368164,
+        "error": 0.11259627342224121
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6164898872375488,
+        "predicted": 1.6308555603027344,
+        "error": 0.014365673065185547
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.263284683227539,
+        "predicted": 1.3755698204040527,
+        "error": 0.11228513717651367
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.072572708129883,
+        "predicted": 2.0596764087677,
+        "error": 0.012896299362182617
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.256447076797486,
+        "predicted": 2.1767187118530273,
+        "error": 0.07972836494445845
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3659656047821045,
+        "predicted": 1.3993873596191406,
+        "error": 0.03342175483703613
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7862141132354736,
+        "predicted": 1.7658658027648926,
+        "error": 0.020348310470581055
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0826637744903564,
+        "predicted": 2.153381824493408,
+        "error": 0.07071805000305176
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.4287819862365723,
+        "predicted": 2.3551101684570312,
+        "error": 0.07367181777954102
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9482195377349856,
+        "predicted": 1.9009530544281006,
+        "error": 0.04726648330688499
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2483646869659424,
+        "predicted": 2.222172260284424,
+        "error": 0.026192426681518555
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0414233207702637,
+        "predicted": 1.9788007736206055,
+        "error": 0.0626225471496582
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9172906875610352,
+        "predicted": 1.9514217376708984,
+        "error": 0.03413105010986328
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.236664295196533,
+        "predicted": 2.1951427459716797,
+        "error": 0.041521549224853516
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.930135488510132,
+        "predicted": 1.975064754486084,
+        "error": 0.044929265975951926
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6829490661621094,
+        "predicted": 1.6303672790527344,
+        "error": 0.052581787109375
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.654183864593506,
+        "predicted": 1.720776081085205,
+        "error": 0.066592216491699
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4796793460845947,
+        "predicted": 1.5256381034851074,
+        "error": 0.045958757400512695
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.375209331512451,
+        "predicted": 2.2899973392486572,
+        "error": 0.08521199226379395
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.598513126373291,
+        "predicted": 1.6465222835540771,
+        "error": 0.04800915718078613
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4463722705841064,
+        "predicted": 1.4400954246520996,
+        "error": 0.006276845932006836
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4797210693359375,
+        "predicted": 1.4959874153137207,
+        "error": 0.016266345977783203
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6978442668914795,
+        "predicted": 1.7190582752227783,
+        "error": 0.021214008331298828
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.440589666366577,
+        "predicted": 2.440908670425415,
+        "error": 0.0003190040588378906
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.29430890083313,
+        "predicted": 1.3667213916778564,
+        "error": 0.07241249084472634
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2716104984283447,
+        "predicted": 2.227144718170166,
+        "error": 0.04446578025817871
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.236950397491455,
+        "predicted": 2.2292673587799072,
+        "error": 0.0076830387115478516
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3107776641845703,
+        "predicted": 1.3548974990844727,
+        "error": 0.044119834899902344
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8971264362335205,
+        "predicted": 1.954737663269043,
+        "error": 0.05761122703552246
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4110684394836426,
+        "predicted": 1.4825310707092285,
+        "error": 0.07146263122558594
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.583009958267212,
+        "predicted": 1.5056560039520264,
+        "error": 0.07735395431518555
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4405786991119385,
+        "predicted": 1.5028047561645508,
+        "error": 0.062226057052612305
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.880711317062378,
+        "predicted": 1.814068078994751,
+        "error": 0.06664323806762695
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.367144823074341,
+        "predicted": 2.333716630935669,
+        "error": 0.033428192138671875
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.621764898300171,
+        "predicted": 1.5446949005126953,
+        "error": 0.07706999778747559
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5255391597747805,
+        "predicted": 1.613335132598877,
+        "error": 0.08779597282409646
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3710319995880127,
+        "predicted": 1.41743803024292,
+        "error": 0.04640603065490723
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.926928758621216,
+        "predicted": 1.8891513347625732,
+        "error": 0.0377774238586428
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3165652751922607,
+        "predicted": 1.3832836151123047,
+        "error": 0.06671833992004395
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3735413551330566,
+        "predicted": 1.4115629196166992,
+        "error": 0.03802156448364258
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4941275119781494,
+        "predicted": 1.493300437927246,
+        "error": 0.0008270740509033203
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.370537281036377,
+        "predicted": 1.340113639831543,
+        "error": 0.030423641204833984
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.092152833938598,
+        "predicted": 2.062391519546509,
+        "error": 0.0297613143920894
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4034152030944824,
+        "predicted": 1.4061579704284668,
+        "error": 0.002742767333984375
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.062845230102539,
+        "predicted": 2.0754847526550293,
+        "error": 0.012639522552490234
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4132559299468994,
+        "predicted": 1.4744892120361328,
+        "error": 0.0612332820892334
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4508068561553955,
+        "predicted": 1.422292947769165,
+        "error": 0.02851390838623047
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0181119441986084,
+        "predicted": 2.049344539642334,
+        "error": 0.031232595443725586
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4042139053344729,
+        "predicted": 1.4267070293426514,
+        "error": 0.02249312400817849
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.206796407699585,
+        "predicted": 2.2093708515167236,
+        "error": 0.002574443817138672
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.579999923706055,
+        "predicted": 1.572319746017456,
+        "error": 0.007680177688598855
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.360248565673828,
+        "predicted": 2.2404229640960693,
+        "error": 0.11982560157775879
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.389312744140625,
+        "predicted": 1.4136250019073486,
+        "error": 0.024312257766723633
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.458740234375,
+        "predicted": 1.4820265769958496,
+        "error": 0.02328634262084961
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6596853733062744,
+        "predicted": 1.7246482372283936,
+        "error": 0.06496286392211914
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.074974775314331,
+        "predicted": 2.101490020751953,
+        "error": 0.02651524543762207
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7347872257232666,
+        "predicted": 1.733081579208374,
+        "error": 0.0017056465148925781
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1407723426818848,
+        "predicted": 2.1526284217834473,
+        "error": 0.0118560791015625
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4978647232055664,
+        "predicted": 1.501819372177124,
+        "error": 0.003954648971557617
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4149248600006104,
+        "predicted": 1.4735913276672363,
+        "error": 0.05866646766662598
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7225325107574463,
+        "predicted": 1.746537685394287,
+        "error": 0.02400517463684082
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.812988519668579,
+        "predicted": 1.7314298152923584,
+        "error": 0.0815587043762207
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9019663333892824,
+        "predicted": 1.873138427734375,
+        "error": 0.02882790565490745
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4944016933441162,
+        "predicted": 1.5581574440002441,
+        "error": 0.06375575065612793
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.412403583526611,
+        "predicted": 1.4875574111938477,
+        "error": 0.07515382766723655
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.778256893157959,
+        "predicted": 1.8312129974365234,
+        "error": 0.05295610427856445
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.949613332748413,
+        "predicted": 2.8651552200317383,
+        "error": 0.0844581127166748
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2903451919555664,
+        "predicted": 1.3178668022155762,
+        "error": 0.027521610260009766
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8329620361328125,
+        "predicted": 1.7573719024658203,
+        "error": 0.07559013366699219
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7635107040405271,
+        "predicted": 1.7549169063568115,
+        "error": 0.008593797683715598
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9463121891021729,
+        "predicted": 1.8752546310424805,
+        "error": 0.07105755805969238
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1289467811584473,
+        "predicted": 2.147433280944824,
+        "error": 0.018486499786376953
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2203633785247805,
+        "predicted": 1.3182880878448486,
+        "error": 0.09792470932006814
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.5049924850463867,
+        "predicted": 2.4990718364715576,
+        "error": 0.0059206485748291016
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.058035135269165,
+        "predicted": 2.1058859825134277,
+        "error": 0.047850847244262695
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.467043161392212,
+        "predicted": 1.4862380027770996,
+        "error": 0.019194841384887695
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.4043679237365723,
+        "predicted": 2.3748390674591064,
+        "error": 0.02952885627746582
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.987212896347046,
+        "predicted": 2.003957748413086,
+        "error": 0.01674485206604004
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9233942031860352,
+        "predicted": 1.9237637519836426,
+        "error": 0.0003695487976074219
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.619100570678711,
+        "predicted": 1.6980500221252441,
+        "error": 0.0789494514465332
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.441352605819702,
+        "predicted": 2.3355138301849365,
+        "error": 0.10583877563476562
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.094036340713501,
+        "predicted": 2.1276450157165527,
+        "error": 0.03360867500305176
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4214932918548584,
+        "predicted": 1.4368722438812256,
+        "error": 0.015378952026367188
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3309171199798584,
+        "predicted": 2.2649152278900146,
+        "error": 0.06600189208984375
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3686060905456543,
+        "predicted": 1.406409740447998,
+        "error": 0.03780364990234375
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5854060649871826,
+        "predicted": 1.5179753303527832,
+        "error": 0.06743073463439941
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4175474643707275,
+        "predicted": 1.4093732833862305,
+        "error": 0.00817418098449707
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3481974601745603,
+        "predicted": 1.3645803928375244,
+        "error": 0.01638293266296409
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.095085382461548,
+        "predicted": 2.1055896282196045,
+        "error": 0.01050424575805664
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0939886569976807,
+        "predicted": 1.98423171043396,
+        "error": 0.1097569465637207
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4164984226226809,
+        "predicted": 1.537510633468628,
+        "error": 0.12101221084594704
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4693617820739746,
+        "predicted": 1.5881891250610352,
+        "error": 0.11882734298706055
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9859492778778076,
+        "predicted": 2.011423110961914,
+        "error": 0.025473833084106445
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.56746506690979,
+        "predicted": 1.4952442646026611,
+        "error": 0.0722208023071289
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9267916679382324,
+        "predicted": 1.9678850173950195,
+        "error": 0.04109334945678711
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9832253456115725,
+        "predicted": 1.9361271858215332,
+        "error": 0.047098159790039285
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0997941493988037,
+        "predicted": 2.04427170753479,
+        "error": 0.05552244186401367
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3774454593658447,
+        "predicted": 1.4305622577667236,
+        "error": 0.053116798400878906
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4910459518432615,
+        "predicted": 1.5375056266784668,
+        "error": 0.0464596748352053
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6231358051300049,
+        "predicted": 1.879042148590088,
+        "error": 0.255906343460083
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.31860876083374,
+        "predicted": 2.2374489307403564,
+        "error": 0.08115983009338334
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2437105178833008,
+        "predicted": 1.3169891834259033,
+        "error": 0.07327866554260254
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.412677764892578,
+        "predicted": 1.3908627033233643,
+        "error": 0.021815061569213645
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.878678798675537,
+        "predicted": 1.8305704593658447,
+        "error": 0.04810833930969238
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.314669847488403,
+        "predicted": 1.4062316417694092,
+        "error": 0.09156179428100608
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.873779296875,
+        "predicted": 1.9192829132080078,
+        "error": 0.04550361633300781
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.142089605331421,
+        "predicted": 2.1568636894226074,
+        "error": 0.014774084091186523
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4661669731140137,
+        "predicted": 1.5821993350982666,
+        "error": 0.11603236198425293
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4258503913879397,
+        "predicted": 1.3885602951049805,
+        "error": 0.037290096282959206
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3370087146759033,
+        "predicted": 2.385889768600464,
+        "error": 0.04888105392456055
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2143185138702393,
+        "predicted": 2.2435669898986816,
+        "error": 0.029248476028442383
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7675161361694336,
+        "predicted": 1.8633084297180176,
+        "error": 0.09579229354858398
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5239477157592771,
+        "predicted": 1.5277714729309082,
+        "error": 0.0038237571716310814
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4488577842712402,
+        "predicted": 1.4927902221679688,
+        "error": 0.043932437896728516
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8259704113006592,
+        "predicted": 1.8918843269348145,
+        "error": 0.06591391563415527
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0168662071228027,
+        "predicted": 2.025848150253296,
+        "error": 0.008981943130493164
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8768489360809328,
+        "predicted": 1.8780105113983154,
+        "error": 0.0011615753173825905
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.4387896060943604,
+        "predicted": 2.356769323348999,
+        "error": 0.08202028274536133
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6188561916351318,
+        "predicted": 1.606273889541626,
+        "error": 0.01258230209350586
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.930147409439087,
+        "predicted": 1.8721158504486084,
+        "error": 0.058031558990478516
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2361695766448975,
+        "predicted": 2.2607109546661377,
+        "error": 0.024541378021240234
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2053539752960205,
+        "predicted": 2.2368075847625732,
+        "error": 0.031453609466552734
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.685953140258789,
+        "predicted": 1.6656408309936523,
+        "error": 0.02031230926513672
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.434868574142456,
+        "predicted": 1.4064998626708984,
+        "error": 0.028368711471557617
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9766390323638916,
+        "predicted": 1.9759786128997803,
+        "error": 0.0006604194641113281
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.805680990219116,
+        "predicted": 1.919173002243042,
+        "error": 0.113492012023926
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4719843864440918,
+        "predicted": 1.4591283798217773,
+        "error": 0.012856006622314453
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4044761657714844,
+        "predicted": 1.478989839553833,
+        "error": 0.07451367378234863
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.660287380218506,
+        "predicted": 1.6747753620147705,
+        "error": 0.014487981796264426
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.655864715576172,
+        "predicted": 1.6269080638885498,
+        "error": 0.028956651687622292
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7937839031219482,
+        "predicted": 1.858419418334961,
+        "error": 0.0646355152130127
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.394188404083252,
+        "predicted": 1.3980376720428467,
+        "error": 0.0038492679595947266
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.45147442817688,
+        "predicted": 1.4510200023651123,
+        "error": 0.00045442581176780017
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4415323734283447,
+        "predicted": 1.4566686153411865,
+        "error": 0.015136241912841797
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.407640218734741,
+        "predicted": 2.437706708908081,
+        "error": 0.030066490173339844
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9804418087005615,
+        "predicted": 2.0039002895355225,
+        "error": 0.023458480834960938
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.204561233520508,
+        "predicted": 2.1868679523468018,
+        "error": 0.017693281173706055
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4317750930786133,
+        "predicted": 1.58040189743042,
+        "error": 0.14862680435180664
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5210390090942385,
+        "predicted": 1.596090316772461,
+        "error": 0.07505130767822243
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2712478637695312,
+        "predicted": 1.36104416847229,
+        "error": 0.08979630470275879
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6047775745391846,
+        "predicted": 1.5402195453643799,
+        "error": 0.06455802917480469
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4169096946716309,
+        "predicted": 1.4578590393066406,
+        "error": 0.040949344635009766
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4129459857940674,
+        "predicted": 1.384202241897583,
+        "error": 0.028743743896484375
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.765376329421997,
+        "predicted": 1.8258907794952393,
+        "error": 0.06051445007324219
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.469576358795166,
+        "predicted": 1.4476828575134277,
+        "error": 0.02189350128173828
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.680833101272583,
+        "predicted": 1.7343122959136963,
+        "error": 0.05347919464111328
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8595755100250244,
+        "predicted": 1.7951452732086182,
+        "error": 0.06443023681640625
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9119858741760256,
+        "predicted": 1.8416409492492676,
+        "error": 0.07034492492675803
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3325035572052002,
+        "predicted": 1.3880658149719238,
+        "error": 0.05556225776672363
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.502763271331787,
+        "predicted": 2.5409727096557617,
+        "error": 0.03820943832397461
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3307323455810547,
+        "predicted": 2.3524057865142822,
+        "error": 0.02167344093322754
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0181119441986084,
+        "predicted": 1.9659719467163086,
+        "error": 0.052139997482299805
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5829384326934814,
+        "predicted": 1.5141973495483398,
+        "error": 0.0687410831451416
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.348954439163208,
+        "predicted": 1.4338383674621582,
+        "error": 0.0848839282989502
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.755976676940918,
+        "predicted": 1.8650991916656494,
+        "error": 0.10912251472473145
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4279842376708984,
+        "predicted": 1.4798271656036377,
+        "error": 0.05184292793273926
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.829308271408081,
+        "predicted": 1.938995122909546,
+        "error": 0.10968685150146484
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.23846435546875,
+        "predicted": 2.285773992538452,
+        "error": 0.04730963706970215
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.690751314163208,
+        "predicted": 1.7345528602600098,
+        "error": 0.04380154609680176
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1337270736694336,
+        "predicted": 2.086017608642578,
+        "error": 0.04770946502685547
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1333932876586914,
+        "predicted": 2.2014122009277344,
+        "error": 0.06801891326904297
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4568567276000977,
+        "predicted": 1.498412847518921,
+        "error": 0.04155611991882324
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.812875270843506,
+        "predicted": 1.7980401515960693,
+        "error": 0.014835119247436745
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.272869110107422,
+        "predicted": 1.3809309005737305,
+        "error": 0.10806179046630837
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4182448387145996,
+        "predicted": 1.4601311683654785,
+        "error": 0.041886329650878906
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.1518707275390625,
+        "predicted": 2.143073558807373,
+        "error": 0.008797168731689453
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5549898147583008,
+        "predicted": 1.6368792057037354,
+        "error": 0.08188939094543457
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.224207878112793,
+        "predicted": 1.3090732097625732,
+        "error": 0.08486533164978027
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.589757204055786,
+        "predicted": 1.5237956047058105,
+        "error": 0.06596159934997536
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4122188091278076,
+        "predicted": 1.451962947845459,
+        "error": 0.03974413871765137
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7152667045593262,
+        "predicted": 1.692885160446167,
+        "error": 0.02238154411315918
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.099066972732544,
+        "predicted": 2.0467467308044434,
+        "error": 0.052320241928100586
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.855027675628662,
+        "predicted": 1.9343440532684326,
+        "error": 0.07931637763977051
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8904507160186768,
+        "predicted": 1.9142370223999023,
+        "error": 0.023786306381225586
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6345739364624023,
+        "predicted": 1.7011361122131348,
+        "error": 0.06656217575073242
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.2857377529144287,
+        "predicted": 1.40321683883667,
+        "error": 0.11747908592224121
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4971256256103516,
+        "predicted": 1.5348825454711914,
+        "error": 0.037756919860839844
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.719599962234497,
+        "predicted": 1.672441005706787,
+        "error": 0.04715895652770996
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.018076181411743,
+        "predicted": 2.032116413116455,
+        "error": 0.014040231704711914
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3602375984191897,
+        "predicted": 1.3752446174621582,
+        "error": 0.015007019042968528
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8023371696472168,
+        "predicted": 1.762953519821167,
+        "error": 0.039383649826049805
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3243675231933594,
+        "predicted": 1.3873991966247559,
+        "error": 0.06303167343139648
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3547539710998535,
+        "predicted": 1.448310375213623,
+        "error": 0.09355640411376953
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.996421813964844,
+        "predicted": 2.099039077758789,
+        "error": 0.10261726379394509
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0130395889282227,
+        "predicted": 2.06428861618042,
+        "error": 0.051249027252197266
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.2885918617248535,
+        "predicted": 2.289874792098999,
+        "error": 0.0012829303741455078
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4504790306091309,
+        "predicted": 1.5359914302825928,
+        "error": 0.08551239967346191
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0273029804229736,
+        "predicted": 1.929748773574829,
+        "error": 0.09755420684814453
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6319811344146729,
+        "predicted": 1.6885805130004883,
+        "error": 0.05659937858581543
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5942037105560305,
+        "predicted": 1.522853136062622,
+        "error": 0.07135057449340843
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3515114784240725,
+        "predicted": 1.388740062713623,
+        "error": 0.03722858428955056
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.947987079620361,
+        "predicted": 1.950901746749878,
+        "error": 0.0029146671295168236
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.468287944793701,
+        "predicted": 2.5229694843292236,
+        "error": 0.05468153953552246
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4614224433898926,
+        "predicted": 1.4560415744781494,
+        "error": 0.005380868911743164
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.560431718826294,
+        "predicted": 1.5638487339019775,
+        "error": 0.0034170150756835938
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.358240842819214,
+        "predicted": 1.4143445491790771,
+        "error": 0.05610370635986306
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.3134589195251465,
+        "predicted": 2.2895126342773438,
+        "error": 0.023946285247802734
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.105504274368286,
+        "predicted": 1.9804551601409912,
+        "error": 0.12504911422729492
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.43548846244812,
+        "predicted": 1.4430232048034668,
+        "error": 0.007534742355346902
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.513528823852539,
+        "predicted": 1.6002418994903564,
+        "error": 0.08671307563781738
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.0758748054504395,
+        "predicted": 2.0572335720062256,
+        "error": 0.018641233444213867
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.7169952392578125,
+        "predicted": 1.7621278762817383,
+        "error": 0.04513263702392578
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9180774688720703,
+        "predicted": 1.9109618663787842,
+        "error": 0.007115602493286133
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4719069004058838,
+        "predicted": 1.5005974769592285,
+        "error": 0.028690576553344727
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 2.477240562438965,
+        "predicted": 2.409566640853882,
+        "error": 0.06767392158508301
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4507591724395752,
+        "predicted": 1.4386494159698486,
+        "error": 0.012109756469726562
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5053510665893557,
+        "predicted": 1.5878822803497314,
+        "error": 0.08253121376037575
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3003408908843994,
+        "predicted": 1.3863043785095215,
+        "error": 0.08596348762512207
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.9038140773773191,
+        "predicted": 1.9257402420043945,
+        "error": 0.021926164627075417
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.4737844467163086,
+        "predicted": 1.4755573272705078,
+        "error": 0.0017728805541992188
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.935410499572754,
+        "predicted": 1.9134442806243896,
+        "error": 0.021966218948364258
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.973170042037964,
+        "predicted": 1.9088115692138672,
+        "error": 0.0643584728240969
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.8853724002838137,
+        "predicted": 1.8824269771575928,
+        "error": 0.002945423126220925
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.5796244144439695,
+        "predicted": 1.516545295715332,
+        "error": 0.06307911872863747
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6264915466308594,
+        "predicted": 1.567411184310913,
+        "error": 0.05908036231994629
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.6140639781951904,
+        "predicted": 1.52294921875,
+        "error": 0.09111475944519043
+      },
+      {
+        "model_version": "3.2",
+        "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; seed=42; runtime=kleidiai_off; selection validation, not independent test",
+        "units": "SI percent; errors in SI percentage points",
+        "real": 1.3578712940216064,
+        "predicted": 1.413764238357544,
+        "error": 0.0558929443359375
+      }
+    ]
+  },
+  "/api/results-comparison?protocol=mc": {
+    "status": 503
+  }
+}

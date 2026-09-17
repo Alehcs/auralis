@@ -1,0 +1,184 @@
+TAP version 13
+# Subtest: five states: only numeric results and model provenance change
+ok 1 - five states: only numeric results and model provenance change
+  ---
+  duration_ms: 1.903
+  type: 'test'
+  ...
+# Subtest: no explicit release preserves V3.1 and performs no overlay fetch
+ok 2 - no explicit release preserves V3.1 and performs no overlay fetch
+  ---
+  duration_ms: 0.2255
+  type: 'test'
+  ...
+# Subtest: mismatch, unknown release and corrupted bytes fail without fallback
+ok 3 - mismatch, unknown release and corrupted bytes fail without fallback
+  ---
+  duration_ms: 4.449417
+  type: 'test'
+  ...
+# Subtest: insecure LAN never presented as AR-capable
+ok 4 - insecure LAN never presented as AR-capable
+  ---
+  duration_ms: 0.336917
+  type: 'test'
+  ...
+# Subtest: iPhone without WebXR distinguishes App Clip from Safari
+ok 5 - iPhone without WebXR distinguishes App Clip from Safari
+  ---
+  duration_ms: 0.077583
+  type: 'test'
+  ...
+# Subtest: unsupported desktop retains 3D
+ok 6 - unsupported desktop retains 3D
+  ---
+  duration_ms: 0.036125
+  type: 'test'
+  ...
+# Subtest: capability exception preserves 3D
+ok 7 - capability exception preserves 3D
+  ---
+  duration_ms: 0.031333
+  type: 'test'
+  ...
+# Subtest: support probe is not proof of placement
+ok 8 - support probe is not proof of placement
+  ---
+  duration_ms: 0.512916
+  type: 'test'
+  ...
+# Subtest: localhost is not a phone sharing URL
+ok 9 - localhost is not a phone sharing URL
+  ---
+  duration_ms: 0.170208
+  type: 'test'
+  ...
+# Subtest: accepts the frozen first-state contract and exported evidence
+ok 10 - accepts the frozen first-state contract and exported evidence
+  ---
+  duration_ms: 7.61725
+  type: 'test'
+  ...
+# Subtest: rejects another state, false time, MC protocol, invented WCS and negative channel
+ok 11 - rejects another state, false time, MC protocol, invented WCS and negative channel
+  ---
+  duration_ms: 0.37825
+  type: 'test'
+  ...
+# Subtest: rejects damaged GLB, other scene provenance and mismatched scientific values
+ok 12 - rejects damaged GLB, other scene provenance and mismatched scientific values
+  ---
+  duration_ms: 8.676667
+  type: 'test'
+  ...
+# Subtest: limits layers and scale to Phase5 controls
+ok 13 - limits layers and scale to Phase5 controls
+  ---
+  duration_ms: 0.197458
+  type: 'test'
+  ...
+# Subtest: five frozen observations retain chronological gaps, values and final SI decline
+ok 14 - five frozen observations retain chronological gaps, values and final SI decline
+  ---
+  duration_ms: 1.009958
+  type: 'test'
+  ...
+# Subtest: forwards/backwards cover all states and stop at boundaries
+ok 15 - forwards/backwards cover all states and stop at boundaries
+  ---
+  duration_ms: 0.108875
+  type: 'test'
+  ...
+# Subtest: rejects swapped states, fake dates, wrong channel files and MC results
+ok 16 - rejects swapped states, fake dates, wrong channel files and MC results
+  ---
+  duration_ms: 0.581916
+  type: 'test'
+  ...
+# Subtest: all 15 map files and the sequence match their frozen display hashes
+ok 17 - all 15 map files and the sequence match their frozen display hashes
+  ---
+  duration_ms: 12.635083
+  type: 'test'
+  ...
+# Subtest: five spatial textures bind to exact source magnetograms and real Unity geometry
+ok 18 - five spatial textures bind to exact source magnetograms and real Unity geometry
+  ---
+  duration_ms: 80.736792
+  type: 'test'
+  ...
+# Subtest: reject swapped solar maps, substituted source, wrong orientation or invalid disk
+ok 19 - reject swapped solar maps, substituted source, wrong orientation or invalid disk
+  ---
+  duration_ms: 0.527458
+  type: 'test'
+  ...
+# Subtest: controller returns identical textures in both directions; pause and rapid selection settle atomically
+ok 20 - controller returns identical textures in both directions; pause and rapid selection settle atomically
+  ---
+  duration_ms: 0.539083
+  type: 'test'
+  ...
+# Subtest: SRS, six independent events and preserved source snapshots match frozen provenance
+ok 21 - SRS, six independent events and preserved source snapshots match frozen provenance
+  ---
+  duration_ms: 7.825541
+  type: 'test'
+  ...
+# Subtest: X1.3 remains 63367 seconds after state5; M4 and M2.2 stay between their correct observations
+ok 22 - X1.3 remains 63367 seconds after state5; M4 and M2.2 stay between their correct observations
+  ---
+  duration_ms: 0.289416
+  type: 'test'
+  ...
+# Subtest: reject false X capture, snapped event time, regional type rewrite and replacement source
+ok 23 - reject false X capture, snapped event time, regional type rewrite and replacement source
+  ---
+  duration_ms: 0.745958
+  type: 'test'
+  ...
+# Subtest: selecting events pauses without selecting or replacing any HMI state; selection clears on real state change
+ok 24 - selecting events pauses without selecting or replacing any HMI state; selection clears on real state change
+  ---
+  duration_ms: 0.495417
+  type: 'test'
+  ...
+# Subtest: presentation clock freezes hidden time, clamps gaps, resumes and resets reproducibly
+ok 25 - presentation clock freezes hidden time, clamps gaps, resumes and resets reproducibly
+  ---
+  duration_ms: 0.339375
+  type: 'test'
+  ...
+# Subtest: extends existing Unity mesh material; scientific planes have no moving UVs or surface transfer
+ok 26 - extends existing Unity mesh material; scientific planes have no moving UVs or surface transfer
+  ---
+  duration_ms: 2.344125
+  type: 'test'
+  ...
+# Subtest: original Unity decoration survives temporal map replacement and is released exactly once
+ok 27 - original Unity decoration survives temporal map replacement and is released exactly once
+  ---
+  duration_ms: 0.364208
+  type: 'test'
+  ...
+# Subtest: counts cadence over the complete window, including startup stalls
+ok 28 - counts cadence over the complete window, including startup stalls
+  ---
+  duration_ms: 0.693333
+  type: 'test'
+  ...
+# Subtest: no rendered frames is zero throughput, not a passing sample
+ok 29 - no rendered frames is zero throughput, not a passing sample
+  ---
+  duration_ms: 0.097
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 286.259333

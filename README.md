@@ -34,7 +34,11 @@ retain the preparation evidence. Phase H itself did not publish; the subsequent 
 The architecture and clip400/B+/B− input/target remain unchanged: 206,875 parameters,
 backbone dropout0/head0.3, deterministic CPU ONNX, four intra-op/one inter-op thread,
 validated `mlas.disable_kleidiai=1`. The twenty input-noise passes remain a separate,
-uncalibrated diagnostic. The runtime checks the validated ORT native binary.
+uncalibrated diagnostic. Output is original SI pixel percent, without log or Z-score.
+The runtime checks the validated ORT1.25.1 native binary (Apple M5, macOS26.6.2 arm64);
+other builds/platforms require validation. Weight/ONNX bytes are not process RSS.
+Forward-only, full HTTP (noise20 + deterministic1), and cached HTTP times are
+separate protocols; historical timings below are not current-release latency.
 
 | Active release item | Value |
 | --- | --- |
@@ -52,6 +56,8 @@ are unresolved. MC performance for V3.2 is not evaluated. `/api/stats` and the d
 scatter identify the deterministic release protocol; explicit unavailable MC returns503.
 The [scientific figure index](auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md)
 retains all three candidates unchanged. PC and phone/AR tests were approved by user confirmation; details not supplied are recorded as not registered. See [final closure and local release notes](auralis-back/experiments/v32h_release_v1/closure/REPORT.md).
+
+[Presentation consistency audit](auralis-back/experiments/v32h_release_v1/coherence/REPORT.md) records the later content correction, source checks and remaining TypeScript debt.
 
 ### Preserved V3.1 release and recovery reference
 
@@ -137,8 +143,9 @@ The `/api/predict` endpoint reports an `uncertainty` field derived from
 20 inference passes with small additive Gaussian input noise (σ = 0.005) via
 ONNX Runtime. The primary prediction is a separate unperturbed deterministic pass.
 The noise spread is a synthetic sensitivity heuristic without instrument calibration,
-not the MC Dropout protocol. The canonical metrics above were produced by the
-offline MC Dropout evaluation in `evaluate_final.py`.
+not the MC Dropout protocol. Active V3.2 metrics are deterministic ONNX results
+from its verified release metrics file. MC results above belong to the explicitly
+labeled V3.1 historical control; V3.2 MC performance has not been evaluated.
 
 ## Dataset
 

@@ -74,7 +74,7 @@ function AUCBadge({ score, labels }: {
 // ---------------------------------------------------------------------------
 
 export function XAIFaithfulness() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const e = t.experiments;
   const stats = useModelStats();
 
@@ -85,13 +85,13 @@ export function XAIFaithfulness() {
   useEffect(() => {
     if (IS_FROZEN_DEMO) { setLoading(false); return; }
     getStats().then(stats => {
-      if (stats.model_version.startsWith("3.2")) throw new Error("No compatible service faithfulness curve saved for this release. D/F XAI remains separate; border/background concerns unresolved. Grad-CAM tools remain available.");
+      if (stats.model_version.startsWith("3.2")) throw new Error(language === "es" ? "Sin curva de fidelidad compatible guardada para este release. XAI D/F permanece separado; persisten dudas sobre borde/fondo. Grad-CAM sigue disponible." : "No compatible service faithfulness curve saved for this release. D/F XAI remains separate; border/background concerns unresolved. Grad-CAM tools remain available.");
       return getXAIFaithfulness();
     })
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [language]);
 
   const chartData = data
     ? data.curve.map((p: XAIPoint) => ({
