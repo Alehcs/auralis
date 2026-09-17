@@ -191,9 +191,8 @@ export function PredictionChart() {
                   }}
                   labelStyle={{ color: '#a3a3a3' }}
                   itemStyle={{ color: '#ffffff' }}
-                  formatter={(value: number) => [value.toLocaleString(), p.images]}
+                  formatter={(value: number | undefined) => [value?.toLocaleString(), p.images]}
                 />
-                {/* @ts-expect-error custom shape */}
                 <Bar dataKey="count" shape={<GradientBar />} maxBarSize={44} />
               </BarChart>
             </ResponsiveContainer>

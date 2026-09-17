@@ -512,8 +512,8 @@ export function MagnetogramPanel() {
                       fontFamily: 'monospace',
                     }}
                     labelStyle={{ color: '#a3a3a3' }}
-                    formatter={(value: number, name: string) => [
-                      value.toFixed(4),
+                    formatter={(value: number | undefined, name: string | undefined) => [
+                      value?.toFixed(4),
                       name === 'b_pos' ? m.positiveB : m.negativeB,
                     ]}
                   />

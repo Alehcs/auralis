@@ -1,3 +1,5 @@
+> **Closure addendum — 2026-09-17:** the user confirmed that the mobile review after the coherence correction is resolved. Source: user confirmation; device/browser/version, test date, recordings and measurements not recorded. The subsequent [TypeScript closure](../typescript/REPORT.md) resolves the 15 source diagnostics and the compiler-option incompatibility. Earlier results and pending statements below are historical, preserved unchanged. No new physical AR session or publication is claimed.
+
 # V3.2 presentation consistency — local correction
 
 Coronium V3.2 C1_s42, epoch27 remains the default. This correction follows the local model tag `coronium-v3.2`; the tag is not moved. Content/data connections only: no inference, runtime, architecture, weights, preprocessing, partitions, frozen predictions, Sun resources or layout changes.

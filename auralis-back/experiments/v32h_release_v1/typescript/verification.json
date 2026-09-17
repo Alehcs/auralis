@@ -1,0 +1,14 @@
+{
+  "protected_files_unchanged": 273,
+  "compiler": "5.9.3",
+  "only_config_change": "removed unsupported ignoreDeprecations=6.0",
+  "full_src_and_vite_config_checked": true,
+  "translations_runtime_identical": true,
+  "jsx_text_and_styles_unchanged": [
+    "src/app/components/ui/chart.tsx",
+    "src/features/dashboard/components/xai-faithfulness.tsx",
+    "src/features/dashboard/magnetogram-panel.tsx",
+    "src/features/dashboard/prediction-chart.tsx"
+  ],
+  "model_tag_unchanged": true
+}

@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "typecheck": "node ../prototypes/phase4-unity-needle/web/node_modules/typescript/bin/tsc -p tsconfig.json --noEmit && node ../prototypes/phase4-unity-needle/web/node_modules/typescript/bin/tsc -p tsconfig.node.json --noEmit",
     "build": "vite build",
     "dev": "vite",
     "predev": "npm --prefix ../prototypes/phase4-unity-needle/web run build",

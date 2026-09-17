@@ -1,3 +1,5 @@
+> **Closure addendum — 2026-09-17:** the user confirmed that the mobile review after the coherence correction is resolved. Source: user confirmation; device/browser/version, test date, recordings and measurements not recorded. The subsequent [TypeScript closure](typescript/REPORT.md) resolves the 15 source diagnostics and the compiler-option incompatibility. Earlier results and pending statements below are historical, preserved unchanged. No new physical AR session or publication is claimed.
+
 > **Final status — 2026-09-17:** the user confirmed successful PC and phone/AR tests, including active version, predictions, metrics, Agent Lab, Grad-CAM, five states, layers, timeline and AR, with no reported visual regressions. Source: user confirmation; device/browser versions, execution dates, recordings and performance measurements were not recorded. See [final closure](closure/REPORT.md). Earlier pending statements below describe the original test stage and are preserved as history. Local promotion and the subsequently refreshed temporary Sites are distinct from a definitive publication, which is not performed here.
 
 # Prueba humana breve — pendiente

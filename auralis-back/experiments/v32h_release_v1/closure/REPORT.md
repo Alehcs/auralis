@@ -1,3 +1,5 @@
+> **Subsequent closure — 2026-09-17:** [the TypeScript follow-up](../typescript/REPORT.md) resolves all 15 source diagnostics and the incompatible compiler option with the installed TypeScript 5.9.3. The user confirmed the post-coherence mobile review is resolved; no additional physical AR session is claimed. Prior results below remain historical.
+
 > **Content correction — 2026-09-17:** the landing-label issue and related consumer inconsistencies were corrected in the subsequent [presentation consistency audit](../coherence/REPORT.md). The original closure outcome below is retained as history; the model tag is unchanged.
 
 # Coronium V3.2 — final local closure and release notes

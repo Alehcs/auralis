@@ -57,7 +57,7 @@ scatter identify the deterministic release protocol; explicit unavailable MC ret
 The [scientific figure index](auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md)
 retains all three candidates unchanged. PC and phone/AR tests were approved by user confirmation; details not supplied are recorded as not registered. See [final closure and local release notes](auralis-back/experiments/v32h_release_v1/closure/REPORT.md).
 
-[Presentation consistency audit](auralis-back/experiments/v32h_release_v1/coherence/REPORT.md) records the later content correction, source checks and remaining TypeScript debt.
+[Presentation consistency audit](auralis-back/experiments/v32h_release_v1/coherence/REPORT.md) records the later content correction and source checks. The subsequent [TypeScript closure](auralis-back/experiments/v32h_release_v1/typescript/REPORT.md) resolves the frontend debt; run `npm --prefix auralis-front run typecheck` with the installed workspace compiler. The user also confirmed the post-correction mobile review is resolved.
 
 ### Preserved V3.1 release and recovery reference
 

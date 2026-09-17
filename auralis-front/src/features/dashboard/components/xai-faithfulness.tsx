@@ -11,7 +11,8 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
-import { Eye, Loader2 } from 'lucide-react';
+import type { DefaultTooltipContentProps } from 'recharts';
+import { Loader2 } from 'lucide-react';
 import { getXAIFaithfulness, getStats } from '@/lib/api';
 import type { XAIFaithfulnessResult, XAIPoint } from '@/lib/types';
 import { useLanguage } from '@/lib/i18n/language-context';
@@ -27,8 +28,10 @@ const KEY_RANDOM  = 'Random';
 // Tooltip
 // ---------------------------------------------------------------------------
 
-interface TItem { name: string; value: number; color: string }
-interface TProps { active?: boolean; payload?: TItem[]; label?: number; pixelsLabel: string }
+type TProps = Pick<DefaultTooltipContentProps<number, string>, 'payload' | 'label'> & {
+  active?: boolean;
+  pixelsLabel: string;
+};
 
 function ChartTooltip({ active, payload, label, pixelsLabel }: TProps) {
   if (!active || !payload?.length) return null;
@@ -41,7 +44,7 @@ function ChartTooltip({ active, payload, label, pixelsLabel }: TProps) {
             <span className="w-2 h-2 rounded-full inline-block" style={{ background: e.color }} />
             <span className="text-neutral-400">{e.name}</span>
           </div>
-          <span className="text-white font-semibold">{e.value.toFixed(3)}</span>
+          <span className="text-white font-semibold">{e.value?.toFixed(3)}</span>
         </div>
       ))}
     </div>

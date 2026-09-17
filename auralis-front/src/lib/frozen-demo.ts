@@ -14,7 +14,7 @@ export async function frozenResponse<T>(path: string): Promise<T> {
     return response.json();
   }).catch(error => { snapshot = undefined; throw error; });
   const responses = await snapshot;
-  if (!Object.hasOwn(responses, path)) throw new Error('No hay un resultado guardado para esta operación. La demo no ejecuta análisis nuevos.');
+  if (!Object.prototype.hasOwnProperty.call(responses, path)) throw new Error('No hay un resultado guardado para esta operación. La demo no ejecuta análisis nuevos.');
   return responses[path] as T;
 }
 export function requireLiveBackend() {
