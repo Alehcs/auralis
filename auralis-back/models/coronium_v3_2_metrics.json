@@ -1,0 +1,97 @@
+{
+  "model_name": "Coronium V3.2",
+  "model_version": "3.2",
+  "seed": 42,
+  "epoch": 27,
+  "status": "clean_observation_validation_used_for_selection_not_independent_test_or_temporal_validation",
+  "serving_deterministic": {
+    "protocol": "deterministic ONNX CPU FP32 batch1; intra4/inter1; mlas.disable_kleidiai=1; seed42 epoch27; selection validation, not independent or temporal test",
+    "onnx": {
+      "n": 263,
+      "mae": 0.04833447615909939,
+      "rmse": 0.05905530431219216,
+      "r2": 0.9714300369736174,
+      "mape": 2.908886965683121,
+      "bias": 0.013237384788890291,
+      "p95_absolute_error": 0.10974993705749511,
+      "max_absolute_error": 0.255906343460083
+    },
+    "groups": {
+      "all": {
+        "n": 263,
+        "mae": 0.04833447615909939,
+        "rmse": 0.05905530431219216,
+        "r2": 0.9714300369736174,
+        "mape": 2.908886965683121,
+        "bias": 0.013237384788890291,
+        "p95_absolute_error": 0.10974993705749511,
+        "max_absolute_error": 0.255906343460083
+      },
+      "low": {
+        "n": 43,
+        "mae": 0.058247455330782134,
+        "rmse": 0.0652538389705834,
+        "r2": -0.6164045953225932,
+        "mape": 4.430337536146118,
+        "bias": 0.056832402251487536,
+        "p95_absolute_error": 0.10704808235168434,
+        "max_absolute_error": 0.11747908592224121
+      },
+      "medium": {
+        "n": 96,
+        "mae": 0.04827523231506348,
+        "rmse": 0.061611151529364375,
+        "r2": 0.6182584518854337,
+        "mape": 3.1564177730916043,
+        "bias": 0.018362596631050106,
+        "p95_absolute_error": 0.11657881736755371,
+        "max_absolute_error": 0.255906343460083
+      },
+      "high": {
+        "n": 124,
+        "mae": 0.04494277700301139,
+        "rmse": 0.05460368389765595,
+        "r2": 0.9338990585188812,
+        "mape": 2.1896504169643842,
+        "bias": -0.005848148176746995,
+        "p95_absolute_error": 0.10862995386123656,
+        "max_absolute_error": 0.12504911422729492
+      },
+      "SI_gt_2": {
+        "n": 71,
+        "mae": 0.04416566835322849,
+        "rmse": 0.05396589378467327,
+        "r2": 0.8958558438037788,
+        "mape": 1.9892311179891704,
+        "bias": -0.018075959783204837,
+        "p95_absolute_error": 0.10779786109924316,
+        "max_absolute_error": 0.12504911422729492
+      }
+    },
+    "runtime": "kleidiai_off",
+    "checkpoint_sha256": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+    "onnx_sha256": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a"
+  },
+  "mc_dropout": {
+    "status": "not evaluated for this release; no V3.1 MC metrics substituted"
+  },
+  "historical_v3": {
+    "model_name": "Coronium V3 PRO",
+    "status": "historical_contaminated_validation_not_generalization_evidence",
+    "source": "experiments/exp_005_v3pro_augmented.json",
+    "validation_rows": 353,
+    "observation_overlap": 145,
+    "metrics": {
+      "mae": 0.1048,
+      "rmse": 0.1272,
+      "r2": 0.8634,
+      "mape": 6.07
+    }
+  },
+  "limitations": [
+    "Selection validation, not independent/temporal test",
+    "Low-band MAE deterioration within original tolerance; negative low-band R2",
+    "Border/background XAI concerns unresolved",
+    "No physical mobile validation"
+  ]
+}

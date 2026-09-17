@@ -1,0 +1,43 @@
+{
+  "protected_files_unchanged": 4943,
+  "source_files": 278,
+  "prior_manifests": [
+    {
+      "phase": "C",
+      "entries": 301
+    },
+    {
+      "phase": "D",
+      "entries": 526
+    },
+    {
+      "phase": "E",
+      "entries": 154
+    },
+    {
+      "phase": "E1",
+      "entries": 387
+    },
+    {
+      "phase": "E2",
+      "entries": 169
+    }
+  ],
+  "prior_manifest_discrepancies": 0,
+  "prediction_identity_order_targets": true,
+  "train_validation_disjoint": true,
+  "metric_reconciliation_max": 0.0,
+  "seed_sd_ddof": 1,
+  "ensemble": false,
+  "parity_exceedances": 0,
+  "occlusion_rows": 2592,
+  "no_ml_runtime_imported": true,
+  "figures": 26,
+  "tables": 25,
+  "environment": {
+    "python": "3.12.7 (main, Jan 27 2026, 21:01:07) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "numpy": "1.26.4",
+    "matplotlib": "3.10.8",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  }
+}

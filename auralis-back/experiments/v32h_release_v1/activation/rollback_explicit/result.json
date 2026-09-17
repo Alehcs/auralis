@@ -1,0 +1,11 @@
+{
+  "arm": "rollback_explicit",
+  "version": "3.1",
+  "pid": 53432,
+  "port": 51115,
+  "expected_public_si": 1.3676,
+  "passed": true,
+  "forms": 4,
+  "cache_alias_exact": true,
+  "error_recovery": true
+}

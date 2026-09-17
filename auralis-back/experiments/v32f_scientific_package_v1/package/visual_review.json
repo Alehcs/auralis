@@ -1,0 +1,184 @@
+[
+  {
+    "figure": "01_training",
+    "width": 4470,
+    "height": 3274,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "02_seed_stability",
+    "width": 4170,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "03_references",
+    "width": 4168,
+    "height": 1816,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "04_scatter_candidates",
+    "width": 3331,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "05_scatter_references",
+    "width": 4540,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "06_residuals",
+    "width": 4188,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "07_bands_tail",
+    "width": 4154,
+    "height": 2691,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "08_train_validation",
+    "width": 3857,
+    "height": 1525,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "09_largest_errors",
+    "width": 3082,
+    "height": 3275,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "10_parity",
+    "width": 3569,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "11_memory",
+    "width": 4461,
+    "height": 1525,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "12_e1_latency",
+    "width": 4460,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "13_e2_latency_effects",
+    "width": 3870,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "14_http_original",
+    "width": 3869,
+    "height": 1526,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "15_sizes",
+    "width": 3571,
+    "height": 1525,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "16_architecture",
+    "width": 4770,
+    "height": 1525,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s137_high",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s137_low",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s137_medium",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s2026_high",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s2026_low",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s2026_medium",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s42_high",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s42_low",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "17_xai_s42_medium",
+    "width": 3569,
+    "height": 2983,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  },
+  {
+    "figure": "18_occlusion_controls",
+    "width": 4466,
+    "height": 2399,
+    "dpi": 299.9994,
+    "visual_review": "Reviewed contact sheet: title, axes, legends, extents, original XAI orientation/scale"
+  }
+]

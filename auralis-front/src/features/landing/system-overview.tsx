@@ -1,9 +1,11 @@
+import { useModelStats } from '@/lib/model-labels';
 export function SystemOverview() {
+  const stats = useModelStats();
   const specs = [
     {
       label: 'Model Architecture',
-      value: 'Coronium V3.1',
-      detail: 'Custom 4-stage residual CNN, ~207K params, dual-channel B+/B− · ONNX 86.6 KB'
+      value: stats?.model_name ?? '—',
+      detail: 'Custom 4-stage residual CNN, ~207K params, dual-channel B+/B− · ONNX 815.7 KiB'
     },
     {
       label: 'Data Source',

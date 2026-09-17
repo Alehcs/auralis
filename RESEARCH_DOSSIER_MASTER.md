@@ -1,5 +1,13 @@
 # RESEARCH DOSSIER — HISTORICAL V3 ARCHIVE
 
+> **Active local release: Coronium V3.2 C1 seed42/epoch27.** Explicitly authorized
+> after preparation and functional QA. Temporary Sites were subsequently refreshed; no definitive publication is claimed. Its own deterministic
+> metrics, activation checks and V3.1 recovery are recorded in
+> [Phase H activation](auralis-back/experiments/v32h_release_v1/activation/REPORT.md).
+> See the immutable [scientific package](auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md)
+> for candidate comparisons. This historical dossier, its DOI and original experiments
+> are not renamed as V3.2 evidence. PC and phone/AR acceptance was confirmed by the user; scientific limitations remain. See [final closure](auralis-back/experiments/v32h_release_v1/closure/REPORT.md).
+
 > **Phase 1.7 audit:** This dossier is retained as a historical record, not a valid V3.1 thesis source. Its log-SI, independent hold-out, 86.6 KB full-model and accuracy/generalization claims are superseded. Use [the V3.1 audit](docs/phase17.md) and [versioned figures](auralis-back/reports/phase17_coronium_v3_1/analysis_v2/report.md). The historical graph size excludes external weights; historical timings are not current measurements.
 
 > **Phase 1 scientific correction:** [Audited contract and reproducibility report](docs/phase1.md) supersedes historical input/target and validation claims below. The local checkpoint uses clip400 polarity inputs and raw SI pixel percentages, without log or Z-score. The old split shares 145 observations; its metrics do not establish independent generalization. Original artifacts remain preserved.

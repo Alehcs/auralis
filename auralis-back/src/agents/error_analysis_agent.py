@@ -1,6 +1,6 @@
 """Error Analysis Agent.
 
-Read-only audit of the promoted hold-out predictions: per-bin MAE/RMSE, signed
+Read-only audit of the promoted selection-validation predictions: per-bin MAE/RMSE, signed
 residual means, the top high-error samples (with filename + date), and a focused
 look at tail/extreme high-SI events.
 
@@ -25,7 +25,7 @@ from .schemas import (
 
 AGENT_NAME = "Error Analysis Agent"
 
-# A spread below this (in log-SI MAE units) is treated as "nearly flat" across
+# A spread below this (in SI percentage points) is treated as "nearly flat" across
 # bins. The verified spread is ~0.005, well under this threshold.
 FLAT_SPREAD_THRESHOLD = 0.02
 
@@ -85,7 +85,7 @@ def run_error_analysis_agent(dataset: AgentDataset) -> ErrorAnalysisReport:
             label="MAE by activity bin",
             detail=(
                 f"low={mae_by_bin['low']}, medium={mae_by_bin['medium']}, "
-                f"high={mae_by_bin['high']} (log-SI). Spread = {mae_spread}."
+                f"high={mae_by_bin['high']} (SI percentage points). Spread = {mae_spread}."
             ),
             severity="info",
             evidence={f"mae_{b}": mae_by_bin[b] for b in ACTIVITY_BINS},
@@ -130,7 +130,7 @@ def run_error_analysis_agent(dataset: AgentDataset) -> ErrorAnalysisReport:
                 key="tail_extreme_error",
                 label="Tail / extreme high-SI events",
                 detail=(
-                    f"{len(tail_rows)} hold-out samples have SI > 2.0 with MAE="
+                    f"{len(tail_rows)} selection-validation samples have SI > 2.0 with MAE="
                     f"{tail_mae} vs overall MAE={overall_mae}. "
                     + (
                         "Extreme events carry above-average error and dominate the "
@@ -188,14 +188,14 @@ def run_error_analysis_agent(dataset: AgentDataset) -> ErrorAnalysisReport:
         AgentLimitation(
             key="single_split",
             detail=(
-                "Computed on the single promoted seed-42 hold-out split (N="
+                "Computed on the single saved seed-42 selection-validation split (N="
                 f"{len(rows)}); not cross-validated. Bin-level numbers can shift "
                 "under a different split."
             ),
         ),
         AgentLimitation(
             key="log_si_space",
-            detail="Errors are in log-SI space, matching the model's target scaler.",
+            detail="Errors are in raw SI percentage points, no target scaler applied.",
         ),
         AgentLimitation(
             key="audit_only",
@@ -207,11 +207,11 @@ def run_error_analysis_agent(dataset: AgentDataset) -> ErrorAnalysisReport:
     ]
 
     summary = (
-        f"Hold-out N={len(rows)}: MAE is "
+        f"Selection validation N={len(rows)}: MAE is "
         + ("nearly flat across bins" if error_is_flat else "uneven across bins")
         + f" (spread={mae_spread}). "
         + (
-            f"Main weakness is the high-SI tail (SI>2.0, N={len(tail_rows)}, "
+            f"Tail subset (SI>2.0, N={len(tail_rows)}, "
             f"MAE={tail_mae})."
             if tail_rows
             else "No extreme-tail samples present in this split."

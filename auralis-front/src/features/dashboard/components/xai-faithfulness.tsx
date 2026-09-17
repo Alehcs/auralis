@@ -1,3 +1,4 @@
+import { useModelStats } from '@/lib/model-labels';
 import { IS_FROZEN_DEMO } from '@/lib/frozen-demo';
 import { useState, useEffect } from 'react';
 import {
@@ -11,7 +12,7 @@ import {
   ReferenceLine,
 } from 'recharts';
 import { Eye, Loader2 } from 'lucide-react';
-import { getXAIFaithfulness } from '@/lib/api';
+import { getXAIFaithfulness, getStats } from '@/lib/api';
 import type { XAIFaithfulnessResult, XAIPoint } from '@/lib/types';
 import { useLanguage } from '@/lib/i18n/language-context';
 
@@ -75,6 +76,7 @@ function AUCBadge({ score, labels }: {
 export function XAIFaithfulness() {
   const { t } = useLanguage();
   const e = t.experiments;
+  const stats = useModelStats();
 
   const [data,    setData]    = useState<XAIFaithfulnessResult | null>(null);
   const [loading, setLoading] = useState(true);
@@ -82,7 +84,10 @@ export function XAIFaithfulness() {
 
   useEffect(() => {
     if (IS_FROZEN_DEMO) { setLoading(false); return; }
-    getXAIFaithfulness()
+    getStats().then(stats => {
+      if (stats.model_version.startsWith("3.2")) throw new Error("No compatible service faithfulness curve saved for this release. D/F XAI remains separate; border/background concerns unresolved. Grad-CAM tools remain available.");
+      return getXAIFaithfulness();
+    })
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -145,7 +150,7 @@ export function XAIFaithfulness() {
             <div className="flex items-start gap-4">
               <AUCBadge score={data.auc_score} labels={aucLabels} />
               <p className="text-[12px] text-neutral-400 leading-relaxed border-l-2 border-violet-500/40 pl-4 py-1">
-                Coronium V3.1 · deterministic PyTorch eval. The score is the mean normalized
+                {stats?.model_name ?? '—'} · deterministic PyTorch eval. The score is the mean normalized
                 random-minus-guided output gap over the deletion curve. Its sign describes this
                 image only; no significance test, calibrated fidelity threshold or causal physics
                 claim is available. Zero masking can create inputs outside the training distribution.{' '}

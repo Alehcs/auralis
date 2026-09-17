@@ -178,7 +178,7 @@ function createARPanel(){
     const details=document.createElement('details');details.className='ar-more';
     const summary=document.createElement('summary');summary.textContent='Datos y contexto';details.append(summary);
     const readout=panel.querySelector('.ar-readout')!;details.append(readout);
-    const meaning=document.createElement('p');meaning.textContent='HMI: datos del disco completo. SI: porcentaje con |B_LOS| > 200 G. Coronium V3.1: estimación ONNX precalculada, no inferencia en vivo ni pronóstico. Sol: recreación ilustrativa; dorso sin HMI.';details.append(meaning);
+    const meaning=document.createElement('p');meaning.textContent='HMI: datos del disco completo. SI: porcentaje con |B_LOS| > 200 G. '+data.model.name+': estimación ONNX precalculada, no inferencia en vivo ni pronóstico. Sol: recreación ilustrativa; dorso sin HMI.';details.append(meaning);
     const layers=document.createElement('details');layers.className='ar-layers';
     const layerSummary=document.createElement('summary');layerSummary.textContent='Capas y vista';layers.append(layerSummary);
     for(const row of Array.from(panel.querySelectorAll(':scope > .ar-buttons')))layers.append(row);
@@ -255,7 +255,7 @@ async function mount(){
       const baseData=data;
       temporal=new TemporalSequence({
         commit:bundle=>{
-          data={...baseData,state:bundle.entry.state,layers:bundle.entry.layers};
+          data={...baseData,model:temporal!.manifest.model,state:bundle.entry.state,layers:bundle.entry.layers};
           verifiedUrls.clear();for(const [k,u]of bundle.urls)verifiedUrls.set(k,u);
           if(context)for(const [key,texture]of bundle.textures){
             const mesh=context.scene.getObjectByName(key==='solar'?'IllustrativeSphere':'Layer_'+key) as Mesh;

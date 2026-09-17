@@ -1,0 +1,80 @@
+{
+  "schema_version": "auralis.coronium-predictions.v1",
+  "model": {
+    "id": "coronium-3.2",
+    "name": "Coronium V3.2",
+    "version": "3.2",
+    "seed": 42,
+    "epoch": 27,
+    "manifest_ref": "models/coronium_v3_2_manifest.json",
+    "checkpoint_ref": "models/best_coronium_v3_2.pth",
+    "onnx_ref": "models/best_coronium_v3_2.onnx"
+  },
+  "runtime": {
+    "name": "kleidiai_off",
+    "session_config": {
+      "mlas.disable_kleidiai": "1"
+    },
+    "intra_op_threads": 4,
+    "inter_op_threads": 1,
+    "provider": "CPUExecutionProvider",
+    "execution_mode": "ORT_SEQUENTIAL",
+    "optimization": "ORT_ENABLE_ALL",
+    "ort_version": "1.25.1",
+    "native_binary_sha256": "f9da2c8572f02d65ae9f871034e15d1cc8c6ee2c55bae52c01f7e9c112616bea",
+    "validated_environment": "Apple M5 24GiB macOS26.6.2 arm64; Python3.12.7; torch2.11.0; numpy1.26.4"
+  },
+  "source_contract_sha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+  "checkpoint_sha256": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+  "onnx_sha256": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a",
+  "protocol": "deterministic_onnx_cpu_eval_batch1_threads4_kleidiai_off_no_noise_no_mc",
+  "entries": [
+    {
+      "state_id": "hmi-2022-03-24",
+      "filename": "hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "input_sha256": "68dc2c3623c8a8be43afbb383846d8e91f8053876c11f4c5a8c89d222e6743b4",
+      "prepared_sha256": "c3ef0b71289db95d9c9a62c63253d867f3fa97454ba550d2c7a8701123b2add3",
+      "prior_v31_prediction": 1.4705196619033813,
+      "prediction_si": 1.6771135330200195,
+      "api_display_4dp": 1.6771
+    },
+    {
+      "state_id": "hmi-2022-03-25",
+      "filename": "hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+      "input_sha256": "0649eb73df8aca13f850e5cc3c1fe0cfa3db1eab712f491ca10cfe5946d05e72",
+      "prepared_sha256": "c9bb073c70fe6644f96ccd35c709b54be8e6c99309e771fd4b98f88b1f2b407e",
+      "prior_v31_prediction": 1.4772802591323853,
+      "prediction_si": 1.6957380771636963,
+      "api_display_4dp": 1.6957
+    },
+    {
+      "state_id": "hmi-2022-03-28",
+      "filename": "hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+      "input_sha256": "298dded8370696077ce460c2f432cc21d0470b66e572c706d37ef2ba4f353e9f",
+      "prepared_sha256": "700ccb9f1046d1a600cd84a7c43c1259214d36b75ab21fb1ddd9fcb4a4cbbb4d",
+      "prior_v31_prediction": 1.6562585830688477,
+      "prediction_si": 1.950901746749878,
+      "api_display_4dp": 1.9509
+    },
+    {
+      "state_id": "hmi-2022-03-29",
+      "filename": "hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "input_sha256": "cb5a199a4483ea0bb9b4f62053c99f2c7ea035d35b5ecc1ac767987d953503c5",
+      "prepared_sha256": "71dc4189b55e0bba510271e23a14f3a760f6139c0062d4192288baa996d36569",
+      "prior_v31_prediction": 1.6834452152252197,
+      "prediction_si": 2.049825668334961,
+      "api_display_4dp": 2.0498
+    },
+    {
+      "state_id": "hmi-2022-03-30",
+      "filename": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+      "input_sha256": "f64b967b6f71e816e31dbf38bd576baddbb2e34c4db0b29eec24c254c7567366",
+      "prepared_sha256": "c5c3b261df557d29bc668cfdeb21a0f80cd04d49879aa8c27f99d39b09312ae1",
+      "prior_v31_prediction": 1.7126761674880981,
+      "prediction_si": 2.0041637420654297,
+      "api_display_4dp": 2.0042
+    }
+  ],
+  "independent_test": false,
+  "status": "prepared; not promoted"
+}

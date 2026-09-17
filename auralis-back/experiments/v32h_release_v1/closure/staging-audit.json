@@ -1,0 +1,12 @@
+{
+  "credential_pattern_hits": [],
+  "personal_path_files_excluded": [
+    "auralis-back/experiments/v32b_reference_v1/PROTOCOL.md",
+    "auralis-back/experiments/v32g_service_integration_v1/catalog.json",
+    "auralis-back/experiments/v32h_release_v1/closure/build.txt"
+  ],
+  "scope": "reviewed V3.2 integration, release, documentation and curated scientific evidence",
+  "no_git_add_dot": true,
+  "raw_archives_remain_local": true,
+  "build_log_sha256": "e62abb0f131e883248e589f2dff748946e99da8a58150d084f4ccad1e9d128e3"
+}

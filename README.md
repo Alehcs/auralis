@@ -24,6 +24,37 @@ dataset.
 
 ## Current Model
 
+**Local default: Coronium V3.2, C1 seed42, epoch27.** The checkpoint was selected
+after experiments B–G and locally promoted after explicit user authorization and
+functional QA. Ordinary startup needs no model-selection environment variables.
+The [two Sites demos](docs/two-sites-demo.md) now expose saved V3.2 results and the updated solar QR; they do not run the Python model online.
+[Activation checks and recovery](auralis-back/experiments/v32h_release_v1/activation/REPORT.md)
+retain the preparation evidence. Phase H itself did not publish; the subsequent authorized Sites refresh is documented above. `AURALIS_RELEASE=3.1` selects the preserved original runtime for rollback.
+
+The architecture and clip400/B+/B− input/target remain unchanged: 206,875 parameters,
+backbone dropout0/head0.3, deterministic CPU ONNX, four intra-op/one inter-op thread,
+validated `mlas.disable_kleidiai=1`. The twenty input-noise passes remain a separate,
+uncalibrated diagnostic. The runtime checks the validated ORT native binary.
+
+| Active release item | Value |
+| --- | --- |
+| Checkpoint | `auralis-back/models/best_coronium_v3_2.pth` (846,093 bytes) |
+| ONNX | `auralis-back/models/best_coronium_v3_2.onnx` (835,234 bytes, self-contained) |
+| Manifest / metrics | `auralis-back/models/coronium_v3_2_manifest.json` / `coronium_v3_2_metrics.json` |
+| MAE / RMSE (SI percentage points) | 0.04833447616 / 0.05905530431 |
+| R² / MAPE | 0.97143003697 / 2.90888696568% |
+| Bias / p95 absolute error (SI percentage points) | 0.01323738479 / 0.10974993706 |
+
+These are this checkpoint's deterministic mitigated results on263 selection-validation
+observations, not a seed average, ensemble or independent test. Low-band R² is negative
+(−0.6164), tolerated low-activity deterioration remains, and border/background XAI doubts
+are unresolved. MC performance for V3.2 is not evaluated. `/api/stats` and the default
+scatter identify the deterministic release protocol; explicit unavailable MC returns503.
+The [scientific figure index](auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md)
+retains all three candidates unchanged. PC and phone/AR tests were approved by user confirmation; details not supplied are recorded as not registered. See [final closure and local release notes](auralis-back/experiments/v32h_release_v1/closure/REPORT.md).
+
+### Preserved V3.1 release and recovery reference
+
 Coronium V3.1 uses the unchanged four-stage `CoroniumV3` residual CNN with
 Efficient Channel Attention (206,875 parameters) and the clean Phase 1.5 weights.
 Input is float32 `(2, 512, 512)`: `[max(x,0), max(-x,0)]`, where
@@ -54,7 +85,7 @@ Official MC metrics come unchanged from Phase 1.5 (seed 42, batch 32, MPS).
 Serving metrics use one unperturbed eval-mode pass, before API rounding to four
 decimals. Their lower performance is recorded explicitly; ONNX matches PyTorch
 eval mode within `atol=rtol=1e-5` on all 263 observations.
-`/api/stats` identifies both protocols separately; the scatter uses V3.1 MC data.
+When explicitly running V3.1, `/api/stats` identifies both V3.1 protocols separately; its default scatter uses V3.1 MC data. These historical metrics are not relabeled as V3.2.
 
 ### Historical V3 Benchmark Comparison
 
@@ -132,7 +163,7 @@ new data should use the dual-channel representation.
 NASA JSOC / SDO-HMI
   -> ingestion scripts
   -> preprocessing to dual-channel .npy tensors
-  -> Coronium V3.1 checkpoint and ONNX export
+  -> Coronium V3.2 verified checkpoint and ONNX (V3.1 retained for rollback)
   -> FastAPI service
   -> React dashboard
 ```

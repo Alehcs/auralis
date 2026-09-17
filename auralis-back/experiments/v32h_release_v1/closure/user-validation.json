@@ -1,0 +1,25 @@
+{
+  "recorded_date": "2026-09-17",
+  "source": "Explicit user confirmation in final Coronium V3.2 closure request",
+  "pc": "approved_by_user",
+  "phone_ar": "approved_by_user",
+  "functions": [
+    "active version",
+    "predictions",
+    "metrics",
+    "Agent Lab",
+    "Grad-CAM",
+    "five states",
+    "layers",
+    "timeline",
+    "AR"
+  ],
+  "visual_regressions": "none reported by user",
+  "browser_versions": "not recorded",
+  "device_details": "not recorded",
+  "execution_dates": "not recorded",
+  "recordings": "not recorded",
+  "fps_or_performance_measurements": "not recorded",
+  "surface_per_function": "not recorded; do not infer local versus temporary Site for each function",
+  "agent_physical_validation": false
+}

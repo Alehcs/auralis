@@ -59,3 +59,7 @@ Thumbs.db
 # --- NOTEBOOKS ---
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+
+# Coronium V3.2 promoted release; preserve V3/V3.1 recovery artifacts.
+!models/best_coronium_v3_2.pth
+!models/best_coronium_v3_2.onnx

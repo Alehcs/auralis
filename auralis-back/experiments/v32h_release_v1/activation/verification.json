@@ -1,0 +1,25 @@
+{
+  "active_default": "Coronium V3.2 C1_s42 epoch27",
+  "promotion_authorized": true,
+  "locally_promoted": true,
+  "normal_startup_without_selection_variables": true,
+  "explicit_v31_recovery_verified": true,
+  "temporary_servers_closed": true,
+  "prior_sources_unchanged": 298,
+  "prepared_entries_checked": 158,
+  "changed_since_preparation": [
+    "auralis-back/src/models/active_model.py",
+    "README.md",
+    "RESEARCH_DOSSIER_MASTER.md",
+    "AGENTS.md",
+    "auralis-back/models/coronium_v3_2_manifest.json",
+    "auralis-back/experiments/v32h_release_v1/REPORT.md",
+    "auralis-back/experiments/v32h_release_v1/RUNBOOK.md"
+  ],
+  "weights_graph_metrics_and_temporal_overlay_unchanged": true,
+  "new_tests_passed": 13,
+  "earlier_qa_reused": true,
+  "physical_pc_phone_ar_validation": "pending",
+  "pre_existing_typescript_errors": 15,
+  "no_publication": true
+}

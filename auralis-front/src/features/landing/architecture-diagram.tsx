@@ -1,6 +1,8 @@
+import { useModelStats, metricProtocol } from '@/lib/model-labels';
 import { Database, Cpu, Brain, LineChart, ArrowRight } from 'lucide-react';
 
 export function ArchitectureDiagram() {
+  const stats = useModelStats();
   const stages = [
     {
       icon: Database,
@@ -59,7 +61,7 @@ export function ArchitectureDiagram() {
         <div className="mt-12 bg-neutral-950 border border-neutral-800 p-6">
           <div className="grid grid-cols-3 gap-6 text-xs font-mono">
             <div className="flex justify-between">
-              <span className="text-neutral-500">V3.1 ONNX:</span>
+              <span className="text-neutral-500">{stats?.model_name ?? '—'} ONNX:</span>
               <span className="text-white">Deterministic · CPU</span>
             </div>
             <div className="flex justify-between">
@@ -67,8 +69,8 @@ export function ArchitectureDiagram() {
               <span className="text-white">815.7 KiB · self-contained</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-500">V3.1 MC MAE (selection validation; SI pp):</span>
-              <span className="text-white">0.10156</span>
+              <span className="text-neutral-500">{metricProtocol(stats)} MAE (selection validation; SI pp):</span>
+              <span className="text-white">{stats?.mae.toFixed(5) ?? '—'}</span>
             </div>
           </div>
         </div>

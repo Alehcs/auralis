@@ -244,7 +244,7 @@ export function MagnetogramPanel() {
           <Zap className="w-3 h-3" />
           {IS_FROZEN_DEMO ? 'MARZO 2022' : 'DEMO KIT'}
         </div>
-        {IS_FROZEN_DEMO && savedGradcamImages.map(filename => (
+        {IS_FROZEN_DEMO && images.filter(image => /^hmi\.m_45s\.2022\.03\.(24|25|28|29|30)_/.test(image.filename)).map(({filename}) => (
           <button key={filename} aria-pressed={selected === filename} onClick={() => setSelected(filename)}
             className={`min-h-11 rounded-lg border px-3 text-sm ${selected === filename ? 'border-orange-500 text-orange-300' : 'border-neutral-700 text-neutral-300'}`}>
             {images.find(image => image.filename === filename)?.date?.slice(8, 10)} mar
@@ -414,7 +414,7 @@ export function MagnetogramPanel() {
               <Cpu className="w-3.5 h-3.5" />
               <span>{m.model}</span>
             </div>
-            <span className="text-neutral-300 font-mono">Coronium V3.1 · v3.1</span>
+            <span className="text-neutral-300 font-mono">{prediction?.model_name ?? '—'} · {prediction?.model_version ?? '—'}</span>
           </div>
 
           {/* Grad-CAM toggle */}
@@ -739,7 +739,7 @@ export function MagnetogramPanel() {
 
                     <div className="flex items-center gap-1.5 text-[11px] text-neutral-500 py-2 border-t border-neutral-800">
                       <Cpu className="w-3.5 h-3.5" />
-                      <span>Coronium V3.1 · ONNX Runtime · 815.7 KiB</span>
+                      <span>{prediction?.model_name ?? '—'} · ONNX Runtime · 815.7 KiB</span>
                     </div>
                   </>
                 ) : null}

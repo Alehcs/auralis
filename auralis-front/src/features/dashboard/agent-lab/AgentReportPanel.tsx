@@ -30,11 +30,11 @@ export function AgentReportPanel({ report }: { report: FullAgentReport }) {
   // Headline derived from real audit findings (minority bin + tail count) so it
   // can never drift from the underlying data.
   const headline =
-    `Agent Lab identifies two audit priorities: ${dq.minority_bin}-activity ` +
-    `underrepresentation and high-SI tail errors (SI > 2.0, ` +
-    `${err.tail_extreme_count} hold-out samples). The Active Learning Agent ` +
+    `Agent Lab reports: ${dq.minority_bin}-activity ` +
+    `coverage and high-SI tail errors (SI > 2.0, ` +
+    `${err.tail_extreme_count} selection-validation samples). The Active Learning Agent ` +
     `prioritizes ${dq.minority_bin}-activity data collection, keeping high-error ` +
-    `tail samples as a review target.`;
+    `samples as a review target.`;
 
   // Coordinator focuses on the visible decision agents; XAI follow-up steps are
   // not surfaced here (XAI is not part of the visible agent flow).

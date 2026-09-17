@@ -1,0 +1,29 @@
+auralis-front/src/app/components/ui/chart.tsx(109,3): error TS2339: Property 'payload' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 24 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+auralis-front/src/app/components/ui/chart.tsx(114,3): error TS2339: Property 'label' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 24 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+auralis-front/src/app/components/ui/chart.tsx(182,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
+auralis-front/src/app/components/ui/chart.tsx(182,29): error TS7006: Parameter 'index' implicitly has an 'any' type.
+auralis-front/src/app/components/ui/chart.tsx(260,39): error TS2344: Type '"payload" | "verticalAlign"' does not satisfy the constraint '"string" | "children" | "filter" | "fill" | "values" | "method" | "className" | "name" | "type" | "suppressHydrationWarning" | "id" | "lang" | "nonce" | "slot" | "style" | "tabIndex" | ... 433 more ... | "portal"'.
+  Type '"payload"' is not assignable to type '"string" | "children" | "filter" | "fill" | "values" | "method" | "className" | "name" | "type" | "suppressHydrationWarning" | "id" | "lang" | "nonce" | "slot" | "style" | "tabIndex" | ... 433 more ... | "portal"'.
+auralis-front/src/app/components/ui/chart.tsx(266,17): error TS2339: Property 'length' does not exist on type '{}'.
+auralis-front/src/app/components/ui/chart.tsx(278,16): error TS2339: Property 'map' does not exist on type '{}'.
+auralis-front/src/app/components/ui/chart.tsx(278,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+auralis-front/src/features/dashboard/components/xai-faithfulness.tsx(14,10): error TS6133: 'Eye' is declared but its value is never read.
+auralis-front/src/features/dashboard/components/xai-faithfulness.tsx(200,24): error TS2322: Type '{ pixelsLabel: "Pixels removed (%)"; separator?: string | undefined; wrapperClassName?: string | undefined; labelClassName?: string | undefined; formatter?: (Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: Payload<...>, index: number, payload: Payload<...>[]) => ReactNode | [...])) | undef...' is not assignable to type 'TProps'.
+  Types of property 'payload' are incompatible.
+    The type 'readonly any[]' is 'readonly' and cannot be assigned to the mutable type 'TItem[]'.
+auralis-front/src/features/dashboard/magnetogram-panel.tsx(515,21): error TS2322: Type '(value: number, name: string) => [string, "positive B+" | "negative B−"]' is not assignable to type 'Formatter<number, string> & ((value: number, name: string, item: Payload<number, string>, index: number, payload: Payload<number, string>[]) => ReactNode | [...])'.
+  Type '(value: number, name: string) => [string, "positive B+" | "negative B−"]' is not assignable to type 'Formatter<number, string>'.
+    Types of parameters 'value' and 'value' are incompatible.
+      Type 'number | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+auralis-front/src/features/dashboard/prediction-chart.tsx(194,19): error TS2322: Type '(value: number) => [string, "Images"]' is not assignable to type 'Formatter<number, "Images"> & ((value: number, name: "Images", item: Payload<number, "Images">, index: number, payload: Payload<number, "Images">[]) => ReactNode | [...])'.
+  Type '(value: number) => [string, "Images"]' is not assignable to type 'Formatter<number, "Images">'.
+    Types of parameters 'value' and 'value' are incompatible.
+      Type 'number | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+auralis-front/src/features/dashboard/prediction-chart.tsx(196,18): error TS2578: Unused '@ts-expect-error' directive.
+auralis-front/src/lib/frozen-demo.ts(17,15): error TS2550: Property 'hasOwn' does not exist on type 'ObjectConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+auralis-front/src/lib/i18n/language-context.tsx(40,9): error TS2322: Type '{ readonly nav: { readonly workspace: "WORKSPACE"; readonly dashboard: "Dashboard"; readonly monitoring: "Monitoring"; readonly pipeline: "Data Pipeline"; readonly experiments: "Experiments"; ... 5 more ...; readonly lastTick: "Last tick"; }; ... 7 more ...; readonly settings: { ...; }; } | { ...; }' is not assignable to type '{ readonly nav: { readonly workspace: "WORKSPACE"; readonly dashboard: "Dashboard"; readonly monitoring: "Monitoring"; readonly pipeline: "Data Pipeline"; readonly experiments: "Experiments"; ... 5 more ...; readonly lastTick: "Last tick"; }; ... 7 more ...; readonly settings: { ...; }; }'.
+  Type '{ readonly nav: { readonly workspace: "ESPACIO DE TRABAJO"; readonly dashboard: "Panel"; readonly monitoring: "Monitoreo"; readonly pipeline: "Pipeline de Datos"; readonly experiments: "Experimentos"; ... 5 more ...; readonly lastTick: "Último tick"; }; ... 7 more ...; readonly settings: { ...; }; }' is not assignable to type '{ readonly nav: { readonly workspace: "WORKSPACE"; readonly dashboard: "Dashboard"; readonly monitoring: "Monitoring"; readonly pipeline: "Data Pipeline"; readonly experiments: "Experiments"; ... 5 more ...; readonly lastTick: "Last tick"; }; ... 7 more ...; readonly settings: { ...; }; }'.
+    The types of 'nav.workspace' are incompatible between these types.
+      Type '"ESPACIO DE TRABAJO"' is not assignable to type '"WORKSPACE"'.

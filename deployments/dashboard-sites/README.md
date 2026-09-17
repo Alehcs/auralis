@@ -1,32 +1,23 @@
-# Auralis dashboard — generated static demo
+# Auralis dashboard — generated static V3.2 demo
 
-This checkout is the delivery repository for the dashboard Site. The editable
-application remains in `../../auralis-front`; do not maintain an independent
-source copy here or manually edit `dist`.
+The editable application remains in ../../auralis-front. This delivery repository
+contains the exact Sites-mode build; no Python backend, weights or raw NPY inputs.
 
-Preparation from the Auralis project root:
+Refresh intentionally from the Auralis root with scripts/export-sites-v32.py
+(read-only metadata plus verified saved predictions; zero new inference),
+then build the frontend in --mode sites and run scripts/prepare-dashboard-site.mjs.
+Legacy scripts/export-sites-demo.py and prepare-monitoring-five.py preserve the
+historical V3.1 workflow and must not be used for this V3.2 release.
 
-```sh
-# Only when intentionally refreshing saved read-only views; no inference calls:
-python3 scripts/export-sites-demo.py
-python3 scripts/prepare-monitoring-five.py
-npm --prefix auralis-front run build -- --mode sites
-node scripts/prepare-dashboard-site.mjs
-```
+Sixteen existing cases and images are preserved, with s42/epoch27 deterministic
+predictions from E.1/H and the release's own263 selection-validation results.
+Missing confidence/noise is null, not zero. Historical V3.1 Grad-CAM PNGs and
+provenance remain preserved but are not shown as V3.2 explanations. Five March2022
+quick-access buttons remain available independently of Grad-CAM availability.
 
-`dist` is a complete static deliverable. `/dashboard/index.html` supports direct
-entry independently of an SPA fallback. It has no deployed Python backend.
-Simulation embeds the separate, canonical solar Site. Its QR and mobile link
-open that solar Site with the selected HMI state.
+Simulation embeds the existing solar Site with explicit release3.2, retaining
+the selected state in its HTTPS QR. The public solar default is also3.2 so old
+QR links receive the update. Explicit release3.1 remains available for history.
 
-The public demo includes frozen metrics, an original 1,314-entry catalog and
-11 saved HTTP SI results plus the five historical HMI states and their archived
-Grad-CAM figures. It contains no model
-weights or original `.npy` dataset. Uploads and new inference/XAI requests in Sites are disabled. The five Grad-CAM
-figures are generated once locally with the existing backend and then reused. Missing confidence/noise diagnostics remain absent; no values are
-invented. `demo/manifest.json` records provenance and hashes.
-
-Only this delivery repository and the existing solar Site repository are used
-for Sites publishing. Never commit or push the parent Auralis repository as part
-of that operation. Current publication status is recorded in
-`../../docs/two-sites-demo.md`.
+Only the two Sites delivery repositories are committed/pushed for publication;
+no parent Auralis commit. See ../../evidence/sites-v32 and ../../docs/two-sites-demo.md.

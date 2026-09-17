@@ -1,0 +1,95 @@
+{
+  "model_name": "Coronium V3.2",
+  "model_version": "3.2",
+  "status": "locally_promoted; explicit user authorization; physical validation pending",
+  "created_utc": "2026-09-17T15:33:35.411543+00:00",
+  "seed": 42,
+  "best_epoch": 27,
+  "parameters": 206875,
+  "architecture": "CoroniumV3 residual CNN with ECA",
+  "dropout_backbone": 0.0,
+  "dropout_head": 0.3,
+  "batchnorm": "frozen in eval",
+  "input_shape": [
+    "N",
+    2,
+    512,
+    512
+  ],
+  "dtype": "float32",
+  "input_contract": "hmi-clip400-polarity-v1",
+  "target_contract": "strong-field-pixel-percent-200G-v1",
+  "onnx_export": {
+    "opset": 18,
+    "mode": "eval",
+    "dynamic_batch": true,
+    "external_data": false
+  },
+  "runtime": {
+    "name": "kleidiai_off",
+    "session_config": {
+      "mlas.disable_kleidiai": "1"
+    },
+    "intra_op_threads": 4,
+    "inter_op_threads": 1,
+    "provider": "CPUExecutionProvider",
+    "execution_mode": "ORT_SEQUENTIAL",
+    "optimization": "ORT_ENABLE_ALL",
+    "ort_version": "1.25.1",
+    "native_binary_sha256": "f9da2c8572f02d65ae9f871034e15d1cc8c6ee2c55bae52c01f7e9c112616bea",
+    "validated_environment": "Apple M5 24GiB macOS26.6.2 arm64; Python3.12.7; torch2.11.0; numpy1.26.4"
+  },
+  "selection": {
+    "utc": "2026-09-17T15:33:35.152234+00:00",
+    "checkpoint_confirmed": true,
+    "candidate": "C1_s42",
+    "seed": 42,
+    "epoch": 27,
+    "user_answer": "Confirmar C1_s42 (época 27)",
+    "selection_timing": "after experiments B–G",
+    "rationale": "Continuity with initial C pilot among all three candidates passing mitigated formal guards; not an automatic minimum-MAE or favorable-round rule.",
+    "promotion_authorized": false
+  },
+  "evaluation_protocol": "deterministic ONNX CPU FP32 batch1; intra4/inter1; mlas.disable_kleidiai=1; seed42 epoch27; selection validation, not independent or temporal test",
+  "artifacts_sha256": {
+    "models/best_coronium_v3_2.pth": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+    "models/best_coronium_v3_2.onnx": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a",
+    "models/coronium_v3_2_validation.csv": "c7df7ad99cee68acb0b9519f850bb944cf2843e6774c8215accc305654da486c",
+    "models/coronium_v3_2_metrics.json": "75ec7a33cba525979e15811245e3294c81928d8cc212099cbf07a5aec60572e1"
+  },
+  "split_sha256": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+  "metadata_sha256": "baedaf612234239f044b9240a1e6426e0ac3cc5064a995cda8050eb9db84e11f",
+  "sources_sha256": {
+    "experiments/v32e_onnx_cost_v1/artifacts/C1_s42/manifest.json": "2ae9a043de0520288ec7aad50e3d1efbcee5ce63e929549ee0b1eb1ed6c11e06",
+    "experiments/v32c_seed42_v1/C1/best.pth": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+    "experiments/v32e_onnx_cost_v1/artifacts/C1_s42/coronium_v3_2_candidate_c1_s42_fp32.onnx": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a",
+    "experiments/v32c_seed42_v1/C1/config.json": "4e8756de0c571db5c990d3ff351bb1abcc653dd2913a38ee4a7b86300dc356a7",
+    "experiments/v32c_seed42_v1/C1/completion.json": "5a694241f0425c7b376c765e9f60d06dc2dd511079b0df607f30245b30274ac4",
+    "experiments/v32c_seed42_v1/C1/artifact_manifest.json": "7c3e4c2de9e278e2b17280a805b1d4ceaf5e891126798d760b756b624faab0fa",
+    "experiments/v32d_stability_v1/evaluation/C1_s42/validation.csv": "3d7a648b6b27d7328c8fa920f8c1bcea20857b4e0cb7bbaf7b8c8833f39aba88",
+    "experiments/v32e_onnx_cost_v1/parity/C1_s42.json": "6e056ab6921b06980c08c54923c4110d67e5c9e8c10e0b9212fb8f89d154e1b7",
+    "experiments/v32e_onnx_cost_v1/parity/C1_s42.csv": "5b0954823d81ab3478ec521f616802329c3533140b5d96ec4b4eecb15f91bf68",
+    "experiments/v32e1_memory_diagnostic_v1/parity/C1_s42.json": "e652dc303357b3309819828d79470b1e3c7d743e06721ef10c37ce9627e9ff32",
+    "experiments/v32e1_memory_diagnostic_v1/parity/C1_s42.csv": "c7df7ad99cee68acb0b9519f850bb944cf2843e6774c8215accc305654da486c"
+  },
+  "sources_required_at_runtime": false,
+  "parity": {
+    "n": 263,
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "exceedances": 0,
+    "evidence": {
+      "path": "experiments/v32e1_memory_diagnostic_v1/parity/C1_s42.json",
+      "sha256": "e652dc303357b3309819828d79470b1e3c7d743e06721ef10c37ce9627e9ff32"
+    }
+  },
+  "promotion": {
+    "authorized": true,
+    "authorization_utc": "2026-09-17T16:12:04.528901+00:00",
+    "user_message": "No alcance a marcar la opcion. Marca 1. Autorizar promoción local de V3.2 s42.",
+    "scope": "local default only; no publication",
+    "previous_default": "3.1",
+    "runtime": "kleidiai_off",
+    "preparation_qa": "passed; pre-existing TypeScript debt and physical-validation limits retained"
+  }
+}

@@ -44,9 +44,9 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
     model_weakness = (
         ("Bin-level error is nearly flat" if err.error_is_flat
          else "Bin-level error is uneven")
-        + f" (MAE spread={err.mae_spread}). "
+        + f" (MAE spread={err.mae_spread}). Highest band MAE: {max(err.mae_by_bin, key=err.mae_by_bin.get)}. "
         + (
-            f"Primary weakness is the high-SI tail (SI>2.0, N={err.tail_extreme_count}, "
+            f"Tail subset (SI>2.0, N={err.tail_extreme_count}, "
             f"MAE={err.tail_extreme_mae})."
             if err.tail_extreme_count
             else "No extreme-tail samples in this split."
@@ -66,7 +66,7 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
 
     next_steps: List[str] = [
         f"{al.best_recommendation.action_id}: {al.best_recommendation.description}",
-        "Review the top-10 high-error tail samples listed by the Error Analysis Agent.",
+        "Review the top-10 high-error samples listed by the Error Analysis Agent, including the marked tail subset.",
         (f"Phase 2 XAI: cache a sampled faithfulness sweep "
          f"({xai.sweep_status} now) over tail-weighted magnetograms."),
     ]
@@ -116,7 +116,7 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
             key="audit_not_improvement",
             detail=(
                 "This is a read-only audit. No retraining occurs; nothing here "
-                "measures or proves an improvement to Coronium V3 PRO."
+                "measures or proves an improvement to the evaluated artifact."
             ),
         )
     )

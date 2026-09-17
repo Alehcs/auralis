@@ -205,13 +205,23 @@ def export_comparison_csv(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--release", choices=["3.1", "3.2"], help="Explicit verified release; a new MC evaluation, never serving metrics")
     parser.add_argument("--legacy-reproduction", action="store_true")
     parser.add_argument("--run-dir", type=Path, help="Completed versioned training run")
     parser.add_argument("--output-dir", type=Path, default=REPORT_CSV.parent)
     args = parser.parse_args()
-    if args.legacy_reproduction and args.run_dir:
+    if sum(bool(x) for x in (args.legacy_reproduction, args.run_dir, args.release)) > 1:
         parser.error("Choose a versioned run OR explicit legacy reproduction")
-    if args.legacy_reproduction:
+    dropout_rate = DROPOUT_RATE
+    if args.release:
+        from models import active_model
+        active_model.load_version(args.release)
+        paths = active_model.paths(args.release)
+        weights = paths['checkpoint']
+        split_path = ROOT / 'models/split_indices_phase1_v1.json'
+        dropout_rate = 0.0 if args.release == '3.2' else 0.2
+        status = 'release_MC_dropout_new_evaluation_selection_validation_not_serving_metrics'
+    elif args.legacy_reproduction:
         weights = WEIGHTS_PATH
         split_path = Path("models/split_indices.json")
         status = "historical_contaminated_validation_diagnostic_only"
@@ -242,10 +252,12 @@ def main() -> None:
     provenance = {"status": status, "weights_sha256": sha256(weights),
                   "split_sha256": sha256(split_path), "metadata_sha256": sha256(METADATA_CSV),
                   "input_contract": INPUT_CONTRACT, "target_contract": TARGET_CONTRACT,
-                  "seed": SEED, "mc_passes": 20, "batch_size": BATCH_SIZE}
+                  "seed": SEED, "mc_passes": 20, "batch_size": BATCH_SIZE,
+                  "release_version": args.release, "backbone_dropout": dropout_rate, "head_dropout": 0.3,
+                  "protocol": "MC Dropout; BatchNorm frozen; not ONNX or input-noise spread"}
     (args.output_dir / "manifest.json").write_text(json.dumps(provenance, indent=2))
     device = get_device()
-    model = CoroniumV3(in_channels=2, dropout_rate=DROPOUT_RATE)
+    model = CoroniumV3(in_channels=2, dropout_rate=dropout_rate)
     model.load_state_dict(torch.load(weights, map_location=device, weights_only=True))
     model.to(device)
     y_real, y_pred = run_inference(model, val_loader, device)
@@ -256,6 +268,8 @@ def main() -> None:
     model_label = ("Coronium V3 historical; contaminated validation" if args.legacy_reproduction
                    else "Coronium V3.1; selection validation" if active_weights.exists() and sha256(weights) == sha256(active_weights)
                    else "CoroniumV3 versioned run; selection validation")
+    if args.release:
+        model_label = f"Coronium V{args.release}; new MC evaluation; selection validation"
     print_thesis_report(metrics, n_samples=len(y_real), model_label=model_label)
     export_comparison_csv(y_real, y_pred, args.output_dir / "results_comparison.csv")
     indices = val_loader.dataset.indices

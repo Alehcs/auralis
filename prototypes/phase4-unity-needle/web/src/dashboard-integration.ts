@@ -20,7 +20,8 @@ function publish() {
   }
   if (ready && !data.transitioning && states.includes(data.stateId) && shared !== data.stateId) {
     shared = data.stateId;
-    const url = new URL(location.href); url.search = ''; url.hash = ''; url.searchParams.set('state', shared);
+    const url = new URL(location.href); const release=url.searchParams.get('release') || import.meta.env.VITE_DEFAULT_RELEASE || '3.1'; url.search = ''; url.hash = ''; url.searchParams.set('state', shared);
+    if(release)url.searchParams.set('release',release);
     // QR and the top-level AR launch always target this same local/deployed build.
     const share = document.getElementById('share-url') as HTMLAnchorElement;
     share.href = url.href; share.textContent = url.href;

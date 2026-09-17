@@ -85,7 +85,7 @@ export function AgentLabPage() {
         <h1 className="text-[20px] font-bold text-white tracking-tight">Auralis Agent Lab</h1>
         <p className="text-[12.5px] text-neutral-500 mt-1 max-w-3xl leading-snug">
           Read-only scientific audit agents for dataset quality, model error analysis, and
-          active-learning recommendations, combined by a coordinator agent.
+          active-learning recommendations, combined by a coordinator agent. {report?.model_name} · {report?.evaluation_protocol}
         </p>
         <div className="mt-2">
           <MutedNote text="Audit layer · read-only · no retraining · not measured model improvement." />
@@ -173,10 +173,10 @@ export function AgentLabPage() {
             {/* Error Analysis Agent */}
             <AgentCard
               title="Error Analysis Agent"
-              subtitle="Hold-out error audit by activity bin"
+              subtitle="Selection-validation error audit by activity bin"
               headerRight={<ConfidenceBadge confidence={report.error_analysis.confidence} />}
             >
-              <SectionLabel>MAE / RMSE by activity bin (log-SI)</SectionLabel>
+              <SectionLabel>MAE / RMSE by activity bin (SI percentage points)</SectionLabel>
               <AgentErrorByBinChart report={report.error_analysis} />
 
               {report.error_analysis.tail_extreme_count > 0 && (
@@ -184,16 +184,16 @@ export function AgentLabPage() {
                   <MutedNote
                     accent
                     text={
-                      `Bin MAE is nearly flat · main weakness is the SI > 2.0 tail ` +
+                      `Tail subset SI > 2.0 ` +
                       `(${report.error_analysis.tail_extreme_count} samples, MAE ` +
-                      `${report.error_analysis.tail_extreme_mae?.toFixed(4) ?? '—'}) — not a generic high-bin failure.`
+                      `${report.error_analysis.tail_extreme_mae?.toFixed(4) ?? '—'}) · descriptive subset, not an independent group.`
                     }
                   />
                 </div>
               )}
 
               <div className="flex items-center gap-2 mt-4 mb-2">
-                <span className="text-[11px] text-neutral-400 font-mono">Top high-error hold-out samples</span>
+                <span className="text-[11px] text-neutral-400 font-mono">Top high-error selection-validation samples</span>
                 <span className="ml-auto inline-flex items-center gap-1.5 text-[10px] text-neutral-500">
                   {(['low', 'medium', 'high'] as const).map((b) => (
                     <span key={b} className="inline-flex items-center gap-1">

@@ -1,3 +1,4 @@
+import { metricProtocol } from '@/lib/model-labels';
 import { ArrowRight, Github, ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { RippleButton } from '@/components/shared/ripple-button';
@@ -100,7 +101,7 @@ export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
           Solar Activity Analysis System
         </p>
         <p className="text-neutral-400 text-sm mt-2">
-          AI · NASA SDO/HMI · Coronium V3.1
+          AI · NASA SDO/HMI · {stats?.model_name ?? '—'}
         </p>
 
         {/* CTA buttons */}
@@ -128,7 +129,7 @@ export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
         </div>
 
         <p className="mt-5 text-xs text-amber-200 max-w-xl">
-          V3.1: 263 clean validation observations, used for model selection; no independent or temporal test.
+          {stats?.model_name ?? '—'}: 263 clean validation observations, used for model selection; no independent or temporal test.
           MC Dropout MAE: 0.10156 SI pp. Deterministic API MAE: 0.20408 SI pp. Historical V3 remains separate.
         </p>
 
@@ -137,9 +138,9 @@ export function LandingHero({ onEnterDashboard }: LandingHeroProps) {
           {[
             ['Data Source', 'NASA SDO/HMI'],
             ['Dataset', samples],
-            ['Model', 'Coronium V3.1'],
-            ['V3.1 MC MAPE', mape],
-            ['V3.1 MC R²', r2],
+            ['Model', stats?.model_name ?? '—'],
+            [`${metricProtocol(stats)} MAPE`, mape],
+            [`${metricProtocol(stats)} R²`, r2],
           ].map(([label, value], i, arr) => (
             <div key={label} className="flex items-center gap-2">
               <span className="text-neutral-500">{label}:</span>

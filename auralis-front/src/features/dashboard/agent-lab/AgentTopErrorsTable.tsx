@@ -1,5 +1,5 @@
 /**
- * Top high-error hold-out samples.
+ * Top high-error selection-validation samples.
  *
  * These concentrate in the SI > 2.0 tail/extreme region — the audit's main
  * weakness signal. Rows with real SI > 2.0 are tagged so the tail concentration
@@ -13,7 +13,7 @@ const TAIL_SI = 2.0;
 
 export function AgentTopErrorsTable({ samples }: { samples: ErrorSample[] }) {
   if (!samples.length) {
-    return <div className="text-[12px] text-neutral-500">No hold-out samples available.</div>;
+    return <div className="text-[12px] text-neutral-500">No selection-validation samples available.</div>;
   }
   return (
     <div className="overflow-x-auto">

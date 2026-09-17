@@ -1,0 +1,9 @@
+{
+  "utc": "2026-09-17T16:12:04.528901+00:00",
+  "user_message": "No alcance a marcar la opcion. Marca 1. Autorizar promoción local de V3.2 s42.",
+  "scope": "local default promotion of confirmed C1_s42 epoch27, validated KleidiAI mitigation, noise20 retained; no publication",
+  "prepared_manifest_sha256": "81a9666a7b3b2ca5848bf12a3998d2de67568d8b1cdadfc20da527eec56eb619",
+  "pre_activation_hashes_verified": 158,
+  "promotion_authorized": true,
+  "physical_validation_performed": false
+}

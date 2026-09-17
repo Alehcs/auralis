@@ -2,6 +2,7 @@ import {Texture,SRGBColorSpace,LinearMipmapLinearFilter,LinearFilter} from 'thre
 import {digest} from '../phase5/contract.mjs';
 import {validateActivity} from './activity.mjs';
 import {CHANNELS,validateSequence,nextIndex,timelinePositions} from './sequence.mjs';
+import {selectReleasePredictions} from './release-predictions.mjs';
 import './timeline.css';
 type Bundle={entry:any;activity:any;urls:Map<string,string>;textures:Map<string,Texture>};
 type Hooks={commit:(b:Bundle)=>void;fade:(value:number)=>void;transition:(from:Bundle,to:Bundle,t:number)=>void;status:(s:Record<string,unknown>)=>void};
@@ -20,6 +21,7 @@ export class TemporalSequence{
       const [activityBytes,activityEvidenceBytes]=await Promise.all([fetchBytes('/phase6/activity.json'),fetchBytes('/phase6/activity-evidence.json')]);
       if(await digest(activityBytes)!==JSON.parse(new TextDecoder().decode(activityEvidenceBytes)).activity_sha256)throw Error('Integridad de la actividad solar incorrecta.');
       const activity=validateActivity(JSON.parse(new TextDecoder().decode(activityBytes)),this.manifest,evidence.sequence_sha256,evidence.unity_glb_sha256);
+      this.manifest=await selectReleasePredictions(this.manifest,fetchBytes,location.search,import.meta.env.VITE_DEFAULT_RELEASE || '3.1');
       // Fixed 20-texture cache: 15 scientific maps and five baked solar states.
       // Serial work bounds concurrent decoding and makes cancellation deterministic.
       for(const [i,entry] of this.manifest.entries.entries()){

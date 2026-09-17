@@ -31,8 +31,8 @@ export function AgentDecisionLoop({ report }: { report: ActiveLearningReport }) 
     {
       label: 'AUDIT DATA',
       Icon: Database,
-      value: 'Hold-out results',
-      sub: 'Coronium V3 PRO audit',
+      value: 'Selection-validation results',
+      sub: 'Versioned artifact audit',
     },
     {
       label: 'STATE',

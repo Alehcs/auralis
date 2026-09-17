@@ -1,4 +1,4 @@
-"""Generate a Grad-CAM explanation figure for Coronium V3.1.
+"""Generate a Grad-CAM explanation figure for the selected verified release.
 
 The model is a scalar regressor, so the backward target is the predicted index
 itself. Hooks target ``stage4``, the last spatial block before global pooling.
@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from models.train_model import CoroniumV3  # noqa: E402
 from processing.model_input import prepare_model_input
+from models import serving_selection as serving
 
 
 logging.basicConfig(
@@ -32,9 +33,9 @@ logging.basicConfig(
 logger = logging.getLogger("auralis.gradcam")
 
 
-WEIGHTS_PATH = Path("models/best_coronium_v3_1.pth")
+WEIGHTS_PATH = serving.CHECKPOINT_PATH
 DATA_DIR = Path("data/processed")
-OUTPUT_FIGURE = Path("reports/figures/coronium_v3_1_gradcam_sample.png")
+OUTPUT_FIGURE = ROOT / f"reports/figures/coronium_v{serving.MODEL_VERSION.replace(chr(46), chr(95))}_gradcam_sample.png"
 
 # Optional: target a specific sample for the Grad-CAM. Override via env var
 # GRADCAM_SAMPLE (e.g. "hmi.m_45s.2024.08.12_00_01_30_TAI"). If unset or no
@@ -46,7 +47,7 @@ TARGET_SAMPLE = os.environ.get("GRADCAM_SAMPLE", "").strip() or None
 # more spatial detail, but stage4 carries the semantic signal the regressor
 # actually uses for the final index.
 TARGET_LAYER_NAME = "stage4"
-DROPOUT_RATE = 0.2
+DROPOUT_RATE = serving.BACKBONE_DROPOUT
 
 
 class GradCAMHookManager:
@@ -208,7 +209,7 @@ def plot_gradcam(
     dark_bg = "#0d0d0d"
     fig = plt.figure(figsize=(19, 6.5), facecolor=dark_bg)
     fig.suptitle(
-        f"Grad-CAM - Coronium V3.1\n"
+        f"Grad-CAM - {serving.MODEL_NAME} · PyTorch eval\n"
         f"Sample: {sample_name}     "
         f"Prediction (SI pixel percent): {prediction:+.5f}",
         fontsize=12,
@@ -323,6 +324,8 @@ def plot_gradcam(
 
 def get_device() -> torch.device:
     """Select the best available backend for the backward pass."""
+    if serving.FIXED_CPU_EXECUTION:
+        return torch.device('cpu')
     if torch.cuda.is_available():
         device = torch.device("cuda")
         logger.info("Backend: CUDA - %s", torch.cuda.get_device_name(0))
@@ -337,6 +340,7 @@ def get_device() -> torch.device:
 
 def main() -> None:
     """Run the complete Grad-CAM pipeline and write the figure artifact."""
+    serving.load_release()
     if not WEIGHTS_PATH.exists():
         raise FileNotFoundError(
             f"Checkpoint not found: {WEIGHTS_PATH}. "
@@ -357,7 +361,7 @@ def main() -> None:
 
     total_params = sum(param.numel() for param in model.parameters())
     logger.info(
-        "Loaded Coronium V3.1: %d parameters | eval mode | device=%s",
+        f"Loaded {serving.MODEL_NAME}: %d parameters | eval mode | device=%s",
         total_params,
         device,
     )

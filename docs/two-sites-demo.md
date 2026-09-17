@@ -158,3 +158,35 @@ Dashboard v3 publicado el 2026-09-13: retirado el bloque completo Dataset summar
 `dcbda06327905cd642b771a013c331221e09b850`; deployment
 `appgdep_6aa6a7672b7c8191af8809964e4006f0` succeeded. Copia previa y parche de
 reversión en `evidence/remove-summary-status/`. Visor solar sin cambios.
+
+## Actualización autorizada a Coronium V3.2 — 2026-09-17
+
+A petición del usuario se actualizaron los dos Sites existentes, preservando su audiencia:
+
+- Sol/AR público: v14, commit `8810f6c694036ac252a97a9f76e4dac0f7512482`,
+  deployment `appgdep_6aac187beebc8191b7b6cf240dca6710`, succeeded.
+- Dashboard privado del propietario: v5, commit `527900441a39352d05ea1752f8637b8752ef665c`,
+  deployment `appgdep_6aac18a9ffec8191b4cb19eee6371613`, succeeded.
+
+Los dominios se mantienen. El visor publicado usa V3.2 s42/época27 por defecto,
+incluso desde enlaces/QR anteriores sin versión. Los nuevos QR conservan fecha
+seleccionada y `release=3.2`; `release=3.1` sigue permitiendo la referencia histórica.
+El dashboard verifica la versión de sus respuestas guardadas antes de montar el
+visor y la transmite explícitamente, también para una instancia local V3.1.
+
+`scripts/export-sites-v32.py` conserva las16 observaciones y todas sus imágenes.
+Actualiza SI desde la paridad E.1 mitigada y la revisión temporal H; métricas y
+Agent Lab se exportan por rutas de lectura del backend3.2. No hay inferencias nuevas.
+No se trasladó el backend a Sites: confianza/ruido sin evidencia se muestran ausentes,
+y subidas/análisis nuevos siguen desactivados. Los cinco Grad-CAM V3.1 y su procedencia
+se conservan pero no se muestran como explicaciones de V3.2; el control indica
+NO GUARDADO. Los cinco accesos de marzo siguen disponibles independientemente.
+
+76 archivos protegidos auditados: solo cambiaron los dos módulos permitidos de
+selección numérica; modelos, observaciones, mapas, materiales, shaders y animación
+conservan hashes.29 tests solares y builds correctos. Verificación HTTPS pública
+para Sol y autorizada para dashboard confirma las respuestas/recursos publicados;
+no se afirma prueba física del teléfono o AR. Evidencia en `evidence/sites-v32/`.
+Solo hubo commits/push en los dos repositorios de entrega de Sites; ninguno en
+el repositorio principal. Backend8000 y frontend5173 solicitados permanecen activos.
+Las limitaciones de validation de selección, baja actividad y XAI continúan.

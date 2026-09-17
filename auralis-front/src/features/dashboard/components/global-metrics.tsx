@@ -1,3 +1,4 @@
+import { metricProtocol } from '@/lib/model-labels';
 import { useState, useEffect } from 'react';
 import { Activity, BarChart2 } from 'lucide-react';
 import { getStats } from '@/lib/api';
@@ -33,7 +34,7 @@ export function GlobalMetrics() {
 
   const CARDS = [
     {
-      label:     'V3.1 MC MAE',
+      label:     `${stats?.model_name ?? '—'} ${metricProtocol(stats)} MAE`,
       value:     loading ? '—' : (stats?.mae.toFixed(4) ?? '—'),
       sub:       `${e.maeDesc} · SI pp`,
       Icon:      null, // Σ symbol
@@ -41,7 +42,7 @@ export function GlobalMetrics() {
       iconColor: 'text-orange-400',
     },
     {
-      label:     'V3.1 MC RMSE',
+      label:     `${stats?.model_name ?? '—'} ${metricProtocol(stats)} RMSE`,
       value:     loading ? '—' : (stats?.rmse.toFixed(4) ?? '—'),
       sub:       `${e.rmseDesc} · SI pp`,
       Icon:      Activity,
@@ -49,7 +50,7 @@ export function GlobalMetrics() {
       iconColor: 'text-teal-400',
     },
     {
-      label:     'V3.1 MC R²',
+      label:     `${stats?.model_name ?? '—'} ${metricProtocol(stats)} R²`,
       value:     loading ? '—' : (r2Val !== null ? r2Val.toFixed(3) : '—'),
       sub:       e.r2Desc,
       Icon:      BarChart2,
@@ -57,7 +58,7 @@ export function GlobalMetrics() {
       iconColor: r2IconColor(loading ? null : r2Val),
     },
     {
-      label: 'V3.1 MC MAPE',
+      label: `${stats?.model_name ?? '—'} ${metricProtocol(stats)} MAPE`,
       value: loading ? '—' : (stats ? `${stats.mape.toFixed(2)}%` : '—'),
       sub: 'Nonzero targets · relative error',
       Icon: BarChart2,
@@ -93,15 +94,16 @@ export function GlobalMetrics() {
       ))}
     </div>
     <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 overflow-x-auto">
-      <p className="text-sm text-white mb-2">Coronium V3.1 · protocols on the same 263 observations</p>
-      <p className="text-[11px] text-neutral-500 mb-3">Selection validation · overlap 0 · no independent or temporal test. MC: T=20, MPS, batch 32, seed 42. ONNX: deterministic CPU, batch 1.</p>
+      <p className="text-sm text-white mb-2">{stats?.model_name ?? '—'} · protocols on the same 263 observations</p>
+      <p className="text-[11px] text-neutral-500 mb-3">{stats?.evaluation_protocol ?? 'Protocol unavailable'} · overlap 0 · no independent or temporal test.</p>
       <table className="w-full text-xs text-neutral-300 font-mono">
         <thead><tr className="text-neutral-500 text-right"><th className="text-left py-2">Protocol</th><th>MAE (SI pp)</th><th>RMSE (SI pp)</th><th>R²</th><th>MAPE (%)</th></tr></thead>
         <tbody>
-          <tr className="text-right"><td className="text-left py-2">MC Dropout T=20</td><td>{stats?.mae.toFixed(4) ?? '—'}</td><td>{stats?.rmse.toFixed(4) ?? '—'}</td><td>{stats?.r2_score.toFixed(4) ?? '—'}</td><td>{stats?.mape.toFixed(2) ?? '—'}</td></tr>
+          {metricProtocol(stats) === 'MC T=20' ? <tr className="text-right"><td className="text-left py-2">MC Dropout T=20</td><td>{stats?.mae.toFixed(4) ?? '—'}</td><td>{stats?.rmse.toFixed(4) ?? '—'}</td><td>{stats?.r2_score.toFixed(4) ?? '—'}</td><td>{stats?.mape.toFixed(2) ?? '—'}</td></tr> : <tr><td className="py-2">MC Dropout</td><td colSpan={4}>Not evaluated for this release</td></tr>}
           <tr className="text-right"><td className="text-left py-2">Deterministic ONNX</td>{['mae', 'rmse', 'r2', 'mape'].map((key) => <td key={key}>{stats?.serving_deterministic.onnx[key]?.toFixed(key === 'mape' ? 2 : 4) ?? '—'}</td>)}</tr>
         </tbody>
       </table>
+      {stats?.model_version.startsWith("3.2") && <p className="text-[11px] text-neutral-500 mt-3">Low activity: tolerated MAE deterioration and negative R². Border/background XAI concerns remain.</p>}
     </div>
     </div>
   );

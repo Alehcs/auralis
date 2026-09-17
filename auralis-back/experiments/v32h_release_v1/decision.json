@@ -1,0 +1,11 @@
+{
+  "utc": "2026-09-17T15:33:35.152234+00:00",
+  "checkpoint_confirmed": true,
+  "candidate": "C1_s42",
+  "seed": 42,
+  "epoch": 27,
+  "user_answer": "Confirmar C1_s42 (\u00e9poca 27)",
+  "selection_timing": "after experiments B\u2013G",
+  "rationale": "Continuity with initial C pilot among all three candidates passing mitigated formal guards; not an automatic minimum-MAE or favorable-round rule.",
+  "promotion_authorized": false
+}

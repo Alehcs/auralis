@@ -1,0 +1,120 @@
+{
+  "model_version": "3.2",
+  "seed": 42,
+  "epoch": 27,
+  "runtime": "kleidiai_off",
+  "entries": [
+    {
+      "filename": "hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.9319617748260498,
+      "public_si": 1.932,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.7345528602600098,
+      "public_si": 1.7346,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 2.2093708515167236,
+      "public_si": 2.2094,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 2.8651552200317383,
+      "public_si": 2.8652,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 2.032116413116455,
+      "public_si": 2.0321,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.8824269771575928,
+      "public_si": 1.8824,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 2.0041637420654297,
+      "public_si": 2.0042,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 2.049825668334961,
+      "public_si": 2.0498,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.950901746749878,
+      "public_si": 1.9509,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.6957380771636963,
+      "public_si": 1.6957,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.6771135330200195,
+      "public_si": 1.6771,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.4430232048034668,
+      "public_si": 1.443,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.5277714729309082,
+      "public_si": 1.5278,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.41743803024292,
+      "public_si": 1.4174,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.3182880878448486,
+      "public_si": 1.3183,
+      "model": "Coronium V3.2",
+      "seed": 42
+    },
+    {
+      "filename": "hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy",
+      "si_full_precision": 1.5446949005126953,
+      "public_si": 1.5447,
+      "model": "Coronium V3.2",
+      "seed": 42
+    }
+  ]
+}

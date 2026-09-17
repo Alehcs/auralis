@@ -1,9 +1,11 @@
+import { metricProtocol } from '@/lib/model-labels';
 import { useState, useEffect } from 'react';
 import {
   Sigma,
   ImageIcon,
   HardDrive,
   Activity,
+  CheckCircle2,
 } from 'lucide-react';
 import { getStats, getSelectableImages, predictDual } from '@/lib/api';
 import { IS_FROZEN_DEMO, type DisplayPredictionResult } from '@/lib/frozen-demo';
@@ -149,7 +151,7 @@ export function ModelMetrics() {
             </div>
             <div className="text-[12px] text-neutral-500">
               {o.predictedBy}{' '}
-              <span className="text-neutral-300 font-medium">Coronium V3.1</span>{' '}
+              <span className="text-neutral-300 font-medium">{prediction?.model_name ?? stats?.model_name ?? '—'}</span>{' '}
               · {latestFile}
             </div>
           </div>
@@ -168,7 +170,7 @@ export function ModelMetrics() {
       {/* ── 4 Metric cards ─────────────────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <MetricCard
-          label={`${o.modelMae} · V3.1 MC T=20`}
+          label={`${o.modelMae} · ${stats?.model_name ?? '—'} ${metricProtocol(stats)}`}
           value={mae}
           trend={o.physicalScale}
           icon={Sigma}

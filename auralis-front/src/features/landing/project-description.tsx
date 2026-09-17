@@ -1,6 +1,8 @@
+import { useModelStats, metricProtocol } from '@/lib/model-labels';
 import { CheckCircle } from 'lucide-react';
 
 export function ProjectDescription() {
+  const stats = useModelStats();
   const useCases = [
     'Space weather research and monitoring',
     'Solar activity index estimation',
@@ -10,9 +12,9 @@ export function ProjectDescription() {
 
   const technicalFeatures = [
     { label: 'Dataset Size', value: '1,314 unique / 1,763 rows' },
-    { label: 'V3.1 MC MAPE (selection validation)', value: '5.9870%' },
-    { label: 'V3.1 MC MAE (SI percentage points)', value: '0.10156' },
-    { label: 'V3.1 deterministic API MAE (SI pp)', value: '0.20408' },
+    { label: `${stats?.model_name ?? '—'} ${metricProtocol(stats)} MAPE (selection validation)`, value: stats ? `${stats.mape.toFixed(4)}%` : '—' },
+    { label: `${metricProtocol(stats)} MAE (SI percentage points)`, value: stats?.mae.toFixed(5) ?? '—' },
+    { label: 'Deterministic API MAE (SI pp)', value: stats?.serving_deterministic.onnx.mae.toFixed(5) ?? '—' },
     { label: 'Synthetic noise sensitivity', value: '20-pass ONNX' },
     { label: 'SDO/HMI Cadence', value: '45 s' }
   ];
@@ -31,7 +33,7 @@ export function ProjectDescription() {
               Auralis is an end-to-end machine learning and data engineering system for estimating solar activity from NASA SDO/HMI magnetograms.
             </p>
             <p className="text-sm text-neutral-300 leading-relaxed">
-              The platform processes local solar imagery, identifies active magnetic regions with computer vision, and reports the current activity index with an illustrative sensitivity diagnostic. Historical validation contains repeated observations across train and validation; retraining is required.
+              The platform processes local solar imagery, estimates a global strong-field pixel index, and reports the current activity index with an illustrative sensitivity diagnostic. Current validation is used for checkpoint selection, not an independent or temporal test. Low-activity and border/background XAI limitations remain.
             </p>
             
             <div className="pt-4">
@@ -68,7 +70,7 @@ export function ProjectDescription() {
                 Technology Stack
               </h3>
               <div className="flex flex-wrap gap-2">
-                {['Python', 'PyTorch', 'ONNX Runtime', 'FastAPI', 'NumPy / SciPy', 'Coronium V3.1', 'Grad-CAM', 'React', 'Recharts'].map((tech) => (
+                {['Python', 'PyTorch', 'ONNX Runtime', 'FastAPI', 'NumPy / SciPy', stats?.model_name ?? 'Coronium', 'Grad-CAM', 'React', 'Recharts'].map((tech) => (
                   <span key={tech} className="px-2 py-1 bg-neutral-950 border border-neutral-700 text-xs text-neutral-300 font-mono">
                     {tech}
                   </span>

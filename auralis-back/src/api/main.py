@@ -23,8 +23,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from models.train_model import CoroniumV3, ECAAttention  # noqa: E402
 from processing.model_input import prepare_model_input, INPUT_CONTRACT, TARGET_CONTRACT
 from processing.observation_time import filename_time
-from models.active_model import (CHECKPOINT_PATH, ONNX_PATH, MODEL_NAME, MODEL_VERSION,
-                                 METRICS_STATUS, COMPARISON_PATH, MANIFEST_PATH, load_release)
+from models.serving_selection import (CHECKPOINT_PATH, ONNX_PATH, MODEL_NAME, MODEL_VERSION,
+                                 METRICS_STATUS, COMPARISON_PATH, MANIFEST_PATH, load_release,
+                                 TEST_MODE, TEST_RUNTIME, IS_CANDIDATE, MODEL_STATUS,
+                                 EVALUATION_PROTOCOL, BACKBONE_DROPOUT, SEED,
+                                 configure_session_options, cache_key, trial_comparison_path,
+                                 IS_RELEASE_V32, FIXED_CPU_EXECUTION)
 
 import matplotlib
 matplotlib.use("Agg")
@@ -150,6 +154,8 @@ def _get_device() -> torch.device:
     Returns:
         A ``torch.device`` instance for the selected backend.
     """
+    if FIXED_CPU_EXECUTION:
+        return torch.device("cpu")
     if torch.cuda.is_available():
         return torch.device("cuda")
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
@@ -205,26 +211,33 @@ def _load_model() -> None:
         logger.error("Model file not found: %s", MODEL_PATH)
         return
 
-    _model = CoroniumV3(in_channels=2, dropout_rate=0.2)
+    if FIXED_CPU_EXECUTION:
+        torch.set_num_threads(4)
+        torch.set_num_interop_threads(1)
+    _model = CoroniumV3(in_channels=2, dropout_rate=BACKBONE_DROPOUT)
     _model.load_state_dict(torch.load(MODEL_PATH, map_location=_device, weights_only=True))
     _model.eval()
     _model.to(_device)
 
     total_params = sum(p.numel() for p in _model.parameters())
     logger.info(
-        "Coronium V3.1 loaded: %s parameters, checkpoint: %s, device: %s",
-        f"{total_params:,}", MODEL_PATH.name, _device,
+        "%s loaded: %s parameters, checkpoint: %s, device: %s, runtime: %s, status: %s",
+        MODEL_NAME, f"{total_params:,}", MODEL_PATH.name, _device, TEST_RUNTIME, MODEL_STATUS,
     )
 
     # --- ONNX Runtime session for edge inference ----------------------------
     if ONNX_PATH.exists():
         sess_opts = ort.SessionOptions()
         sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+        configure_session_options(sess_opts, ort)
         _ort_session = ort.InferenceSession(
             str(ONNX_PATH),
             sess_options=sess_opts,
             providers=["CPUExecutionProvider"],
         )
+        if TEST_RUNTIME == "kleidiai_off":
+            if _ort_session.get_session_options().get_session_config_entry("mlas.disable_kleidiai") != "1":
+                raise RuntimeError("Requested KleidiAI mitigation was not retained by ORT")
         _ort_input_name = _ort_session.get_inputs()[0].name
         logger.info("ONNX Runtime session ready: %s", ONNX_PATH.name)
     else:
@@ -260,17 +273,20 @@ class ClassificationInfo(BaseModel):
     # Legacy API field retained for compatibility. Values are activity-band
     # symbols only and have not been validated against GOES flare classes.
     flare_class: str  # "C" | "M" | "X"
-    interpretation: str = "Historical internal activity bands; not calibrated for V3.1 or GOES flare classes"
+    interpretation: str = ("Historical internal activity bands; not calibrated for candidates or GOES flare classes"
+                           if (IS_CANDIDATE or IS_RELEASE_V32) else "Historical internal activity bands; not calibrated for V3.1 or GOES flare classes")
     hex_color: str    # "#22c55e" | "#f97316" | "#ef4444"
 
 
 class PredictionResult(BaseModel):
     model_name: str = MODEL_NAME
     model_version: str = MODEL_VERSION
+    seed: int = SEED
+    runtime: str = TEST_RUNTIME
     input_contract: str = INPUT_CONTRACT
     target_contract: str = TARGET_CONTRACT
     output_units: str = "percent of original image pixels with abs(B_LOS) > 200 G"
-    model_status: str = "promoted_clean_phase15_checkpoint"
+    model_status: str = MODEL_STATUS
     prediction_method: str = "single deterministic ONNX eval-mode pass; rounded to 4 decimals"
     confidence_method: str = "heuristic; not a calibrated probability"
     uncertainty_method: str = "synthetic input sensitivity; not MC Dropout or a calibrated interval"
@@ -285,7 +301,8 @@ class SystemStats(BaseModel):
     model_name: str = MODEL_NAME
     model_version: str = MODEL_VERSION
     metrics_status: str = METRICS_STATUS
-    evaluation_protocol: str = "MC Dropout T=20, seed=42, batch=32, MPS; not the deterministic API protocol"
+    evaluation_protocol: str = EVALUATION_PROTOCOL
+    available_protocols: List[str] = (["deterministic"] if (IS_CANDIDATE or IS_RELEASE_V32) else ["mc", "deterministic"])
     validation_observations: int = 263
     observation_overlap: int = 0
     mape: float
@@ -485,6 +502,23 @@ from api.agent_routes import router as agents_router  # noqa: E402
 app.include_router(agents_router)
 
 
+# Explicit trial instances carry identity on all resources, including images.
+# Agent Lab is tied to legacy evidence paths; never relabel it as a candidate.
+if FIXED_CPU_EXECUTION:
+    @app.middleware("http")
+    async def trial_identity(request: Request, call_next):
+        if IS_CANDIDATE and request.url.path.startswith("/api/agents/"):
+            response = JSONResponse(status_code=503, content={"detail": f"{MODEL_NAME}: compatible Agent Lab resources unavailable; legacy resources not substituted"})
+        else:
+            response = await call_next(request)
+        response.headers["X-Auralis-Model"] = MODEL_VERSION
+        response.headers["X-Auralis-Seed"] = str(SEED)
+        response.headers["X-Auralis-Runtime"] = TEST_RUNTIME
+        response.headers["X-Auralis-Status"] = MODEL_STATUS
+        response.headers["X-Auralis-Prediction-Protocol"] = "deterministic ONNX eval; separate input-noise diagnostic T20"
+        return response
+
+
 @app.exception_handler(Exception)
 async def _unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """Ensure CORS headers are present even on unhandled 500 errors."""
@@ -594,8 +628,8 @@ async def predict(filename: str):
     if _ort_session is None:
         raise HTTPException(status_code=503, detail="ONNX model not loaded")
 
-    if filename in _predict_cache:
-        return _predict_cache[filename]
+    if cache_key(filename) in _predict_cache:
+        return _predict_cache[cache_key(filename)]
 
     filepath = DATA_DIR / filename
     if not filepath.exists() or not filepath.suffix == ".npy":
@@ -641,7 +675,7 @@ async def predict(filename: str):
         uncertainty=uncertainty,
         classification=classification,
     )
-    _predict_cache[filename] = result
+    _predict_cache[cache_key(filename)] = result
     return result
 
 
@@ -710,8 +744,8 @@ async def predict_dual(filename: str):
     if _ort_session is None:
         raise HTTPException(status_code=503, detail="ONNX model not loaded")
 
-    if filename in _predict_cache:
-        return _predict_cache[filename]
+    if cache_key(filename) in _predict_cache:
+        return _predict_cache[cache_key(filename)]
 
     filepath = DATA_DIR / filename
     if not filepath.exists() or not filepath.suffix == ".npy":
@@ -749,7 +783,7 @@ async def predict_dual(filename: str):
         uncertainty=uncertainty,
         classification=classification,
     )
-    _predict_cache[filename] = result
+    _predict_cache[cache_key(filename)] = result
     return result
 
 
@@ -864,7 +898,7 @@ async def explain_panels(filename: str):
 
     fig = plt.figure(figsize=(19, 6.5), facecolor=DARK_BG)
     fig.suptitle(
-        f"Grad-CAM  ·  Coronium V3.1\n"
+        f"Grad-CAM  ·  {MODEL_NAME}\n"
         f"Sample: {stem}     "
         f"Prediction (normalized proxy index): {pred_val:+.5f}",
         fontsize=12, color="white", fontweight="bold", y=1.03,
@@ -1047,7 +1081,8 @@ async def get_stats():
     disk_mb = round(disk_bytes / (1024 * 1024), 2)
 
     release = load_release()
-    official = release["official_mc_dropout"]["metrics"]
+    official = (release["serving_deterministic"]["onnx"] if (IS_CANDIDATE or IS_RELEASE_V32) else
+                release["official_mc_dropout"]["metrics"])
 
     # mtime of the most recently modified .npy as a UTC ISO-8601 timestamp.
     if npy_files:
@@ -1096,8 +1131,8 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
         if not filepath.exists() or filepath.suffix != ".npy":
             raise HTTPException(status_code=404, detail=f"Image not found: {filename}")
 
-    if filename in _xai_cache:
-        return _xai_cache[filename]
+    if cache_key(filename) in _xai_cache:
+        return _xai_cache[cache_key(filename)]
 
     data: np.ndarray = np.load(str(filepath))
 
@@ -1192,7 +1227,7 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
         curve=curve,
         auc_score=round(auc, 4),
     )
-    _xai_cache[filename] = result
+    _xai_cache[cache_key(filename)] = result
 
     logger.info(
         "XAI faithfulness computed for %s — AUC=%.4f, baseline=%.4f",
@@ -1329,13 +1364,24 @@ async def get_experiment_metadata(filename: str):
 
 
 @app.get("/api/results-comparison")
-async def get_results_comparison(protocol: str = "mc"):
+async def get_results_comparison(protocol: str = "deterministic" if IS_RELEASE_V32 else "mc"):
     """Serve one explicitly selected V3.1 protocol; keep MC as the compatible default."""
     import csv
     import hashlib
     import json
     if protocol not in ("mc", "deterministic"):
         raise HTTPException(status_code=422, detail="protocol must be mc or deterministic")
+    if (IS_CANDIDATE or IS_RELEASE_V32) and protocol != "deterministic":
+        raise HTTPException(status_code=503, detail=f"{MODEL_NAME}: no compatible MC20 resource; request protocol=deterministic")
+    if (IS_CANDIDATE or IS_RELEASE_V32 or TEST_RUNTIME == "kleidiai_off") and protocol == "deterministic":
+        load_release()  # validates this candidate's exact predictions and metrics
+        column = "kleidiai_off_si" if TEST_RUNTIME == "kleidiai_off" else "onnx_si"
+        trial_protocol = f"deterministic ONNX CPU FP32 batch1; seed={SEED}; runtime={TEST_RUNTIME}; selection validation, not independent test"
+        with trial_comparison_path().open(newline="", encoding="utf-8") as fh:
+            return [{"model_version": MODEL_VERSION, "evaluation_protocol": trial_protocol,
+                     "units": "SI percent; errors in SI percentage points", "real": float(row["target_si"]),
+                     "predicted": float(row[column]), "error": abs(float(row[column])-float(row["target_si"]))}
+                    for row in csv.DictReader(fh)]
     csv_path = (COMPARISON_PATH if protocol == "mc" else
                 BASE_DIR / "reports/phase16_coronium_v3_1/coronium_v3_1_deterministic_predictions.csv")
     if not csv_path.exists():
@@ -1507,7 +1553,7 @@ async def explain_panels_upload(file: UploadFile = File(...)):
     DARK_BG = "#0d0d0d"
     fig = plt.figure(figsize=(19, 6.5), facecolor=DARK_BG)
     fig.suptitle(
-        f"Grad-CAM  ·  Coronium V3.1  ·  [Black Box Upload]\n"
+        f"Grad-CAM  ·  {MODEL_NAME}  ·  [Black Box Upload]\n"
         f"Prediction (normalized proxy index): {pred_val:+.5f}",
         fontsize=12, color="white", fontweight="bold", y=1.03,
     )

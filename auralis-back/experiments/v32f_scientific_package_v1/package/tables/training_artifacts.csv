@@ -1,0 +1,8 @@
+model,seed,selected_epoch,parameters,checkpoint_bytes,checkpoint_sha256,backbone_dropout,head_dropout,onnx_status,status
+C0_s42,42,6,206875,846093,a7a86909a1ac1d9ae30d932ffa475dee9ec038090c8b9fb3ded8b35eeb9622da,0.2,0.3,not exported; serving costs unavailable,candidate not promoted
+C0_s137,137,18,206875,846093,50b478ccf7c7394baca8471efb29563478c36e4ea2322ae6a7d60b3b7854f547,0.2,0.3,not exported; serving costs unavailable,candidate not promoted
+C0_s2026,2026,18,206875,846093,f4cab59a5755ec21fd8298646510c76772b46d96cda551d0390cbdeb1594c45d,0.2,0.3,not exported; serving costs unavailable,candidate not promoted
+C1_s42,42,27,206875,846093,0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179,0.0,0.3,existing E export,candidate not promoted
+C1_s137,137,60,206875,846093,05ec38d8158a6456f5662488d7e97dcdd466b7f8796d166f934c89bf5ce4a5b4,0.0,0.3,existing E export,candidate not promoted
+C1_s2026,2026,55,206875,846093,b332fa275547da1eba80844111f80736d00fbaad66d2ddfa5942bb5137856b20,0.0,0.3,existing E export,candidate not promoted
+C2_s42,42,14,206875,846093,12dac7c69c129354ebb2e5801555458be0af78265414159888371cb6140b8c5d,0.1,0.3,not exported; serving costs unavailable,preliminary seed42

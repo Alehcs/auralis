@@ -92,7 +92,7 @@ export interface PredictionResult {
 /**
  * Dataset-level statistics and frozen evaluation performance metrics.
  *
- * Official V3.1 MC Dropout T=20 metrics on 263 clean validation observations
+ * Instance-specific metrics on 263 clean validation observations
  * used for checkpoint selection; not an independent or temporal test.
  * Single-pass serving metrics and historical V3 are separate fields.
  */
@@ -101,15 +101,16 @@ export interface SystemStats {
     model_version: string;
     mape: number;
     evaluation_protocol: string;
+    available_protocols?: ('mc' | 'deterministic')[];
     validation_observations: number;
     observation_overlap: number;
-    serving_deterministic: { protocol: string; pytorch: Record<string, number>; onnx: Record<string, number> };
+    serving_deterministic: { protocol: string; pytorch?: Record<string, number>; onnx: Record<string, number> };
     historical_v3: { model_name: string; status: string; source: string; validation_rows: number; observation_overlap: number; metrics: Record<string, number> };
     /** Count of `.npy` files currently in `data/processed/`. */
     total_images: number;
     /** Aggregate disk footprint of all magnetogram files in MiB. */
     disk_usage_mb: number;
-    /** Mean Absolute Error in raw SI space (percentage points for errors), MC Dropout T=20, 263 clean selection-validation observations. */
+    /** Mean Absolute Error in raw SI space (percentage points for errors), the explicitly identified protocol, 263 selection-validation observations. */
     mae: number;
     /** Root Mean Squared Error — raw SI space (percentage points for errors), same evaluation protocol as `mae`. */
     rmse: number;
@@ -349,6 +350,9 @@ export interface AgentLimitation {
 
 /** Common envelope shared by every agent report. */
 export interface AgentReportBase {
+    model_name?: string;
+    model_version?: string;
+    evaluation_protocol?: string;
     agent_name: string;
     summary: string;
     /** Heuristic audit confidence in [0, 1] — NOT prediction accuracy. */

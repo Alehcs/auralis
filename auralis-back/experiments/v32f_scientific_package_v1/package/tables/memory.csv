@@ -1,0 +1,25 @@
+phase,config,model,round,peak_rss_bytes,definition,lifetime_peak_bytes
+E,default,C1_s137,1,3693510656,E sampled process RSS; full workload,3693510656
+E,default,C1_s2026,1,3070885888,E sampled process RSS; full workload,3070918656
+E,default,C1_s42,1,2174402560,E sampled process RSS; full workload,2174435328
+E,default,V3.1,1,2089254912,E sampled process RSS; full workload,2089287680
+E,default,C1_s137,2,3668328448,E sampled process RSS; full workload,3668361216
+E,default,C1_s2026,2,3071213568,E sampled process RSS; full workload,3071246336
+E,default,C1_s42,2,2198978560,E sampled process RSS; full workload,2199011328
+E,default,V3.1,2,2096087040,E sampled process RSS; full workload,2096087040
+E1,default,V3.1,1,2109882368,"E1 conservative max(external,sampled,lifetime); full workload",2109816832
+E1,default,C1_s42,1,2187689984,"E1 conservative max(external,sampled,lifetime); full workload",2187624448
+E1,default,C1_s137,1,3711696896,"E1 conservative max(external,sampled,lifetime); full workload",3711664128
+E1,default,C1_s2026,1,3068968960,"E1 conservative max(external,sampled,lifetime); full workload",3068870656
+E1,kleidiai_off,V3.1,1,640270336,"E1 conservative max(external,sampled,lifetime); full workload",640270336
+E1,kleidiai_off,C1_s42,1,634978304,"E1 conservative max(external,sampled,lifetime); full workload",634978304
+E1,kleidiai_off,C1_s137,1,636977152,"E1 conservative max(external,sampled,lifetime); full workload",636960768
+E1,kleidiai_off,C1_s2026,1,643465216,"E1 conservative max(external,sampled,lifetime); full workload",643465216
+E1,default,V3.1,2,2075869184,"E1 conservative max(external,sampled,lifetime); full workload",2075525120
+E1,default,C1_s42,2,2134753280,"E1 conservative max(external,sampled,lifetime); full workload",2134392832
+E1,default,C1_s137,2,3612295168,"E1 conservative max(external,sampled,lifetime); full workload",3612246016
+E1,default,C1_s2026,2,3074981888,"E1 conservative max(external,sampled,lifetime); full workload",3074834432
+E1,kleidiai_off,V3.1,2,643334144,"E1 conservative max(external,sampled,lifetime); full workload",642580480
+E1,kleidiai_off,C1_s42,2,643350528,"E1 conservative max(external,sampled,lifetime); full workload",643334144
+E1,kleidiai_off,C1_s137,2,639336448,"E1 conservative max(external,sampled,lifetime); full workload",639336448
+E1,kleidiai_off,C1_s2026,2,642859008,"E1 conservative max(external,sampled,lifetime); full workload",642711552

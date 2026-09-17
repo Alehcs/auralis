@@ -1,18 +1,26 @@
 {
-  "exported_at": "2026-09-12T19:14:54.636895+00:00",
+  "exported_at": "2026-09-17T16:36:55.313508+00:00",
+  "model": "Coronium V3.2",
+  "seed": 42,
+  "epoch": 27,
+  "runtime": "kleidiai_off",
   "new_inferences": 0,
   "catalog_images": 1314,
   "selectable_saved_predictions": 16,
+  "saved_gradcam_cases": 0,
+  "historical_gradcam": "gradcam/ and gradcam-provenance.json preserve V3.1; inactive for V3.2",
   "source_sha256": {
-    "auralis-back/reports/phase17_coronium_v3_1/http_parity.json": "0b237ef0b33f408d29415671e31c8ac027d7c069dae46000a8fecb730e66a117",
-    "auralis-back/reports/phase16_coronium_v3_1/live-http.json": "6b27a8d601d5ca344bdd4699531d1b8fbaf54c3dcbd08344137fe58cdcca9ddf"
+    "auralis-back/models/coronium_v3_2_manifest.json": "ff0ee69cfa38683d3b975690e8d4f4fbb392c6f81bf890619ed3de95f4a90bf7",
+    "auralis-back/models/coronium_v3_2_validation.csv": "c7df7ad99cee68acb0b9519f850bb944cf2843e6774c8215accc305654da486c",
+    "auralis-back/models/coronium_v3_2_temporal.json": "915bdca52e0db568556620e78a70b84cc9f2a0056c27e4ea2c5d8fcf1207f1ed",
+    "auralis-back/experiments/v32h_release_v1/activation/normal_default/predictions.json": "317a016d64279ab081cc247e14a58f59d683a7b50b8224eb948c72a4c22ec003",
+    "auralis-back/models/coronium_v3_2_metrics.json": "75ec7a33cba525979e15811245e3294c81928d8cc212099cbf07a5aec60572e1"
   },
   "read_only_requests": [
-    "/api/images/list",
     "/api/stats",
+    "/api/images/list",
     "/api/benchmark",
     "/api/experiments",
-    "/api/results-comparison?protocol=mc",
     "/api/results-comparison?protocol=deterministic",
     "/api/polarity-series?limit=48",
     "/api/agents/full-report",
@@ -20,33 +28,12 @@
     "/api/experiments/exp_005_v3pro_augmented.json",
     "/api/experiments/exp_003_v2pro_production.json",
     "/api/experiments/exp_002_v2_tuned.json",
-    "/api/experiments/exp_001_v1_baseline.json",
-    "/api/images/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/images/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy",
-    "/api/aia/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy"
+    "/api/experiments/exp_001_v1_baseline.json"
   ],
   "files": {
     "gradcam-provenance.json": "2c12601281b3b2a6855f0121100a938f9ce17f8fbaf3224c38b5417a7f9350ea",
-    "responses.json": "005a98b8456e0cb403594fca0c0b1513bb1e635f4a22fad99757a63ae1b053a9",
+    "responses.json": "255a9a86beb38d2e0a101bfc608e4cfc177c42793844e0390493585a4b34834c",
+    "predictions-v32.json": "6bddce864cadb1d6d16f52a4401fca342ca96a18bfcf1ff9bd081ab91b015bce",
     "gradcam/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png": "00511a000f72b653b6dcfba068486fbc3e848d4f7466fd9756d40c1d071c01ee",
     "gradcam/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png": "71057e8c8c5c25034eebe756a17f07622f180f6a4ee3f8f85278d4ba398e3bb1",
     "gradcam/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png": "0b5c91c7291c4c54f95a678c7be3ca4d409b8dc92db31537e090c44f333df08b",
@@ -84,7 +71,5 @@
     "aia/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png": "6b37548e395b92e33708cb4cfa4f1a067dc44a3db4292913b2746c1deb63ca1c",
     "aia/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy.png": "f03966d687f77e41497851a3e0483d15913deba1eade91b4e556a6390910686e",
     "aia/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png": "f57c35e22f0c12535d585ffae2d9e1c5a1d7f6eb6cde2d7751dfb761413106b7"
-  },
-  "saved_gradcam_cases": 5,
-  "gradcam_provenance": "gradcam-provenance.json"
+  }
 }

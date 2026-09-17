@@ -23,7 +23,7 @@ test('reject swapped solar maps, substituted source, wrong orientation or invali
 // requiring WebGL or simulating a physical XR device. DOM bindings stay empty.
 let source=await readFile(new URL('../src/phase6/temporal.ts',import.meta.url),'utf8');
 source=source.replace("import './timeline.css';",'');
-for(const path of ['../phase5/contract.mjs','./sequence.mjs','./activity.mjs'])source=source.replaceAll("'"+path+"'",JSON.stringify(new URL(path,new URL('../src/phase6/temporal.ts',import.meta.url)).href));
+for(const path of ['../phase5/contract.mjs','./sequence.mjs','./activity.mjs','./release-predictions.mjs'])source=source.replaceAll("'"+path+"'",JSON.stringify(new URL(path,new URL('../src/phase6/temporal.ts',import.meta.url)).href));
 source=source.replace("'three'",JSON.stringify(import.meta.resolve('three')));
 const {TemporalSequence}=await import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText).toString('base64'));
 test('controller returns identical textures in both directions; pause and rapid selection settle atomically',()=>{

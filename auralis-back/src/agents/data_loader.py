@@ -1,7 +1,7 @@
 """Shared read-only dataset loader for the Auralis Agent Lab.
 
 This module is the single source of truth for the join between the promoted
-hold-out predictions and the per-sample metadata. It is intentionally the only
+selection-validation predictions and the per-sample metadata. It is intentionally the only
 place that knows how ``results_comparison.csv`` maps back to
 ``metadata_processed.csv`` via ``split_indices.json``.
 
@@ -16,6 +16,7 @@ human-readable detail so the API can degrade gracefully instead of crashing.
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import math
 from dataclasses import dataclass, field
@@ -28,7 +29,7 @@ METADATA_CSV = BASE_DIR / "data" / "processed" / "metadata_processed.csv"
 SPLIT_JSON = BASE_DIR / "models" / "split_indices.json"
 RESULTS_CSV = BASE_DIR / "reports" / "results_comparison.csv"
 
-# Activity-bin thresholds in log-SI space. These mirror the demo-calibrated
+# Activity-bin thresholds in raw SI percentage points. These mirror the demo-calibrated
 # thresholds used by the existing /api/predict classifier (_classify in
 # src/api/main.py); they are reused here so the agents bin samples exactly the
 # way the rest of the system already does.
@@ -57,7 +58,7 @@ class AgentDataError(RuntimeError):
 
 
 def activity_bin(sunspot_index: float) -> str:
-    """Bin a log-SI value into low / medium / high using the shared thresholds."""
+    """Bin a SI value into low / medium / high using the shared thresholds."""
     if sunspot_index < BIN_LOW_MAX:
         return "low"
     if sunspot_index < BIN_MEDIUM_MAX:
@@ -67,7 +68,7 @@ def activity_bin(sunspot_index: float) -> str:
 
 @dataclass
 class ValidationRow:
-    """One joined hold-out sample: prediction joined back to its metadata."""
+    """One joined selection-validation sample: prediction joined back to its metadata."""
 
     filename: str
     date: Optional[str]
@@ -84,7 +85,7 @@ class AgentDataset:
     """Everything the read-only agents need, computed once and shared.
 
     ``metadata_rows`` holds every processed sample; ``validation_rows`` holds the
-    joined hold-out predictions. ``train_indices`` / ``val_indices`` are the raw
+    joined selection-validation predictions. ``train_indices`` / ``val_indices`` are the raw
     split indices into ``metadata_rows``.
     """
 
@@ -160,6 +161,9 @@ def load_agent_dataset() -> AgentDataset:
     missing or the split contract is violated, so callers never silently work
     with a broken join.
     """
+    from models import serving_selection as serving
+    if serving.IS_RELEASE_V32:
+        return _load_release_dataset(serving)
     _require(METADATA_CSV, code="missing_metadata")
     _require(SPLIT_JSON, code="missing_split")
     _require(RESULTS_CSV, code="missing_results")
@@ -183,7 +187,7 @@ def load_agent_dataset() -> AgentDataset:
         # The verified row-order join only holds for the promoted seed-42 split.
         raise AgentDataError(
             f"split_indices.json random_state={random_state}, expected "
-            f"{EXPECTED_RANDOM_STATE}. The hold-out join is only valid for the "
+            f"{EXPECTED_RANDOM_STATE}. The selection-validation join is only valid for the "
             "promoted seed-42 split; refusing to produce a misaligned audit.",
             code="unexpected_random_state",
             missing=[],
@@ -247,14 +251,14 @@ def load_agent_dataset() -> AgentDataset:
         if frac > 0.05:
             raise AgentDataError(
                 f"Join integrity check failed: {join_drift}/{len(validation_rows)} "
-                "hold-out rows do not match metadata ground-truth. The row-order "
+                "selection-validation rows do not match metadata ground-truth. The row-order "
                 "join between results_comparison.csv and split_indices.json['val'] "
                 "appears invalid.",
                 code="join_drift",
                 missing=[],
             )
         warnings.append(
-            f"{join_drift} hold-out rows drifted slightly from metadata "
+            f"{join_drift} selection-validation rows drifted slightly from metadata "
             "ground-truth (within tolerance)."
         )
 
@@ -266,3 +270,39 @@ def load_agent_dataset() -> AgentDataset:
         random_state=random_state,
         warnings=warnings,
     )
+
+
+def _load_release_dataset(serving) -> AgentDataset:
+    """Join verified full-precision release predictions by identity, never row guessing."""
+    try:
+        serving.load_release()
+        manifest = json.loads(serving.MANIFEST_PATH.read_text())
+        split_path = BASE_DIR / 'models/split_indices_phase1_v1.json'
+        for path, key in [(split_path, 'split_sha256'), (METADATA_CSV, 'metadata_sha256')]:
+            if hashlib.sha256(path.read_bytes()).hexdigest() != manifest[key]:
+                raise ValueError(f'Release dataset hash mismatch: {path.name}')
+        split = json.loads(split_path.read_text())
+        metadata = _read_metadata(METADATA_CSV)
+        with serving.COMPARISON_PATH.open(newline='') as stream:
+            rows = list(csv.DictReader(stream))
+        if len(rows) != len(split['val']) or set(split['train']) & set(split['val']):
+            raise ValueError('Invalid release split or prediction count')
+        joined = []
+        for row, index in zip(rows, split['val']):
+            meta = metadata[index]
+            real, prediction = float(row['target_si']), float(row['kleidiai_off_si'])
+            if (int(row['source_row']) != index or row['processed_file'] != meta['processed_file'] or
+                    not math.isclose(real, float(meta['sunspot_index']), rel_tol=0, abs_tol=1e-6) or
+                    not math.isfinite(prediction)):
+                raise ValueError('Release row/filename/target mismatch')
+            joined.append(ValidationRow(filename=row['processed_file'], date=(meta.get('date') or '')[:10] or None,
+                real=real, predicted=prediction, error=abs(prediction-real), residual=prediction-real,
+                activity_bin=activity_bin(real), is_tail_extreme=real > TAIL_EXTREME_SI))
+        return AgentDataset(metadata_rows=metadata, train_indices=split['train'], val_indices=split['val'],
+            validation_rows=joined, random_state=42, warnings=[
+                serving.MODEL_NAME + '; ' + serving.EVALUATION_PROTOCOL,
+                'Selection validation, not independent or temporal test. Metadata CSV date scale is unknown.',
+                'Low-band deterioration within tolerance and negative R2; border/background XAI concerns remain.',
+                'XAI inventory is not a new measurement; saved D/F evidence remains separate.'])
+    except (OSError, ValueError, KeyError) as exc:
+        raise AgentDataError(str(exc), code='release_evidence_invalid') from exc

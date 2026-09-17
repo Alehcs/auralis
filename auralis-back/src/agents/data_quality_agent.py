@@ -187,7 +187,7 @@ def run_data_quality_agent(dataset: AgentDataset) -> DataQualityReport:
         AgentLimitation(
             key="bins_demo_calibrated",
             detail=(
-                "Activity bins use demo-calibrated log-SI thresholds (1.41 / 1.75) "
+                "Activity bins use demo-calibrated internal SI thresholds (1.41 / 1.75) "
                 "shared with the existing classifier, not absolute solar-cycle "
                 "constants."
             ),

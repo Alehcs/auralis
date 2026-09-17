@@ -14,6 +14,7 @@ from typing import List
 
 from .data_loader import AgentDataset
 from .schemas import AgentFinding, AgentLimitation, XAIReviewReport
+from models.serving_selection import IS_RELEASE_V32
 
 AGENT_NAME = "XAI Review Agent"
 
@@ -28,7 +29,7 @@ _XAI_ASSETS = [
 
 def run_xai_review_agent(dataset: AgentDataset) -> XAIReviewReport:
     n_val = len(dataset.validation_rows)
-    # A defensible sampled budget: ~5% of the hold-out set, capped, deterministic.
+    # A defensible sampled budget: ~5% of the selection-validation set, capped, deterministic.
     suggested_sample = max(10, min(20, round(n_val * 0.05)))
 
     findings: List[AgentFinding] = []
@@ -55,7 +56,7 @@ def run_xai_review_agent(dataset: AgentDataset) -> XAIReviewReport:
                 "A full-dataset Grad-CAM sweep is intentionally not run in Phase 1: "
                 "the deletion-curve metric needs ~22 forward passes per image. "
                 f"Recommended next step: a deterministic sample of ~{suggested_sample} "
-                "hold-out magnetograms (favouring high-SI tail samples), cached, to "
+                "selection-validation magnetograms (favouring high-SI tail samples), cached, to "
                 "estimate a mean faithfulness AUC and flag weak-alignment cases."
             ),
             severity="notice",
@@ -77,7 +78,7 @@ def run_xai_review_agent(dataset: AgentDataset) -> XAIReviewReport:
     )
 
     recommendation = (
-        f"Phase 2: sample ~{suggested_sample} hold-out magnetograms (bias toward "
+        f"Phase 2: sample ~{suggested_sample} selection-validation magnetograms (bias toward "
         "SI>2.0 tail events), call /api/xai/faithfulness per sample, cache the "
         "AUCs, and flag any sample where guided occlusion degrades the prediction "
         "no faster than random occlusion (weak alignment). Do not sweep the full "
@@ -113,6 +114,13 @@ def run_xai_review_agent(dataset: AgentDataset) -> XAIReviewReport:
     )
 
     # Confidence is modest: this is a strategy/inventory, not a measurement.
+    if IS_RELEASE_V32:
+        limitations.append(AgentLimitation(
+            key="existing_candidate_evidence",
+            detail="D/F retain candidate maps and occlusion controls with unresolved border/background concerns. This runtime inventory does not recompute or replace that evidence. The service stage4.conv Grad-CAM differs from D's full-block procedure.",
+        ))
+        recommendation = "Review existing D/F candidate evidence first. No additional XAI sweep was run for this release; border/background concerns remain unresolved."
+        summary = "Grad-CAM tools remain available for the selected checkpoint. This report inventories tools; it does not measure faithfulness. Existing D/F evidence and its border/background limitations remain applicable."
     confidence = 0.5
 
     return XAIReviewReport(

@@ -1,0 +1,2536 @@
+{
+  "utc": "2026-09-17T15:30:47.414233+00:00",
+  "phase": "V3.2-H preparation before checkpoint approval",
+  "selected_checkpoint": null,
+  "promotion_authorized": false,
+  "release_prepared": false,
+  "release_qa_approved": false,
+  "active_default": "Coronium V3.1; original runtime",
+  "git_status_before": " M auralis-back/src/api/main.py\n?? auralis-back/experiments/v32b_reference_v1/\n?? auralis-back/experiments/v32c_seed42_v1/\n?? auralis-back/experiments/v32d_stability_v1/\n?? auralis-back/experiments/v32e1_memory_diagnostic_v1/\n?? auralis-back/experiments/v32e2_latency_v1/\n?? auralis-back/experiments/v32e_onnx_cost_v1/\n?? auralis-back/experiments/v32f_scientific_package_v1/\n?? auralis-back/experiments/v32g_service_integration_v1/\n?? auralis-back/experiments/v32h_release_v1/\n?? auralis-back/src/models/serving_selection.py\n",
+  "verified_sources": {
+    "auralis-back/experiments/v32e_onnx_cost_v1/artifacts/C1_s42/manifest.json": {
+      "sha256": "2ae9a043de0520288ec7aad50e3d1efbcee5ce63e929549ee0b1eb1ed6c11e06",
+      "bytes": 2549
+    },
+    "auralis-back/experiments/v32c_seed42_v1/C1/best.pth": {
+      "sha256": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+      "bytes": 846093
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/artifacts/C1_s42/coronium_v3_2_candidate_c1_s42_fp32.onnx": {
+      "sha256": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a",
+      "bytes": 835234
+    },
+    "auralis-back/experiments/v32c_seed42_v1/C1/config.json": {
+      "sha256": "4e8756de0c571db5c990d3ff351bb1abcc653dd2913a38ee4a7b86300dc356a7",
+      "bytes": 715
+    },
+    "auralis-back/experiments/v32c_seed42_v1/C1/completion.json": {
+      "sha256": "5a694241f0425c7b376c765e9f60d06dc2dd511079b0df607f30245b30274ac4",
+      "bytes": 833
+    },
+    "auralis-back/experiments/v32c_seed42_v1/C1/artifact_manifest.json": {
+      "sha256": "7c3e4c2de9e278e2b17280a805b1d4ceaf5e891126798d760b756b624faab0fa",
+      "bytes": 11302
+    },
+    "auralis-back/experiments/v32d_stability_v1/evaluation/C1_s42/validation.csv": {
+      "sha256": "3d7a648b6b27d7328c8fa920f8c1bcea20857b4e0cb7bbaf7b8c8833f39aba88",
+      "bytes": 27036
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/parity/C1_s42.json": {
+      "sha256": "6e056ab6921b06980c08c54923c4110d67e5c9e8c10e0b9212fb8f89d154e1b7",
+      "bytes": 5771
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/parity/C1_s42.csv": {
+      "sha256": "5b0954823d81ab3478ec521f616802329c3533140b5d96ec4b4eecb15f91bf68",
+      "bytes": 44984
+    },
+    "auralis-back/experiments/v32e1_memory_diagnostic_v1/parity/C1_s42.json": {
+      "sha256": "e652dc303357b3309819828d79470b1e3c7d743e06721ef10c37ce9627e9ff32",
+      "bytes": 1848
+    },
+    "auralis-back/experiments/v32e1_memory_diagnostic_v1/parity/C1_s42.csv": {
+      "sha256": "c7df7ad99cee68acb0b9519f850bb944cf2843e6774c8215accc305654da486c",
+      "bytes": 65900
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/artifacts/C1_s137/manifest.json": {
+      "sha256": "b6f77528b1e5b3ccf12f92cd29b31d877f3c517c2b1a04345733edb8ef109878",
+      "bytes": 2611
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed137/C1/best.pth": {
+      "sha256": "05ec38d8158a6456f5662488d7e97dcdd466b7f8796d166f934c89bf5ce4a5b4",
+      "bytes": 846093
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/artifacts/C1_s137/coronium_v3_2_candidate_c1_s137_fp32.onnx": {
+      "sha256": "a0702c77f246113a1bbeb31727f05a90a63466ffcefdab340979e28ed71aa699",
+      "bytes": 835234
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed137/C1/config.json": {
+      "sha256": "150a7cee94634069103c596379dbb2511a02bee7eaa54a9914485fca8600bca6",
+      "bytes": 716
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed137/C1/completion.json": {
+      "sha256": "6bb64a152ea3d8039817078f8c4025d8b6c7e16e96456a549826b2a73dec71ba",
+      "bytes": 833
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed137/C1/artifact_manifest.json": {
+      "sha256": "27f58823849a07275cad0e3f317bd23f145a8253ead38a7e54f89e962e064cec",
+      "bytes": 5247
+    },
+    "auralis-back/experiments/v32d_stability_v1/evaluation/C1_s137/validation.csv": {
+      "sha256": "dae42cafd4b27a131241c7662c483c30d3318aba763205e1e5e170ed2b3415e6",
+      "bytes": 27031
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/parity/C1_s137.json": {
+      "sha256": "f7faae73cb0d94a356730e43ba7cc62adbb3ebe74d42a3781c69f1ae0ea3fb44",
+      "bytes": 5754
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/parity/C1_s137.csv": {
+      "sha256": "b145d9340cb5a041a6af2466b47aeede59dc9f782b305377fa259cb9dfdb2df9",
+      "bytes": 44983
+    },
+    "auralis-back/experiments/v32e1_memory_diagnostic_v1/parity/C1_s137.json": {
+      "sha256": "d51a2b5f6aeb82e2dc29f45284134b79f86a1b1d8f89cba49a5fcf2e1ecf63fc",
+      "bytes": 1848
+    },
+    "auralis-back/experiments/v32e1_memory_diagnostic_v1/parity/C1_s137.csv": {
+      "sha256": "ef6573d326a79a21d1cb5482058a7774cf042e5996b1c986bb960670a90989a3",
+      "bytes": 67161
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/artifacts/C1_s2026/manifest.json": {
+      "sha256": "0addc9785abd7a169116823f092a47eda57980933a18b3e801e7b7928f4d3ac7",
+      "bytes": 2624
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed2026/C1/best.pth": {
+      "sha256": "b332fa275547da1eba80844111f80736d00fbaad66d2ddfa5942bb5137856b20",
+      "bytes": 846093
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/artifacts/C1_s2026/coronium_v3_2_candidate_c1_s2026_fp32.onnx": {
+      "sha256": "98b19825fad71a79d3a7d835c5a958f6c7cc4299d5f520222b49d23e5967dc76",
+      "bytes": 835234
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed2026/C1/config.json": {
+      "sha256": "54f48c8ed076f0b7c16bd9e671ca3f2f01f73cef042813116ea71937dfe05781",
+      "bytes": 717
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed2026/C1/completion.json": {
+      "sha256": "35ea12aa335dd28e83331c9d7f29eb1bcf5e380a6abcc74d7dd0725a439bb3ed",
+      "bytes": 833
+    },
+    "auralis-back/experiments/v32d_stability_v1/seed2026/C1/artifact_manifest.json": {
+      "sha256": "e2a11b6637798647366775c506e7abb37aa67d6266575af9bde169f5ae042a91",
+      "bytes": 5247
+    },
+    "auralis-back/experiments/v32d_stability_v1/evaluation/C1_s2026/validation.csv": {
+      "sha256": "7e93ff1a5bea487804b7c2824331b4281cdcac744ec120a816994b1e1ff7bd44",
+      "bytes": 27040
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/parity/C1_s2026.json": {
+      "sha256": "ea34453d61f895c4e62e97dedd8ce53df540afae1c683134f66a32b52e59b733",
+      "bytes": 5771
+    },
+    "auralis-back/experiments/v32e_onnx_cost_v1/parity/C1_s2026.csv": {
+      "sha256": "d0474abecf75a86393f80ebfccdacdf758963e95b90283c7b16e73f07e0845a7",
+      "bytes": 44986
+    },
+    "auralis-back/experiments/v32e1_memory_diagnostic_v1/parity/C1_s2026.json": {
+      "sha256": "408e2cc34626eb6bbe56cb2de293e6816c3bb543cdd1a67eb190de137785b122",
+      "bytes": 1850
+    },
+    "auralis-back/experiments/v32e1_memory_diagnostic_v1/parity/C1_s2026.csv": {
+      "sha256": "5db8a22338a6fb6f5fb0ed46bcc72a43281073917a8da115ee0946227ca63a0c",
+      "bytes": 67036
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/CONSUMERS.md": {
+      "sha256": "418ec0318392bb260a9e9cb779eecce68faa6e0f6afc46cb6129d946f9223fcf",
+      "bytes": 4144
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/PROTOCOL.md": {
+      "sha256": "5f038c323c200bf39abe0c9a2e03532d74c2eddd9c07dfba3d5c995a0cdb3e92",
+      "bytes": 2771
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/README.md": {
+      "sha256": "433c234052604ab198af3b585ede5d8f901589c2938a11db0c31db4412d13795",
+      "bytes": 2755
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/REPORT.md": {
+      "sha256": "f011f67178bfcebd11302c957077645bfa8b145601be0c21db1b9eaa06b8d56f",
+      "bytes": 15325
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/RUNBOOK.md": {
+      "sha256": "e3072bb465070150b9df0e6fbc43b1a90494dfa4e1c23b42c40422451f683fa8",
+      "bytes": 4110
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/analysis.log": {
+      "sha256": "daf489066d78e412b4a31bbd42b49bbe51e24a49a4717aa3d21f3f85ca294987",
+      "bytes": 56
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/analyze.py": {
+      "sha256": "2dadd458fd6d9773ae5a164dae2d1561e1b97c3371c78b855c2c0813d8772e92",
+      "bytes": 23046
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/execution.log": {
+      "sha256": "d5d4fc6c528955e1e4947957a5ee783b57a0ad8c3489a24dc0297bb1ad93bf49",
+      "bytes": 1211
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/after.json": {
+      "sha256": "3d2185722379a7469ba4883e9f0561750b068bd7d754256f1ad38f5d810f66c7",
+      "bytes": 172190
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/before.json": {
+      "sha256": "6ca243eae31620ba5d39ebf8eaa1905b4b50888cc4861297d3eea0f14af1a08b",
+      "bytes": 172184
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/cleanup.json": {
+      "sha256": "e9192020037d628bfd26c6d75e950dd98c4ed3300cdee02a97cc444de26db286",
+      "bytes": 415
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/health.json": {
+      "sha256": "cbfa066c4a46498b3a95002bec7b0580150622c0965c7e46c752249a6cacdb51",
+      "bytes": 224
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/incident.json": {
+      "sha256": "1112b06283f251c9590cc9ac9af7024fde2f0570a74aacb9df45406b80398615",
+      "bytes": 237
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/rss_trace.csv": {
+      "sha256": "bab3da16d4fae7a839fdc059286f41d82444d573a214e38833c90c4f26905420",
+      "bytes": 9806
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/runs/round1/V31_original/server.log": {
+      "sha256": "6e83770162071e2145077fc30b0ff0ca1d98ef09885e3503b147624cb9cfca00",
+      "bytes": 14072
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/attempt0_startup/server_before.py": {
+      "sha256": "3b375a5f23a494a609b314e1641e83ab90979429d54cfbd33593edf5bb43b299",
+      "bytes": 2655
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/bank.py": {
+      "sha256": "0713167aee3912b205262f189f9ef77e77a1c369e11a8cacee9b67da1327e077",
+      "bytes": 11037
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/catalog.json": {
+      "sha256": "bc054445cca3e18e50e2fac18ba24ae037367c16e1756b8a65333b1c270a8b8f",
+      "bytes": 8139
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/cleanup_verification.json": {
+      "sha256": "b298fcd5c7af3f35dfd40a899470841641325b71946e0eb2150f3e227997b0a6",
+      "bytes": 2044
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/comparisons.csv": {
+      "sha256": "ccfa0d5336486d1f4ec0dac548a4749e6dd7a1399f03187259053c5766d0fb21",
+      "bytes": 7647
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/default_control.log": {
+      "sha256": "81660b432b985078d9f383cc4757024e4e4a3cf903a694be260627af4d4ee8d8",
+      "bytes": 24
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/execution.log": {
+      "sha256": "cf508a5c071e266f612221028c5bdac6b6ca70235d503d4b418a4db039728eab",
+      "bytes": 212
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/finalize.py": {
+      "sha256": "ca8eb72faba37bf5b945df6a5c732dde6d6eb659ffcf5be3f761150305bc5cf3",
+      "bytes": 3371
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/fixtures.csv": {
+      "sha256": "89f304d71d9b57b4930f1d73db8b3f7e1d017d1824862d79da7c3500334815da",
+      "bytes": 85966
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/git_before.json": {
+      "sha256": "7d33df51cf8adaf6a6ad497b96a11801ce688c00c838a974f4aedc2b5b4c8c33",
+      "bytes": 427
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/http_summary.csv": {
+      "sha256": "1db57971197765f0634a642d839946c26e87d11b4ae8ac46e48f08ec74095c39",
+      "bytes": 1903
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/implementation.diff": {
+      "sha256": "52dedfc1797e642fd62dbf442a342832afcc92e1f54710627cf12fa28ecdd43f",
+      "bytes": 11128
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/implementation_snapshot.json": {
+      "sha256": "b3c606786dbb78270fe3c554de17dd8d8894aa8557717960fc717beefa1c2118",
+      "bytes": 1065
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/launch.py": {
+      "sha256": "bc612c44eb20579c6398bb74ecc09098f37fefb400d518388f329d77896d9685",
+      "bytes": 1302
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/main_before.py": {
+      "sha256": "ae63fb106016092cd3d30c135a36bbd851ad9ef470f06de8e8b3c2ae63c81d26",
+      "bytes": 60531
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/make_catalog.py": {
+      "sha256": "47ae644df33ba9a224bdf2bb43a5c4c00331b2cab67b248ba0b61d2fe44df4db",
+      "bytes": 1197
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/memory_summary.csv": {
+      "sha256": "7fa7fde2f0ba5a1d7c92f3941857ddde79aff9cd220173f949eeec39d810467b",
+      "bytes": 1336
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/protected_before.json": {
+      "sha256": "ae75d35e5abd1600a178f984a9e1e568e7bb0a974f2182a77d12184c2b265274",
+      "bytes": 777331
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/protocol.json": {
+      "sha256": "a41e60db5d0d5a830c9262326e84fb266dc295b041a793ee3e0b5ca4f575b1a3",
+      "bytes": 9057
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/register.py": {
+      "sha256": "274b24e2efee0308cbe2ac19286491798713ff7fc37f54b967aa186be42242fe",
+      "bytes": 4146
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/regression_tests.log": {
+      "sha256": "f37e242e2acbd819577ef8c110cc8277a0846d94347deab9d4a84a2fc3837e34",
+      "bytes": 1021
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/regression_tests.py": {
+      "sha256": "714b2ca4d3f41f89ffa92fcd57a8c30920236c4df3cac0b50cdaef849bd99157",
+      "bytes": 863
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/reused_evidence.json": {
+      "sha256": "bdd4f006d5124ae13f94b1097ccf89d0049976f9ddda57e76814d93bfd9f80d9",
+      "bytes": 1989
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/revision1.json": {
+      "sha256": "8198ebe0c28752126f40c676d8deb9fd909114e8f9b7a9e9d9a7dce9e70aa602",
+      "bytes": 469
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/after.json": {
+      "sha256": "59e54b675b01d121638afcb7d8c292a32f49c350456512bbf606a3c59613c8bf",
+      "bytes": 172110
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/before.json": {
+      "sha256": "d7913bd04e09aabde19fde93844c8201e23206ec07d82cd4d6352a117839684d",
+      "bytes": 172104
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/cleanup.json": {
+      "sha256": "9dcf423dd140b72adaa879f3e08c44cb852038ed423856cc3a1e606d7636e88e",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/consumer_resources.json": {
+      "sha256": "dc7e16aaf801c1482c198769216f54272e34b56b44c63188adc472c6a20cc86d",
+      "bytes": 2938
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/fixtures.csv": {
+      "sha256": "4fcd2a8a2e7a9c62b3e4dc2cc2990f76d60be13a5c900be19d78908b54ba9b28",
+      "bytes": 764
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/health.json": {
+      "sha256": "365a656e23eaa128365772197a8322cc80b37180a5406ae543fc841fde4ca834",
+      "bytes": 224
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/http_end_state.json": {
+      "sha256": "b2ba4df8a285252a75a1a6c29774f8389ea30dde9aa96d242c7ee41a84845f8f",
+      "bytes": 879
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/loaded.json": {
+      "sha256": "4ee4235549b17a2867f00ff06020ea3799ee327c5f93e53cc4d086948209ad40",
+      "bytes": 793
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/result.json": {
+      "sha256": "8bfd8f6c034b83276b398eaba97b0bbff7b1510535a34e855267670f587585bb",
+      "bytes": 2330
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/rss_trace.csv": {
+      "sha256": "ace3a029e513300621813e95fe1ffd97037f5dfe6fae8ef04787ca147747b5dc",
+      "bytes": 32096
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round0/unconfigured/server.log": {
+      "sha256": "a5985d3eb5d4793115f1f1d3efe03e242a7b202469bb6dd1d66007bf5c3ab0f4",
+      "bytes": 1703
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/after.json": {
+      "sha256": "6b2c262991a7543aa52255cfd26a2eed4a59865d7b95680ec585365665be4289",
+      "bytes": 171287
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/before.json": {
+      "sha256": "2ca25943d1c74df68f018742026f4bc91b3154997ea9093869292c87bbc5ed76",
+      "bytes": 170985
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/cleanup.json": {
+      "sha256": "5410e8215b7855bd806b66fb0b003b3b4a76c169b52be809d48f74eb18090986",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/consumer_resources.json": {
+      "sha256": "8e98d4a7b4493a94fa0e5f4ed54405558e9727dd7afd27e893726856a8fc5f09",
+      "bytes": 5034
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/fixtures.csv": {
+      "sha256": "5b96df64eef7c2d93caedb2875507e639ebdd119b3ca642b55f171b797a030c7",
+      "bytes": 8444
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/gradcam.png": {
+      "sha256": "d8f97775672b54505f6d7b419b39cb4ea471fb536d97f1bda2d50cb2ad0b26ad",
+      "bytes": 366085
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/health.json": {
+      "sha256": "347465071dad49725c5c6137c10ecf084807c878f73a0499a4a39b0a231d56ea",
+      "bytes": 268
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/http_end_state.json": {
+      "sha256": "4e82a8338b41dbe1c632bd2155e578d61192739aa766f16d5a058c9c70a3e436",
+      "bytes": 965
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/loaded.json": {
+      "sha256": "ee116cc333b9fa73ed0008d316e26a66910e5e592abf73c3411cad5ce4d55a32",
+      "bytes": 836
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/result.json": {
+      "sha256": "27806c96ab082dd6c400b2b31460ea112809f0ac4099fc5d1127eb4b2335c0ee",
+      "bytes": 3271
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/rss_trace.csv": {
+      "sha256": "2e03ed81b22edc48eefe8a14161b912aad93bb98d0f47d8ec2f5124057eae070",
+      "bytes": 380072
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/server.log": {
+      "sha256": "cca4f73ee820fde159caef0d8eea8bb030a7e385bdaa16373f7343fb8da2f63e",
+      "bytes": 19965
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s137/timings.csv": {
+      "sha256": "24ed5ab297453096d8bbfa74864020ffc0c17f8bee48bd948eb89ab62ddc9caa",
+      "bytes": 7990
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/after.json": {
+      "sha256": "b284429cdc32a630fd18319638623968a3dbfef7c111b5786374061d57174ccd",
+      "bytes": 171287
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/before.json": {
+      "sha256": "86065e28072a1c20331c05869ae91de492bbdbfc40251ed7319059d11aae3e48",
+      "bytes": 171287
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/cleanup.json": {
+      "sha256": "4cfd71d2edb629782a5db2818635e8473eaf1f26d91cd1fdff39e7440ea5cd97",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/consumer_resources.json": {
+      "sha256": "471015b505afddc90774e5a44d6631a6e6d9a6a282e70733c650eb01d3a8753f",
+      "bytes": 5040
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/fixtures.csv": {
+      "sha256": "929a85e92e77f3d9b786ae13bdbac6e4f947a7b9a6bef198310dddb3d5c19335",
+      "bytes": 8484
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/gradcam.png": {
+      "sha256": "b5ca3c79488b67c7700f8a1087f1d7ae6fa00895900dcfe0d045706e6cdc3ad3",
+      "bytes": 361822
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/health.json": {
+      "sha256": "63863cea9c499f46c52f18497b9fd4d6afd1173a607f13f9ed8de00a5d4afe6c",
+      "bytes": 271
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/http_end_state.json": {
+      "sha256": "e6596caaa6e750a8dd2f1a5c7da1b51bd642b318717e42316bf6aa229cbe4fed",
+      "bytes": 968
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/loaded.json": {
+      "sha256": "68ebae101e67e4374b2bb0eedaf52898b6b4f308b611666391694fa372dadf62",
+      "bytes": 838
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/result.json": {
+      "sha256": "5da5d542336b2deeb9c01edb5ed398bb255a2841fb67b0efa9d802a3540abea6",
+      "bytes": 3254
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/rss_trace.csv": {
+      "sha256": "670af3a54609d3dfc0dd2e8ca31ec294a20ad8b395bf852b864c0f3ce8257a8c",
+      "bytes": 373873
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/server.log": {
+      "sha256": "85e7f628ac590e74b9d05be2c58fc4da340f5e6a010a7a0a23cf72c5b52872fd",
+      "bytes": 19968
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s2026/timings.csv": {
+      "sha256": "d3fa812f8f0467cb1e07906a524e9d39e6d2df846a87c0801a6e4f7b054189a3",
+      "bytes": 7989
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/after.json": {
+      "sha256": "a3f4775d467107a3bf2b9d000551aab853ed9b81a30e859e2a5048878052977e",
+      "bytes": 170985
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/before.json": {
+      "sha256": "917d8ac7bcd38d1007e71c5a184afb4c642510fd2e14f87073a50082529ecec2",
+      "bytes": 171892
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/cleanup.json": {
+      "sha256": "362618e656e31316c05188a000dc5bdf95724c162985c20aa471eed28db178ba",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/consumer_resources.json": {
+      "sha256": "493fed1e42bb641034e085e6debb35f7b9b889d773f5cae61b5c263e2f93db98",
+      "bytes": 5025
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/fixtures.csv": {
+      "sha256": "d677f69e06fbc04b7fd7608204f6ba7d1160d7e3c95d3ca2b41b1bbe975fddf4",
+      "bytes": 8392
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/gradcam.png": {
+      "sha256": "64e2e5b5aa7b79f09d47788a8d895426cb6d15994b4e24ff3f21e5d2bc414ff0",
+      "bytes": 371407
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/health.json": {
+      "sha256": "185b01f6fe4ee9d85cf9892eb5fff8d8cc8c14d64aa3679f4ade87b344061644",
+      "bytes": 265
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/http_end_state.json": {
+      "sha256": "68644e06a6b9668aea35d6939eb856d06fda8dbf7400982d4a007852d1ae24f2",
+      "bytes": 962
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/loaded.json": {
+      "sha256": "c30885cb59f396a10de3dd0aa08e1ff9d177833126940e5b02aac0b62f568c03",
+      "bytes": 834
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/result.json": {
+      "sha256": "11f793aea9a832fda3d756e42d0f091e19d393d02a53819552a55320a59057cb",
+      "bytes": 3236
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/rss_trace.csv": {
+      "sha256": "4869503e0c01eefc882a5a3968608c71b238e33629a151d886c38df5e667329d",
+      "bytes": 374369
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/server.log": {
+      "sha256": "e66dee1612dbc940f04c82882d7fe7cf74c0c982ae8709b70aaf4d88f533dc02",
+      "bytes": 19962
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/C1_s42/timings.csv": {
+      "sha256": "1ac623459dbc3d30ffe0ae1205bdd815d2f7e0a375a8dbc6c37b3cb69da8f4ce",
+      "bytes": 7990
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/after.json": {
+      "sha256": "bfd2445c41801febef0d675ade66a565fdd8b89a7edacced50dab46962ead498",
+      "bytes": 171892
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/before.json": {
+      "sha256": "aedc7ce6a1d051f80ca2f6950a6062f55ba2957384b957f97b3ee6e03380d002",
+      "bytes": 170984
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/cleanup.json": {
+      "sha256": "e4aa5161d8d7d0dcc515ae919a2387e0e636148bc034828046441098b73d61b0",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/consumer_resources.json": {
+      "sha256": "b0512947cd5206d58c21082682b4c3137d3e0ed3ae1266c323fa131d1bbca5cb",
+      "bytes": 3154
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/fixtures.csv": {
+      "sha256": "d5c33ffe6f603e0c3165f4fbcf05b1a4ff84ff70ce3ad1499b57180f1b078ca6",
+      "bytes": 7656
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/gradcam.png": {
+      "sha256": "86d5365f440510cffffae18cd3e10acd6a165746aa7dd58a7988932271ffc487",
+      "bytes": 359563
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/health.json": {
+      "sha256": "cbfa066c4a46498b3a95002bec7b0580150622c0965c7e46c752249a6cacdb51",
+      "bytes": 224
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/http_end_state.json": {
+      "sha256": "37253299007c479d5ca57eda60a55198714281033973410349460a2bcff0e766",
+      "bytes": 907
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/loaded.json": {
+      "sha256": "b00bc0928f3763b07fe5bf86cec81d1a70676d2cdd060f4936d956c812381f7d",
+      "bytes": 796
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/result.json": {
+      "sha256": "095b5735d0bd628faf655a197b470ce71f2932eb1d9c93aa51b94e6e6979187a",
+      "bytes": 3108
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/rss_trace.csv": {
+      "sha256": "4313850acff74becd4fc1305ffb74ddbbc029d3a5f6f6d7d80a6d2877f1b18b8",
+      "bytes": 386048
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/server.log": {
+      "sha256": "603b3d627355c6311560c0e4d41c03145d2f1a895efa4e1290dfa32d773950d0",
+      "bytes": 19930
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_mitigated/timings.csv": {
+      "sha256": "1e5715770eb5e9cd2c563c56eff1f0f000902e88bdc033a13d9ab98f0d58033f",
+      "bytes": 8017
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/after.json": {
+      "sha256": "f593e8e690721ae5b1638dc71b2373393fbddd17ecf02e3ce792d59fe00ff5ba",
+      "bytes": 170984
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/before.json": {
+      "sha256": "35f69f2952f26952dc74e48cfeeac0dfabf9354cdc3e7674deeda0fbee6be7f7",
+      "bytes": 170983
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/cleanup.json": {
+      "sha256": "7a1025b6351cef1c4809ab89021928d61eeb7c2c4448ab5e87dfd0a098003e59",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/consumer_resources.json": {
+      "sha256": "dc7e16aaf801c1482c198769216f54272e34b56b44c63188adc472c6a20cc86d",
+      "bytes": 2938
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/fixtures.csv": {
+      "sha256": "3e1c2525721bef57b76bb7b11de791d98d7865f2ec9aff3ec0ee59cf4da4e72d",
+      "bytes": 7660
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/health.json": {
+      "sha256": "cbfa066c4a46498b3a95002bec7b0580150622c0965c7e46c752249a6cacdb51",
+      "bytes": 224
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/http_end_state.json": {
+      "sha256": "6d34814a8461797e86c8bb51cd50dfaed1d0d179637fcd6a8f9df50690a10235",
+      "bytes": 900
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/loaded.json": {
+      "sha256": "bc8b3303293d2e2696bc18ef142290abce46174db4dd0e922fde2f30f9875b18",
+      "bytes": 792
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/result.json": {
+      "sha256": "873750862610ccb2604e2eba23998a01e983a355d9297613106263f03309c149",
+      "bytes": 2569
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/rss_trace.csv": {
+      "sha256": "b3a69eda6a672816bfdd5f3a783713623269ae7fa64c7ee6416e5a9297bb9b0f",
+      "bytes": 434779
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/server.log": {
+      "sha256": "34e2156a5e4e6760fd58089b81ea353bad8b6ba44b0e749b590ffb0463f96f31",
+      "bytes": 19393
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round1/V31_original/timings.csv": {
+      "sha256": "b5e9e7a5ee79024efe50dcf08742e1ee971d57aa06b41cab09ddd27252002f30",
+      "bytes": 7995
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/after.json": {
+      "sha256": "33aaa513283d2687b0a6470449643fc02bde6d016b7077f1e40c3b07c2e84a7c",
+      "bytes": 171358
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/before.json": {
+      "sha256": "4bcf32b622491cc733dd542252d61f74e985998d46516c6628d885449a8272e1",
+      "bytes": 171621
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/cleanup.json": {
+      "sha256": "486cb0be92663fd91938b6a70651a19cdb1e83eae801bce3ff131df94b4c0f99",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/consumer_resources.json": {
+      "sha256": "8e98d4a7b4493a94fa0e5f4ed54405558e9727dd7afd27e893726856a8fc5f09",
+      "bytes": 5034
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/fixtures.csv": {
+      "sha256": "5b96df64eef7c2d93caedb2875507e639ebdd119b3ca642b55f171b797a030c7",
+      "bytes": 8444
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/gradcam.png": {
+      "sha256": "d8f97775672b54505f6d7b419b39cb4ea471fb536d97f1bda2d50cb2ad0b26ad",
+      "bytes": 366085
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/health.json": {
+      "sha256": "347465071dad49725c5c6137c10ecf084807c878f73a0499a4a39b0a231d56ea",
+      "bytes": 268
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/http_end_state.json": {
+      "sha256": "ac86a577a54db1464d50a4a03d62ef2b899554fb1547f1edba79af4eaa5498bb",
+      "bytes": 965
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/loaded.json": {
+      "sha256": "ab76a14992f47a5781af744e4fb4eac0444ffa3d0a603ace14d976520954154b",
+      "bytes": 836
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/result.json": {
+      "sha256": "6f1a434cdfe5f521d6a89555ec595452cd79574143f54003080afec2bc72142f",
+      "bytes": 3256
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/rss_trace.csv": {
+      "sha256": "cec3e71792f2a6d4e81b7599367512fb17cee8716c80d1d78731ca2135255106",
+      "bytes": 378585
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/server.log": {
+      "sha256": "5f2398cf2e29e2a669bc7b280e2687129619783c15a635e65f643a5ca7ef4af5",
+      "bytes": 19965
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s137/timings.csv": {
+      "sha256": "d827caf136e1e3466ffa7933fb6776dac409ef85daf55c3d3e541869f3f8c1cb",
+      "bytes": 7992
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/after.json": {
+      "sha256": "d622dbceb84fe32344203f6daf8ca317b3f1a8b5d0660ab72a5f827b57cf8fc6",
+      "bytes": 171621
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/before.json": {
+      "sha256": "8a611dfad93d0c6b0951d40999870acc92846603aff0b0dc6c4256f573725b49",
+      "bytes": 171287
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/cleanup.json": {
+      "sha256": "b8321f90251f2cc44cc9d8f770fab43c3d6ed6aee29aefafbe63a0e54e4178b5",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/consumer_resources.json": {
+      "sha256": "471015b505afddc90774e5a44d6631a6e6d9a6a282e70733c650eb01d3a8753f",
+      "bytes": 5040
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/fixtures.csv": {
+      "sha256": "929a85e92e77f3d9b786ae13bdbac6e4f947a7b9a6bef198310dddb3d5c19335",
+      "bytes": 8484
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/gradcam.png": {
+      "sha256": "b5ca3c79488b67c7700f8a1087f1d7ae6fa00895900dcfe0d045706e6cdc3ad3",
+      "bytes": 361822
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/health.json": {
+      "sha256": "63863cea9c499f46c52f18497b9fd4d6afd1173a607f13f9ed8de00a5d4afe6c",
+      "bytes": 271
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/http_end_state.json": {
+      "sha256": "e710c1b8e66b0ad92b352f8725a4ddf6b43832005805eb1b853cc686bea51e36",
+      "bytes": 968
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/loaded.json": {
+      "sha256": "5005decacc712840193e79c6f9a3ce238421d00f7847a3eca44e3b412f3e67e7",
+      "bytes": 838
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/result.json": {
+      "sha256": "729cc19d4db5f5b3e5f3b986b735850817ed23d769530d0f3c02eb6a6e0b5a25",
+      "bytes": 3265
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/rss_trace.csv": {
+      "sha256": "ca2d6a8720ac801015c7d7c914753e7e489ae6f7ce817b692d26ef807fb34deb",
+      "bytes": 373744
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/server.log": {
+      "sha256": "86bedc786972ff79a9857eb6ef408536f848b20fc18e83fcf15b613695102515",
+      "bytes": 19968
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s2026/timings.csv": {
+      "sha256": "d097ef0887b5e4f0bda3cd7c1bf9382cae1be05cac0b5fafb0c5ec6adcc0caea",
+      "bytes": 7966
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/after.json": {
+      "sha256": "60d046207075ad64c95f41165506c0f1236a9b6c79f2d04ed8d540f770d61840",
+      "bytes": 171359
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/before.json": {
+      "sha256": "130f755467816966fd74a6b82efaa04a8d1ca7ce2704ec5b5c1c7301b3f14f39",
+      "bytes": 171358
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/cleanup.json": {
+      "sha256": "96809957ede451e985831282fb47343d7e649bcf5a807012181e783dd1a15246",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/consumer_resources.json": {
+      "sha256": "493fed1e42bb641034e085e6debb35f7b9b889d773f5cae61b5c263e2f93db98",
+      "bytes": 5025
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/fixtures.csv": {
+      "sha256": "d677f69e06fbc04b7fd7608204f6ba7d1160d7e3c95d3ca2b41b1bbe975fddf4",
+      "bytes": 8392
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/gradcam.png": {
+      "sha256": "64e2e5b5aa7b79f09d47788a8d895426cb6d15994b4e24ff3f21e5d2bc414ff0",
+      "bytes": 371407
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/health.json": {
+      "sha256": "185b01f6fe4ee9d85cf9892eb5fff8d8cc8c14d64aa3679f4ade87b344061644",
+      "bytes": 265
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/http_end_state.json": {
+      "sha256": "749503ad20dc2cfbdae5e1b2977653faeb5a10229bf5ea25186fa93a2579f3d6",
+      "bytes": 962
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/loaded.json": {
+      "sha256": "dd3c53dedb8f7aaa896aab8450ba7aa3b4b8d33338da2fff2edc827d491e44a8",
+      "bytes": 834
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/result.json": {
+      "sha256": "f0197cb0d605a4c0547535807a9b198e32f79ad029d07501f80318e8eb0516b2",
+      "bytes": 3246
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/rss_trace.csv": {
+      "sha256": "130b45737c143c6dd860db0d5aa137ebf8e6d6f7772782dc06e6744b3b0ba66a",
+      "bytes": 372933
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/server.log": {
+      "sha256": "56a2ca5363992b11c542372c958f3c328c824efee005d927d3ed72fc507ab1de",
+      "bytes": 19962
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/C1_s42/timings.csv": {
+      "sha256": "f484eb850db0f614026b9da88d316400daca2ae191b6725da9ff1bec4354f560",
+      "bytes": 7993
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/after.json": {
+      "sha256": "691435c0cdc920de3a538edaa456d03d20c0a0ad995e29850bbd4ed5ffd5e875",
+      "bytes": 171359
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/before.json": {
+      "sha256": "cc81aed5ab0c68e3301fef6eae7796b16ba0b380ef741b6a3a25d7536e04436c",
+      "bytes": 171359
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/cleanup.json": {
+      "sha256": "8932fbcb20fb52faf042315cf0cff621b63ee7a798304b1f517400a8c7560533",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/consumer_resources.json": {
+      "sha256": "b0512947cd5206d58c21082682b4c3137d3e0ed3ae1266c323fa131d1bbca5cb",
+      "bytes": 3154
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/fixtures.csv": {
+      "sha256": "d5c33ffe6f603e0c3165f4fbcf05b1a4ff84ff70ce3ad1499b57180f1b078ca6",
+      "bytes": 7656
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/gradcam.png": {
+      "sha256": "86d5365f440510cffffae18cd3e10acd6a165746aa7dd58a7988932271ffc487",
+      "bytes": 359563
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/health.json": {
+      "sha256": "cbfa066c4a46498b3a95002bec7b0580150622c0965c7e46c752249a6cacdb51",
+      "bytes": 224
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/http_end_state.json": {
+      "sha256": "3d181d1dd96d731e2da22768c87568f5f58dbf97785616d0a71a5baed5db4e64",
+      "bytes": 907
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/loaded.json": {
+      "sha256": "91fb96b60b31ec46dd0f54cb24dca19b7d682ab6282fe7c6c6a2076091160854",
+      "bytes": 796
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/result.json": {
+      "sha256": "dd8fd3a827ae0283d7d53d9c4b82b2f565640a30ab90d83c1c9dbf5f014dd0d0",
+      "bytes": 3107
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/rss_trace.csv": {
+      "sha256": "3e9bfe3240ec550e36148d0f4801131b0645c68425d48e72609ac0e17404a43c",
+      "bytes": 374776
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/server.log": {
+      "sha256": "aeff3d159b7721c978c936dab134269638d153ae4eb549829622d3eb910e49b8",
+      "bytes": 19930
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_mitigated/timings.csv": {
+      "sha256": "4662b83c8c882304a4ead1db90b8738970cb098963724ce66237f38ad5e0efde",
+      "bytes": 8010
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/after.json": {
+      "sha256": "3b0395080ef0d6be62c5fa29c2d2fb70edba38281b600c407455209b75b4a3c8",
+      "bytes": 171188
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/before.json": {
+      "sha256": "5d2f09bb90290ce19de5dc9b932ed49658b495b910d7ab76a97d01bfd59fdc07",
+      "bytes": 171359
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/cleanup.json": {
+      "sha256": "de0bf88199ae099394d68706d5054827024723b3221ce9de4fcf48941aa442f7",
+      "bytes": 178
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/consumer_resources.json": {
+      "sha256": "dc7e16aaf801c1482c198769216f54272e34b56b44c63188adc472c6a20cc86d",
+      "bytes": 2938
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/fixtures.csv": {
+      "sha256": "3e1c2525721bef57b76bb7b11de791d98d7865f2ec9aff3ec0ee59cf4da4e72d",
+      "bytes": 7660
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/health.json": {
+      "sha256": "cbfa066c4a46498b3a95002bec7b0580150622c0965c7e46c752249a6cacdb51",
+      "bytes": 224
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/http_end_state.json": {
+      "sha256": "704ec8f96e7b32a1a4a9a3538fb7b5bd1fb283efbe5fb23f539e01c23ee4249f",
+      "bytes": 900
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/loaded.json": {
+      "sha256": "02b9c2da450b4e1c3d8a9cca8dd4ab0d07c0914cca27d7bfdfab973140d44a07",
+      "bytes": 792
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/result.json": {
+      "sha256": "2ade56111c2c3e33c4ed57e9c8fedb871d9623b4b2dc65551139bedbec6e100a",
+      "bytes": 2575
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/rss_trace.csv": {
+      "sha256": "3c7c4d65277bb05ffadaf7f5f727b21db7c92ee202603661a618c8729fee513b",
+      "bytes": 425215
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/server.log": {
+      "sha256": "29d4faf59f5b23b0836b882108c4d80f9c52a48f590019f824ed330d3ed8d5cf",
+      "bytes": 19393
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/runs/round2/V31_original/timings.csv": {
+      "sha256": "8ac43da1ab42cbf58fc964e5174c838f715f1fc3f9aeac4e483270b25b945239",
+      "bytes": 8017
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/server.py": {
+      "sha256": "f4e6c9b8fb42981c19017af281ac2634edc4fc92203e53c6a15b8bf75f949fb8",
+      "bytes": 2648
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/source_review.json": {
+      "sha256": "bcfb52fe1dd52cf49f031a835faf6a469b9cada47cd9212cb21f7d8bfb743a2e",
+      "bytes": 3117
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/system_conditions.csv": {
+      "sha256": "2e4686895bc83986610adef0d2d27a35497c5e0f28f4cf893eec748d55c59044",
+      "bytes": 1491
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/test_selection.py": {
+      "sha256": "e81fad0e09c2dca6b521922f66584e56f05cbfbaae4313584dd61aa7a9e38b48",
+      "bytes": 3752
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/tests.log": {
+      "sha256": "64d4b34f8334c9f2cc68a867b2b79fb13c0d638557c5cd340ebfe5c3f9157795",
+      "bytes": 854
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/tests_initial.log": {
+      "sha256": "91752e4ddb79240aab67a04ad1ef9b0d41e2bcfd4a08eae53ee7dbded291bff2",
+      "bytes": 1950
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/timings.csv": {
+      "sha256": "ac10ead498f203d52db5dd728cb8027921b1b5976a2a8bd80703975113a099a2",
+      "bytes": 108953
+    },
+    "auralis-back/experiments/v32g_service_integration_v1/verification.json": {
+      "sha256": "1104a10f41f73c7232e07c209c11d824dcb28ff99ad1ae0bcd74ccac8621966e",
+      "bytes": 2254
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/01_training.png": {
+      "sha256": "fa5204c04653b5cc64c6694db7713d7e67106f0af52022a7c8035049e3f50aa3",
+      "bytes": 775675
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/01_training.svg": {
+      "sha256": "57d53a5464ed327f5602dec4bd358e161dad4d933947db402bd491d23f6d4510",
+      "bytes": 77886
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/01_training.pdf": {
+      "sha256": "d8cef47361f5473cff1d971e81377c7a6bb2f3c4623b10fb075c70bc00a195f4",
+      "bytes": 26803
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/02_seed_stability.png": {
+      "sha256": "087ce3961e1000fadcc16f4d9516391a136bcb0451b10213165a3b16bb4c81b6",
+      "bytes": 350876
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/02_seed_stability.svg": {
+      "sha256": "11c72ab0dd37d218e7638ef4bbef23407b52852f3b8d2062e665ed7a218ea2a9",
+      "bytes": 68341
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/02_seed_stability.pdf": {
+      "sha256": "b2fab7dcd39e599d60fc5e7301b3d7d5608a06a21c99405df6ee7b17dada9a50",
+      "bytes": 27831
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/03_references.png": {
+      "sha256": "8772a7aaa43fc7cd54798f9bc3240e9d45645ff65cc989c1b36ce908d5a73e89",
+      "bytes": 195268
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/03_references.svg": {
+      "sha256": "ef9cc58a3a92ae03f486f10b8d02ae508c1510482a1bfe3a4c4b35622b899b5d",
+      "bytes": 17891
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/03_references.pdf": {
+      "sha256": "603f58f0f35904d3f0cb1acc72b324e47725e9050c81594395c0057ee1eea73e",
+      "bytes": 18278
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/04_scatter_candidates.png": {
+      "sha256": "ee2bef1a68bf28b75c93ff9784857cd3465df4183ec69bbc9fe1bb3dc74b7367",
+      "bytes": 429978
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/04_scatter_candidates.svg": {
+      "sha256": "80e3a4990d73f8f243805f93edba6c219b276c91721418dc5941019e2233a575",
+      "bytes": 277064
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/04_scatter_candidates.pdf": {
+      "sha256": "2c94dffcd7b8e323de1873608e92ad5ac1c684cd022a396924dd99a86294118b",
+      "bytes": 38061
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/05_scatter_references.png": {
+      "sha256": "55474b6afc6a6440a647d8ad229a55782e0e78a587c2f2869724743d3a11e7fc",
+      "bytes": 457157
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/05_scatter_references.svg": {
+      "sha256": "ed81415df70916246d1db3a0b5cc0f0dfb3b996b907bb28b87bc9ef2e6699515",
+      "bytes": 369113
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/05_scatter_references.pdf": {
+      "sha256": "a6c1b3914fe8161a7564a8c70c0c38b6ef364f42a79c40814bc309c69894b35b",
+      "bytes": 43378
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/06_residuals.png": {
+      "sha256": "fb18588c78f5fb9541b21139a128e1d1fc6be010cc8a8c2518798771d2eae0ba",
+      "bytes": 646524
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/06_residuals.svg": {
+      "sha256": "df08668f0b62196762600c9fb403f714c225ff5e5f555f631be79d204f7a1ae1",
+      "bytes": 327709
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/06_residuals.pdf": {
+      "sha256": "c52e347eabf514dbb01e74c1b28f7dd4321681c2486464ad25bb4295f576423e",
+      "bytes": 50062
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/07_bands_tail.png": {
+      "sha256": "538886e919718859372fadfd9f3aa8f154fdd9c2088041fadec3facc80c4c8bf",
+      "bytes": 654720
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/07_bands_tail.svg": {
+      "sha256": "e162ee303ee23e16ecbf4ccbe88c8606e940939557398a94c87f5dc81d959975",
+      "bytes": 52647
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/07_bands_tail.pdf": {
+      "sha256": "9a5c7c49d9eec18c287b0eb3ab35da592388ed72160b8b9f95670104792eeb47",
+      "bytes": 28077
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/08_train_validation.png": {
+      "sha256": "4b044a987caed59e6ab817dd081221dfb121df702f5dcd09f5b86494d07e8aad",
+      "bytes": 206477
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/08_train_validation.svg": {
+      "sha256": "6e2ec6aea2fa37991dd6f1e58ff9b587577dde1ecbf62fa21f139db100070476",
+      "bytes": 24242
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/08_train_validation.pdf": {
+      "sha256": "8413647354085ceec35a4e77a0fd757323ecce93329f3d15bacb8534a85939a3",
+      "bytes": 21213
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/09_largest_errors.png": {
+      "sha256": "1c5c687b9c0698adc4185a2f650ee17c5884ac92368c0e9636befeff8b276286",
+      "bytes": 2655207
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/09_largest_errors.svg": {
+      "sha256": "2ffd6bcb48b225b9c4e0cece5ec561b51a0a8bbdb7051b114217a8f59be3f6a9",
+      "bytes": 3060797
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/09_largest_errors.pdf": {
+      "sha256": "1ffa44324a14c528f03d269ac0e5c230795f22621ab841165d4ad58e07c4a68d",
+      "bytes": 1121959
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/10_parity.png": {
+      "sha256": "33362bc9a5b6571948e613a89ff8639831d1a159052bfa932a7ce618168036bd",
+      "bytes": 325750
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/10_parity.svg": {
+      "sha256": "6c2c28fd843c4f0cb9e7f9267ba8e9a8eff3311f79544e3d73947cfd7d11122c",
+      "bytes": 259846
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/10_parity.pdf": {
+      "sha256": "730e94c60f2215b387eed708192f865cd772f24dcb31ba269aab8fc5540cad47",
+      "bytes": 39851
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/11_memory.png": {
+      "sha256": "ece6e68f45e772c07b26ceed07216dafe87ddc633ea7ea15bb6260dc1823b8b9",
+      "bytes": 217058
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/11_memory.svg": {
+      "sha256": "60d4fb182856b446bf89301c717b6a4ebfa2f828b4b0c6c8bcacde380e6d42a7",
+      "bytes": 30624
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/11_memory.pdf": {
+      "sha256": "29b5b9c0180c789ef956c4813200341808e7868b74668c00d1546741a0bd31b0",
+      "bytes": 20827
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/12_e1_latency.png": {
+      "sha256": "5cba9a87512430d366448ac7beff9a6babc3fd125d5783e1a0f76dc93fd8fcfe",
+      "bytes": 582571
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/12_e1_latency.svg": {
+      "sha256": "c2ee8eaa53cd3e47cb82c73e77647cd15c3d8ba04eaf58cc913fd866c226167e",
+      "bytes": 57205
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/12_e1_latency.pdf": {
+      "sha256": "1850d036ed6ebc66bc14c8783b92937993be54bb5aa80c34088c9551e30d58af",
+      "bytes": 28781
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/13_e2_latency_effects.png": {
+      "sha256": "f28913981b2b4348f7bc64f52dc77d20f628fe74a718e022de9d8c5518691f4d",
+      "bytes": 391630
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/13_e2_latency_effects.svg": {
+      "sha256": "f8be3038ed497d7e54197f375b14bd1df1c40885eb20597fb1dc0d04d82c1a31",
+      "bytes": 46119
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/13_e2_latency_effects.pdf": {
+      "sha256": "f459b5e3c7d5aa1a498a35b5ff57797e3bcce44748589edf7ae1b91e0cf4ddb5",
+      "bytes": 26975
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/14_http_original.png": {
+      "sha256": "afa06d47169ed3cf7f31a0ea470741c2b91ee59532eeb21507222890921a2a58",
+      "bytes": 279261
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/14_http_original.svg": {
+      "sha256": "1112b701491d1767d63e4e5a34689b2e72f48a5ef5b263983976c6cad31fa4a6",
+      "bytes": 25368
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/14_http_original.pdf": {
+      "sha256": "98aea624d7475d32a854ab981b1cd5c903840d2d8225ef9b00bb0432109a7daa",
+      "bytes": 22336
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/15_sizes.png": {
+      "sha256": "8a552967bc62e186ade5d5db1f1cbc6af04c494bdd30ed5f44a2ee7d9cfa537e",
+      "bytes": 165535
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/15_sizes.svg": {
+      "sha256": "1915debc6ea3bed8d5f83bf58ab9e099f1fbd2fb813439f4952af8103733362e",
+      "bytes": 18058
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/15_sizes.pdf": {
+      "sha256": "2ccc03212aa59b4ab0869e61c736e16bd50541764202c14dbb2af95d47b9d579",
+      "bytes": 18918
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/16_architecture.png": {
+      "sha256": "7121b0bd21a341b8ca040ca78a643fbd7d19fc74290154d8301e98c4e828515f",
+      "bytes": 202577
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/16_architecture.svg": {
+      "sha256": "b85f0ca5a04e3c9aab5b4478a715f8aa482984e008fcf3bd683d4ed6d22d7c99",
+      "bytes": 14548
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/16_architecture.pdf": {
+      "sha256": "a20b29cc771fe0f31d4de4cbd37cdb60cbadb9bd10eab0143477e3fdec1f0aab",
+      "bytes": 37178
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_high.png": {
+      "sha256": "65dc686bbdb3e399e7a89cdb82af9bcc938ef7b3083a5037eafe850fad2ae250",
+      "bytes": 2520080
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_high.svg": {
+      "sha256": "2ea3a0a3e0548ae8072afb1f1bd0b2c2f20ce704e8c0bbd54404b72a557093dc",
+      "bytes": 2980070
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_high.pdf": {
+      "sha256": "da4cd4afdfa928184f13f7385ccad4c620f963f2f6bbdcd486251dd953336255",
+      "bytes": 1243123
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_low.png": {
+      "sha256": "cbbea9952f0b309d7dc8e3cdb4a98f8719370cd90d4bb45f818dc63a2f8e0a11",
+      "bytes": 2594972
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_low.svg": {
+      "sha256": "56c5fcdf1bed0719d51cca12eafbe8ef282ecfd4381b519888223e2c0d4c3cca",
+      "bytes": 3044010
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_low.pdf": {
+      "sha256": "db636a2257758a434e7f8263246e048210a2442c10b9aa9724ebd74dc17263e1",
+      "bytes": 1260491
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_medium.png": {
+      "sha256": "f42312cefbefc0173068d08874473a9bf7b4cf58f67918cf2f2aabd1d8a6d8d0",
+      "bytes": 2181200
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_medium.svg": {
+      "sha256": "b6897e203694965b1959fbf12b423bde783e8e51f1fb077afc74a2ce0f97b632",
+      "bytes": 2536294
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s137_medium.pdf": {
+      "sha256": "c8f4cbe299ed01e7be7c4f9347ef349c30d08d4596a5aa85c100bcaac047c4f5",
+      "bytes": 1059560
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_high.png": {
+      "sha256": "c585e2834aaa85b6ac24ceec66d9832cd142ca2f515437d0deef1e07608714d7",
+      "bytes": 2670713
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_high.svg": {
+      "sha256": "f9317fae03bdcc6276775cfb8b1f3a9fd4be619a5489f332eb0b9bcb62bcca11",
+      "bytes": 3151455
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_high.pdf": {
+      "sha256": "6ebdb8b05407a1960dae65ab63272d99bb8fa046b578d320e157fcfb2537b7ff",
+      "bytes": 1316189
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_low.png": {
+      "sha256": "f16bafec31421ecbf971793ad0ea855b963fa03538d326c9e41a905d7f3c7d9d",
+      "bytes": 2732080
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_low.svg": {
+      "sha256": "9cace5bdc9ed8f90895c374b561627f58471354ba0f282c70abd58d768cc41fa",
+      "bytes": 3210023
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_low.pdf": {
+      "sha256": "2579d532d45449f79e70401d9dc982a9b16c193fb768cea96bbf2e020560e1e4",
+      "bytes": 1327806
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_medium.png": {
+      "sha256": "828065ae6105d9b1816e573efd9784c9c056d3055c2b979af691550f6d221e7c",
+      "bytes": 2383759
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_medium.svg": {
+      "sha256": "511105884ef4f073b367ac6cac6868d61060413b70ee4bf9b21358071fffd1de",
+      "bytes": 2774059
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s2026_medium.pdf": {
+      "sha256": "db666e113d8a01d2247cc02db457b1bb632dadf306cbeaf07cb8fb9a3a2022e9",
+      "bytes": 1159207
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_high.png": {
+      "sha256": "410eaa2c00f72f373512e69f675741cb5493a467b93fae6c3ff95b8d8a3bed78",
+      "bytes": 2789115
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_high.svg": {
+      "sha256": "39e09cefd40158d95bd7159f5ace95fbf82d48c8e381a4a0297bd027b055cab5",
+      "bytes": 3327689
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_high.pdf": {
+      "sha256": "3ebf6f64c43f3ddc8114cb25cf32f1ddde7c004d73b4de0878c2dcb1cde95d1b",
+      "bytes": 1382316
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_low.png": {
+      "sha256": "b1083ad3e5b6af98305f85ba23e8bc645914f2baa6d62ab09649d36b07821325",
+      "bytes": 2813670
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_low.svg": {
+      "sha256": "5a995c48f27d76e5a55925bb6b7099c0ba66ecd2f7b9d31348d851c4d1247ae3",
+      "bytes": 3335585
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_low.pdf": {
+      "sha256": "613785888b55219021757a52c9851be96124b7ed1107449f0054a123b353c1d7",
+      "bytes": 1376178
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_medium.png": {
+      "sha256": "04848b3a5e7d28daa3b017d9986aa1b054a1e5f9fab26cf9272f3391292d2109",
+      "bytes": 2483606
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_medium.svg": {
+      "sha256": "593f9860ac7e5ed211cb9fe3ecd08a0b87a9b51ec2c074325df27325938a5be8",
+      "bytes": 2919349
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/17_xai_s42_medium.pdf": {
+      "sha256": "c67d2e26537f2fb678ca832ccaaae87565d57abbe35a552d306d59afe4651464",
+      "bytes": 1212932
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/18_occlusion_controls.png": {
+      "sha256": "914ba4e7d00fc90ad0a80bbbe904e5720aba57f06d13b02ba3adca7c2498a86d",
+      "bytes": 435218
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/18_occlusion_controls.svg": {
+      "sha256": "41b81b5f00d53686d28348bbb66e7011abffbe1888070f6cf92bfd904b689c93",
+      "bytes": 77164
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/figures/18_occlusion_controls.pdf": {
+      "sha256": "0247686d2ee6af21dc6a37abc3d902c34b4c33ba68ec1b72f52756235df20eed",
+      "bytes": 32194
+    },
+    "auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md": {
+      "sha256": "f844a2f8aefd3a4295167c968bac0cef6bd99886ca13ba8b09aacd8a321f4a63",
+      "bytes": 89520
+    }
+  },
+  "protected_before": {
+    "auralis-back/src/.DS_Store": {
+      "sha256": "e416f339a75cec38762847b3089868d489c003efe7bf3cad50c86913e1fc5619",
+      "bytes": 6148
+    },
+    "auralis-back/src/agents/__init__.py": {
+      "sha256": "db47c9ab8c394cff45c29ecb0081a3ac62025d7e7b8ccfffaa4cf17572407081",
+      "bytes": 1077
+    },
+    "auralis-back/src/agents/active_learning_agent.py": {
+      "sha256": "b2577c14d06b86ba4c87a90a786c66ab813f2fa67f217acd2b3c185e9514a0be",
+      "bytes": 7908
+    },
+    "auralis-back/src/agents/data_loader.py": {
+      "sha256": "643c6b4e81903b5c7af1dd63a84778df69067ae005c33778ff18051ced15aef4",
+      "bytes": 9744
+    },
+    "auralis-back/src/agents/data_quality_agent.py": {
+      "sha256": "9935e28c6daddb29ddf64f0655dab3635ac14f8c335cb29ced9b5dc95877cf42",
+      "bytes": 8339
+    },
+    "auralis-back/src/agents/error_analysis_agent.py": {
+      "sha256": "6de9decae58c7c80abce9facefb2b7fca0784512de0cff9385277dd18e71de9e",
+      "bytes": 8458
+    },
+    "auralis-back/src/agents/policy/__init__.py": {
+      "sha256": "aec4da4043acd805f53933c9602fd86841b3a13a62bcb037c5095c001b12f360",
+      "bytes": 78
+    },
+    "auralis-back/src/agents/policy/bandit.py": {
+      "sha256": "7b1ba796a613a9aa9b74a34bfaccce6159526a758c204b01cc7355e3325b0cf8",
+      "bytes": 6623
+    },
+    "auralis-back/src/agents/report_agent.py": {
+      "sha256": "a9c500cab2dac87cdda2b08f6215878484c04ee4fe3b53e40032a59ca6c485f7",
+      "bytes": 5687
+    },
+    "auralis-back/src/agents/schemas.py": {
+      "sha256": "ffff59229aed4d00dd9d9f6afb72902a838739354b5ba091d594491720b1ea16",
+      "bytes": 6412
+    },
+    "auralis-back/src/agents/xai_review_agent.py": {
+      "sha256": "2f97b1754f1ea6a26e35187564efff73d2d9a8c716b9042d1fb1270e24de2acc",
+      "bytes": 4801
+    },
+    "auralis-back/src/api/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "auralis-back/src/api/agent_routes.py": {
+      "sha256": "e09d264887a3382cb527eaa133da34bafb71dd2182a53eb401934dd4471ae7f5",
+      "bytes": 2769
+    },
+    "auralis-back/src/api/main.py": {
+      "sha256": "534c9b46cfc0c0b19de908d0d85c3ce092ffe4e2b9b416398e4bb01bd8cf7e45",
+      "bytes": 63507
+    },
+    "auralis-back/src/experiments/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "auralis-back/src/experiments/run_external_baselines.py": {
+      "sha256": "79a96392af6924628be56232bebca5eaea304cbf09e3f7191f5edd35cb27fb6b",
+      "bytes": 14512
+    },
+    "auralis-back/src/ingestion/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "auralis-back/src/ingestion/download_solar_data.py": {
+      "sha256": "fd1757bdd4bfb2613ecdf06011255c51e76108f8e49aa22e12aa3c9882b42d7a",
+      "bytes": 3941
+    },
+    "auralis-back/src/ingestion/massive_ingest_pipeline.py": {
+      "sha256": "acb266fc61d6471e351bfb3013e7b22dc561c094597cb97f8e441632b2f8debd",
+      "bytes": 14731
+    },
+    "auralis-back/src/models/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "auralis-back/src/models/active_model.py": {
+      "sha256": "e8be66ebb066bfd758d956ce23413798fd7c0945ed36f49105d0cd7a62b09932",
+      "bytes": 1283
+    },
+    "auralis-back/src/models/serving_selection.py": {
+      "sha256": "b945e65eafcdd37d3a63f6507d44f3dc719c1e44287fe7939fc953de32da90d2",
+      "bytes": 6155
+    },
+    "auralis-back/src/models/train_model.py": {
+      "sha256": "f984d1ee319a115ebf9112ef4687c8690c0282d0a5d1c1b5fc410a74b00dbe1e",
+      "bytes": 27727
+    },
+    "auralis-back/src/processing/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "auralis-back/src/processing/model_input.py": {
+      "sha256": "7f8071c4739e588c8289cf30efc287348d82519fe6059da8362235db645e920b",
+      "bytes": 2221
+    },
+    "auralis-back/src/processing/observation_time.py": {
+      "sha256": "0e118e06e0e7aac2d6742f2e3e1728de080c8e4b7991e7649d73348e01ea5e75",
+      "bytes": 1355
+    },
+    "auralis-back/src/processing/prepare_dataset.py": {
+      "sha256": "f2c6fdded9d5b7870df8897541fea92d7f72b875a909561ebf6325db8e75246b",
+      "bytes": 9339
+    },
+    "auralis-back/src/processing/scientific_split.py": {
+      "sha256": "6fc51196f3241fa485c3635733f62b30687009456540d5d3b33fae3be0d126f0",
+      "bytes": 2912
+    },
+    "auralis-back/src/processing/validate_processed.py": {
+      "sha256": "79932e2057b48fa1f612f6ffbaf72401ac3ee7fbc8b8dd8eb59489d71b32a536",
+      "bytes": 2942
+    },
+    "auralis-back/src/tools/visualize_tensor.py": {
+      "sha256": "8565a19bd1dbd575bae6b9e781c71005e90e0d427caed0bf7d94501d6f2ebc3c",
+      "bytes": 6141
+    },
+    "auralis-back/src/visualization/app.py": {
+      "sha256": "238d04863b33c8ddd1505837fd26a50e214b481ed0bc0747443f9ad25ce1de94",
+      "bytes": 18126
+    },
+    "auralis-back/scripts/audit_phase1.py": {
+      "sha256": "affe1eb9aec9004411401fd858ce1bf0295d2bff6131fe8adb47d5d14e8b8cc6",
+      "bytes": 6976
+    },
+    "auralis-back/scripts/build_phase3_temporal.py": {
+      "sha256": "7f66e00ebc626a2eb593ba9d61cb404a6f6d9bae0ee68128d21d2a524d2e94fd",
+      "bytes": 17861
+    },
+    "auralis-back/scripts/evaluate_final.py": {
+      "sha256": "2386aaf97698a9fa35b604f35946e1a01aecd80bcfa847dccd961921bfcec979",
+      "bytes": 13074
+    },
+    "auralis-back/scripts/explain_model.py": {
+      "sha256": "06bfd8f299b613e8fda0abb352b1bfe8cc9f50936db229a6094d6a0c301db431",
+      "bytes": 12968
+    },
+    "auralis-back/scripts/export_to_onnx.py": {
+      "sha256": "97a19c7e4ec12e1979ff6440f5f06827cca2d42f057b340332a72bc374b45dca",
+      "bytes": 7697
+    },
+    "auralis-back/scripts/extract_test_kit.py": {
+      "sha256": "96ebce4b33d59afd115bfac4c98cfc679bb6ceff67468a80dd3361b7e93ec716",
+      "bytes": 3930
+    },
+    "auralis-back/scripts/kaggle_auralis_v3pro_dataset_builder.py": {
+      "sha256": "d2b43e76791de73c80ebed5cc27d7570addd5c7e1b26bd8301340e4c191e4d54",
+      "bytes": 9569
+    },
+    "auralis-back/scripts/plot_architecture_diagram.py": {
+      "sha256": "01de48bc752ad1e266f74193931542097d36aa77ec08a30fd30c27dcbd559381",
+      "bytes": 8396
+    },
+    "auralis-back/scripts/plot_final_scatter.py": {
+      "sha256": "93a94c1925e3e822e6123726a1f398104dff2a3cd1c1e9d577452ca24d4a8980",
+      "bytes": 3522
+    },
+    "auralis-back/scripts/plot_gradcam_overlay.py": {
+      "sha256": "3166ef79d3af8ffa6f96438737be7d61e47d2acc72e1151ba7c5c786465bc568",
+      "bytes": 8442
+    },
+    "auralis-back/scripts/plot_r2_diagnostic.py": {
+      "sha256": "548de3e544515a30ccdba01a58193b53d11080d6e5d1568bb5fa466b1deaf334",
+      "bytes": 2156
+    },
+    "auralis-back/scripts/predict.py": {
+      "sha256": "0a0738dd528cbff12bea1acce7bcee2fb47aa6671a536285c747ae36c0260d7d",
+      "bytes": 7470
+    },
+    "auralis-back/scripts/promote_coronium_v3_1.py": {
+      "sha256": "8a80d18faa6144a7d0dd9758eeedf4ccf38c1df4ce8f0dffd26b40fd3092c44b",
+      "bytes": 8851
+    },
+    "auralis-back/scripts/recalculate_scaler.py": {
+      "sha256": "39c2e32e4210119fac98f68704acbe1c8f63c950d9e060aa0d1f48a0566d4c34",
+      "bytes": 6594
+    },
+    "auralis-back/scripts/run_phase15.py": {
+      "sha256": "4f1197f6e3889f5676e78ec3eaf210d99142d78a11572ea372adb3a1d77e0c77",
+      "bytes": 4739
+    },
+    "auralis-back/scripts/run_phase17.py": {
+      "sha256": "38619fa1048a56c548108188ab097f960acbb5683bf8cd7c72d3985c8da59c98",
+      "bytes": 31705
+    },
+    "auralis-back/scripts/select_phase2_history.py": {
+      "sha256": "6d8aafbb0dda20199ea22d32c6c0bbaad9568e5b3eb445c131d254898f57620e",
+      "bytes": 16059
+    },
+    "auralis-back/scripts/test_inference.py": {
+      "sha256": "6b9f66c70ba7d5f03d8b8119c9e66e66e785022eb1eb1efae16747b2a5452235",
+      "bytes": 5674
+    },
+    "auralis-back/scripts/verify_phase15_results.py": {
+      "sha256": "88bf2c0651d961839f7844acaed16dbdbd36c1a316059fb4d109d54533dc7928",
+      "bytes": 5500
+    },
+    "auralis-back/scripts/verify_phase16.py": {
+      "sha256": "66542b9d84843e62b9b27943c13df8af09ff93ded7d34b0987e024cbc9e5e2a4",
+      "bytes": 6241
+    },
+    "auralis-back/scripts/verify_phase17.py": {
+      "sha256": "9d3949966fffc72f7f7fca26b6d11e83a0306da374c077de77786ce5b9ae004b",
+      "bytes": 8033
+    },
+    "auralis-back/models/best_coronium_v3_1.onnx": {
+      "sha256": "f09b1dc470634d880eedc1fb9009c5af359152721b02c69c171b04758f0b48aa",
+      "bytes": 835234
+    },
+    "auralis-back/models/best_coronium_v3_1.pth": {
+      "sha256": "1e4c834451375a7c4a1f47bd60404bf9aec3bc20c18056c9fc1b517b168e8e51",
+      "bytes": 848269
+    },
+    "auralis-back/models/best_coronium_v3_pro.onnx": {
+      "sha256": "b2f1a17bad4446b7383c6b08f164d7f97add7f1d028df15bfc13744f0e9e92ec",
+      "bytes": 88701
+    },
+    "auralis-back/models/best_coronium_v3_pro.onnx.data": {
+      "sha256": "eabbbfd2ca216a07fc700ef660f502729d119bdba2fe0868ca180339bf17a359",
+      "bytes": 823808
+    },
+    "auralis-back/models/best_coronium_v3_pro_augmented.pth": {
+      "sha256": "b544204016796e85e0de927c3609ee6011e63c6779a177dcb070b01152740668",
+      "bytes": 852581
+    },
+    "auralis-back/models/coronium_v3_1_manifest.json": {
+      "sha256": "d8e61f507c596752b69fd9e1ccc2d6891fa889097c71a08ed02046216b14ac54",
+      "bytes": 3432
+    },
+    "auralis-back/models/coronium_v3_1_metrics.json": {
+      "sha256": "ab15d2acece7c7b820a106d4472a7e651abdd2900c0fc027f4e7b6e2adb01d92",
+      "bytes": 1727
+    },
+    "auralis-back/models/legacy_best_coronium_v3_pro.pth": {
+      "sha256": "982fd64e7cc42e0283ba0dbc552464974c101bdb9208099b732a67b8d6dcdce3",
+      "bytes": 851853
+    },
+    "auralis-back/models/legacy_coronium_v3_final.pth": {
+      "sha256": "66dc418c4da9c8efa6086553b2d7ae0549aa00ded26e9d55d98b620fbb549b37",
+      "bytes": 851673
+    },
+    "auralis-back/models/split_indices.json": {
+      "sha256": "b344b58689339ccaa8c5bf4570092d0799fb67a667487f10d8b3c515200ade6b",
+      "bytes": 9508
+    },
+    "auralis-back/models/split_indices_phase1_v1.json": {
+      "sha256": "0d754346744426699dc1ab0c443c8b4b70a9e9e75a14ddd381066488931e6f03",
+      "bytes": 131469
+    },
+    "auralis-back/models/target_scaler.json": {
+      "sha256": "1f5650c2e54314b7e9875b270d2e4cc1e3dc0bf022f8e59a637ef2c6af51fd5f",
+      "bytes": 61
+    },
+    "auralis-front/src/app/App.tsx": {
+      "sha256": "8861cec591a5b5cd751bd7839bce14ea679437b5de44704fcd342fc76cae83f7",
+      "bytes": 437
+    },
+    "auralis-front/src/app/components/ui/accordion.tsx": {
+      "sha256": "0ff6fadd3560c21aa67911d817f89d206188fd07bd57244ba59a117bd4ff9cb4",
+      "bytes": 2060
+    },
+    "auralis-front/src/app/components/ui/alert-dialog.tsx": {
+      "sha256": "16f0bf95de446a8579cba6e75557fd83eb4aa0dbbc77ee936fbb59451e9390e9",
+      "bytes": 3866
+    },
+    "auralis-front/src/app/components/ui/alert.tsx": {
+      "sha256": "19835c5f03b78e8915b5e8900a0681ddfb83e3bcc0c9930e62f31c01e4dfb129",
+      "bytes": 1621
+    },
+    "auralis-front/src/app/components/ui/aspect-ratio.tsx": {
+      "sha256": "7706745e217bebbc2d7bdf6697e9c6d484061146ae771755c9b6f240762c7217",
+      "bytes": 284
+    },
+    "auralis-front/src/app/components/ui/avatar.tsx": {
+      "sha256": "d40b1cbabe71c094c6bcf089ac5702ec77623dbc75c770ca9f86530e03d6fea1",
+      "bytes": 1104
+    },
+    "auralis-front/src/app/components/ui/badge.tsx": {
+      "sha256": "8329a0b50f818665f1aca05ab93c16b103178b463f2949234ee4416bbc7d3fe2",
+      "bytes": 1636
+    },
+    "auralis-front/src/app/components/ui/breadcrumb.tsx": {
+      "sha256": "c9fcf4df692c80c06ccc38c32f7045d1f389197c503edac32941cde64bada62e",
+      "bytes": 2368
+    },
+    "auralis-front/src/app/components/ui/button.tsx": {
+      "sha256": "a3f96150fdf0c929eec3759673cc34b2cf5538fc088b25a54c00e0a3ed1c3f60",
+      "bytes": 2106
+    },
+    "auralis-front/src/app/components/ui/calendar.tsx": {
+      "sha256": "280ba2b6416bb46259762fbb0068c61e93f186242516a10c2f319d484b09485d",
+      "bytes": 2913
+    },
+    "auralis-front/src/app/components/ui/card.tsx": {
+      "sha256": "afc99cfa090791e394e68766095a4a86f5f6140521546b32d4b298061d72473f",
+      "bytes": 1988
+    },
+    "auralis-front/src/app/components/ui/carousel.tsx": {
+      "sha256": "5ffdde6336f0ee479c11255f3b951b230a1771f0080323f4dd0def03d677f50c",
+      "bytes": 5606
+    },
+    "auralis-front/src/app/components/ui/chart.tsx": {
+      "sha256": "e3e14ac980ce857edda5414ceaf8d7e504b5be37a4d99c28ff67c4c2535f51ff",
+      "bytes": 9852
+    },
+    "auralis-front/src/app/components/ui/checkbox.tsx": {
+      "sha256": "894eb30992723a15e3ae75c46a3bf8808a526f5b3bff2c61c78f4d3e8d521cb8",
+      "bytes": 1244
+    },
+    "auralis-front/src/app/components/ui/collapsible.tsx": {
+      "sha256": "b763764ebced561c04e2e6ada9dc53375bb90b9f4bcb91b0f3d5de7381aaf0cb",
+      "bytes": 806
+    },
+    "auralis-front/src/app/components/ui/command.tsx": {
+      "sha256": "17ae21889928aeb0c042911153b7f0715bf537b190da31f16fc5798b9439aa2f",
+      "bytes": 4662
+    },
+    "auralis-front/src/app/components/ui/context-menu.tsx": {
+      "sha256": "e17a7028f18669ddd104e0f40fbb0110ebab0cfc89ad6910a43d2dc8539e7c22",
+      "bytes": 8251
+    },
+    "auralis-front/src/app/components/ui/dialog.tsx": {
+      "sha256": "f4adc0065a7f795b5d99b8afe095a443d2d03b523cf5f958bc36ee7fbe0d3e45",
+      "bytes": 3828
+    },
+    "auralis-front/src/app/components/ui/drawer.tsx": {
+      "sha256": "5a99d073185e0ef6d984436547dce1f99c333dde7c1d7f33a2155dce05216514",
+      "bytes": 4085
+    },
+    "auralis-front/src/app/components/ui/dropdown-menu.tsx": {
+      "sha256": "798b5337dc147d88c65de01f7221e0bfa04272968a1fce6acc1ec0bef7d9ddb9",
+      "bytes": 8313
+    },
+    "auralis-front/src/app/components/ui/form.tsx": {
+      "sha256": "b181a640358bd91b827f7e3ba610036f24a976994d4d88b480471a167770a508",
+      "bytes": 3785
+    },
+    "auralis-front/src/app/components/ui/hover-card.tsx": {
+      "sha256": "6ec1ef98aef3898ef3f8eb35e52c10add150d76cd041132d2520fe3016ecfe60",
+      "bytes": 1537
+    },
+    "auralis-front/src/app/components/ui/input-otp.tsx": {
+      "sha256": "b15b03f71841b176baa6e0294a0790eea1ffe9264c55003fbbc9039d8457057b",
+      "bytes": 2282
+    },
+    "auralis-front/src/app/components/ui/input.tsx": {
+      "sha256": "cb82ffcd1a9accdf9b07edc8e976f43ad1c9cf91968ffd7639df5df14b7ad407",
+      "bytes": 963
+    },
+    "auralis-front/src/app/components/ui/label.tsx": {
+      "sha256": "5ed157f039340cedaa59a888931db608667827170ae9538513a50ccf2ca65a9f",
+      "bytes": 614
+    },
+    "auralis-front/src/app/components/ui/menubar.tsx": {
+      "sha256": "1f0173397dac560a4748782bb595c956155a9360755667bee3d18c4a0f1179b1",
+      "bytes": 8426
+    },
+    "auralis-front/src/app/components/ui/navigation-menu.tsx": {
+      "sha256": "df9f6e0c1d3fb1b265f8561ef00c98412f24a360a00cb7935b7c6f9a0d7513e6",
+      "bytes": 6684
+    },
+    "auralis-front/src/app/components/ui/pagination.tsx": {
+      "sha256": "10bad2279ea5120ade645a1a834ed74f2471cde0fe7f3e9457fcb4918b7d0bc3",
+      "bytes": 2709
+    },
+    "auralis-front/src/app/components/ui/popover.tsx": {
+      "sha256": "f14e16bebcfb1b605f6336d52153e43b76456c419930faea216d0ce2e3b1d3b7",
+      "bytes": 1641
+    },
+    "auralis-front/src/app/components/ui/progress.tsx": {
+      "sha256": "956cf4b485bcf57684caac10df2aa2a72387d0736d8f4cd1315c49ebd2da4615",
+      "bytes": 743
+    },
+    "auralis-front/src/app/components/ui/radio-group.tsx": {
+      "sha256": "ecaeebb62d064893c23e7242b796ff5834e2b430676b3eecb1b3d4bc413283c8",
+      "bytes": 1471
+    },
+    "auralis-front/src/app/components/ui/resizable.tsx": {
+      "sha256": "7930ed39d1095de95193bb72ef046b8198647e1114d9a437aa1cd04c0975c5a8",
+      "bytes": 2036
+    },
+    "auralis-front/src/app/components/ui/scroll-area.tsx": {
+      "sha256": "5bd9bb1d6909467b431283e96d2a9c83003bca1aa043d149dcfed8e81de51986",
+      "bytes": 1649
+    },
+    "auralis-front/src/app/components/ui/select.tsx": {
+      "sha256": "6aaf2111952394fbb8c64a505af02d08da28cc25726d61a991daebe400772480",
+      "bytes": 6275
+    },
+    "auralis-front/src/app/components/ui/separator.tsx": {
+      "sha256": "54cc34fc3ef7e445948c5bccf7307efbb2c8f9e63db0fc68dd3fa8ee54dc9812",
+      "bytes": 707
+    },
+    "auralis-front/src/app/components/ui/sheet.tsx": {
+      "sha256": "8e1e064f92e2463bc7b8bb227a7c4d68d7464837c02d48ff75a87585d864c54c",
+      "bytes": 4105
+    },
+    "auralis-front/src/app/components/ui/sidebar.tsx": {
+      "sha256": "24e197a06698ac0606e99b3ab9e7c31e9544e759eb929d22f37ea15391cae1c1",
+      "bytes": 21663
+    },
+    "auralis-front/src/app/components/ui/skeleton.tsx": {
+      "sha256": "7fd5d7f3ea479c3c1ae7be79bdbaf84c87647333768f70d396cd84580535d485",
+      "bytes": 275
+    },
+    "auralis-front/src/app/components/ui/slider.tsx": {
+      "sha256": "19dd9d8b758f41fa61967d1a0540ea34ed989727258d23eef9a50cdebcab805b",
+      "bytes": 2006
+    },
+    "auralis-front/src/app/components/ui/sonner.tsx": {
+      "sha256": "c5853f16cc11cb69e0115bab13eeabe7be5dad16fafd77b35cdfe4dbc64f0256",
+      "bytes": 571
+    },
+    "auralis-front/src/app/components/ui/switch.tsx": {
+      "sha256": "d4c744131c6161300510909aafe2c2cb6d819f2c7a8c2aeb75d4317004c7eff7",
+      "bytes": 1182
+    },
+    "auralis-front/src/app/components/ui/table.tsx": {
+      "sha256": "e4ec7d3be042efd0fa363a57dd0e649a7831b86f975d4ec5192ebbfdd66e0f95",
+      "bytes": 2460
+    },
+    "auralis-front/src/app/components/ui/tabs.tsx": {
+      "sha256": "933b8f421bd84b21a22e3fd11cd62fbf4fd8b6fb7252f42ea706b9cd29255051",
+      "bytes": 1945
+    },
+    "auralis-front/src/app/components/ui/textarea.tsx": {
+      "sha256": "6c3127c28ba1dda0428ba286a9e291c52ad95bfc8acd10518b262b71e470f3e7",
+      "bytes": 767
+    },
+    "auralis-front/src/app/components/ui/toggle-group.tsx": {
+      "sha256": "43e56c5487ed93a2e0d418dcf944a646c716b8c8c55d050fcda1d5cd1248cce6",
+      "bytes": 1920
+    },
+    "auralis-front/src/app/components/ui/toggle.tsx": {
+      "sha256": "31f91bca26bed6bc884e3dbebe095046d4cf925b9d7676094721ac287d0b2135",
+      "bytes": 1565
+    },
+    "auralis-front/src/app/components/ui/tooltip.tsx": {
+      "sha256": "2f3a8720fb4b75c6911450be73d0407e2a84bb5ea1ded28ccdbf955be62a0155",
+      "bytes": 1897
+    },
+    "auralis-front/src/app/components/ui/use-mobile.ts": {
+      "sha256": "738d8e4520edeca7caa2ca56a4923839e30be14a00fc32b5a770f5d5b451a63e",
+      "bytes": 585
+    },
+    "auralis-front/src/app/components/ui/utils.ts": {
+      "sha256": "d1f1e0d62cb8d8d1e04c26e14de842d8a151f75812d81b046c65b5d1fe8e4b27",
+      "bytes": 169
+    },
+    "auralis-front/src/components/figma/ImageWithFallback.tsx": {
+      "sha256": "79caaf9d1736698c090823383f7b18a9496e9c1309a40f925c8aeb37e496bd8e",
+      "bytes": 1153
+    },
+    "auralis-front/src/components/shared/ripple-button.tsx": {
+      "sha256": "a37b3806a63ab806949f710f767453e55e18a3d66c7e801d4db824f5d3a491b5",
+      "bytes": 1907
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentActionDistribution.tsx": {
+      "sha256": "98205d93b091a58dff619ac2ea45e0a27a4c86e40118f008d5384ee91798c5e4",
+      "bytes": 4674
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentCard.tsx": {
+      "sha256": "04c98b5ea0c52f0aa2ae6251fddf66641db1f882db0d495472c57390a8d15c94",
+      "bytes": 6276
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentConfidencePanel.tsx": {
+      "sha256": "5412252b83daeac4ab658813eb1c867c759f6a62bb0f06af3da5361431cb5c3e",
+      "bytes": 2191
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentDatasetDistributionChart.tsx": {
+      "sha256": "3531cf58ea8e9098b2ff0ffab5c061d06480dcb28ffded19af94fd02706119a3",
+      "bytes": 4010
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentDecisionLoop.tsx": {
+      "sha256": "79f487e97cbf3cd0df5d1a0751664431415b7d2765f08e88d86778b0c1d9b725",
+      "bytes": 3122
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentErrorByBinChart.tsx": {
+      "sha256": "6b964316e6b9aacc3aed7206c5249e090e0333e9ebc3f53e86bf9a2ac2220c72",
+      "bytes": 4297
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentLabPage.tsx": {
+      "sha256": "472a3ff41c9c1b2b79913b60f9bb7303644b1d68867e28c5cee83cd21bcaafc0",
+      "bytes": 12489
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentReportPanel.tsx": {
+      "sha256": "3b93a5925891758bf877e871a86ce095ee63cb0b34bb818633738e67697d4e42",
+      "bytes": 4024
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentRewardChart.tsx": {
+      "sha256": "72604c87adeec842a2339643fb61e7a51e4d4e349a146c29734f931ba31e3c86",
+      "bytes": 3544
+    },
+    "auralis-front/src/features/dashboard/agent-lab/AgentTopErrorsTable.tsx": {
+      "sha256": "23124eca5c94fd17b2a3e2b7c82e90b1a62cbd27bb9f55a9223113b8ef67504a",
+      "bytes": 3070
+    },
+    "auralis-front/src/features/dashboard/components/architecture-comparison.tsx": {
+      "sha256": "d9a8f67d90fc65db4e24d0aaca08a5b0076c2d3b4e8b1cd053c7378b45525984",
+      "bytes": 10123
+    },
+    "auralis-front/src/features/dashboard/components/config-panel.tsx": {
+      "sha256": "b9a3dc4df50bad2121b1fc3bec71b8861d1de744b10dca3dc5d4d4fc6161b3a3",
+      "bytes": 6500
+    },
+    "auralis-front/src/features/dashboard/components/experiment-log.tsx": {
+      "sha256": "f3df5b8541e3c55debc38876f45f36faca260b278bc9b4f2720b87f65cfb9646",
+      "bytes": 4056
+    },
+    "auralis-front/src/features/dashboard/components/global-metrics.tsx": {
+      "sha256": "2ba327057af3b2fb2d274dd2a8c20d0a4f5ee8720121208dd228aa2a17c01723",
+      "bytes": 4581
+    },
+    "auralis-front/src/features/dashboard/components/kfold-results.tsx": {
+      "sha256": "9d8982f219eb9e6d04196b9f4e26510255b3cb59530420583674ad6716791787",
+      "bytes": 3987
+    },
+    "auralis-front/src/features/dashboard/components/predicted-vs-actual.tsx": {
+      "sha256": "e37fa8eebcc91c1a9cf2ac43f753b0c67a219330ea89c510b3f6111fb3bca660",
+      "bytes": 7040
+    },
+    "auralis-front/src/features/dashboard/components/xai-faithfulness.tsx": {
+      "sha256": "24946fd79f925d41b1ad5ee9b3d704e85cba54116c30e6d0ff595b80d7b10251",
+      "bytes": 12497
+    },
+    "auralis-front/src/features/dashboard/dashboard-page.tsx": {
+      "sha256": "87f32e7303e6b1a7f7960b1a73be205eb934b587ba0b74a8e0ce5ec98bed1140",
+      "bytes": 2896
+    },
+    "auralis-front/src/features/dashboard/execution-logs.tsx": {
+      "sha256": "d2d5ea0df3082f2975fd9d1cb1c5f5acbd84b03c102c1f5c33926523271d5210",
+      "bytes": 8178
+    },
+    "auralis-front/src/features/dashboard/magnetogram-panel.tsx": {
+      "sha256": "c690e1ff7f67899c85bcf5cff913c03d49759b406251f853418ea394a3a33123",
+      "bytes": 35996
+    },
+    "auralis-front/src/features/dashboard/model-metrics.tsx": {
+      "sha256": "de0916035d3bb5886730b84436926761b9f5a9b0ca33696030a6259b800f05fd",
+      "bytes": 7740
+    },
+    "auralis-front/src/features/dashboard/pages/research-insights.tsx": {
+      "sha256": "0bdb369253bc688a8771276081bc3faba40c7fe316791783d071d40e67300732",
+      "bytes": 1701
+    },
+    "auralis-front/src/features/dashboard/prediction-chart.tsx": {
+      "sha256": "6697f4670f21720410f4b00e7154d6f2c66ac4fe8520674890bad3aad73584a2",
+      "bytes": 7467
+    },
+    "auralis-front/src/features/dashboard/scientific-header.tsx": {
+      "sha256": "e3fc56b94ccbde085c3686f27f8476ba522e4b54a595bafeb900f57e2c782c8d",
+      "bytes": 1722
+    },
+    "auralis-front/src/features/dashboard/scientific-sidebar.tsx": {
+      "sha256": "d489cdb50e9697526f6f2e7e286c7a7893d2a723f3fb93fdb7d968a385dcaa45",
+      "bytes": 3860
+    },
+    "auralis-front/src/features/dashboard/simulation/SimulationControls.tsx": {
+      "sha256": "1bd8b1b9fe3c13196a9c91de32ed2d728b3d6e63fa871f89acdc5dc8f8c8840d",
+      "bytes": 5427
+    },
+    "auralis-front/src/features/dashboard/simulation/SimulationLegend.tsx": {
+      "sha256": "d1ce1326e49484732aa345a7c52b949ac57efb24d1ac9f1325be7344a2bd4e00",
+      "bytes": 3398
+    },
+    "auralis-front/src/features/dashboard/simulation/SolarScene.tsx": {
+      "sha256": "39aa40f1a40973c6bff28d7513521d4ccf446de6169d1221ad07c97d5782fb1c",
+      "bytes": 31398
+    },
+    "auralis-front/src/features/dashboard/simulation/SolarSimulationPage.tsx": {
+      "sha256": "0276072ccec03896fb8eada478c039289a8c5888f9c5ab071d97a1c8a3d4c6d5",
+      "bytes": 6606
+    },
+    "auralis-front/src/features/dashboard/simulation/SolarTwinPanel.tsx": {
+      "sha256": "95198fb76bb35331bd1706c1a9370b3526804f33eb9d0c762ae7a49c1a2a30fc",
+      "bytes": 2181
+    },
+    "auralis-front/src/features/dashboard/simulation/solarSimulationTypes.ts": {
+      "sha256": "d9ffd08704bac4495c01f8a8775497bf81125330c48b050bae43e3c0e0b9ddb5",
+      "bytes": 1793
+    },
+    "auralis-front/src/features/landing/architecture-diagram.tsx": {
+      "sha256": "ae03ec67ac0ffd7ef6b42c25e169204ae8aad518803d379bf2ae39592f870a08",
+      "bytes": 2777
+    },
+    "auralis-front/src/features/landing/landing-cta.tsx": {
+      "sha256": "1e7289fcf4cc18a5dc1a0b02c7e3a87b15c0b24be4263282f5879bcee95cd7e3",
+      "bytes": 1423
+    },
+    "auralis-front/src/features/landing/landing-hero.tsx": {
+      "sha256": "c667e33dcecca8f6e3889ae56c8d8d5dcab6285ae0a1b5caf2c3553ccabe663b",
+      "bytes": 5593
+    },
+    "auralis-front/src/features/landing/landing-page.tsx": {
+      "sha256": "a7e12849b5aebf5e252a3823e28669805da38950a7f4d5850b73a1473dab4d21",
+      "bytes": 739
+    },
+    "auralis-front/src/features/landing/project-description.tsx": {
+      "sha256": "8af05f779f365dcfc98b696ca299aba37c6c4ededad4b696a8ba91ec32599f4b",
+      "bytes": 3859
+    },
+    "auralis-front/src/features/landing/system-overview.tsx": {
+      "sha256": "09b400c1e74635878c471e77acdc883628717aa6ad4f2e18796877967cbe2681",
+      "bytes": 1687
+    },
+    "auralis-front/src/lib/api.ts": {
+      "sha256": "71d15530b5cd49d5f4a71e6e737b0487b84f284e358df55af6709774d38e904d",
+      "bytes": 10021
+    },
+    "auralis-front/src/lib/frozen-demo.ts": {
+      "sha256": "6a8d22e7252fc5add2273ba989cca1485c13bba1636f0b994a9098cefa2722da",
+      "bytes": 1160
+    },
+    "auralis-front/src/lib/i18n/language-context.tsx": {
+      "sha256": "90c14696e0c4d4197a05c59fa828c2ccb1b0dfe26da2b9b367b392911cf46f1a",
+      "bytes": 1616
+    },
+    "auralis-front/src/lib/i18n/translations.ts": {
+      "sha256": "833b06dae76512140f898a3669d5d400272f05feebc70240cfb5a030f86c7245",
+      "bytes": 22626
+    },
+    "auralis-front/src/lib/types.ts": {
+      "sha256": "9db95cffc59407684f6da1893fb3d257525130bc9116b1d5c58050ca96f622e9",
+      "bytes": 17654
+    },
+    "auralis-front/src/main.tsx": {
+      "sha256": "a581599ccca32d2e42a7d7ec949efbcb85d28e10d4e74d7243fc1cf9d37baac2",
+      "bytes": 433
+    },
+    "auralis-front/src/styles/fonts.css": {
+      "sha256": "bffaa162c7cbebc2d6ff4cc5ed6f5fe53f1812478b21f1bdd6ca519db6078dd3",
+      "bytes": 173
+    },
+    "auralis-front/src/styles/index.css": {
+      "sha256": "0d46dda02561a65d8171ef491236820a78814f922e2e1e1c806047a3fb411536",
+      "bytes": 588
+    },
+    "auralis-front/src/styles/tailwind.css": {
+      "sha256": "c7dddb734b0c9e3cfaa6698cd725f018b8a5e41f847ae42fd9b0269d44ee9ff4",
+      "bytes": 98
+    },
+    "auralis-front/src/styles/theme.css": {
+      "sha256": "bbebb4cd280d5c3a3e808233670b18e7ce72c08da66823522d2b5ca3166acde7",
+      "bytes": 5448
+    },
+    "auralis-front/src/vite-env.d.ts": {
+      "sha256": "3fd035fcdadbf8ecb0a3563de822202066c49ffc61f6f259b063e20364242730",
+      "bytes": 200
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "dc77d5568e67225a82045672ab3ac49bbc818ee0baa689913fe127eff2d227e0",
+      "bytes": 66211
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "33f78a02071d80b4d26db44310b76d210bcb5e3af7f9706087019d832c79132a",
+      "bytes": 156145
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "ba2b585ed3dee16278d9e54993816b2181ab727a58149f3cbeaf002ff91acac1",
+      "bytes": 62681
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "c29ab52ca05f1bc94313adae05d605d53480cb43ab60abcb968aeee7ec14ed32",
+      "bytes": 172033
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "bf6e818ec304a2dedcdc8fb7351053f837d315bc7c46c54d3de02f82449c699a",
+      "bytes": 94207
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "ad302eab6e1e6508cfe5200ead0da944d0ab4acf15d0d1d7392c041441929adc",
+      "bytes": 93976
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "f57c35e22f0c12535d585ffae2d9e1c5a1d7f6eb6cde2d7751dfb761413106b7",
+      "bytes": 81497
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "2e70e8530eb3e5573c933645f9c17a2d3f38517141a1f461638aed495f8558c2",
+      "bytes": 74118
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "ecc370963ef2be8198b4ca409a7ab23381be0fc59bf2f86eaa4f81a7d2e90387",
+      "bytes": 80435
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "6b37548e395b92e33708cb4cfa4f1a067dc44a3db4292913b2746c1deb63ca1c",
+      "bytes": 83975
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "142bc29f5e427ac760713d12bc9f795811384793d264738032f2224668c5f637",
+      "bytes": 84991
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "26c050a01acb48771264e59d57201dd4141198817745b5cbe9559e04fa81b8b7",
+      "bytes": 106017
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "f693ec06b5c030eec3c859049eff6e53afb388850fca68c3501d3ab5db299eb3",
+      "bytes": 111093
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "f03966d687f77e41497851a3e0483d15913deba1eade91b4e556a6390910686e",
+      "bytes": 100614
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "e58270667581c98011ddca46463c4d1326906c614f94233aad1d5f0382748483",
+      "bytes": 95769
+    },
+    "auralis-front/public/demo/aia/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "058eedcdcde6c6aa1ff19a17f995a2629bacbdff704c75e1776679b6d7d5dc16",
+      "bytes": 90512
+    },
+    "auralis-front/public/demo/gradcam/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "0b5c91c7291c4c54f95a678c7be3ca4d409b8dc92db31537e090c44f333df08b",
+      "bytes": 648056
+    },
+    "auralis-front/public/demo/gradcam/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "0f1748b6e20dc9851b59c8755c4b8126e531dd817cae88789c44f892eb62e191",
+      "bytes": 650921
+    },
+    "auralis-front/public/demo/gradcam/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "71057e8c8c5c25034eebe756a17f07622f180f6a4ee3f8f85278d4ba398e3bb1",
+      "bytes": 663200
+    },
+    "auralis-front/public/demo/gradcam/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "00511a000f72b653b6dcfba068486fbc3e848d4f7466fd9756d40c1d071c01ee",
+      "bytes": 672829
+    },
+    "auralis-front/public/demo/gradcam/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "bd9e4c45cccbfe69e3a529d219cf37960498add2e2d9a928dd8b1d518cb91aa0",
+      "bytes": 672885
+    },
+    "auralis-front/public/demo/gradcam-provenance.json": {
+      "sha256": "2c12601281b3b2a6855f0121100a938f9ce17f8fbaf3224c38b5417a7f9350ea",
+      "bytes": 5287
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "0d0b78c0f113835600530b0a874398d69cb8d5047150ad8b5a3ddd28b12b06a4",
+      "bytes": 459473
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "9355b565bd8627bb9768b702e488d117fc3785f05739563525d97f72b57891f4",
+      "bytes": 479730
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "3a1b06bfeba7971f93d5054c7e9b4144d3cd63d8926c520954ae447c51d8ae18",
+      "bytes": 457959
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2018.04.19_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "0f1aa7ad07752b733944d55c0e3034ffafec95eebeb62cbb53c6e122007771fd",
+      "bytes": 470027
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2021.08.04_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "386dc93e6b975c7d3e995172d1f62b1051d99d94f0f33171a46429d545821df0",
+      "bytes": 465071
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2022.03.24_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "7af00d7f42ce34aa9922dfaf8a7fc13de1ca12f52c02816ac8e4b88daef21d02",
+      "bytes": 457523
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2022.03.25_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "23c35dbcc82f3edf840a192740c9ff99e4c0cfc4ac46287b6e6d7c51b262f1eb",
+      "bytes": 457021
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2022.03.28_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "d38e822bb005181bc1bcfea0666cd423d521cd05f08649653b82cb24a9dc56d7",
+      "bytes": 443093
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2022.03.29_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "017c8a470f9578d72e7ee91f3359791e451b051a2422eebec9db2dc39d1f4c2c",
+      "bytes": 434158
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2022.03.30_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "50150fafc59075dfcaf228d762e271d9006d506f13c020fa209c6464928be92a",
+      "bytes": 431190
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2023.05.20_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "05e0b244acf3c7bb66e729ffabf60e50396e71d45cdd2d78f483016f76d0ab3d",
+      "bytes": 425831
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2023.06.12_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "855bf6f53fa26f3a68feae164daeacd6c6ad018ed367d5074a1e4ef7c0902a06",
+      "bytes": 416366
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2024.08.09_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "a0e0dbf3d890478cdddf36ce01fc1d7cccd6711602a999e0d999406a902d7056",
+      "bytes": 369411
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "4bc7b21f27065d0e60e5db1bc797300043ca7e6d664ff2851ec81d4d27579ba8",
+      "bytes": 407694
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "1daa538b1369be627fedc7f132257ba803524dca8d7682cacebf6c84a336e692",
+      "bytes": 445716
+    },
+    "auralis-front/public/demo/images/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy.png": {
+      "sha256": "962b762f0d19b06920b3415e5226d1157abcd90ee1122deafd62ca1ca0946827",
+      "bytes": 440950
+    },
+    "auralis-front/public/demo/manifest.json": {
+      "sha256": "529583528c881688a960bae7a0b9a8250b7073646b65590717fadd0beb85aaea",
+      "bytes": 8321
+    },
+    "auralis-front/public/demo/responses.json": {
+      "sha256": "005a98b8456e0cb403594fca0c0b1513bb1e635f4a22fad99757a63ae1b053a9",
+      "bytes": 593706
+    },
+    "auralis-front/public/solar-storm.gif": {
+      "sha256": "a8dfd9e8ddb55a2a4074c03a94e0d49e5537d3f3ca84944bd47fbffaddf63bd6",
+      "bytes": 2348228
+    },
+    "auralis-front/public/sun.gif": {
+      "sha256": "3ee3d5b4d452980e966d0a8e6c6dc20e5783b3545676745dbfae699a0c9dc158",
+      "bytes": 2122367
+    },
+    "prototypes/phase4-unity-needle/web/src/capabilities.mjs": {
+      "sha256": "b11d5be42a86d2119ccc621c362c104b9c93cbd28392042a833f08d689b19471",
+      "bytes": 728
+    },
+    "prototypes/phase4-unity-needle/web/src/dashboard-integration.ts": {
+      "sha256": "a2e0d73388e14c9135020fab66ab6b3a4090dbc7f72f41312a7edea0d3db225c",
+      "bytes": 2932
+    },
+    "prototypes/phase4-unity-needle/web/src/main.ts": {
+      "sha256": "73bffe625aab7a5a8b651ee77daaf866864471478f50c6b3dc8c1277ac086f2b",
+      "bytes": 15723
+    },
+    "prototypes/phase4-unity-needle/web/src/phase5/contract.mjs": {
+      "sha256": "ce759b64771b5af64a5f57373fa5105e799add365dcf547524e46cfa6f549356",
+      "bytes": 2809
+    },
+    "prototypes/phase4-unity-needle/web/src/phase5/main.ts": {
+      "sha256": "ee7d86dd03bd18009428cfbb89b181d26ad9a693711d0ba18a6f34c2135ffeca",
+      "bytes": 36151
+    },
+    "prototypes/phase4-unity-needle/web/src/phase5/style.css": {
+      "sha256": "a7f8ac5363bbe36b8d0716bc1429dc675fcb65f9e081efb4af4f4edd807876c9",
+      "bytes": 13661
+    },
+    "prototypes/phase4-unity-needle/web/src/phase5/visual-materials.ts": {
+      "sha256": "59c4f30901987dc79e6ad9d45d1125fba429b2e98b2be145584b517c64a067f5",
+      "bytes": 6892
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/activity-loops.ts": {
+      "sha256": "19236def746e4aca26a326503a20fac0d999dc8ef6f81001665469c5b0440468",
+      "bytes": 6786
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/activity.mjs": {
+      "sha256": "618309bfa3d00ed448b6bd20fc726b14ac41ab0a47e3a359d2995aaea0796fbd",
+      "bytes": 1045
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/sequence.mjs": {
+      "sha256": "6bc309e38db141c421101ed05a7d99c6afdb855e1a2f0519d51754e6b3475c83",
+      "bytes": 1865
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/surface-motion.mjs": {
+      "sha256": "00d328cc458ef7d3c608107975bd602fb0d1b4fbfaf6bfd89b179ba76fbe5c4b",
+      "bytes": 597
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/surface-particles.ts": {
+      "sha256": "543d57d9554c320aed49b47cde06bc25cd1a31b3c2b41302aa230abb25dc0ed0",
+      "bytes": 3921
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/surface-shader.ts": {
+      "sha256": "f9c98dfa1c9fed529bcab276d868517d1f92e08c2b82975002b0ef480f8182df",
+      "bytes": 5785
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/temporal.ts": {
+      "sha256": "112861e7609590140a1cc31d9a9f200aca456ba81c269ecc0c1624142c91a161",
+      "bytes": 9056
+    },
+    "prototypes/phase4-unity-needle/web/src/phase6/timeline.css": {
+      "sha256": "4e37de6acd85612cbdb5d6cd4cf1505f2ebddc126d702ea83ed428d5e07fcc47",
+      "bytes": 2071
+    },
+    "prototypes/phase4-unity-needle/web/src/phase7/history.mjs": {
+      "sha256": "c6451b37b59a4781477e2d30a3fd3aa2e2176f93ab1c63649fb7b43ae864be52",
+      "bytes": 3629
+    },
+    "prototypes/phase4-unity-needle/web/src/phase7/scientific-context.css": {
+      "sha256": "e57ee22651139d22ecd9610da39b47065025b313bba76f55c30e011f60cf128d",
+      "bytes": 4058
+    },
+    "prototypes/phase4-unity-needle/web/src/phase7/scientific-context.mjs": {
+      "sha256": "9b91a3c4b9ed05292782753e89d69488e63240ccaab3b04924c36b907d822b77",
+      "bytes": 10158
+    },
+    "prototypes/phase4-unity-needle/web/src/render-sample.mjs": {
+      "sha256": "e1f07427d9af6d9cd60e1ec47f8b6c6ddaef9fffd233daa77715bbb240dd6614",
+      "bytes": 706
+    },
+    "prototypes/phase4-unity-needle/web/src/style.css": {
+      "sha256": "7f05b9147cd9beae027f744aead8fce1121e51ab051721cc39b96e11b0a8e221",
+      "bytes": 2614
+    },
+    "prototypes/phase4-unity-needle/web/public/phase5/Phase5Solar.glb": {
+      "sha256": "6694a42dd2f0b322c7a65dc9d55d17eb1fe653ab0ec85884ee68b20cb14999b5",
+      "bytes": 6206672
+    },
+    "prototypes/phase4-unity-needle/web/public/phase5/assets/bminus.png": {
+      "sha256": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755",
+      "bytes": 124090
+    },
+    "prototypes/phase4-unity-needle/web/public/phase5/assets/bplus.png": {
+      "sha256": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3",
+      "bytes": 128925
+    },
+    "prototypes/phase4-unity-needle/web/public/phase5/assets/magnetogram.png": {
+      "sha256": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027",
+      "bytes": 138932
+    },
+    "prototypes/phase4-unity-needle/web/public/phase5/export-evidence.json": {
+      "sha256": "ea4f0847359aebd97761e509df98dfec5b395e0a53b4d70b0fef75f55decb0b2",
+      "bytes": 633
+    },
+    "prototypes/phase4-unity-needle/web/public/phase5/state.json": {
+      "sha256": "3d99f13755516c33632f1a7199f71a054036aca59b7f1bd19caeaa2478dac6de",
+      "bytes": 9640
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/activity-evidence.json": {
+      "sha256": "4509d12e6899a071749a3aa540a440f1706cf027b040df9cb7293316fa77fc05",
+      "bytes": 92
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/activity.json": {
+      "sha256": "ce7457ba28417db1ec40842c24b2e64ed3c324b1a9fbe661dd5f059d585bb113",
+      "bytes": 4823
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-24/bminus.png": {
+      "sha256": "9b7f6a2e98e816ff556593913c26592064607fb93bd6f7d69b6a04dc3e9ef755",
+      "bytes": 124090
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-24/bplus.png": {
+      "sha256": "6114385cec309cb06d5d66a7974f00df4b8c16705e72d4d605d6288d5ba0d4c3",
+      "bytes": 128925
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-24/magnetogram.png": {
+      "sha256": "44fc02cf77f0842ad4d48a17ec357dcd13219ed9d45317b594cb0e4937ed1027",
+      "bytes": 138932
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-24/solar-activity.png": {
+      "sha256": "91987618c6211461bac0fb6d210441bc0434e9e0a44932eda5e6e0abe380e621",
+      "bytes": 4322933
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-25/bminus.png": {
+      "sha256": "91f5b6811746c3c658d89b5e8b2cd070f6aad0c0a34b7f3a6eb7e6eb39bee827",
+      "bytes": 126918
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-25/bplus.png": {
+      "sha256": "867abc0bba41e6a060b29d93edb28f5af59e615d737f1508688957c8f42996ea",
+      "bytes": 127046
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-25/magnetogram.png": {
+      "sha256": "9bbd98bb9fb5e6a79782c30503bf0a7c636350870812b1950d4617e0ca8700cd",
+      "bytes": 139429
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-25/solar-activity.png": {
+      "sha256": "d317b691b03f8029e3b9f078eb93bf75fb52be9fb09285aa3a22ac4a0f9dcb20",
+      "bytes": 4325018
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-28/bminus.png": {
+      "sha256": "3f76df3a0bb1074d8660b303c2987a5fc0adce3f1da9890974fcfee582a7421a",
+      "bytes": 129157
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-28/bplus.png": {
+      "sha256": "38eb840365b0adda2058c3bfc7440401481db3f47caf3581b7f3df520a5e7fc3",
+      "bytes": 128348
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-28/magnetogram.png": {
+      "sha256": "539d98f85bdfcd49ec6ef50cb0dcc0ea4d19e240d50a4598239076bd17a85362",
+      "bytes": 142500
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-28/solar-activity.png": {
+      "sha256": "d4456b42ab766cac57109e06ee9fe3dd1149a177e64e398d8057da4c469991bb",
+      "bytes": 4322243
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-29/bminus.png": {
+      "sha256": "36c1e93f66cbe761b5ff3acc72c67f9f7fb604342569790981c9c4e2ab08f897",
+      "bytes": 131525
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-29/bplus.png": {
+      "sha256": "6854e78dff106af70c99221d807a70cdfb89901c67a88204a6f4a258bc9e51fc",
+      "bytes": 129401
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-29/magnetogram.png": {
+      "sha256": "c6b7fc316ce64e3239a23c46a5a1b68e39126cfb97f7ecd50c1d6a3f5b1443f4",
+      "bytes": 145591
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-29/solar-activity.png": {
+      "sha256": "85b2993f2d33df0cd3f8fdea6cd548fcbe712dce2fea386248f297e9c8f28277",
+      "bytes": 4319004
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-30/bminus.png": {
+      "sha256": "bcbe13b75bd1918955f5addc37063f84626e1f9087865a51206bb635719fc2d2",
+      "bytes": 132093
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-30/bplus.png": {
+      "sha256": "461d08bc83c4e795bec68179f2f8b96dce7bf0ac13c364bf3e518bc66d583ccb",
+      "bytes": 129823
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-30/magnetogram.png": {
+      "sha256": "c4023b47f96d90dedbfdc10b25af5c2d274b5766367fc2cef910b0c1d86dd129",
+      "bytes": 145387
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/assets/hmi-2022-03-30/solar-activity.png": {
+      "sha256": "0fdab8dd266c9e86964d574693fc76dacd70bdf777816a665a1e29ca647968b8",
+      "bytes": 4317870
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/sequence-evidence.json": {
+      "sha256": "e0b727e6bc3497f823567a36339457bc247df843ebb7c3b6f0b75e58ab89f0d2",
+      "bytes": 271
+    },
+    "prototypes/phase4-unity-needle/web/public/phase6/sequence.json": {
+      "sha256": "57c875f1a19eee539f5c491103b319c35c40fc7a7d185b6a1332ab23d2dab055",
+      "bytes": 32355
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/context-evidence.json": {
+      "sha256": "ca5c8ca37ced345e00fb2c9c36a80c05b0532c020972aa0b348ec6dc51b16094",
+      "bytes": 91
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/context.json": {
+      "sha256": "5a52347adada96acdea45b1a04d146075e83aa643c81e83a2b5752e9c2fc7fc8",
+      "bytes": 17146
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220324SRS.txt": {
+      "sha256": "9122a2b8521fb324f5641124d0257ca504763243487376c0d7025e703b23e91d",
+      "bytes": 722
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220325SRS.txt": {
+      "sha256": "a4354e4710092620c88488556aaf5b0d8af7396d42368cca9dc5ed7aadff79ff",
+      "bytes": 764
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220328SRS.txt": {
+      "sha256": "e995a4c9a5472a2f42e9745098630371f593483cc8e1eb6006e7b619e2531a2b",
+      "bytes": 821
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220328events.txt": {
+      "sha256": "afc3948f53e79ea8287c787291061392fbafeb222fe5a5f21246a1ed879afdc0",
+      "bytes": 5634
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220329SRS.txt": {
+      "sha256": "e91650ea45dbe353e42112ddf306a0676f4ef557b5d24f1deac74b69d96b225c",
+      "bytes": 880
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220329events.txt": {
+      "sha256": "ec8a60d185ffb0498e9a51063d73c9e4ba6d82a2e4c94f9a37e77d8c9e187686",
+      "bytes": 6456
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220330SRS.txt": {
+      "sha256": "d6f1477902dfed7836f11db7bd728264d7d4d6dd020bdcae27c332fb08ea5969",
+      "bytes": 894
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220330events.txt": {
+      "sha256": "c230e6231950b859f5d0b7ddf8b9c96b3c8de3f6c9e320110046f1d1e8584cbe",
+      "bytes": 4653
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/20220331events.txt": {
+      "sha256": "8f10d524d36da91c5c8c3028da87e5314fe8c61d16e7a2912ec990be4636a318",
+      "bytes": 6772
+    },
+    "prototypes/phase4-unity-needle/web/public/phase7/sources/harp_mapping_attempt_0.txt": {
+      "sha256": "e31cdee43d2cf656834f1897dc261e1356971ae23c18447990a342c190d2411f",
+      "bytes": 34870
+    },
+    "prototypes/phase4-unity-needle/web/public/unity/Phase4Probe.glb": {
+      "sha256": "92ce99f4e279eaf47110ddaee595e0c52daa566d806bb05204f9e458fe9d413b",
+      "bytes": 73316
+    },
+    "prototypes/phase4-unity-needle/web/public/unity/export-evidence.json": {
+      "sha256": "3efa82f532b792fc193e1effdc5d6ee3b314b7f1a35f7cc56f6b685ab81ed9fb",
+      "bytes": 272
+    },
+    "auralis-back/reports/phase3_temporal_model/noaa12975.sequence.v1.json": {
+      "sha256": "0926747125d84a10a20611cf523c42293aa7dd2125567c67ed6e9554bb337ad6",
+      "bytes": 39574
+    },
+    "auralis-back/reports/phase3_temporal_model/verification.json": {
+      "sha256": "1c9500201381cc7bdf98ae1450608f05e8f07c39a50109c5af9fb33e0d0874ac",
+      "bytes": 892
+    },
+    "README.md": {
+      "sha256": "c4a634b04c45349571527f4a0aea266ddf6ad3610a8fdfb8ec98047a82a7fa0f",
+      "bytes": 10680
+    },
+    "RESEARCH_DOSSIER_MASTER.md": {
+      "sha256": "95057b51ecda30916c690bad3e02b23e9480e66d0a917e4349cab766670ae96e",
+      "bytes": 64363
+    },
+    "AGENTS.md": {
+      "sha256": "2991a8c5e53edf663ce1e36ae0653b1d9524571e765972f6d764a92a254ed260",
+      "bytes": 46812
+    },
+    "auralis-front/package.json": {
+      "sha256": "6c65ed26e2ddd1d400079526f7ca0c9c8e009fe15f0c676f46b6ddb1137d0b0b",
+      "bytes": 2750
+    },
+    "auralis-front/package-lock.json": {
+      "sha256": "037250ce528e787661607dedc2c4141627ec18f6d175a8eb359f1b0dced86580",
+      "bytes": 179695
+    },
+    "auralis-front/vite.config.ts": {
+      "sha256": "e300f04836efd89d7422166cbccbd8c9cd226e6689cf54d35e98bf395539a755",
+      "bytes": 634
+    }
+  },
+  "candidates": {
+    "C1_s42": {
+      "seed": 42,
+      "epoch": 27,
+      "checkpoint": {
+        "path": "experiments/v32c_seed42_v1/C1/best.pth",
+        "sha256": "0b6778ee9518af689fb800ee502c25e7c05d51f7191b5ed50ac199e1a5342179",
+        "bytes": 846093
+      },
+      "onnx": {
+        "path": "experiments/v32e_onnx_cost_v1/artifacts/C1_s42/coronium_v3_2_candidate_c1_s42_fp32.onnx",
+        "sha256": "23b4658ba8817355c91b22b617db8dedc91a249d0294b45128623a3dbfdf1b0a",
+        "bytes": 835234,
+        "external_files": []
+      },
+      "metrics_onnx_mitigated": {
+        "all": {
+          "n": 263,
+          "mae": 0.04833447615909939,
+          "rmse": 0.05905530431219216,
+          "r2": 0.9714300369736174,
+          "mape": 2.908886965683121,
+          "bias": 0.013237384788890291,
+          "p95_absolute_error": 0.10974993705749511,
+          "max_absolute_error": 0.255906343460083
+        },
+        "low": {
+          "n": 43,
+          "mae": 0.058247455330782134,
+          "rmse": 0.0652538389705834,
+          "r2": -0.6164045953225932,
+          "mape": 4.430337536146118,
+          "bias": 0.056832402251487536,
+          "p95_absolute_error": 0.10704808235168434,
+          "max_absolute_error": 0.11747908592224121
+        },
+        "medium": {
+          "n": 96,
+          "mae": 0.04827523231506348,
+          "rmse": 0.061611151529364375,
+          "r2": 0.6182584518854337,
+          "mape": 3.1564177730916043,
+          "bias": 0.018362596631050106,
+          "p95_absolute_error": 0.11657881736755371,
+          "max_absolute_error": 0.255906343460083
+        },
+        "high": {
+          "n": 124,
+          "mae": 0.04494277700301139,
+          "rmse": 0.05460368389765595,
+          "r2": 0.9338990585188812,
+          "mape": 2.1896504169643842,
+          "bias": -0.005848148176746995,
+          "p95_absolute_error": 0.10862995386123656,
+          "max_absolute_error": 0.12504911422729492
+        },
+        "SI_gt_2": {
+          "n": 71,
+          "mae": 0.04416566835322849,
+          "rmse": 0.05396589378467327,
+          "r2": 0.8958558438037788,
+          "mape": 1.9892311179891704,
+          "bias": -0.018075959783204837,
+          "p95_absolute_error": 0.10779786109924316,
+          "max_absolute_error": 0.12504911422729492
+        }
+      },
+      "approved": false
+    },
+    "C1_s137": {
+      "seed": 137,
+      "epoch": 60,
+      "checkpoint": {
+        "path": "experiments/v32d_stability_v1/seed137/C1/best.pth",
+        "sha256": "05ec38d8158a6456f5662488d7e97dcdd466b7f8796d166f934c89bf5ce4a5b4",
+        "bytes": 846093
+      },
+      "onnx": {
+        "path": "experiments/v32e_onnx_cost_v1/artifacts/C1_s137/coronium_v3_2_candidate_c1_s137_fp32.onnx",
+        "sha256": "a0702c77f246113a1bbeb31727f05a90a63466ffcefdab340979e28ed71aa699",
+        "bytes": 835234,
+        "external_files": []
+      },
+      "metrics_onnx_mitigated": {
+        "all": {
+          "n": 263,
+          "mae": 0.05400831481803053,
+          "rmse": 0.06819463769767249,
+          "r2": 0.9619028658102038,
+          "mape": 3.165014591503316,
+          "bias": -0.0019266628040560407,
+          "p95_absolute_error": 0.1265268325805664,
+          "max_absolute_error": 0.28933048248291016
+        },
+        "low": {
+          "n": 43,
+          "mae": 0.058420444643774674,
+          "rmse": 0.06659517283072582,
+          "r2": -0.6835400152433713,
+          "mape": 4.447804832054065,
+          "bias": 0.057390897773032946,
+          "p95_absolute_error": 0.11477861404418924,
+          "max_absolute_error": 0.12017619609832764
+        },
+        "medium": {
+          "n": 96,
+          "mae": 0.050284909705320985,
+          "rmse": 0.06717955768085487,
+          "r2": 0.5461367082497209,
+          "mape": 3.271587936288086,
+          "bias": 0.012772500514984126,
+          "p95_absolute_error": 0.1248901188373564,
+          "max_absolute_error": 0.28933048248291016
+        },
+        "high": {
+          "n": 124,
+          "mae": 0.05536093827216856,
+          "rmse": 0.06951011800175035,
+          "r2": 0.8928826527008149,
+          "mape": 2.6376676443821845,
+          "bias": -0.03387645944472283,
+          "p95_absolute_error": 0.13261664509773252,
+          "max_absolute_error": 0.1726396083831787
+        },
+        "SI_gt_2": {
+          "n": 71,
+          "mae": 0.06388024209250867,
+          "rmse": 0.07837170349118519,
+          "r2": 0.7803583333560744,
+          "mape": 2.864300725286726,
+          "bias": -0.054870229371836485,
+          "p95_absolute_error": 0.14219129085540771,
+          "max_absolute_error": 0.1726396083831787
+        }
+      },
+      "approved": false
+    },
+    "C1_s2026": {
+      "seed": 2026,
+      "epoch": 55,
+      "checkpoint": {
+        "path": "experiments/v32d_stability_v1/seed2026/C1/best.pth",
+        "sha256": "b332fa275547da1eba80844111f80736d00fbaad66d2ddfa5942bb5137856b20",
+        "bytes": 846093
+      },
+      "onnx": {
+        "path": "experiments/v32e_onnx_cost_v1/artifacts/C1_s2026/coronium_v3_2_candidate_c1_s2026_fp32.onnx",
+        "sha256": "98b19825fad71a79d3a7d835c5a958f6c7cc4299d5f520222b49d23e5967dc76",
+        "bytes": 835234,
+        "external_files": []
+      },
+      "metrics_onnx_mitigated": {
+        "all": {
+          "n": 263,
+          "mae": 0.05186167823951053,
+          "rmse": 0.06462315485515147,
+          "r2": 0.9657888110907412,
+          "mape": 3.087436687110032,
+          "bias": 0.003183164977302105,
+          "p95_absolute_error": 0.12280750274658199,
+          "max_absolute_error": 0.24677538871765137
+        },
+        "low": {
+          "n": 43,
+          "mae": 0.05743657156478525,
+          "rmse": 0.06632317145815371,
+          "r2": -0.6698155964754386,
+          "mape": 4.3781398500041115,
+          "bias": 0.054875734240509726,
+          "p95_absolute_error": 0.11300761699676494,
+          "max_absolute_error": 0.12688636779785156
+        },
+        "medium": {
+          "n": 96,
+          "mae": 0.05171115944782892,
+          "rmse": 0.06649974485459195,
+          "r2": 0.5552758266501133,
+          "mape": 3.3686664756819784,
+          "bias": 0.00989702592293421,
+          "p95_absolute_error": 0.12144607305526733,
+          "max_absolute_error": 0.24677538871765137
+        },
+        "high": {
+          "n": 124,
+          "mae": 0.05004497977995103,
+          "rmse": 0.06251764004647914,
+          "r2": 0.9133499318106888,
+          "mape": 2.422127850760416,
+          "bias": -0.019940311870267322,
+          "p95_absolute_error": 0.12340939044952393,
+          "max_absolute_error": 0.14419960975646973
+        },
+        "SI_gt_2": {
+          "n": 71,
+          "mae": 0.052702379898286196,
+          "rmse": 0.06565647750058275,
+          "r2": 0.8458472364433296,
+          "mape": 2.3801931818386146,
+          "bias": -0.03336126703611561,
+          "p95_absolute_error": 0.13106626272201538,
+          "max_absolute_error": 0.14419960975646973
+        }
+      },
+      "approved": false
+    }
+  },
+  "agent_lab_join_feasibility": {
+    "C1_s42": {
+      "rows": 263,
+      "source_row_order_filename_target_match": true
+    },
+    "C1_s137": {
+      "rows": 263,
+      "source_row_order_filename_target_match": true
+    },
+    "C1_s2026": {
+      "rows": 263,
+      "source_row_order_filename_target_match": true
+    }
+  },
+  "figures": "auralis-back/experiments/v32f_scientific_package_v1/package/figures",
+  "figure_index": "auralis-back/experiments/v32f_scientific_package_v1/package/INDEX.md"
+}

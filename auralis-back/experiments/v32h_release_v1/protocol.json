@@ -1,0 +1,24 @@
+{
+  "checkpoint": "C1_s42 epoch27 explicitly confirmed",
+  "active_default": "3.1 original",
+  "arms": [
+    "V31_mitigated",
+    "V32_staged"
+  ],
+  "execution": "fresh sequential processes; CPU FP32 batch1 intra4 inter1; both models resident; noise20+det1",
+  "http": {
+    "warmup": 3,
+    "cold": 30,
+    "hot": 60,
+    "samples": "same G eighteen and order",
+    "fixtures": "G fixed indices 0,3,6; predict alias upload2d uploaddual"
+  },
+  "gradcam": "one fixed G fixture per arm after timing; exact state and prediction invariant",
+  "timing": "perf_counter_ns; hashes and reports outside windows",
+  "memory": "external5ms from spawn plus lifetime macOS bytes; includes both resident models and GradCAM separately",
+  "guards": "Reuse formal E1/E2. HTTP additional and not forward; no new thresholds. Symmetric RSS contextual <=10% comparison; preserve unfavorable result. No retries for favorable timing.",
+  "errors": "404 missing;400 invalid;subsequent valid recovery",
+  "consumer_checks": "263 saved metrics and identities; all five Agent Lab reports; unavailable MC503; CLI one NPY; release startup disallows reads outside H under experiments",
+  "no_new_sweeps": true,
+  "promotion_authorized": false
+}

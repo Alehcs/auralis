@@ -1,0 +1,11 @@
+{
+  "arm": "normal_default",
+  "version": "3.2",
+  "pid": 53412,
+  "port": 51110,
+  "expected_public_si": 1.3183,
+  "passed": true,
+  "forms": 4,
+  "cache_alias_exact": true,
+  "error_recovery": true
+}

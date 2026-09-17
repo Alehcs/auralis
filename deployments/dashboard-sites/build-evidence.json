@@ -2,10 +2,10 @@
   "source": "../../auralis-front",
   "mode": "sites",
   "files": {
-    "assets/SolarTwinPanel-CYQDbSgW.js": "b79d3d0921d6a0f96db348f6b71520cc220bd83dab724afadf18cad0a11d8dc0",
+    "assets/SolarTwinPanel-BCGUf_wZ.js": "affa3f9b91b5b2085edb799326e273e0a5d57612fb882b1bec7bb2bb35174ed1",
+    "assets/index-BL16yUkf.js": "c2d9bbaa119c2ab36f561681e7069cb372f86945fd57e0461bcf6a91432f760d",
     "assets/index-BNkL0tnz.css": "b408432fec11b3323e3fe20b9a508d05708ebcd8878bd53ba12ea4ccfb60d382",
-    "assets/index-BSjpzspl.js": "f82f873facb68ed10f3dd3419e03ea68b9d3dcd7e9795c85c27e562e6723baef",
-    "dashboard/index.html": "6af84de7327555286f789c75e01c7694169e11b8e5c3a134de6c806e8ee7d8f2",
+    "dashboard/index.html": "6bc7f3b94652162341e4af1c709dcbffab3ee751616a2305068d8df5c32a77bc",
     "demo/aia/hmi.m_45s.2016.03.29_00_01_30_TAI.magnetogram_processed.npy.png": "dc77d5568e67225a82045672ab3ac49bbc818ee0baa689913fe127eff2d227e0",
     "demo/aia/hmi.m_45s.2016.11.12_00_01_30_TAI.magnetogram_processed.npy.png": "33f78a02071d80b4d26db44310b76d210bcb5e3af7f9706087019d832c79132a",
     "demo/aia/hmi.m_45s.2017.07.07_00_01_30_TAI.magnetogram_processed.npy.png": "ba2b585ed3dee16278d9e54993816b2181ab727a58149f3cbeaf002ff91acac1",
@@ -44,9 +44,10 @@
     "demo/images/hmi.m_45s.2024.11.11_00_01_30_TAI.magnetogram_processed.npy.png": "4bc7b21f27065d0e60e5db1bc797300043ca7e6d664ff2851ec81d4d27579ba8",
     "demo/images/hmi.m_45s.2025.11.19_00_01_30_TAI.magnetogram_processed.npy.png": "1daa538b1369be627fedc7f132257ba803524dca8d7682cacebf6c84a336e692",
     "demo/images/hmi.m_45s.2026.04.06_00_01_30_TAI.magnetogram_processed.npy.png": "962b762f0d19b06920b3415e5226d1157abcd90ee1122deafd62ca1ca0946827",
-    "demo/manifest.json": "529583528c881688a960bae7a0b9a8250b7073646b65590717fadd0beb85aaea",
-    "demo/responses.json": "005a98b8456e0cb403594fca0c0b1513bb1e635f4a22fad99757a63ae1b053a9",
-    "index.html": "6af84de7327555286f789c75e01c7694169e11b8e5c3a134de6c806e8ee7d8f2",
+    "demo/manifest.json": "63f9d370cb9de5a26ee987a2fbe5bd3a3a5fe4d10ec2ab035cc578fcf6a574e5",
+    "demo/predictions-v32.json": "6bddce864cadb1d6d16f52a4401fca342ca96a18bfcf1ff9bd081ab91b015bce",
+    "demo/responses.json": "255a9a86beb38d2e0a101bfc608e4cfc177c42793844e0390493585a4b34834c",
+    "index.html": "6bc7f3b94652162341e4af1c709dcbffab3ee751616a2305068d8df5c32a77bc",
     "solar-storm.gif": "a8dfd9e8ddb55a2a4074c03a94e0d49e5537d3f3ca84944bd47fbffaddf63bd6",
     "sun.gif": "3ee3d5b4d452980e966d0a8e6c6dc20e5783b3545676745dbfae699a0c9dc158"
   }

@@ -1,3 +1,4 @@
+import { useModelStats } from '@/lib/model-labels';
 import { useState, useEffect } from 'react';
 import {
   ScatterChart,
@@ -49,11 +50,15 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 export function PredictedVsActual() {
   const { t } = useLanguage();
   const e = t.experiments;
+  const stats = useModelStats();
+  const supportsMC = stats?.available_protocols?.includes('mc') ?? stats?.model_version === '3.1';
 
   const [data,    setData]    = useState<DataPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState<string | null>(null);
-  const [protocol, setProtocol] = useState<'mc' | 'deterministic'>('mc');
+  const [protocol, setProtocol] = useState<'mc' | 'deterministic'>('deterministic');
+
+  useEffect(() => { if (stats) setProtocol(stats.model_version === '3.1' ? 'mc' : 'deterministic'); }, [stats?.model_version]);
 
   useEffect(() => {
     let active = true;
@@ -86,7 +91,7 @@ export function PredictedVsActual() {
           </div>
         </div>
         <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg">
-          V3.1 · {protocol === 'mc' ? 'MC T=20 · MPS' : 'ONNX eval · CPU'} · N={loading ? '—' : data.length}
+          {stats?.model_name ?? '—'} · {protocol === 'mc' ? 'MC T=20 · MPS' : 'ONNX eval · CPU'} · N={loading ? '—' : data.length}
         </span>
       </div>
 
@@ -94,7 +99,7 @@ export function PredictedVsActual() {
         <label className="text-xs text-neutral-400 flex items-center gap-3 mb-3">
           Protocol
           <select aria-label="Evaluation protocol" value={protocol} onChange={(event) => setProtocol(event.target.value as 'mc' | 'deterministic')} className="bg-neutral-800 rounded px-2 py-1 text-white">
-            <option value="mc">MC Dropout T=20 · batch 32 · seed 42</option>
+            <option value="mc" disabled={!supportsMC}>{supportsMC ? 'MC Dropout T=20 · batch 32 · seed 42' : 'MC Dropout — not evaluated for this release'}</option>
             <option value="deterministic">Deterministic ONNX · batch 1</option>
           </select>
         </label>

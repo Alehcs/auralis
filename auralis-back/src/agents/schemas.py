@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
+from models import serving_selection as serving
 
 
 def _utc_now() -> str:
@@ -51,6 +52,9 @@ class AgentLimitation(BaseModel):
 class AgentReportBase(BaseModel):
     """Common envelope shared by every agent report."""
 
+    model_name: str = serving.MODEL_NAME if serving.IS_RELEASE_V32 else 'Historical Coronium V3 evidence'
+    model_version: str = serving.MODEL_VERSION if serving.IS_RELEASE_V32 else 'historical-v3'
+    evaluation_protocol: str = serving.EVALUATION_PROTOCOL if serving.IS_RELEASE_V32 else 'Legacy split and saved predictions; not the active release evaluation'
     agent_name: str
     summary: str
     confidence: float                 # heuristic self-confidence in [0, 1]
@@ -64,7 +68,7 @@ class AgentReportBase(BaseModel):
 # ---------------------------------------------------------------------------
 
 class ErrorSample(BaseModel):
-    """One hold-out sample, used for the top-error tables."""
+    """One selection-validation sample, used for the top-error tables."""
 
     filename: str
     date: Optional[str] = None

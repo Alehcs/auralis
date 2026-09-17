@@ -1,4 +1,4 @@
-"""FITS inference CLI for the promoted Coronium V3.1 clip400/SI contract."""
+"""FITS/NPY inference CLI for the selected verified clip400/SI release."""
 
 import argparse
 import logging
@@ -12,13 +12,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 import torch
-import sunpy.map
 
 
 ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
 sys.path.insert(0, str(ROOT / "src"))
 from models.train_model import CoroniumV3 as Coronium  # noqa: E402
 from processing.model_input import normalize_field, prepare_model_input
+from models import serving_selection as serving
 
 
 logging.basicConfig(
@@ -37,6 +37,7 @@ def preprocess_fits_image(
     """Apply the same clip400/polarity transformation as evaluation and the API."""
     logger.info("Preprocessing: %s", fits_path.name)
 
+    import sunpy.map
     solar_map = sunpy.map.Map(str(fits_path))
     data = solar_map.data
 
@@ -64,19 +65,26 @@ def get_device() -> torch.device:
 
 
 def load_model(
-    model_path: str = "models/best_coronium_v3_1.pth",
+    model_path: Optional[str] = None,
     device: Optional[torch.device] = None,
 ) -> Tuple[Coronium, torch.device]:
     """Load the promoted Coronium checkpoint in deterministic eval mode."""
+    serving.load_release()
+    model_path = Path(model_path) if model_path else serving.CHECKPOINT_PATH
+    if model_path.resolve() != serving.CHECKPOINT_PATH.resolve():
+        raise ValueError('Checkpoint must match the selected verified release; use AURALIS_RELEASE=3.1 or 3.2')
     if device is None:
-        device = get_device()
+        device = torch.device('cpu') if serving.FIXED_CPU_EXECUTION else get_device()
+    if serving.FIXED_CPU_EXECUTION:
+        torch.set_num_threads(4)
+        torch.set_num_interop_threads(1)
 
     if not Path(model_path).exists():
         raise FileNotFoundError(f"Checkpoint not found: {model_path}")
 
     logger.info("Loading checkpoint: %s", model_path)
 
-    model = Coronium(in_channels=2, dropout_rate=0.2)
+    model = Coronium(in_channels=2, dropout_rate=serving.BACKBONE_DROPOUT)
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     model.eval()
     model = model.to(device)
@@ -99,7 +107,7 @@ def predict_sunspot_index(
         prediction = model(image_tensor)
 
     predicted_index: float = prediction.item()
-    logger.info("Prediction: %.4f", predicted_index)
+    logger.info("%s seed=%s: PyTorch deterministic eval (%s); SI=%.9f", serving.MODEL_NAME, serving.SEED, device, predicted_index)
 
     return predicted_index
 
@@ -114,7 +122,8 @@ def get_real_sunspot_index(
         return None
 
     metadata = pd.read_csv(metadata_csv)
-    match = metadata[metadata["filename"] == filename]
+    column = 'processed_file' if filename.endswith('.npy') else 'filename'
+    match = metadata[metadata[column] == filename]
 
     if match.empty:
         logger.warning("'%s' not found in metadata.", filename)
@@ -130,9 +139,10 @@ def visualize_prediction(
     solar_map: "sunpy.map.Map",
     predicted_index: float,
     real_index: Optional[float] = None,
-    output_path: str = "reports/figures/coronium_v3_1_prediction.png",
+    output_path: Optional[str] = None,
 ) -> None:
     """Save a quick diagnostic magnetogram with prediction annotations."""
+    output_path = output_path or f'reports/figures/coronium_v{serving.MODEL_VERSION.replace(chr(46), chr(95))}_prediction.png'
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
 
     fig = plt.figure(figsize=(12, 10))
@@ -157,7 +167,7 @@ def visualize_prediction(
             f"Predicted sunspot index: {predicted_index:.4f}"
         )
 
-    ax.set_title(title, fontsize=11)
+    ax.set_title(serving.MODEL_NAME + " · PyTorch deterministic eval\n" + title, fontsize=11)
 
     cbar = plt.colorbar(ax.images[0], ax=ax, fraction=0.046, pad=0.08)
     cbar.set_label("LOS Magnetic Field (Gauss)", rotation=270, labelpad=25)
@@ -172,20 +182,20 @@ def main() -> None:
     """CLI entry point for single-image inference."""
     parser = argparse.ArgumentParser(
         description=(
-            "Coronium V3.1: clip400 B+/B- input; raw SI pixel-percent output."
+            f"{serving.MODEL_NAME}: clip400 B+/B-; raw SI pixel-percent output; PyTorch deterministic eval."
         )
     )
     parser.add_argument(
         "--image",
         type=str,
         default=None,
-        help="Path to an HMI FITS file. Defaults to the first file in data/raw/.",
+        help="Path to an HMI FITS or processed clip400 NPY. Defaults to the first FITS in data/raw/.",
     )
     parser.add_argument(
         "--model",
         type=str,
-        default="models/best_coronium_v3_1.pth",
-        help="Path to a trained checkpoint (default: models/best_coronium_v3_1.pth).",
+        default=None,
+        help="Optional exact selected-release checkpoint path; selection uses AURALIS_RELEASE.",
     )
     args = parser.parse_args()
 
@@ -208,10 +218,15 @@ def main() -> None:
         return
 
     model, device = load_model(args.model)
-    image_tensor, solar_map = preprocess_fits_image(image_path)
+    if image_path.suffix.lower() == '.npy':
+        image_tensor = torch.from_numpy(prepare_model_input(np.load(image_path, allow_pickle=False)))[None]
+        solar_map = None
+    else:
+        image_tensor, solar_map = preprocess_fits_image(image_path)
     predicted_index = predict_sunspot_index(model, image_tensor, device)
-    real_index = get_real_sunspot_index(image_path.stem)
-    visualize_prediction(solar_map, predicted_index, real_index)
+    real_index = get_real_sunspot_index(image_path.name if image_path.suffix == '.npy' else image_path.stem)
+    if solar_map is not None:
+        visualize_prediction(solar_map, predicted_index, real_index)
 
     logger.info("=" * 70)
     logger.info("Results  |  File: %s", image_path.name)
