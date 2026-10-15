@@ -1,13 +1,4 @@
-"""Active Learning Agent.
-
-Builds a normalised "audit need" state vector from the Data Quality and Error
-Analysis reports, then runs a deterministic epsilon-greedy contextual bandit to
-recommend which kind of future data to prioritise.
-
-The output is decision-support utility from the current audit signals. It is NOT
-a measurement of model improvement, and the regret curve is heuristic regret
-against the best utility, not against any real-world gain.
-"""
+"""Active Learning Agent: bandit over audit needs; decision-support utility, not measured model improvement."""
 
 from __future__ import annotations
 
@@ -33,8 +24,7 @@ from .schemas import (
 
 AGENT_NAME = "Active Learning Agent"
 
-# Phase-1 placeholder for XAI risk: no sampled faithfulness yet, so a neutral
-# 0.5 is used and clearly labelled as a proxy.
+# XAI risk placeholder: neutral 0.5 proxy until faithfulness is sampled.
 XAI_RISK_PLACEHOLDER = 0.5
 
 
@@ -51,7 +41,7 @@ def build_state_vector(
     dq_report: DataQualityReport,
 ) -> Dict[str, float]:
     """Assemble the normalised audit-need state vector in [0, 1]."""
-    # --- error needs: MAE per bin + tail, normalised by the largest of them ----
+    # Error needs: per-bin and tail MAE, normalised by their maximum.
     raw_error = {
         "low": error_report.mae_by_bin.get("low", 0.0),
         "medium": error_report.mae_by_bin.get("medium", 0.0),
@@ -60,14 +50,14 @@ def build_state_vector(
     }
     norm_error = _normalise(raw_error)
 
-    # --- underrepresentation needs: 1 - count/max_count over the full corpus ---
+    # Underrepresentation needs: 1 - count/max_count over the full corpus.
     full_counts = {b: dq_report.full_distribution[b].count for b in ACTIVITY_BINS}
     max_count = max(full_counts.values()) or 1
     underrep = {
         b: round(1.0 - full_counts[b] / max_count, 4) for b in ACTIVITY_BINS
     }
 
-    # --- uncertainty proxy: residual dispersion (RMSE>MAE gap), overall ---------
+    # Uncertainty proxy: residual dispersion (RMSE - MAE gap), overall.
     rows = dataset.validation_rows
     overall_mae = sum(r.error for r in rows) / len(rows) if rows else 0.0
     overall_rmse = (
@@ -166,7 +156,6 @@ def run_active_learning_agent(
         )
     )
 
-    # Surface the two emphasis rules explicitly.
     findings.append(
         AgentFinding(
             key="emphasis_rules",

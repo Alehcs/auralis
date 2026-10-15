@@ -1,11 +1,4 @@
-"""Export fixed demo PNGs for representative activity levels.
-
-The selection uses the full processed metadata table, not just the validation
-split, so the frontend has stable quiet, moderate, and extreme examples.
-
-Run from ``auralis-back/``:
-    python scripts/extract_test_kit.py
-"""
+"""Export fixed quiet/moderate/extreme demo PNGs selected from all processed metadata, not one split."""
 
 from pathlib import Path
 
@@ -15,9 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# Paths are resolved from the repository layout so the script can be run from
-# ``auralis-back/`` without installing the package.
-BASE_DIR      = Path(__file__).resolve().parent.parent          # auralis-back/
+BASE_DIR      = Path(__file__).resolve().parent.parent
 METADATA_CSV  = BASE_DIR / "data" / "processed" / "metadata_processed.csv"
 PROCESSED_DIR = BASE_DIR / "data" / "processed"
 DEMO_DIR      = BASE_DIR.parent / "demo_assets"
@@ -26,7 +17,7 @@ DEMO_DIR      = BASE_DIR.parent / "demo_assets"
 TARGETS = {
     "normal":   0.2,    # quiet Sun; expected to classify as low activity
     "moderate": 1.3,    # intermediate activity; expected to classify as medium
-    "extreme":  None,   # fixed ID below
+    "extreme":  None,
 }
 
 EXTREME_ID = "hmi.m_45s.2025.01.20_00_01_30_TAI"
@@ -71,8 +62,7 @@ def npy_to_image(npy_path: Path, out_path: Path) -> None:
 def main() -> None:
     DEMO_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Use all processed metadata so sample selection remains independent from
-    # whichever split was used for the latest training run.
+    # All processed metadata keeps selection independent of the latest training split.
     df = pd.read_csv(METADATA_CSV)
 
     print("\n  Coronium V3 PRO - Golden Sample Extractor")

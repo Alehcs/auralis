@@ -1,9 +1,4 @@
-"""Input contract for the existing Coronium V3 PRO checkpoint (see docs/phase1.md).
-
-Stored single-channel data is clip(resize(B), -400, 400) / 400, NOT Gauss
-and NOT log-scaled. Channel 0 is its positive part; channel 1 its negative
-magnitude. Already split arrays must use that same dimensionless scale.
-"""
+"""Input contract (docs/phase1.md): clip(resize(B), -400, 400) / 400, not Gauss or log; channels B+ and |B-|."""
 
 import numpy as np
 
@@ -18,12 +13,7 @@ def processed_filename(row) -> str:
 
 
 def prepare_model_input(data: np.ndarray) -> np.ndarray:
-    """Return contiguous float32 (2, 512, 512), before training augmentation.
-
-    Do not silently reinterpret raw Gauss, log-scaled data, NaNs or other sizes.
-    Array values alone cannot prove provenance; callers must supply the stated
-    clip400 representation, including for uploaded, already split arrays.
-    """
+    """Return contiguous float32 (2, 512, 512) clip400 input; never reinterpret Gauss, log data, NaNs or sizes."""
     data = np.asarray(data)
     if data.shape not in ((512, 512), (2, 512, 512)):
         raise ValueError(f"Expected (512, 512) or (2, 512, 512), got {data.shape}")

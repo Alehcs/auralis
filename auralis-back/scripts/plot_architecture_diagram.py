@@ -1,19 +1,4 @@
-"""Generate the Coronium V3.1 architecture block diagram.
-
-Produces a block diagram showing the data flow:
-    Input (2, 512, 512) dual-channel B+/B-
-    → stage1 (32ch, 256x256) + ECA + Skip
-    → stage2 (64ch, 128x128) + ECA + Skip
-    → stage3 (96ch, 64x64)   + ECA + Skip
-    → stage4 (128ch, 64x64)  + ECA + Skip  ← Grad-CAM hook
-    → MaxPool stage4 → 32x32
-    → Global Average Pooling → (128,)
-    → Dropout(0.3) → Linear(128, 1)
-    → raw SI (%) regression output
-
-Run from auralis-back/:
-    python scripts/plot_architecture_diagram.py
-"""
+"""Generate the Coronium V3.1 block diagram: B+/B- input, four ECA stages, GAP head, raw SI (%) output."""
 
 from pathlib import Path
 
@@ -23,9 +8,7 @@ from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 OUTPUT_PATH = Path("reports/figures/coronium_v3_1_architecture.png")
 
 
-# ---------------------------------------------------------------------------
-# Palette — print-friendly, distinguishable in grayscale.
-# ---------------------------------------------------------------------------
+# Print-friendly palette, distinguishable in grayscale.
 COLOR_INPUT      = "#FEE2B3"   # warm sand
 COLOR_STAGE      = "#A7C7E7"   # light blue
 COLOR_HOOK       = "#E5A6A6"   # rose (Grad-CAM hook)
@@ -103,14 +86,12 @@ def main() -> None:
     ax.set_aspect("equal")
     ax.axis("off")
 
-    # ── Title ────────────────────────────────────────────────────────────────
     ax.text(8, 6.55, "Coronium V3.1 — Architecture", ha="center", va="center",
             fontsize=16, weight="bold")
     ax.text(8, 6.15,
             f"Residual CNN · {count:,} parameters · ONNX {ONNX_PATH.stat().st_size:,} bytes · eval T=1 / MC T=20",
             ha="center", va="center", fontsize=10, color="#4B5563", style="italic")
 
-    # ── Input block ──────────────────────────────────────────────────────────
     add_block(ax, 0.2, 2.9, 1.7, 1.4, "Input", "(2, 512, 512)",
               color=COLOR_INPUT)
     ax.text(1.05, 2.4, "B⁺ · B⁻\nx = clip(resize(B), ±400 G) / 400",
@@ -131,11 +112,9 @@ def main() -> None:
                   f"stage{i+1}",
                   f"{f} ch · {h_dim}\n{p} params",
                   color=color)
-        # Sub-annotation: ECA + Skip
         ax.text(x + 1.0, 2.45, "ECA + Skip + Dropout2d",
                 ha="center", va="top", fontsize=7, style="italic", color="#374151")
 
-        # arrow into the block
         if i == 0:
             add_arrow(ax, 1.95, 3.6, x - 0.05, 3.6,
                       label="Conv 3×3\nResidual", label_offset=0.55)
@@ -160,15 +139,13 @@ def main() -> None:
     add_block(ax, 14.85, 2.9, 1.05, 1.4, "Head", "Drop(0.3)\nLin(128,1)",
               color=COLOR_HEAD)
 
-    # ── Output ───────────────────────────────────────────────────────────────
     add_arrow(ax, 8, 2.5, 8, 1.65, label="", label_offset=0.0)
     add_block(ax, 6.3, 0.6, 3.4, 1.0,
               "Predicted SI (%)",
               color=COLOR_OUTPUT)
 
-    # Move output arrow to come from head
-    # (re-draw to ensure correct origin from Head block bottom)
-    ax.patches[-2].remove()  # remove placeholder arrow
+    # Replace the placeholder output arrow with one starting at the Head block bottom.
+    ax.patches[-2].remove()
     add_arrow(ax, 15.37, 2.85, 15.37, 1.3)
     add_arrow(ax, 15.30, 1.10, 9.75, 1.10, label="ŷ (raw SI %)", label_offset=0.20)
 
@@ -178,7 +155,6 @@ def main() -> None:
             "Train: AdamW, lr=1e-3 → ReduceLROnPlateau · MC Dropout T=20 at eval",
             ha="left", va="top", fontsize=8, color="#4B5563", family="monospace")
 
-    # ── Save ─────────────────────────────────────────────────────────────────
     fig.tight_layout()
     save_figure(fig, args.output.with_suffix(""))
     print(f"Architecture diagram saved: {args.output}")

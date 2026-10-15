@@ -1,14 +1,4 @@
-"""Error Analysis Agent.
-
-Read-only audit of the promoted selection-validation predictions: per-bin MAE/RMSE, signed
-residual means, the top high-error samples (with filename + date), and a focused
-look at tail/extreme high-SI events.
-
-Preserves the verified findings when reproduced:
-  * Error across low/medium/high bins is nearly flat.
-  * The real weakness is the high-SI tail (SI > 2.0), not a whole bin.
-  * Regression-to-the-mean is only claimed if the residual signs support it.
-"""
+"""Error Analysis Agent: read-only per-bin selection-validation errors; the weakness is the SI>2.0 tail."""
 
 from __future__ import annotations
 
@@ -25,8 +15,7 @@ from .schemas import (
 
 AGENT_NAME = "Error Analysis Agent"
 
-# A spread below this (in SI percentage points) is treated as "nearly flat" across
-# bins. The verified spread is ~0.005, well under this threshold.
+# Per-bin MAE spread (SI pp) below this counts as nearly flat; verified spread is ~0.005.
 FLAT_SPREAD_THRESHOLD = 0.02
 
 
@@ -58,7 +47,6 @@ def run_error_analysis_agent(dataset: AgentDataset) -> ErrorAnalysisReport:
     mae_spread = round(max(populated) - min(populated), 4) if populated else 0.0
     error_is_flat = mae_spread < FLAT_SPREAD_THRESHOLD
 
-    # Top-10 high-error samples with their identity.
     top = sorted(rows, key=lambda r: r.error, reverse=True)[:10]
     top_errors = [
         ErrorSample(
@@ -150,8 +138,7 @@ def run_error_analysis_agent(dataset: AgentDataset) -> ErrorAnalysisReport:
             )
         )
 
-    # Regression-to-the-mean: only claim it if residual signs actually support
-    # it (under-predict highs, over-predict lows).
+    # Claim regression-to-the-mean only if residual signs support it (under-predict highs, over-predict lows).
     high_resid = residual_mean_by_bin["high"]
     low_resid = residual_mean_by_bin["low"]
     rtm_supported = high_resid < -0.01 and low_resid > 0.01

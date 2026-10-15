@@ -1,10 +1,4 @@
-"""Historical resumable ETL pipeline for HMI magnetogram acquisition.
-
-The pipeline is kept as the JSOC download reference for long-running dataset
-builds. It predates the final V3 PRO dual-channel symlog tensors, so new
-training runs should either reuse ``prepare_dataset.py`` after download or
-update ``process_magnetogram`` before mixing these outputs with V3 checkpoints.
-"""
+"""Historical resumable JSOC ETL; predates current dual-channel tensors, so convert outputs before V3 use."""
 
 import csv
 import logging
@@ -36,18 +30,11 @@ logger = logging.getLogger(__name__)
 
 
 class Config:
-    """Centralised knobs for sampling, preprocessing, and JSOC throttling.
-
-    The sleep values are empirical from the final ingestion runs; lowering them
-    tends to produce sustained HTTP 429/503 responses before the batch finishes.
-    """
+    """Sampling, preprocessing and JSOC throttling; sleeps are empirical (lower values trigger 429/503)."""
 
     TOTAL_IMAGES: int = 2000
 
-    # Periods cover Solar Cycles 24–25 (2016–2026).
-    # 2019-2020 excluded: Solar Cycle 24/25 deep minimum — severely reduced
-    # active-region occurrence yields unrepresentative low-flux samples that
-    # would bias the training distribution toward quiescent morphology.
+    # Solar Cycles 24-25 (2016-2026); 2019-2020 deep minimum excluded to avoid biasing toward quiet Sun.
     PERIOD_1: Dict = {
         "name": "2016-2018",
         "start": "2016-01-01",
@@ -67,21 +54,17 @@ class Config:
         "samples": TOTAL_IMAGES - 2 * int(TOTAL_IMAGES * 0.3),
     }
 
-    # Doubled from 50 to group more requests per burst and reduce inter-batch
-    # pause frequency, lowering total wall-clock time without raising per-IP rate.
+    # Larger batches mean fewer inter-batch pauses without raising the per-IP request rate.
     BATCH_SIZE: int = 100
     TARGET_SIZE: int = 512
     CLIP_VALUE: float = 400.0
     SUNSPOT_THRESHOLD: float = 200.0
 
-    # Inter-request pause (seconds): keeps request rate below ~25/minute with
-    # jitter. Floor of 1.5 s validated empirically — values below this trigger
-    # HTTP 429 on sustained runs > 500 images against JSOC hardware limits.
+    # Inter-request pause (s) keeps < ~25 req/min; below 1.5 s JSOC returns 429 on long runs.
     SLEEP_MIN: float = 1.5
     SLEEP_MAX: float = 3.0
 
-    # Inter-batch pause (seconds): reduced after confirming JSOC connection
-    # pools recover within 20–45 s at BATCH_SIZE=100 on the final download run.
+    # Inter-batch pause (s): JSOC connection pools recovered within 20-45 s at BATCH_SIZE=100.
     BATCH_SLEEP_MIN: float = 20.0
     BATCH_SLEEP_MAX: float = 45.0
 
@@ -94,12 +77,7 @@ class Config:
 
 
 def generate_sampling_dates(config: Config) -> List[datetime]:
-    """Draw uniformly sampled dates from each configured solar-cycle window.
-
-    Random sampling avoids the seasonal and cadence artefacts introduced by a
-    fixed interval grid, while the period quotas keep the dataset distribution
-    aligned with the intended cycle coverage.
-    """
+    """Uniformly sample dates per solar-cycle window (avoids fixed-grid artefacts, keeps period quotas)."""
     logger.info("Generating sampling dates for %d images...", config.TOTAL_IMAGES)
 
     all_dates: List[datetime] = []
@@ -128,12 +106,7 @@ def download_with_retry(
     download_dir: Path,
     config: Config,
 ) -> Optional[Path]:
-    """Fetch the HMI magnetogram nearest to ``date`` with retry backoff.
-
-    The 1-hour query window tolerates gaps in the 45-second JSOC series. Only
-    rate-limit and service-unavailable failures are retried; other errors are
-    treated as bad records so the batch can continue.
-    """
+    """Fetch the HMI frame nearest ``date`` (1 h window); only 429/503 failures are retried with backoff."""
     for attempt in range(config.MAX_RETRIES):
         try:
             time_range = a.Time(date, date + timedelta(hours=1))
@@ -177,12 +150,7 @@ def process_magnetogram(
     fits_path: Path,
     config: Config,
 ) -> Tuple[Optional[np.ndarray], Optional[Dict]]:
-    """Load one FITS file through the legacy single-channel preprocessing path.
-
-    The sunspot proxy is measured before resampling so interpolation does not
-    move pixels across the 200 G threshold. Convert these tensors before using
-    them with the current dual-channel CoroniumV3 checkpoint.
-    """
+    """Legacy single-channel FITS preprocessing (SI before resampling); convert before V3 use."""
     try:
         solar_map = sunpy.map.Map(str(fits_path))
         data = solar_map.data
@@ -273,12 +241,7 @@ def process_batch_etl(
     config: Config,
     processed_files: Set[str],
 ) -> Dict[str, int]:
-    """Run download, legacy transform, validation, and cleanup in batches.
-
-    ``processed_files`` is updated in-place after each successful write. Raw
-    FITS files are removed after processing attempts to keep long runs from
-    exhausting local disk.
-    """
+    """Batched download, transform, validation and raw-FITS cleanup; updates ``processed_files`` in place."""
     config.RAW_DIR.mkdir(parents=True, exist_ok=True)
     config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -312,7 +275,6 @@ def process_batch_etl(
 
         batch_files: List[Path] = []
 
-        # Phase 1: Download
         logger.info("  Phase 1: Download")
         for date in tqdm(batch_dates, desc=f"Batch {batch_idx + 1} — Download", leave=False):
             date_str = date.strftime("%Y.%m.%d")
@@ -336,7 +298,6 @@ def process_batch_etl(
             batch_files.append(fits_path)
             stats["downloaded"] += 1
 
-        # Phase 2: Transform and validate
         logger.info("  Phase 2: Transform + Validate (%d files)", len(batch_files))
         for fits_path in tqdm(batch_files, desc=f"Batch {batch_idx + 1} — Process", leave=False):
             processed_data, metadata = process_magnetogram(fits_path, config)

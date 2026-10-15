@@ -1,8 +1,4 @@
-"""Export Coronium V3.1 to ONNX and compare PyTorch/ORT latency.
-
-The exported graph keeps a dynamic batch axis but preserves the production
-input contract: ``(N, 2, 512, 512)`` dual-polarity magnetograms.
-"""
+"""Export Coronium to ONNX (dynamic batch, ``(N, 2, 512, 512)`` B+/B- input) and compare PyTorch/ORT latency."""
 
 import sys
 import time
@@ -13,37 +9,21 @@ from typing import Tuple
 import numpy as np
 import torch
 
-# ---------------------------------------------------------------------------
-# Make src/ importable
-# ---------------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from models.train_model import CoroniumV3              # noqa: E402
 from models.active_model import CHECKPOINT_PATH, ONNX_PATH
 
-# ---------------------------------------------------------------------------
-# Logging
-# ---------------------------------------------------------------------------
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger("auralis.export_onnx")
 
-# ---------------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------------
 WEIGHTS_PATH = CHECKPOINT_PATH
 
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
 INPUT_SHAPE   = (1, 2, 512, 512)   # (batch, B+/B-, H, W)
 WARMUP_ITERS  = 10
 BENCH_ITERS   = 100
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 def load_pytorch_model(weights_path: Path) -> CoroniumV3:
     """Instantiate Coronium V3.1 and load checkpoint weights."""
@@ -76,7 +56,7 @@ def export_onnx(model: CoroniumV3, onnx_path: Path) -> None:
             "input":  {0: "batch_size"},
             "output": {0: "batch_size"},
         },
-        do_constant_folding=True,   # fuse constant sub-graphs for speed
+        do_constant_folding=True,
     )
     size_kb = onnx_path.stat().st_size / 1024
     size_label = f"{size_kb:.1f} KB" if size_kb < 1024 else f"{size_kb / 1024:.2f} MB"
@@ -99,11 +79,9 @@ def benchmark_pytorch(model: CoroniumV3) -> Tuple[float, float]:
     dummy = torch.zeros(*INPUT_SHAPE)
 
     with torch.no_grad():
-        # warm-up
         for _ in range(WARMUP_ITERS):
             _ = model(dummy)
 
-        # measure
         times: list = []
         for _ in range(BENCH_ITERS):
             t0 = time.perf_counter()
@@ -132,11 +110,9 @@ def benchmark_onnx(onnx_path: Path) -> Tuple[float, float]:
     input_name = session.get_inputs()[0].name
     dummy_np   = np.zeros(INPUT_SHAPE, dtype=np.float32)
 
-    # warm-up
     for _ in range(WARMUP_ITERS):
         _ = session.run(None, {input_name: dummy_np})
 
-    # measure
     times: list = []
     for _ in range(BENCH_ITERS):
         t0 = time.perf_counter()
@@ -180,31 +156,22 @@ def print_report(
     print()
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
 def main() -> None:
-    # 1. Sanity check
     if not WEIGHTS_PATH.exists():
         raise FileNotFoundError(
             f"Checkpoint not found: {WEIGHTS_PATH}\n"
             "Train the augmented model before exporting it."
         )
 
-    # 2. Load PyTorch model.
     logger.info("Step 1/4 - Loading Coronium V3.1 architecture...")
     model = load_pytorch_model(WEIGHTS_PATH)
 
-    # 3. Export to ONNX.
     logger.info("Step 2/4 - Exporting to ONNX (opset 18)...")
     export_onnx(model, ONNX_PATH)
 
-    # 4. Validate graph.
     logger.info("Step 3/4 - Validating ONNX graph...")
     verify_onnx(ONNX_PATH)
 
-    # 5. Benchmark.
     logger.info("Step 4/4 - Measuring latency (%d iterations, warm-up %d)...",
                 BENCH_ITERS, WARMUP_ITERS)
 
@@ -214,7 +181,6 @@ def main() -> None:
     logger.info("  Benchmarking ONNX Runtime...")
     ort_mean, ort_std = benchmark_onnx(ONNX_PATH)
 
-    # 6. Final report.
     print_report(ONNX_PATH, pt_mean, pt_std, ort_mean, ort_std)
 
 

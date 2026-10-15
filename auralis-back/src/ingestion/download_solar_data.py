@@ -1,9 +1,4 @@
-"""Small HMI downloader for manual or recent-window data pulls.
-
-Use the massive ingestion pipeline for large date ranges. This module keeps a
-narrow query window around each requested timestamp and fetches only the first
-matching JSOC frame.
-"""
+"""Small HMI downloader for ad-hoc recent windows; use the massive pipeline for large date ranges."""
 
 import logging
 from datetime import datetime, timedelta
@@ -29,12 +24,7 @@ def fetch_solar_data(
     instrument: str = "hmi",
     physobs: str = "los_magnetic_field",
 ) -> List[str]:
-    """Download one HMI magnetogram per sampling interval.
-
-    The +/-5 minute query window is wide enough to catch a nearby 45-second HMI
-    frame without pulling a full cadence sequence. Failed timestamps are logged
-    and skipped so ad-hoc runs can continue.
-    """
+    """Download one HMI magnetogram per interval (±5 min window); failed timestamps are logged and skipped."""
     if isinstance(start_date, str):
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
     if isinstance(end_date, str):
@@ -61,8 +51,7 @@ def fetch_solar_data(
 
     for idx, sample_time in enumerate(sample_times, 1):
         try:
-            # ±5-minute window: wide enough to catch the nearest 45-second
-            # HMI frame without spanning two consecutive cadence intervals.
+            # ±5 min catches the nearest 45 s HMI frame without spanning two cadence intervals.
             time_start = sample_time - timedelta(minutes=5)
             time_end = sample_time + timedelta(minutes=5)
 

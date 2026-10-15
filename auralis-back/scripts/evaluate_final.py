@@ -1,8 +1,4 @@
-"""Evaluate a versioned run, or explicitly reproduce the contaminated legacy split.
-
-Targets are SI pixel percentages, without log or Z-score. Legacy reproduction
-is diagnostic only and never refreshes the dashboard's preserved report.
-"""
+"""Evaluate a versioned run (SI pixel %, no log/Z-score) or reproduce the contaminated legacy split."""
 
 import argparse
 import json
@@ -16,10 +12,8 @@ import torch
 from torch.utils.data import DataLoader, Subset
 from tqdm import tqdm
 
-# ---------------------------------------------------------------------------
 # Keep train_model.py importable without installing the project as a package.
-# ---------------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from models.train_model import SolarDataset, CoroniumV3  # noqa: E402
 from processing.scientific_split import load_split, sha256
@@ -31,9 +25,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
 # Paths are relative to the auralis-back/ working directory.
-# ---------------------------------------------------------------------------
 WEIGHTS_PATH  = Path("models/best_coronium_v3_pro_augmented.pth")
 SCALER_PATH   = Path("models/target_scaler.json")
 SPLIT_PATH    = Path("models/split_indices_phase1_v1.json")
@@ -46,9 +38,7 @@ VAL_SPLIT    = 0.2
 BATCH_SIZE   = 32
 DROPOUT_RATE = 0.2
 
-# Reproducibility — fix all RNG sources so MC Dropout masks are deterministic.
-# Repetition is conditional on backend, software, batch size/order and deterministic
-# settings. A seed alone does not guarantee identical results across environments.
+# Seed all RNGs for MC Dropout masks; repeatability still depends on backend, software and batch order.
 SEED = 42
 torch.manual_seed(SEED)
 if torch.cuda.is_available():
@@ -57,10 +47,6 @@ if torch.backends.mps.is_available():
     torch.mps.manual_seed(SEED)
 np.random.seed(SEED)
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 def get_device() -> torch.device:
     """Select the fastest available backend for evaluation."""
@@ -134,10 +120,6 @@ def run_inference(
     return np.array(y_real_list), np.array(y_pred_list)
 
 
-# ---------------------------------------------------------------------------
-# Metrics
-# ---------------------------------------------------------------------------
-
 def compute_metrics(y_real: np.ndarray, y_pred: np.ndarray) -> dict:
     """Compute regression metrics; MAPE skips zero targets."""
     residuals = y_pred - y_real
@@ -145,12 +127,10 @@ def compute_metrics(y_real: np.ndarray, y_pred: np.ndarray) -> dict:
     mae  = float(np.mean(np.abs(residuals)))
     rmse = float(np.sqrt(np.mean(residuals ** 2)))
 
-    # R2 = 1 - SS_res / SS_tot.
     ss_res = float(np.sum(residuals ** 2))
     ss_tot = float(np.sum((y_real - y_real.mean()) ** 2))
     r2     = 1.0 - ss_res / ss_tot if ss_tot > 0.0 else float("nan")
 
-    # MAPE only on samples with nonzero target activity.
     nonzero_mask = y_real != 0.0
     if nonzero_mask.sum() > 0:
         mape = float(np.mean(np.abs(residuals[nonzero_mask] / y_real[nonzero_mask])) * 100)
@@ -177,10 +157,6 @@ def print_thesis_report(metrics: dict, n_samples: int, mean: float = 0.0, std: f
     print(sep + "\n")
 
 
-# ---------------------------------------------------------------------------
-# CSV export
-# ---------------------------------------------------------------------------
-
 def export_comparison_csv(
     y_real: np.ndarray,
     y_pred: np.ndarray,
@@ -198,10 +174,6 @@ def export_comparison_csv(
     df.to_csv(output_path, index=False, mode="x")
     logger.info("CSV exported: %s (%d rows)", output_path, len(df))
 
-
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)

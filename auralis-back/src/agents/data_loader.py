@@ -1,17 +1,4 @@
-"""Shared read-only dataset loader for the Auralis Agent Lab.
-
-This module is the single source of truth for the join between the promoted
-selection-validation predictions and the per-sample metadata. It is intentionally the only
-place that knows how ``results_comparison.csv`` maps back to
-``metadata_processed.csv`` via ``split_indices.json``.
-
-Read-only contract
-------------------
-Nothing here writes, mutates, or re-derives any artifact. It opens three files
-for reading and returns plain Python objects. If a file is missing or the split
-contract is violated, it raises :class:`AgentDataError` with a structured,
-human-readable detail so the API can degrade gracefully instead of crashing.
-"""
+"""Read-only join of selection-validation predictions to metadata; raises AgentDataError, never writes."""
 
 from __future__ import annotations
 
@@ -29,10 +16,7 @@ METADATA_CSV = BASE_DIR / "data" / "processed" / "metadata_processed.csv"
 SPLIT_JSON = BASE_DIR / "models" / "split_indices.json"
 RESULTS_CSV = BASE_DIR / "reports" / "results_comparison.csv"
 
-# Activity-bin thresholds in raw SI percentage points. These mirror the demo-calibrated
-# thresholds used by the existing /api/predict classifier (_classify in
-# src/api/main.py); they are reused here so the agents bin samples exactly the
-# way the rest of the system already does.
+# Activity-bin thresholds (raw SI pp), mirroring the /api/predict _classify bands.
 BIN_LOW_MAX = 1.41        # low:    SI < 1.41
 BIN_MEDIUM_MAX = 1.75     # medium: 1.41 <= SI < 1.75 ; high: SI >= 1.75
 TAIL_EXTREME_SI = 2.0     # tail/extreme event marker
@@ -42,11 +26,7 @@ EXPECTED_RANDOM_STATE = 42
 
 
 class AgentDataError(RuntimeError):
-    """Raised when a required artifact is missing or the split contract fails.
-
-    Carries a machine-readable ``code`` and the list of ``missing`` paths so the
-    API layer can return a clear structured error to the dashboard.
-    """
+    """Missing artifact or broken split contract; ``code`` and ``missing`` feed structured API errors."""
 
     def __init__(self, message: str, *, code: str, missing: Optional[List[str]] = None) -> None:
         super().__init__(message)
@@ -82,12 +62,7 @@ class ValidationRow:
 
 @dataclass
 class AgentDataset:
-    """Everything the read-only agents need, computed once and shared.
-
-    ``metadata_rows`` holds every processed sample; ``validation_rows`` holds the
-    joined selection-validation predictions. ``train_indices`` / ``val_indices`` are the raw
-    split indices into ``metadata_rows``.
-    """
+    """Shared read-only inputs: all metadata rows, joined validation rows and raw split indices."""
 
     metadata_rows: List[Dict[str, object]]
     train_indices: List[int]
@@ -95,8 +70,6 @@ class AgentDataset:
     validation_rows: List[ValidationRow]
     random_state: Optional[int]
     warnings: List[str] = field(default_factory=list)
-
-    # -- convenience views --------------------------------------------------
 
     def metadata_sunspot_indices(self) -> List[float]:
         return [float(r["sunspot_index"]) for r in self.metadata_rows]
@@ -155,12 +128,7 @@ def _read_results(path: Path) -> List[Dict[str, float]]:
 
 
 def load_agent_dataset() -> AgentDataset:
-    """Load and join the read-only artifacts the agents depend on.
-
-    Raises :class:`AgentDataError` (with structured detail) when a file is
-    missing or the split contract is violated, so callers never silently work
-    with a broken join.
-    """
+    """Load and join the read-only agent artifacts; raise AgentDataError rather than use a broken join."""
     from models import serving_selection as serving
     if serving.IS_RELEASE_V32:
         return _load_release_dataset(serving)
@@ -222,9 +190,7 @@ def load_agent_dataset() -> AgentDataset:
         predicted = results[i]["predicted"]
         error = results[i]["error"]
 
-        # Sanity check the join: the ground-truth in results_comparison.csv must
-        # match the metadata sunspot_index for the same val index. A drift here
-        # would mean the row-order contract has broken.
+        # Row-order join check: results truth must equal metadata sunspot_index for the same val index.
         if not math.isclose(meta_si, real, abs_tol=1e-2):
             join_drift += 1
 
@@ -245,8 +211,7 @@ def load_agent_dataset() -> AgentDataset:
         )
 
     if join_drift > 0:
-        # Tolerate but surface: a few drifting rows hint the CSVs were
-        # regenerated independently. A large fraction means the join is broken.
+        # Tolerate a few drifting rows (independently regenerated CSVs); a large fraction means a broken join.
         frac = join_drift / len(validation_rows)
         if frac > 0.05:
             raise AgentDataError(

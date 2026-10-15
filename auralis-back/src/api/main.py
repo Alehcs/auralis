@@ -1,10 +1,4 @@
-"""FastAPI runtime for the Auralis local demo.
-
-The API serves processed HMI magnetograms, ONNX predictions, Grad-CAM figures,
-XAI faithfulness curves, experiment metadata, and benchmark summaries. It keeps
-the PyTorch model loaded for explainability and uses the ONNX graph for
-dashboard inference.
-"""
+"""FastAPI runtime for the local demo: PyTorch stays loaded for Grad-CAM, ONNX serves dashboard inference."""
 
 import io
 import math
@@ -16,9 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from contextlib import asynccontextmanager
 
-# ---------------------------------------------------------------------------
-# src/models/ on path so train_model can be imported without a package install
-# ---------------------------------------------------------------------------
+# src/models/ on path so train_model imports without a package install.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from models.train_model import CoroniumV3, ECAAttention  # noqa: E402
 from processing.model_input import prepare_model_input, INPUT_CONTRACT, TARGET_CONTRACT
@@ -44,20 +36,12 @@ from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel
 
 
-# ---------------------------------------------------------------------------
-# Logging
-# ---------------------------------------------------------------------------
-
 logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] %(asctime)s - %(name)s - %(message)s",
 )
 logger = logging.getLogger("auralis.api")
 
-
-# ---------------------------------------------------------------------------
-# Paths (resolved relative to the Auralis root)
-# ---------------------------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # auralis-back/
 DATA_DIR = BASE_DIR / "data" / "processed"
@@ -68,17 +52,8 @@ LOG_DIR = BASE_DIR
 EXPERIMENTS_DIR = BASE_DIR / "experiments"
 
 
-# ---------------------------------------------------------------------------
-# Grad-CAM (Explainable AI)
-# ---------------------------------------------------------------------------
-
 class GradCAM:
-    """Grad-CAM helper for CoroniumV3 regression.
-
-    The API targets ``model.stage4.conv`` so the heatmap is based on the last
-    spatial feature map before global pooling. Hooks must be removed after each
-    call; otherwise repeated requests accumulate captures and leak memory.
-    """
+    """Grad-CAM on ``model.stage4.conv`` for regression; hooks are removed after each call to avoid leaks."""
 
     def __init__(self, model: nn.Module, target_layer: nn.Module) -> None:
         self.model = model
@@ -142,18 +117,8 @@ class GradCAM:
             self.remove_hooks()
 
 
-# ---------------------------------------------------------------------------
-# Device Detection
-# ---------------------------------------------------------------------------
-
 def _get_device() -> torch.device:
-    """Select the highest-performance available compute device.
-
-    Priority order: CUDA → Apple MPS → CPU.
-
-    Returns:
-        A ``torch.device`` instance for the selected backend.
-    """
+    """Select the best available device: CUDA, then Apple MPS, then CPU."""
     if FIXED_CPU_EXECUTION:
         return torch.device("cpu")
     if torch.cuda.is_available():
@@ -162,10 +127,6 @@ def _get_device() -> torch.device:
         return torch.device("mps")
     return torch.device("cpu")
 
-
-# ---------------------------------------------------------------------------
-# V3 PRO Preprocessing Helpers
-# ---------------------------------------------------------------------------
 
 def _prepare_tensor(data: np.ndarray, device: torch.device) -> torch.Tensor:
     """Use the training/evaluation contract, without stochastic augmentation."""
@@ -180,10 +141,6 @@ def _prepare_numpy(data: np.ndarray) -> np.ndarray:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
-# ---------------------------------------------------------------------------
-# Global State
-# ---------------------------------------------------------------------------
-
 _model: Optional[CoroniumV3] = None
 _device: Optional[torch.device] = None
 _ort_session: Optional[Any] = None       # ort.InferenceSession — edge inference
@@ -193,11 +150,7 @@ _predict_cache: Dict[str, "PredictionResult"] = {}
 
 
 def _load_model() -> None:
-    """Load the promoted PyTorch checkpoint and ONNX Runtime session.
-
-    PyTorch stays resident for Grad-CAM. Dashboard predictions use ONNX Runtime.
-    ``weights_only=True`` avoids arbitrary code execution from checkpoint files.
-    """
+    """Load the promoted checkpoint (Grad-CAM, weights_only=True) and the ONNX session (predictions)."""
     global _model, _device, _ort_session, _ort_input_name
 
     # No legacy fallback: checkpoint, ONNX, metrics and scatter must match.
@@ -225,7 +178,6 @@ def _load_model() -> None:
         MODEL_NAME, f"{total_params:,}", MODEL_PATH.name, _device, TEST_RUNTIME, MODEL_STATUS,
     )
 
-    # --- ONNX Runtime session for edge inference ----------------------------
     if ONNX_PATH.exists():
         sess_opts = ort.SessionOptions()
         sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
@@ -247,10 +199,6 @@ def _load_model() -> None:
         )
 
 
-# ---------------------------------------------------------------------------
-# Pydantic Schemas
-# ---------------------------------------------------------------------------
-
 class ImageListItem(BaseModel):
     filename: str
     date: Optional[str] = None
@@ -270,8 +218,7 @@ class ImageListResponse(BaseModel):
 class ClassificationInfo(BaseModel):
     level: str        # "Low" | "Medium" | "High"
     label: str        # human-readable label
-    # Legacy API field retained for compatibility. Values are activity-band
-    # symbols only and have not been validated against GOES flare classes.
+    # Legacy compatibility field: activity-band symbols, not validated GOES flare classes.
     flare_class: str  # "C" | "M" | "X"
     interpretation: str = ("Historical internal activity bands; not calibrated for candidates or GOES flare classes"
                            if (IS_CANDIDATE or IS_RELEASE_V32) else "Historical internal activity bands; not calibrated for V3.1 or GOES flare classes")
@@ -421,17 +368,12 @@ class BenchmarkResult(BaseModel):
     rmse_reduction_pct: float
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 def _extract_date(filename: str) -> Optional[str]:
     """UTC conversion of the filename's TAI record time; never append Z to TAI."""
     return filename_time(filename)["date"]
 
 
-# Historical demo thresholds retained in raw SI units for V3.1.
-# They are not calibrated V3.1 decision boundaries or GOES flare classes.
+# Historical raw-SI demo thresholds; not calibrated decision boundaries or GOES flare classes.
 def _classify(sunspot_index: float) -> ClassificationInfo:
     """Classify an ONNX prediction using demo-calibrated thresholds."""
     if sunspot_index < 1.41:
@@ -456,10 +398,6 @@ def _classify(sunspot_index: float) -> ClassificationInfo:
     )
 
 
-# ---------------------------------------------------------------------------
-# Application Lifespan
-# ---------------------------------------------------------------------------
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Load runtime artifacts before FastAPI starts serving requests."""
@@ -467,10 +405,6 @@ async def lifespan(app: FastAPI):
     yield
     logger.info("Shutting down Auralis API")
 
-
-# ---------------------------------------------------------------------------
-# FastAPI App
-# ---------------------------------------------------------------------------
 
 app = FastAPI(
     title="Auralis API",
@@ -494,16 +428,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Additive, read-only Agent Lab routes (/api/agents/*). Mounted from a separate
-# router module so existing handlers are untouched; the audit layer never
-# modifies the model, artifacts, metrics, or any on-disk data.
+# Read-only Agent Lab routes (/api/agents/*), mounted from a separate router module.
 from api.agent_routes import router as agents_router  # noqa: E402
 
 app.include_router(agents_router)
 
 
-# Explicit trial instances carry identity on all resources, including images.
-# Agent Lab is tied to legacy evidence paths; never relabel it as a candidate.
+# Trial instances carry identity on all resources; Agent Lab uses legacy evidence, never relabel it.
 if FIXED_CPU_EXECUTION:
     @app.middleware("http")
     async def trial_identity(request: Request, call_next):
@@ -535,17 +466,9 @@ async def _unhandled_exception_handler(request: Request, exc: Exception) -> JSON
     )
 
 
-# ---------------------------------------------------------------------------
-# Endpoints
-# ---------------------------------------------------------------------------
-
 @app.get("/health", response_model=HealthResponse, tags=["System"])
 async def health_check():
-    """Return API liveness status, version, and model readiness.
-
-    Used by Railway / Render health checks to verify the service is up
-    and the model has been loaded successfully.
-    """
+    """Return API liveness status, version, and model readiness."""
     return HealthResponse(
         status="ok",
         version="3.1.0",
@@ -553,8 +476,6 @@ async def health_check():
         device=str(_device) if _device else "none",
     )
 
-
-# -- Images ----------------------------------------------------------------
 
 @app.get("/api/images/list", response_model=ImageListResponse)
 async def list_images():
@@ -588,12 +509,10 @@ async def get_image(filename: str):
 
     data: np.ndarray = np.load(str(filepath))
 
-    # V3 PRO tensors are (2, H, W) [B+, B-]; reconstruct signed magnetogram.
-    # B+ − B− recovers the signed clip400-normalized field: positive = bright, negative = dark.
+    # (2, H, W) [B+, B-]: B+ - B- recovers the signed clip400 field (positive = bright, negative = dark).
     display = (data[0] - data[1]) if data.ndim == 3 else data
 
-    # Percentile clipping for high-contrast grayscale (standard HMI style).
-    # 2nd–98th percentile saturates noise while preserving active-region detail.
+    # 2nd-98th percentile clipping saturates noise while preserving active-region detail.
     vmin, vmax = np.percentile(display, [2, 98])
     # Ensure symmetric range so zero field maps to mid-gray.
     v = max(abs(vmin), abs(vmax))
@@ -615,16 +534,9 @@ async def get_image(filename: str):
     return StreamingResponse(buf, media_type="image/png")
 
 
-# -- Prediction ------------------------------------------------------------
-
 @app.get("/api/predict/{filename}", response_model=PredictionResult, tags=["Inference"])
 async def predict(filename: str):
-    """Run ONNX inference and return the dashboard prediction payload.
-
-    The ONNX graph is eval-mode, so uncertainty is simulated with 20 small
-    input-noise passes for a separate sensitivity diagnostic. The point estimate
-    is one unperturbed eval-mode pass. Results are cached by filename.
-    """
+    """ONNX prediction: one deterministic eval pass; 20 input-noise passes are a separate diagnostic. Cached."""
     if _ort_session is None:
         raise HTTPException(status_code=503, detail="ONNX model not loaded")
 
@@ -639,11 +551,7 @@ async def predict(filename: str):
     data: np.ndarray = np.load(str(filepath))
     input_np = _prepare_numpy(data)          # (1, 2, H, W) contiguous float32
 
-    # ONNX Runtime inference with input-noise uncertainty simulation.
-    # The model was exported in eval mode — Dropout layers are frozen at p=0, so
-    # repeated passes return identical results.  Uncertainty is approximated by
-    # injecting arbitrary Gaussian noise (σ=0.005). This is an illustrative
-    # sensitivity diagnostic, without instrument-noise calibration.
+    # Eval-mode ONNX is deterministic; spread uses uncalibrated Gaussian input noise (σ=0.005), illustrative.
     MC_PASSES = 20
     rng_mc = np.random.default_rng(seed=42)
 
@@ -658,9 +566,7 @@ async def predict(filename: str):
     uncertainty = round(float(np.std(mc_predictions)), 4)
     classification = _classify(sunspot_index)
 
-    # Confidence heuristic: inversely proportional to absolute index magnitude.
-    # High-activity events are underrepresented in the training corpus, so
-    # confidence is capped conservatively in the [0.75, 0.99] range.
+    # Heuristic confidence capped to [0.75, 0.99]: high activity is underrepresented in training.
     confidence = round(max(0.75, min(0.99, 1.0 - abs(sunspot_index) / 500.0)), 2)
 
     logger.info(
@@ -679,16 +585,9 @@ async def predict(filename: str):
     return result
 
 
-# -- AIA 193Å EUV ----------------------------------------------------------
-
 @app.get("/api/aia/{filename}")
 async def get_aia_image(filename: str):
-    """Render a real or magnetogram-derived AIA 193A EUV preview.
-
-    Real files in ``data/aia/`` take precedence. The fallback smooths magnetic
-    magnitude from the HMI tensor, which is a visual proxy only and should not be
-    treated as observed EUV data.
-    """
+    """Render real AIA 193A from data/aia/, else an HMI-derived visual proxy (not observed EUV)."""
     from scipy.ndimage import gaussian_filter
     from matplotlib.colors import LinearSegmentedColormap
 
@@ -702,8 +601,7 @@ async def get_aia_image(filename: str):
         intensity = (raw - raw.min()) / (raw.max() - raw.min() + 1e-8)
     elif hmi_path.exists() and hmi_path.suffix == ".npy":
         source = "synthetic_hmi_proxy"
-        # Simulation: EUV intensity ∝ |B|, smoothed to mimic diffuse loop structures.
-        # V3 PRO data is (2, H, W) — total field strength = B+ + B-.
+        # Proxy: EUV intensity ∝ |B| = B+ + B-, smoothed to mimic diffuse loop structures.
         data: np.ndarray = np.load(str(hmi_path))
         mag = (data[0] + data[1]) if data.ndim == 3 else np.abs(data)
         intensity = gaussian_filter(mag, sigma=3.0)
@@ -735,8 +633,6 @@ async def get_aia_image(filename: str):
 
     return StreamingResponse(buf, media_type="image/png", headers={"X-Auralis-Image-Source": source})
 
-
-# -- Dual-Channel Prediction -----------------------------------------------
 
 @app.get("/api/predict-dual/{filename}", response_model=PredictionResult, tags=["Inference"])
 async def predict_dual(filename: str):
@@ -787,8 +683,6 @@ async def predict_dual(filename: str):
     return result
 
 
-# -- Explainability (Grad-CAM) ----------------------------------------------
-
 @app.get("/api/explain/{filename}")
 async def explain(filename: str):
     """Generate the dashboard Grad-CAM overlay for one processed magnetogram."""
@@ -804,9 +698,7 @@ async def explain(filename: str):
     # V3 PRO preprocessing: (2, H, W) or legacy (H, W) → (1, 2, H, W)
     tensor = _prepare_tensor(data, _device)
 
-    # Grad-CAM on stage4.conv: hooks capture the Conv3×3 output of the last
-    # V3ResidualBlock before BN/ReLU/ECA, which gives the most faithful
-    # gradient signal for the regression scalar.
+    # stage4.conv hooks (last block's conv before BN/ReLU/ECA) give the most faithful regression gradient.
     gradcam = GradCAM(_model, _model.stage4.conv)
     heatmap = gradcam.generate_heatmap(tensor)
 
@@ -849,11 +741,7 @@ async def explain(filename: str):
 
 @app.get("/api/explain-panels/{filename}")
 async def explain_panels(filename: str):
-    """Generate the dashboard's three-panel Grad-CAM figure.
-
-    Channels use the same clip400 polarity representation as training;
-    the normalized heatmap is attribution, not a physical field measurement.
-    """
+    """Three-panel Grad-CAM figure; the heatmap is attribution, not a physical field measurement."""
     if _model is None or _device is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
 
@@ -891,8 +779,7 @@ async def explain_panels(filename: str):
     zoom_factor = spatial_h / heatmap.shape[0]
     heatmap_up = ndimage_zoom(heatmap, zoom_factor, order=1)
 
-    # Figure layout mirrors explain_model.plot_gradcam() so exported artifacts
-    # and dashboard previews use the same visual convention.
+    # Layout mirrors explain_model.plot_gradcam() so exported and dashboard figures match.
     DARK_BG = "#0d0d0d"
     stem = Path(filename).stem
 
@@ -1030,11 +917,7 @@ async def explain_layers(filename: str):
 
 @app.get("/api/polarity-series")
 async def polarity_series(limit: int = 48):
-    """Return recent B+ and B- mean-flux points for the dashboard chart.
-
-    B- is returned as a negative value so the frontend can mirror both polarity
-    bars around zero without reinterpreting the data contract.
-    """
+    """Recent B+/B- mean-flux points; B- is negative so the frontend mirrors bars around zero."""
     npy_files = sorted(DATA_DIR.glob("*.npy"))[-limit:]
     points = []
     for fp in npy_files:
@@ -1066,8 +949,6 @@ async def polarity_series(limit: int = 48):
             continue
     return points
 
-
-# -- Stats -----------------------------------------------------------------
 
 @app.get("/api/stats", response_model=SystemStats)
 async def get_stats():
@@ -1105,15 +986,9 @@ async def get_stats():
     )
 
 
-# -- Logs ------------------------------------------------------------------
-
 @app.get("/api/xai/faithfulness", response_model=XAIFaithfulnessResult)
 async def get_xai_faithfulness(filename: Optional[str] = None):
-    """Compute the cached Grad-CAM deletion curve used by the research tab.
-
-    Guided occlusion should degrade predictions faster than random occlusion;
-    the returned AUC summarizes that gap over 0-100 percent masked pixels.
-    """
+    """Cached Grad-CAM deletion curve; AUC is the random-minus-guided gap over 0-100% masked pixels."""
     from scipy.ndimage import zoom as ndimage_zoom
 
     if _model is None or _device is None:
@@ -1141,8 +1016,7 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
     with torch.inference_mode():
         baseline_pred = float(_model(base_tensor).item())
 
-    # Grad-CAM on stage4.conv: fresh tensor required because inference_mode
-    # must be disabled during the backward pass inside generate_heatmap.
+    # Fresh tensor: inference_mode must be off for the backward pass in generate_heatmap.
     grad_tensor = _prepare_tensor(data, _device)
     gradcam = GradCAM(_model, _model.stage4.conv)
     heatmap = gradcam.generate_heatmap(grad_tensor)
@@ -1212,8 +1086,7 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
             random_normalized=round(rand_pred / safe_baseline, 4),
         ))
 
-    # AUC = ∫random − ∫GradCAM over [0, 100] pct masked, normalised to [0, 1].
-    # Positive score indicates Grad-CAM drops faster than random → faithful saliency.
+    # AUC = ∫random − ∫GradCAM over 0-100% masked, normalised; positive means faithful saliency.
     gradcam_norms = [p.normalized for p in curve]
     random_norms = [p.random_normalized for p in curve]
     auc = float(
@@ -1238,28 +1111,17 @@ async def get_xai_faithfulness(filename: Optional[str] = None):
 
 @app.get("/api/benchmark", response_model=BenchmarkResult)
 async def get_benchmark():
-    """Return architecture comparison: ResNet18 (baseline) vs Coronium, plus VGG-11.
-
-    Reads real baseline metrics from experiments/results_benchmarking.json when
-    available. Falls back to hardcoded values if the file is missing.
-    """
+    """Historical ResNet18 vs Coronium (+ VGG-11) comparison from saved JSON, with hardcoded fallback."""
     import json
 
-    # Historical V3 benchmark only; never substitute V3.1 on this old split.
-    # evaluate_final.py: MC Dropout T=20, SI percentage points space, 353 historical validation rows (with observation leakage).
-    # The historical random_state=42 split shares 145 observations between sets.
-    proposed_mae = 0.1048          # MAE SI percentage points, 353 historical validation rows (with observation leakage) (seed=42, reproducible)
+    # Historical V3 only (MC T=20, 353 rows, 145 observations leak across split); never substitute V3.1.
+    proposed_mae = 0.1048          # MAE, SI pp (historical leaky split, seed 42)
     proposed_rmse = 0.1272         # RMSE SI percentage points
     proposed_r2 = 0.8634           # R²
     proposed_params = 206_875      # Verified with sum(p.numel() for p in model.parameters()).
     proposed_inference_ms = 25.11  # ONNX Runtime CPU — 25.11 ms (1.11× vs PyTorch 27.90 ms)
 
-    # Static reference values mirroring the last committed benchmark run
-    # (experiments/results_benchmarking.json — run_external_baselines.py,
-    # seed=42, 30 epochs, 352-sample val split). These are NOT recomputed by
-    # the API; they are served verbatim only when that JSON file is absent, so
-    # the dashboard never reports baseline numbers that disagree with the
-    # benchmark table. Update them only when the benchmark run is republished.
+    # Fallback copy of experiments/results_benchmarking.json (seed 42, 30 epochs, 352 val); update on republish.
     baseline_mae = 0.0755          # ResNet-18 MAE
     baseline_rmse = 0.0898         # ResNet-18 RMSE
     baseline_r2 = 0.9276           # ResNet-18 R²
@@ -1411,12 +1273,7 @@ async def get_results_comparison(protocol: str = "deterministic" if IS_RELEASE_V
 
 @app.get("/api/logs", response_model=List[LogEntry])
 async def get_logs():
-    """Read the trailing 50 lines from each ``.log`` file in the project root.
-
-    Returns:
-        List of ``LogEntry`` objects, one per log file, ordered by filename.
-        Returns an empty list if no log files are present.
-    """
+    """Return the trailing 50 lines of each project-root ``.log`` file, ordered by filename."""
     log_files = sorted(LOG_DIR.glob("*.log"))
 
     if not log_files:
@@ -1434,8 +1291,6 @@ async def get_logs():
 
     return entries
 
-
-# -- Black Box Upload Endpoints --------------------------------------------
 
 @app.post("/api/images-upload", tags=["Inference"])
 async def images_upload(file: UploadFile = File(...)):
@@ -1467,12 +1322,7 @@ async def images_upload(file: UploadFile = File(...)):
 
 @app.post("/api/predict-upload", response_model=PredictionResult, tags=["Inference"])
 async def predict_upload(file: UploadFile = File(...)):
-    """Run ONNX inference on an uploaded .npy magnetogram.
-
-    Uploads use the same preprocessing and input-noise uncertainty simulation
-    as file-based inference, but results are intentionally not cached because
-    the file has no stable dataset identity.
-    """
+    """ONNX inference on an uploaded .npy with file-based preprocessing; uncached (no stable identity)."""
     if _ort_session is None:
         raise HTTPException(status_code=503, detail="ONNX model not loaded")
 

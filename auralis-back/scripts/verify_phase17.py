@@ -1,7 +1,4 @@
-"""Verify final/repeated Phase 1.7 artifacts and preserve the pre-audit inventory.
-
-python scripts/verify_phase17.py --report-dir <run> --repeat-dir <repeat> --output <new.json>
-"""
+"""Verify final/repeated Phase 1.7 artifacts and preserve the pre-audit inventory."""
 import argparse
 import hashlib
 import json

@@ -1,8 +1,4 @@
-"""Residual diagnostics in SI percentage points, reused by run_phase17.py.
-
-python scripts/plot_r2_diagnostic.py --report-dir <phase17-run> --output-dir <fresh-dir>
-No residual standard deviation band is presented as predictive uncertainty.
-"""
+"""Residual diagnostics in SI percentage points; no residual SD band is shown as predictive uncertainty."""
 import argparse
 from pathlib import Path
 

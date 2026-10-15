@@ -1,10 +1,4 @@
-"""Audit-derived V3.1 metrics/figures from immutable Phase 1.5/1.6 artifacts.
-
-Run from any directory: python scripts/run_phase17.py [--output-dir <fresh-dir>]
-Repeat plots/data with recorded timing: --latency-from <previous-run>/latency.json
-MC accuracy reuses the verified MPS T=20 CSV; CPU MC timing is a separate workload.
-No training, artifact promotion, threshold fitting or changes to API inference.
-"""
+"""V3.1 audit metrics/figures from frozen Phase 1.5/1.6 artifacts; no training, promotion or API changes."""
 import argparse
 import json
 import os

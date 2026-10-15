@@ -1,12 +1,4 @@
-"""Auralis Agent Lab — read-only scientific audit layer.
-
-This package adds a multi-agent audit/recommendation layer on top of the
-existing Coronium V3 PRO system. It is strictly additive and read-only: it never
-modifies the model, ONNX artifact, checkpoints, metrics, preprocessing, split
-files, CSVs, or experiment JSONs. The agents only summarise artifacts that
-already exist on disk and produce decision-support recommendations — they do not
-retrain and do not claim to improve the model.
-"""
+"""Auralis Agent Lab: read-only audit layer; never modifies model, artifacts or data, claims no model gain."""
 
 from .data_loader import AgentDataError, AgentDataset, load_agent_dataset
 from .data_quality_agent import run_data_quality_agent

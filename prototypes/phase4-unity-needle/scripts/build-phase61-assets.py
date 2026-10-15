@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic display-only HMI disk -> existing Unity sphere UV atlas.
-
-No WCS, radial-field inference, spot identification or scientific interpolation.
-The phase6 manifest and its fifteen linear maps remain frozen.
-"""
+"""Deterministic display-only HMI disk -> Unity sphere UV atlas; no WCS or spot inference."""
 import argparse, hashlib, io, json, struct
 from pathlib import Path
 import numpy as np
@@ -19,8 +15,7 @@ EVIDENCE = P / 'evidence/phase61'
 def sha(b): return hashlib.sha256(b).hexdigest()
 
 def fit_disk(x):
-    # The processed arrays retain a sharp zero-valued exterior. Filling internal
-    # zeros prevents real neutral-polarity pixels from becoming limb candidates.
+    # Fill internal zeros so neutral-polarity pixels never become limb candidates.
     support = binary_fill_holes(x != 0)
     rows, cols = np.where(support & ~binary_erosion(support))
     cx, cy, k = np.linalg.lstsq(np.c_[2*cols, 2*rows, np.ones(len(rows))], cols**2+rows**2, rcond=None)[0]
@@ -32,8 +27,7 @@ def fit_disk(x):
             'edge_residual_max_px':float(residual.max()), 'method':'circle_fit_zero_exterior_filled_support'}
 
 def uv_geometry(u, v):
-    # Verified against actual exported POSITION and TEXCOORD_0, not assumed WCS.
-    # UnityGLTF flips Unity X and V. Front camera is at glTF -Z, screen right -X.
+    # Verified against exported POSITION/TEXCOORD_0 (UnityGLTF flips X and V; screen right is -X), not WCS.
     theta = np.pi*v; phi = 2*np.pi*u
     return np.sin(theta)*np.cos(phi), np.cos(theta), np.sin(theta)*np.sin(phi)
 
@@ -64,15 +58,13 @@ def render(x, disk, base):
     halo=gaussian_filter(magnitude,3)
     def sample(a): return map_coordinates(a,[rows,cols],order=1,mode='constant',cval=0,prefilter=False)
     pp,mm,hh=sample(p),sample(m),sample(halo)
-    # Fade out only in the last ~1.1 input pixels near the limb (mu < .095).
-    # Back remains the SAME fixed illustration, never a mirrored HMI disk.
+    # Fade only near the limb (mu < .095); the back stays the fixed illustration, never a mirrored HMI disk.
     mu=np.clip(-z/.095,0,1);coverage=mu*mu*(3-2*mu)
     strength=1-np.exp(-7*(pp+mm))
     diffuse=1-np.exp(-5*hh)
     polarity=pp/(pp+mm+1e-12)
     rgb=base.astype(float)/255
-    # Dark magnetic concentrations + warm polarity rims are visual metaphors,
-    # explicitly NOT observed sunspots, temperature, plasma or field lines.
+    # Dark concentrations and warm rims are visual metaphors, NOT observed sunspots or field lines.
     core=np.array([.105,.026,.032])[None,None,:]
     positive=np.array([1.,.79,.36]);negative=np.array([1.,.29,.12])
     tint=negative+(positive-negative)*polarity[:,:,None]
@@ -88,8 +80,7 @@ def render(x, disk, base):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
     seqbytes=(PUBLIC/'sequence.json').read_bytes();seq=json.loads(seqbytes)
-    # Use the original 2048x1024 baked illustration as a fixed baseline.
-    # Texture dimensions are fixed across states. Original assets untouched.
+    # The original 2048x1024 baked illustration is the fixed baseline; original assets untouched.
     base=np.array(Image.open(P/'unity/Assets/Phase5/solar-illustration.png').convert('RGB').resize((2048,1024),Image.Resampling.LANCZOS))
     files={};entries=[];checks=[]
     for entry in seq['entries']:

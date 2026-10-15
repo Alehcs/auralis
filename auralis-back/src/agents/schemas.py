@@ -1,14 +1,4 @@
-"""Pydantic models for the Auralis Agent Lab.
-
-These schemas describe the read-only audit output of the scientific agents.
-Every agent report shares a common envelope (``agent_name``, ``summary``,
-``confidence``, ``findings``, ``limitations``, ``generated_at``) so the frontend
-can render any agent with one component and so the coordinator can compose them
-uniformly.
-
-Nothing here touches the model, the ONNX artifact, or any training state. The
-agents only summarise artifacts that already exist on disk.
-"""
+"""Pydantic schemas for read-only Agent Lab reports; every report shares one common envelope."""
 
 from __future__ import annotations
 
@@ -24,16 +14,8 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-# ---------------------------------------------------------------------------
-# Shared building blocks
-# ---------------------------------------------------------------------------
-
 class AgentFinding(BaseModel):
-    """A single observation produced by an agent.
-
-    ``severity`` is advisory only: ``info`` (neutral fact), ``notice`` (worth
-    attention), or ``warning`` (a weakness the researcher should act on).
-    """
+    """One agent observation; ``severity`` is advisory: info, notice or warning."""
 
     key: str
     label: str
@@ -63,10 +45,6 @@ class AgentReportBase(BaseModel):
     generated_at: str = Field(default_factory=_utc_now)
 
 
-# ---------------------------------------------------------------------------
-# Per-sample helpers
-# ---------------------------------------------------------------------------
-
 class ErrorSample(BaseModel):
     """One selection-validation sample, used for the top-error tables."""
 
@@ -87,11 +65,7 @@ class BinStat(BaseModel):
 
 
 class DateCoverage(BaseModel):
-    """Typed temporal-coverage summary.
-
-    ``distinct_years`` is an integer count (not a stringified number); the date
-    bounds and year bounds are nullable so an empty corpus serialises cleanly.
-    """
+    """Temporal-coverage summary; date/year bounds are nullable so an empty corpus serialises cleanly."""
 
     first_date: Optional[str] = None
     last_date: Optional[str] = None
@@ -101,21 +75,13 @@ class DateCoverage(BaseModel):
 
 
 class OutlierIndicators(BaseModel):
-    """Typed distribution indicators drawn from existing metadata columns only.
-
-    Counts are integers; magnitudes are floats. Values and semantics are
-    unchanged from the original heterogeneous dict — only the typing is explicit.
-    """
+    """Distribution indicators from existing metadata columns only (integer counts, float magnitudes)."""
 
     sunspot_index_min: float
     sunspot_index_max: float
     abs_mean_value_max: Optional[float] = None
     samples_high_abs_mean: int = 0
 
-
-# ---------------------------------------------------------------------------
-# Data Quality Agent
-# ---------------------------------------------------------------------------
 
 class DataQualityReport(AgentReportBase):
     full_distribution: Dict[str, BinStat]
@@ -126,10 +92,6 @@ class DataQualityReport(AgentReportBase):
     date_coverage: DateCoverage = Field(default_factory=DateCoverage)
     outlier_indicators: Optional[OutlierIndicators] = None
 
-
-# ---------------------------------------------------------------------------
-# Error Analysis Agent
-# ---------------------------------------------------------------------------
 
 class ErrorAnalysisReport(AgentReportBase):
     mae_by_bin: Dict[str, float]
@@ -142,20 +104,12 @@ class ErrorAnalysisReport(AgentReportBase):
     mae_spread: float                 # max(MAE_bin) - min(MAE_bin)
 
 
-# ---------------------------------------------------------------------------
-# XAI Review Agent
-# ---------------------------------------------------------------------------
-
 class XAIReviewReport(AgentReportBase):
     faithfulness_endpoint_available: bool
     available_assets: List[str] = Field(default_factory=list)
     sampled_strategy_recommendation: str
     sweep_status: str                 # e.g. "deferred"
 
-
-# ---------------------------------------------------------------------------
-# Active Learning Agent (contextual bandit)
-# ---------------------------------------------------------------------------
 
 class BanditActionUtility(BaseModel):
     action_id: str
@@ -183,10 +137,6 @@ class ActiveLearningReport(AgentReportBase):
     seed: int
     n_rounds: int
 
-
-# ---------------------------------------------------------------------------
-# Coordinator / Full Report
-# ---------------------------------------------------------------------------
 
 class FullAgentReport(AgentReportBase):
     dataset_health_summary: str

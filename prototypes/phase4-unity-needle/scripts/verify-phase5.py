@@ -64,8 +64,7 @@ def main():
         assert np.array_equal(embedded, original), (name, np.max(np.abs(embedded.astype(int)-original.astype(int))))
         assert np.all(embedded[:,:,3] == 255)
         positions=accessor(mesh['attributes']['POSITION']); uv=accessor(mesh['attributes']['TEXCOORD_0'])
-        # glTF camera at -Z looks toward +Z, so screen-right is -X; screen-top is +Y.
-        # glTF texture coordinates start at top-left (v=0). Unity conversion flips X.
+        # Camera at glTF -Z: screen-right is -X, top is +Y; v=0 is top-left and Unity flips X.
         screen_right=-positions[:,0]; screen_top=positions[:,1]
         assert np.corrcoef(screen_right, uv[:,0])[0,1] > .999, (name,'horizontal mirror')
         assert np.corrcoef(screen_top, uv[:,1])[0,1] < -.999, (name,'vertical mirror')
@@ -94,8 +93,7 @@ def main():
     before=json.loads((PROBE/'evidence/phase5/protected-before.json').read_text())
     changed=[name for name,h in before.items() if not (ROOT/name).is_file() or sha(ROOT/name)!=h]
     registry='prototypes/phase4-unity-needle/unity/ProjectSettings/NeedleExporterSceneData.asset'
-    # Needle registers the new scene automatically. Permit only this exact addition;
-    # the previous Phase4 registry bytes and all other project settings must match.
+    # Allow only Needle's automatic scene registration; all other project settings must match.
     registry_addition='  - Path: Assets/Scenes/Phase5Solar.unity\n    Projects:\n    - ProjectPath: ../web\n    BuilderScene: \n'
     if registry in changed:
         previous=(ROOT/registry).read_text().replace(registry_addition,'')

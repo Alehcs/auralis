@@ -1,9 +1,4 @@
-"""Validate that the exploratory SunPy notebook can run against local FITS data.
-
-The notebook is useful for inspecting raw HMI files before they enter the ML
-pipeline. This script keeps the verification path small enough to run from the
-terminal when Jupyter is not available.
-"""
+"""Check from the terminal that the exploratory SunPy notebook runs against local FITS data."""
 
 import numpy as np
 import matplotlib.pyplot as plt

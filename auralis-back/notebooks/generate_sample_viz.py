@@ -1,9 +1,4 @@
-"""Render a quick FITS magnetogram preview for notebook verification.
-
-This helper is intentionally lightweight: it loads the first raw FITS file,
-applies the same visualization range used in the exploratory notebook, and
-writes a PNG artifact without requiring the full notebook to be executed.
-"""
+"""Render a PNG preview of the first raw FITS magnetogram with the notebook's display range."""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,8 +18,7 @@ if fits_files:
     fig = plt.figure(figsize=(12, 10))
     ax = fig.add_subplot(111, projection=solar_map)
 
-    # SunPy may already carry a norm in plot_settings; passing an explicit
-    # Normalize object avoids conflicting vmin/vmax arguments.
+    # Explicit Normalize avoids conflicting vmin/vmax with SunPy's own plot_settings norm.
     from matplotlib.colors import Normalize
     norm = Normalize(vmin=-200, vmax=200)
 

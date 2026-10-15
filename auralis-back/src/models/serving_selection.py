@@ -1,8 +1,4 @@
-"""Per-process release/trial selection; active_model owns the release registry.
-
-No environment selection uses the registry default. AURALIS_RELEASE selects a
-self-contained release; AURALIS_TEST_* preserves G's experimental catalog.
-"""
+"""Per-process selection: AURALIS_RELEASE picks a release, AURALIS_TEST_* the experimental catalog."""
 import hashlib
 import json
 import os

@@ -1,8 +1,4 @@
-"""Rebuild target_scaler.json from metadata rows backed by .npy files.
-
-This keeps stale CSV rows from influencing target normalization after partial
-dataset rebuilds.
-"""
+"""Rebuild target_scaler.json only from metadata rows backed by existing .npy files."""
 
 import argparse
 import json
@@ -24,22 +20,16 @@ def recalculate_scaler(
     csv_path: str = "data/processed/metadata_processed.csv",
     scaler_path: str = "models/target_scaler.json",
 ) -> None:
-    """Fit the scaler only on metadata rows whose tensors still exist.
-
-    Metadata can contain stale rows after partial rebuilds, so the on-disk
-    tensors define the population. The result overwrites `target_scaler.json`.
-    """
+    """Fit the scaler on rows whose tensors exist (stale rows ignored) and overwrite `target_scaler.json`."""
     processed = Path(processed_dir)
     csv_file = Path(csv_path)
     scaler_file = Path(scaler_path)
 
-    # ── 1. Collect .npy files present on disk ────────────────────────────────
     npy_files = sorted(processed.glob("*.npy"))
     if not npy_files:
         raise FileNotFoundError(f"No .npy files found in {processed.absolute()}")
     logger.info("Found %d .npy files in %s", len(npy_files), processed)
 
-    # ── 2. Load metadata CSV ──────────────────────────────────────────────────
     if not csv_file.exists():
         raise FileNotFoundError(
             f"Metadata CSV not found: {csv_file.absolute()}\n"
@@ -50,14 +40,12 @@ def recalculate_scaler(
     if "processed_file" not in df.columns:
         raise KeyError("CSV is missing the 'processed_file' column.")
 
-    # Resolve target column: prefer sunspot_index_raw (post-normalize pipeline);
-    # fall back to sunspot_index (older pipeline that stored raw values directly).
+    # Prefer sunspot_index_raw; older pipelines stored raw values in sunspot_index.
     if "sunspot_index_raw" in df.columns:
         target_col = "sunspot_index_raw"
     elif "sunspot_index" in df.columns:
         target_col = "sunspot_index"
-        # Sanity-check: Z-score normalised values cluster tightly around 0.
-        # Raw sunspot indices are typically >> 0.5, so warn only if it looks normalised.
+        # A mean near 0 suggests Z-scored rather than raw values.
         sample_mean = df[target_col].mean()
         if abs(sample_mean) < 0.1:
             logger.warning(
@@ -76,9 +64,7 @@ def recalculate_scaler(
 
     logger.info("Target column: '%s'", target_col)
 
-    # ── 3. Deduplicate CSV and match .npy filenames ───────────────────────────
-    # The CSV may contain multiple rows per file when the pipeline was run
-    # more than once. Keep the last occurrence (most recent run).
+    # Repeated pipeline runs can duplicate rows; keep the most recent per file.
     n_before = len(df)
     df_dedup = df.drop_duplicates(subset="processed_file", keep="last")
     n_dropped = n_before - len(df_dedup)
@@ -112,7 +98,6 @@ def recalculate_scaler(
             "Check that 'processed_file' values in the CSV match the .npy filenames."
         )
 
-    # ── 4. Compute population statistics ─────────────────────────────────────
     values = np.array(targets, dtype=np.float64)
     mean = float(values.mean())
     std = float(values.std())
@@ -127,7 +112,6 @@ def recalculate_scaler(
     logger.info("Min / Max   : %.6f / %.6f", values.min(), values.max())
     logger.info("=" * 60)
 
-    # ── 5. Overwrite scaler JSON ──────────────────────────────────────────────
     old_values = {}
     if scaler_file.exists():
         with open(scaler_file) as f:

@@ -1,8 +1,4 @@
-"""Publication scatter helpers and export from a verified Phase 1.7 report.
-
-python scripts/plot_final_scatter.py --report-dir <phase17-run> --output-dir <fresh-dir>
-Historical reports/results_comparison.csv is preserved and never the default.
-"""
+"""Publication scatter from a verified Phase 1.7 report; historical results_comparison.csv is never used."""
 import argparse
 import hashlib
 import json

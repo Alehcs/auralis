@@ -1,9 +1,4 @@
-"""Kaggle one-cell builder for the V3 PRO processed dataset.
-
-Kaggle sessions are interruptible, so the script restores processed tensors,
-resumes the JSOC queue, and uploads progress before the runtime is likely to
-stop. Re-running the cell resumes from ``download_log.json``.
-"""
+"""Resumable Kaggle one-cell V3 PRO dataset builder; re-running resumes from ``download_log.json``."""
 
 import os, sys, time, json, shutil, subprocess, zipfile, urllib.request
 import warnings
@@ -11,7 +6,6 @@ warnings.filterwarnings('ignore')
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# Dataset and sampling configuration.
 KAGGLE_USERNAME  = 'alehhh'
 DATASET_NAME     = 'auralis-magnetograms'
 SAMPLE_HOURS     = 6
@@ -24,8 +18,7 @@ DATE_RANGES = [
     ("2021-01-01", "2026-04-30"),
 ]
 
-# Kaggle working directories. These are separate from the local repository
-# layout because the script runs inside Kaggle's transient filesystem.
+# Kaggle's transient filesystem, separate from the local repository layout.
 BASE_DIR = Path('/kaggle/working/auralis')
 NPY_DIR  = BASE_DIR / 'processed_npy'
 RAW_DIR  = BASE_DIR / 'raw_fits'
@@ -42,8 +35,7 @@ subprocess.run([sys.executable, '-m', 'pip', 'install', '-q',
                check=True)
 print("Dependencies ready")
 
-# Configure the Kaggle API from notebook Secrets. The token is never stored in
-# the repository; only the runtime-local kaggle.json is written.
+# Kaggle token comes from notebook Secrets; only the runtime-local kaggle.json is written.
 from kaggle_secrets import UserSecretsClient
 secret = UserSecretsClient()
 kaggle_token = secret.get_secret("KAGGLE_TOKEN")
@@ -68,7 +60,6 @@ try:
         '--unzip', '--quiet'
     ], check=True, capture_output=True)
 
-    # Move restored tensors back into the processing directory.
     restored = 0
     for npy in BASE_DIR.glob('*.npy'):
         dest = NPY_DIR / npy.name
@@ -76,7 +67,6 @@ try:
             shutil.move(str(npy), str(dest))
             restored += 1
 
-    # Restore the progress log if it was present in the dataset.
     prev_log = BASE_DIR / 'download_log.json'
     if prev_log.exists() and not LOG_FILE.exists():
         shutil.move(str(prev_log), str(LOG_FILE))
@@ -95,8 +85,7 @@ def save_progress(progress):
     with open(LOG_FILE, 'w') as f:
         json.dump(progress, f, indent=2)
 
-# Preprocessing mirrors ``src/processing/prepare_dataset.py``: compute the
-# activity proxy before resize, then store a symlog dual-channel tensor.
+# Mirrors ``src/processing/prepare_dataset.py``: activity proxy before resize, symlog dual-channel tensor.
 import numpy as np
 
 def log_scale(x):
@@ -168,7 +157,6 @@ def upload_to_kaggle(npy_dir, log_file, username, dataset_name):
     finally:
         shutil.rmtree(str(upload_dir), ignore_errors=True)
 
-# Main download loop.
 import drms
 from tqdm.notebook import tqdm
 
@@ -197,7 +185,6 @@ for ts in tqdm(timestamps, desc='Downloading magnetograms'):
     if ts_key in already_done:
         continue
 
-    # Save a resumable checkpoint during long sessions.
     elapsed = (datetime.utcnow() - SESSION_START).total_seconds() / 3600
     if elapsed >= MAX_SESSION_HOURS:
         save_progress(progress)
@@ -270,7 +257,6 @@ for ts in tqdm(timestamps, desc='Downloading magnetograms'):
 
     time.sleep(1.2)
 
-# Final upload after the queue is exhausted.
 save_progress(progress)
 upload_to_kaggle(NPY_DIR, LOG_FILE, KAGGLE_USERNAME, DATASET_NAME)
 

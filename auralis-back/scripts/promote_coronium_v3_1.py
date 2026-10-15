@@ -1,8 +1,4 @@
-"""Create the fixed Phase 1.6 release, without replacing any existing artifact.
-
-Run from auralis-back. The manifest is written last, after export and parity.
-Re-running an existing release fails; verification is in verify_phase16.py.
-"""
+"""Create the fixed Phase 1.6 release without replacing artifacts; manifest is written last, after parity."""
 
 import json
 import platform

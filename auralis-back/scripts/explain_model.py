@@ -1,8 +1,4 @@
-"""Generate a Grad-CAM explanation figure for the selected verified release.
-
-The model is a scalar regressor, so the backward target is the predicted index
-itself. Hooks target ``stage4``, the last spatial block before global pooling.
-"""
+"""Grad-CAM figure for the verified release; the scalar prediction is the backward target at stage4."""
 
 from __future__ import annotations
 
@@ -37,25 +33,17 @@ WEIGHTS_PATH = serving.CHECKPOINT_PATH
 DATA_DIR = Path("data/processed")
 OUTPUT_FIGURE = ROOT / f"reports/figures/coronium_v{serving.MODEL_VERSION.replace(chr(46), chr(95))}_gradcam_sample.png"
 
-# Optional: target a specific sample for the Grad-CAM. Override via env var
-# GRADCAM_SAMPLE (e.g. "hmi.m_45s.2024.08.12_00_01_30_TAI"). If unset or no
-# match, falls back to the first .npy in DATA_DIR (legacy behaviour).
+# Optional GRADCAM_SAMPLE stem selects the sample; otherwise the first .npy in DATA_DIR is used.
 import os
 TARGET_SAMPLE = os.environ.get("GRADCAM_SAMPLE", "").strip() or None
 
-# Last convolutional stage before global average pooling. Earlier layers keep
-# more spatial detail, but stage4 carries the semantic signal the regressor
-# actually uses for the final index.
+# Last conv stage before global pooling: coarser, but the semantic signal the regressor uses.
 TARGET_LAYER_NAME = "stage4"
 DROPOUT_RATE = serving.BACKBONE_DROPOUT
 
 
 class GradCAMHookManager:
-    """Owns Grad-CAM hooks and removes them after use.
-
-    Leaving hooks attached across repeated calls can duplicate captures, which
-    is especially confusing when this script is imported from a notebook.
-    """
+    """Owns Grad-CAM hooks and removes them after use so repeated calls never duplicate captures."""
 
     def __init__(self, model: nn.Module, layer_name: str) -> None:
         self.activations: Optional[torch.Tensor] = None
@@ -106,11 +94,7 @@ def compute_gradcam(
     hook_manager: GradCAMHookManager,
     target_size: Tuple[int, int] = (512, 512),
 ) -> Tuple[np.ndarray, float]:
-    """Compute a normalized Grad-CAM heatmap for one processed magnetogram.
-
-    Because the model is a scalar regressor, the backward target is the
-    prediction itself, not a class score.
-    """
+    """Compute a normalized Grad-CAM heatmap; the backward target is the scalar prediction."""
     model.eval()
 
     output = model(input_tensor)
@@ -143,8 +127,7 @@ def compute_gradcam(
     if heat_max - heat_min > 1e-8:
         heatmap = (heatmap - heat_min) / (heat_max - heat_min)
     else:
-        # Quiet-Sun examples can produce a nearly flat attribution map. Returning
-        # zeros is clearer than amplifying numerical noise into a false hot spot.
+        # Flat quiet-Sun maps return zeros rather than amplifying noise into a false hot spot.
         heatmap = np.zeros_like(heatmap)
         logger.warning("Grad-CAM heatmap is nearly constant; returning zeros.")
 

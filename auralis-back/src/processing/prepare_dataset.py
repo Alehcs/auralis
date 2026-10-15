@@ -1,9 +1,4 @@
-"""Prepare a NEW dataset compatible with the promoted checkpoint's clip400 input.
-
-SI is the raw percentage of original pixels with abs(B_LOS) > 200 G. The
-historical log-input/Z-score route did not produce the current local dataset.
-See docs/phase1.md. Existing datasets/scalers are never replaced.
-"""
+"""Prepare a NEW clip400 dataset; SI = % original pixels with |B_LOS| > 200 G. Existing data never replaced."""
 
 import csv
 import sys
@@ -38,29 +33,7 @@ def load_and_process_magnetogram(
     target_size: int = 512,
     sunspot_threshold: float = 200.0,
 ) -> Tuple[np.ndarray, Dict[str, Any]]:
-    """Load, resample, clip400-normalize, and decompose a single HMI FITS magnetogram.
-
-    The sunspot proxy index is computed on the original, pre-resample pixel
-    array to avoid double-counting artefacts introduced by bilinear
-    interpolation near the 200 G detection threshold.
-
-    Args:
-        fits_path: Path to a single HMI line-of-sight FITS file.
-        target_size: Edge length, in pixels, of the square output tensor.
-        sunspot_threshold: Strong-field cutoff in Gauss for the sunspot proxy
-            index.
-
-    Returns:
-        A 2-tuple ``(tensor, metadata)`` where ``tensor`` is a
-        ``(2, target_size, target_size)`` float32 array (channel 0 = B+,
-        channel 1 = B-) and ``metadata`` is a dict with keys ``filename``,
-        ``date``, ``sunspot_index``, ``original_shape``, ``processed_shape``,
-        ``b_pos_max``, ``b_neg_max``, ``mean_b_pos``, and ``mean_b_neg``.
-
-    Raises:
-        Exception: Re-raised after logging if SunPy cannot read the FITS file
-            or the array cannot be processed.
-    """
+    """Load one HMI FITS as a (2, N, N) clip400 B+/B- tensor plus metadata; SI uses pre-resample pixels."""
     try:
         solar_map = sunpy.map.Map(str(fits_path))
         data: np.ndarray = solar_map.data
@@ -103,25 +76,7 @@ def prepare_dataset(
     target_size: int = 512,
     sunspot_threshold: float = 200.0,
 ) -> List[Dict[str, Any]]:
-    """Batch-process all FITS files in ``raw_dir`` and write dual-channel .npy tensors.
-
-    Files are processed in sorted order for reproducibility. Errors on
-    individual files are logged and skipped; processing continues to enable
-    partial recovery from corrupt or incomplete JSOC downloads.
-
-    Args:
-        raw_dir: Directory containing input ``*.fits`` magnetograms.
-        processed_dir: Output directory for ``.npy`` tensors; created if it
-            does not exist.
-        target_size: Edge length, in pixels, of each square output tensor.
-        sunspot_threshold: Strong-field cutoff in Gauss for the sunspot proxy
-            index.
-
-    Returns:
-        A list of per-file metadata dicts (see
-        :func:`load_and_process_magnetogram`). Empty if ``raw_dir`` contains
-        no FITS files.
-    """
+    """Process sorted ``raw_dir`` FITS files into .npy tensors; per-file errors are logged and skipped."""
     processed_path = Path(processed_dir)
     if processed_path.exists() and any(processed_path.iterdir()):
         raise FileExistsError(f"Use a new dataset version; refusing to replace {processed_path}")
@@ -177,14 +132,7 @@ def normalize_sunspot_targets(
     metadata_list: List[Dict[str, Any]],
     scaler_path: str = "models/target_scaler.json",
 ) -> Tuple[float, float]:
-    """Historical experimental Z-score helper; not part of the promoted contract.
-
-    Kept for explicit experiments only. Never called by main().
-
-    The raw ``sunspot_index`` value is preserved under the key
-    ``sunspot_index_raw`` to allow debugging and distribution checks
-    after the fact.
-    """
+    """Historical Z-score helper for explicit experiments only; keeps raw SI as ``sunspot_index_raw``."""
     if not metadata_list:
         raise ValueError("metadata_list is empty — cannot fit scaler.")
 

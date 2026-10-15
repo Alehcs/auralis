@@ -1,9 +1,4 @@
-"""Small smoke test for processed dataset artifacts.
-
-This script checks that metadata and at least one tensor can be loaded locally.
-It is intended for quick manual verification, not as a full schema validator for
-the training pipeline.
-"""
+"""Smoke test that processed metadata and one tensor load; not a full schema validator."""
 
 import numpy as np
 import pandas as pd

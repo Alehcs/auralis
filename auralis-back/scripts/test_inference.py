@@ -1,8 +1,4 @@
-"""Compare high-activity inference between two Coronium V3 PRO checkpoints.
-
-This regression check focuses on validation samples with ``sunspot_index > 2.0``
-to verify whether targeted augmentation improved storm-like cases.
-"""
+"""Compare two Coronium V3 PRO checkpoints on validation samples with ``sunspot_index > 2.0``."""
 
 import json
 import sys
@@ -14,27 +10,19 @@ import pandas as pd
 import torch
 from typing import List
 
-# ---------------------------------------------------------------------------
-# Make src/ importable so train_model resolves without package install
-# ---------------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
+# Make src/ importable without installing the package.
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from models.train_model import CoroniumV3             # noqa: E402
 from processing.model_input import prepare_model_input
 
-# ---------------------------------------------------------------------------
-# Logging
-# ---------------------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] %(message)s",
 )
 logger = logging.getLogger("auralis.test_inference")
 
-# ---------------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------------
 MODEL_ORIGINAL  = ROOT / "models" / "best_coronium_v3_pro.pth"
 MODEL_AUGMENTED = ROOT / "models" / "best_coronium_v3_pro_augmented.pth"
 DATA_DIR        = ROOT / "data"   / "processed"

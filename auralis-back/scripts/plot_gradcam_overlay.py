@@ -1,19 +1,4 @@
-"""Grad-CAM figure with the heatmap overlaid on the magnetogram.
-
-Produces a two-panel figure:
-    1. Raw signed magnetogram (B+ − B−), HMI-style grayscale.
-    2. Same magnetogram with the Grad-CAM heatmap overlaid (alpha blend).
-
-This single-overlay layout is an alternative to the three-panel
-(B+ | B- | heatmap) decomposition; it shows the model's spatial attention
-directly on the solar disk in one view.
-
-Run from auralis-back/ (defaults to the illustrative local sample
-2024-08-12, SI≈2.90). Override with the GRADCAM_SAMPLE environment variable.
-
-    python scripts/plot_gradcam_overlay.py
-    GRADCAM_SAMPLE="2025.01.20" python scripts/plot_gradcam_overlay.py
-"""
+"""Two-panel figure: signed magnetogram and Grad-CAM overlay; sample set via GRADCAM_SAMPLE."""
 
 from __future__ import annotations
 
@@ -29,7 +14,7 @@ import torch
 import torch.nn as nn
 from scipy.ndimage import zoom
 
-ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from models.train_model import CoroniumV3  # noqa: E402
 from processing.model_input import prepare_model_input
@@ -43,14 +28,10 @@ OUTPUT_PATH   = Path("reports/figures/coronium_v3_1_gradcam_overlay.png")
 TARGET_LAYER  = "stage4"
 
 # Default is an illustrative local observation, not a declared test sample.
-# Override with the GRADCAM_SAMPLE environment variable.
 DEFAULT_SAMPLE = "2024.08.12"
 TARGET_SAMPLE  = os.environ.get("GRADCAM_SAMPLE", DEFAULT_SAMPLE).strip() or DEFAULT_SAMPLE
 
 
-# ---------------------------------------------------------------------------
-# Grad-CAM hook plumbing
-# ---------------------------------------------------------------------------
 class GradCAMHook:
     """Captures activations and gradients on a target layer."""
 
@@ -78,7 +59,7 @@ def compute_heatmap(model: nn.Module, x: torch.Tensor, hook: GradCAMHook,
                     target_size: Tuple[int, int]) -> Tuple[np.ndarray, float]:
     """Return (heatmap_normalized_to_[0,1], scalar_prediction)."""
     model.zero_grad(set_to_none=True)
-    output = model(x)                            # shape (1, 1)
+    output = model(x)
     scalar = output.squeeze()
     scalar.backward()
 
@@ -95,9 +76,6 @@ def compute_heatmap(model: nn.Module, x: torch.Tensor, hook: GradCAMHook,
     return cam_full, float(scalar.detach().cpu().item())
 
 
-# ---------------------------------------------------------------------------
-# Sample loading
-# ---------------------------------------------------------------------------
 def load_sample(data_dir: Path, sample_token: str) -> Tuple[torch.Tensor, np.ndarray, str]:
     """Locate a magnetogram by substring, return (model_input, raw_2ch_array, filename)."""
     files = sorted(data_dir.glob("*_processed.npy"))
@@ -120,21 +98,16 @@ def load_sample(data_dir: Path, sample_token: str) -> Tuple[torch.Tensor, np.nda
     return tensor, arr, path.stem
 
 
-# ---------------------------------------------------------------------------
-# Plotting
-# ---------------------------------------------------------------------------
 def plot_overlay(raw: np.ndarray, heatmap: np.ndarray,
                  prediction: float, sample_name: str,
                  output_path: Path) -> None:
     """Two-panel poster figure: raw magnetogram + Grad-CAM overlay."""
-    # Reconstruct the signed magnetogram (B+ − B−).
     signed = raw[0] - raw[1]
     v = max(abs(signed.min()), abs(signed.max())) or 1.0
     vmin, vmax = -v, v
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7), facecolor="white")
 
-    # ── Panel 1: raw magnetogram (HMI grayscale, symmetric) ─────────────────
     ax1.imshow(signed, cmap="gray", origin="lower", vmin=vmin, vmax=vmax,
                interpolation="nearest")
     ax1.set_title("HMI input (B⁺ − B⁻; clip400-normalized)",
@@ -143,7 +116,6 @@ def plot_overlay(raw: np.ndarray, heatmap: np.ndarray,
     for spine in ax1.spines.values():
         spine.set_edgecolor("#333")
 
-    # ── Panel 2: magnetogram + Grad-CAM overlay ──────────────────────────────
     ax2.imshow(signed, cmap="gray", origin="lower", vmin=vmin, vmax=vmax,
                interpolation="nearest")
     overlay = ax2.imshow(heatmap, cmap="jet", origin="lower", alpha=0.55,
@@ -156,7 +128,6 @@ def plot_overlay(raw: np.ndarray, heatmap: np.ndarray,
     for spine in ax2.spines.values():
         spine.set_edgecolor("#333")
 
-    # Colorbar for the heatmap.
     cbar = fig.colorbar(overlay, ax=ax2, fraction=0.046, pad=0.02)
     cbar.set_label("Normalized Grad-CAM (not probability)", fontsize=9)
     cbar.ax.tick_params(labelsize=8)
@@ -173,9 +144,6 @@ def plot_overlay(raw: np.ndarray, heatmap: np.ndarray,
     logger.info("Saved overlay figure → %s", output_path)
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
 def main() -> None:
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)

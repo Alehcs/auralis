@@ -1,21 +1,4 @@
-"""Deterministic epsilon-greedy contextual bandit for active-learning advice.
-
-This is a transparent decision-support heuristic, not a reinforcement learner
-with an environment. There is no retraining and no feedback loop: the "reward"
-of an action is a fixed weighted score over the current audit-derived needs.
-
-    reward = 0.40 * error_need
-           + 0.30 * underrepresentation_need
-           + 0.20 * uncertainty_need
-           + 0.10 * xai_risk_need
-
-A high reward means "this action best addresses the weaknesses the audit
-currently measures" — it does NOT mean the model will improve. Regret is
-measured against the best heuristic utility, not against real-world model gain.
-
-Determinism: a fixed seed and fixed action table make every run reproducible,
-which is what a university demo / thesis defence needs.
-"""
+"""Deterministic epsilon-greedy bandit over a fixed weighted audit-need reward; not a model-gain measure."""
 
 from __future__ import annotations
 
@@ -48,10 +31,7 @@ class ActionSpec:
     xai_key: str
 
 
-# Action table. Each action pulls its four reward terms from named entries of
-# the state vector, so the emphasis of an action is encoded by which needs it
-# reads (e.g. A5 reads the tail-extreme error need; A1/A4 read low-activity
-# underrepresentation).
+# Each action draws its reward terms from named needs (e.g. A5: tail error; A1/A4: low-activity underrep).
 ACTIONS: List[ActionSpec] = [
     ActionSpec(
         "A1", "collect_more_low_activity",
@@ -145,13 +125,7 @@ def run_bandit(
     n_rounds: int = DEFAULT_ROUNDS,
     utility_fn: Callable[[Dict[str, float], ActionSpec], float] = action_utility,
 ) -> BanditResult:
-    """Run a deterministic epsilon-greedy contextual bandit simulation.
-
-    The utilities are fixed by ``state`` (the audit context). Each round either
-    exploits the best-utility action (prob 1-epsilon) or explores a uniformly
-    random action (prob epsilon). The selected reward is the action's utility,
-    and per-round regret = best_utility - selected_utility.
-    """
+    """Epsilon-greedy simulation over fixed utilities; regret = best utility - selected utility."""
     utilities = {spec.action_id: round(utility_fn(state, spec), 6) for spec in ACTIONS}
     best_action_id = max(utilities, key=lambda a: utilities[a])
     best_utility = utilities[best_action_id]

@@ -1,8 +1,4 @@
-"""Audit local evidence and create an additive, reproducible Phase 1 split.
-
-Run from auralis-back: python scripts/audit_phase1.py
-Existing outputs must match byte-for-byte; this script never replaces them.
-"""
+"""Audit Phase 1 evidence and create an additive split; existing outputs must match byte-for-byte."""
 
 import argparse
 import importlib.metadata

@@ -1,9 +1,4 @@
-"""Legacy Streamlit interface for inspecting magnetograms and model output.
-
-The FastAPI/React app is the maintained demo surface. This file remains useful
-for local experiments with uploaded FITS files, but it should not be treated as
-the reference serving path for the promoted ONNX model.
-"""
+"""Legacy Streamlit UI for local FITS experiments; not the reference serving path for the promoted model."""
 
 import os
 import sys
@@ -22,9 +17,6 @@ import torch.nn as nn
 
 warnings.filterwarnings('ignore')
 
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
 st.set_page_config(
     page_title="AURALIS - Solar Analysis",
     page_icon="☉",
@@ -32,7 +24,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS
 st.markdown("""
 <style>
     .stContainer {
@@ -86,9 +77,6 @@ MODEL_PATH = PROJECT_ROOT / "models" / "coronium_v3_final.pth"
 DATA_PATH = PROJECT_ROOT / "data" / "processed"
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-# ============================================================================
-# MODEL ARCHITECTURE
-# ============================================================================
 class Coronium(nn.Module):
     """Legacy single-channel Coronium architecture used by the Streamlit demo."""
 
@@ -155,10 +143,6 @@ class Coronium(nn.Module):
         return x
 
 
-# ============================================================================
-# DATA LOADING AND PROCESSING
-# ============================================================================
-
 @st.cache_resource
 def load_model():
     """Load the legacy Streamlit checkpoint once per Streamlit process."""
@@ -186,11 +170,7 @@ def load_available_images():
 
 
 def process_fits_file(fits_file):
-    """Convert an uploaded FITS file into the legacy single-channel input.
-
-    Streamlit upload objects are written to a temporary FITS path because the
-    astropy reader expects a file-like source with FITS semantics.
-    """
+    """Convert an uploaded FITS to legacy single-channel input via a temp file (astropy needs a real file)."""
     try:
         with open("/tmp/temp_magnetogram.fits", "wb") as f:
             f.write(fits_file.getbuffer())
@@ -282,16 +262,11 @@ def get_risk_level(activity_index):
         return "HIGH", "#E74C3C", "High solar activity"
 
 
-# ============================================================================
-# MAIN APPLICATION
-# ============================================================================
-
 def main():
     """Render the legacy Streamlit dashboard."""
 
     st.warning("Legacy single-channel demo; checkpoint coronium_v3_final.pth. This view does not evaluate Coronium V3.1. Use the React dashboard for the active model and its separate protocols.")
 
-    # Header
     st.markdown("""
     <div style='text-align: center; padding: 1rem 0 0.5rem 0;'>
         <h1 style='margin: 0; font-size: 2.8rem; font-weight: 600; color: #FFFFFF;'>
@@ -305,7 +280,6 @@ def main():
 
     st.write("")
 
-    # Load model
     model, device = load_model()
 
     # Sidebar
@@ -362,7 +336,6 @@ def main():
 
     # Main visualization
     if image_array is not None:
-        # Execute prediction
         with st.spinner("Analyzing solar activity..."):
             activity_index = predict_activity(model, device, image_array)
 

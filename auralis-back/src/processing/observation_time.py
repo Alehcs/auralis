@@ -16,8 +16,7 @@ def filename_time(filename: str) -> dict:
                 "date_source": "unrecognized_filename", "date_utc": None}
     y, mo, d, h, mi, s = match.groups()
     original = f"{y}-{mo}-{d}T{h}:{mi}:{s}"
-    # Astropy is already in the full environment. Lean API installs can still
-    # expose the original TAI time, without pretending it is UTC.
+    # Lean installs without Astropy still expose the original TAI time without calling it UTC.
     try:
         from astropy.time import Time
         from astropy.utils import iers

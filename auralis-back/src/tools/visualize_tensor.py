@@ -1,9 +1,4 @@
-"""Diagnostic plot for raw FITS data versus processed V3 PRO tensors.
-
-The processed tensor stores positive and negative polarity separately. For
-display only, the script reconstructs the symlog-domain magnetic magnitude as
-``|B| = B+ + B-`` and plots it beside the original HMI frame.
-"""
+"""Diagnostic plot of a raw FITS frame vs the processed tensor magnitude |B| = B+ + B- (display only)."""
 
 import sys
 from pathlib import Path
@@ -13,8 +8,7 @@ import numpy as np
 import sunpy.map
 
 
-# ── Path resolution ────────────────────────────────────────────────────────────
-# src/tools/visualize_tensor.py  ->  ../../  ->  auralis-back/
+# src/tools/visualize_tensor.py -> ../../ -> auralis-back/
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
@@ -32,11 +26,7 @@ def find_first_fits(raw_dir: Path) -> Path:
 
 
 def resolve_processed_path(fits_path: Path, processed_dir: Path) -> Path:
-    """Derive the expected .npy path from the FITS stem.
-
-    Convention established by prepare_dataset.py:
-        <stem>.fits  ->  <stem>_processed.npy
-    """
+    """Expected .npy path from the FITS stem: <stem>.fits -> <stem>_processed.npy."""
     expected = processed_dir / f"{fits_path.stem}_processed.npy"
     if not expected.exists():
         raise FileNotFoundError(
@@ -66,7 +56,6 @@ def adjusted_vrange(data: np.ndarray, plow: float = 1.0, phigh: float = 99.0):
 
 
 def main() -> None:
-    # ── 1. Discover files ──────────────────────────────────────────────────────
     try:
         fits_path = find_first_fits(RAW_DIR)
     except FileNotFoundError as exc:
@@ -82,7 +71,6 @@ def main() -> None:
     print(f"FITS   : {fits_path.name}")
     print(f"Tensor : {npy_path.name}")
 
-    # ── 2. Load data ───────────────────────────────────────────────────────────
     solar_map = sunpy.map.Map(str(fits_path))
     raw_data: np.ndarray = np.nan_to_num(solar_map.data, nan=0.0)
 
@@ -91,7 +79,6 @@ def main() -> None:
     b_neg: np.ndarray = tensor[1]                         # ReLU(-x') — negative polarity
     magnitude: np.ndarray = b_pos + b_neg                 # |B| = |x'| (symlog domain)
 
-    # ── 3. Console statistics ──────────────────────────────────────────────────
     print_stats(f"RAW FITS  [{solar_map.date.iso}]  (Gauss)", raw_data)
     print_stats(
         "PROCESSED TENSOR  |B| = B+ + B-  (symlog domain)",
@@ -103,7 +90,6 @@ def main() -> None:
           f"mean: {b_neg.mean():.4f}")
     print()
 
-    # ── 4. Side-by-side plot ───────────────────────────────────────────────────
     vmin_raw, vmax_raw = adjusted_vrange(raw_data)
     vmin_mag, vmax_mag = adjusted_vrange(magnitude)
 

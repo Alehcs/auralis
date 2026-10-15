@@ -1,11 +1,4 @@
-"""Data Quality Agent.
-
-Read-only audit of dataset composition: activity-bin balance across the full
-corpus and the train/val split, low-activity representation, temporal coverage,
-and basic outlier indicators drawn from the metadata columns that exist.
-
-It never reads pixel data and never runs the model.
-"""
+"""Data Quality Agent: read-only composition audit from metadata; never reads pixels or runs the model."""
 
 from __future__ import annotations
 
@@ -58,9 +51,7 @@ def _outlier_indicators(dataset: AgentDataset) -> OutlierIndicators:
     """Cheap distribution indicators from existing metadata columns only."""
     si = [float(r["sunspot_index"]) for r in dataset.metadata_rows]
 
-    # mean_value / min_value / max_value describe the normalised pixel range of
-    # each processed magnetogram. Flag rows whose channel mean drifts far from 0
-    # (processed tensors are expected to be centred near zero).
+    # Processed tensors are centred near zero; flag rows whose channel mean drifts far from 0.
     means: List[float] = []
     for r in dataset.metadata_rows:
         try:
@@ -88,8 +79,7 @@ def run_data_quality_agent(dataset: AgentDataset) -> DataQualityReport:
 
     findings: List[AgentFinding] = []
 
-    # Headline composition finding — preserves the verified result that LOW
-    # activity, not high, is the minority class.
+    # Headline: LOW activity, not high, is the minority class (verified result).
     findings.append(
         AgentFinding(
             key="bin_composition",
@@ -125,8 +115,7 @@ def run_data_quality_agent(dataset: AgentDataset) -> DataQualityReport:
             )
         )
 
-    # Split-balance check: does the random split keep each bin represented in
-    # both train and val?
+    # Split balance: is each bin represented in both train and val?
     val_dist = _distribution(val_counts)
     empty_val_bins = [b for b in ACTIVITY_BINS if val_counts[b] == 0]
     if empty_val_bins:

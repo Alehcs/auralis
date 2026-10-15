@@ -1,8 +1,4 @@
-"""Reproducible Phase 1.5 entrypoint; fresh training or evaluation of its run.
-
-Uses the Phase 1 dataset, architecture, augmentations, loss, optimizer and split.
-No legacy weights are loaded for training. A fresh directory is mandatory.
-"""
+"""Reproducible Phase 1.5 training/evaluation on the Phase 1 setup; no legacy weights, fresh dir required."""
 
 import argparse
 import importlib.metadata

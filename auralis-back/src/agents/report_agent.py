@@ -1,12 +1,4 @@
-"""Coordinator / Full Report Agent.
-
-Runs the four read-only audit agents and composes their output into one
-scientific audit brief: dataset health, model weaknesses, XAI caution, the
-active-learning recommendation, an overall confidence, consolidated limitations,
-and concrete next steps.
-
-This agent performs no new computation of its own beyond aggregation.
-"""
+"""Coordinator agent: aggregates the four read-only audit reports into one brief; no new computation."""
 
 from __future__ import annotations
 
@@ -32,7 +24,6 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
     xai = run_xai_review_agent(dataset)
     al = run_active_learning_agent(dataset, err, dq)
 
-    # -- composed narrative summaries ---------------------------------------
     dataset_health = (
         f"{sum(b.count for b in dq.full_distribution.values())} samples; minority "
         f"bin '{dq.minority_bin}'"
@@ -75,7 +66,7 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
             "Collect more low-activity / solar-minimum samples to balance the corpus."
         )
 
-    # -- consolidated findings (one headline per agent) ---------------------
+    # One headline finding per agent.
     findings: List[AgentFinding] = [
         AgentFinding(
             key="dataset_health",
@@ -103,7 +94,7 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
         ),
     ]
 
-    # -- consolidated limitations (deduplicated across agents) --------------
+    # Limitations deduplicated across agents.
     limitations: List[AgentLimitation] = []
     seen = set()
     for sub in (dq, err, xai, al):
@@ -121,8 +112,7 @@ def build_full_report(dataset: AgentDataset | None = None) -> FullAgentReport:
         )
     )
 
-    # Overall confidence = mean of sub-agent confidences (audit is only as strong
-    # as its weakest, deferred component).
+    # Overall confidence = mean of sub-agent confidences.
     confidence = round((dq.confidence + err.confidence + xai.confidence + al.confidence) / 4, 3)
 
     summary = (

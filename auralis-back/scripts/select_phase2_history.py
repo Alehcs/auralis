@@ -1,8 +1,4 @@
-"""Offline audit of existing HMI observations for Phase 2; never downloads data.
-
-Run from any directory with the repository's full Python environment.
-NOAA text snapshots and their retrieval manifest must already be in sources/.
-"""
+"""Offline Phase 2 audit of existing HMI observations; never downloads (NOAA snapshots must be in sources/)."""
 from __future__ import annotations
 
 import hashlib

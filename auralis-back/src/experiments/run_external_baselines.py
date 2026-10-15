@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Train and profile external CNN baselines for the Coronium comparison.
-
-These models intentionally collapse B+/B- into one ``|B|`` channel because the
-off-the-shelf ResNet/VGG definitions are used as broad reference points, not as
-domain-specific competitors. Historical results feed ``/api/benchmark``; fresh runs remain unpromoted.
-"""
+"""Train/profile external |B|-only CNN baselines as broad references; historical results feed /api/benchmark."""
 
 import json
 import logging
@@ -20,14 +15,12 @@ from torch.utils.data import DataLoader, Subset
 from torchvision import models
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# ── Path setup ────────────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.models.train_model import SolarDataset  # noqa: E402
 from processing.scientific_split import load_split, sha256
 
-# ── Configuration ─────────────────────────────────────────────────────────────
 SEED = 42
 BATCH_SIZE = 32
 NUM_EPOCHS = 30
@@ -44,7 +37,6 @@ SPLIT_PATH = PROJECT_ROOT / "models/split_indices_phase1_v1.json"
 INFERENCE_WARMUP = 10
 INFERENCE_RUNS = 100
 
-# ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -52,8 +44,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-# ── Utilities ─────────────────────────────────────────────────────────────────
 
 def set_seed(seed: int) -> None:
     """Fix random state for reproducible splits and baseline initialisation."""
@@ -96,8 +86,7 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
     preds, targets = [], []
     with torch.no_grad():
         for images, labels in loader:
-            # Collapse dual-channel (B+, B-) → single-channel |B| = B+ + B-.
-            # SolarDataset always returns (N, 2, H, W); baselines require (N, 1, H, W).
+            # Collapse (N, 2, H, W) B+/B- into the single |B| = B+ + B- channel the baselines expect.
             images_1ch = (images[:, 0:1, :, :] + images[:, 1:2, :, :]).to(device)
             out = model(images_1ch).squeeze(-1).cpu().numpy()
             preds.extend(out.tolist())
@@ -161,8 +150,6 @@ def train(model: nn.Module, train_loader: DataLoader, val_loader: DataLoader,
             )
 
 
-# ── Model builders ────────────────────────────────────────────────────────────
-
 def build_resnet18() -> nn.Module:
     """Adapt ResNet-18 from RGB classification to one-channel regression."""
     net = models.resnet18(weights=None)
@@ -175,8 +162,7 @@ def build_vgg11() -> nn.Module:
     """Adapt VGG-11 to one-channel regression with MPS-safe global pooling."""
     net = models.vgg11(weights=None)
     net.features[0] = nn.Conv2d(1, 64, kernel_size=3, padding=1)
-    # Implementation Detail: 512 px / 2^5 maxpools = 16 px spatial dim.
-    # 16 % 7 ≠ 0 triggers an MPS division error; (1,1) is always divisible.
+    # 512 px / 2^5 maxpools = 16 px; 16 % 7 != 0 breaks MPS, so pool to (1, 1).
     net.avgpool = nn.AdaptiveAvgPool2d((1, 1))
     net.classifier = nn.Sequential(
         nn.Linear(512, 256),
@@ -186,8 +172,6 @@ def build_vgg11() -> nn.Module:
     )
     return net
 
-
-# ── Naive Persistence ─────────────────────────────────────────────────────────
 
 class NaivePersistence:
     """Constant training-mean reference (historical name; not temporal persistence)."""
@@ -227,8 +211,6 @@ class NaivePersistence:
         return (time.perf_counter() - t0) / INFERENCE_RUNS * 1000
 
 
-# ── Resume helper ─────────────────────────────────────────────────────────────
-
 def _run_or_load(
     builder,
     weights_filename: str,
@@ -265,8 +247,6 @@ def _run_or_load(
     }
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
-
 def main() -> None:
     """Run clean-split baselines to a fresh unpromoted result directory."""
     set_seed(SEED)
@@ -301,7 +281,6 @@ def main() -> None:
         "models": {},
     }
 
-    # ── 1. Naive Persistence ──────────────────────────────────────────────────
     logger.info("\n=== [1/3] Naive Persistence ===")
     naive = NaivePersistence()
     naive.fit(train_loader)
@@ -318,21 +297,18 @@ def main() -> None:
         "weights_file": None,
     }
 
-    # ── 2. ResNet-18 ──────────────────────────────────────────────────────────
     logger.info("\n=== [2/3] ResNet-18 ===")
     results["models"]["resnet18"] = _run_or_load(
         build_resnet18, "resnet18_baseline.pth",
         train_loader, val_loader, device,
     )
 
-    # ── 3. VGG-11 ─────────────────────────────────────────────────────────────
     logger.info("\n=== [3/3] VGG-11 ===")
     results["models"]["vgg11"] = _run_or_load(
         build_vgg11, "vgg11_baseline.pth",
         train_loader, val_loader, device,
     )
 
-    # ── Save JSON ─────────────────────────────────────────────────────────────
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(RESULTS_PATH, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)

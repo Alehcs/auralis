@@ -14,7 +14,7 @@ from matplotlib.colors import Normalize
 import torch
 
 
-ROOT = Path(__file__).resolve().parent.parent  # auralis-back/
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from models.train_model import CoroniumV3 as Coronium  # noqa: E402
 from processing.model_input import normalize_field, prepare_model_input

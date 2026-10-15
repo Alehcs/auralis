@@ -1,9 +1,4 @@
-"""Training pipeline for the Coronium V3 PRO regressor.
-
-Coronium predicts the current sunspot proxy index from dual-channel HMI
-magnetograms. V3 PRO keeps the model small for local ONNX inference while adding
-ECA attention and activity-weighted loss to reduce quiet-Sun bias.
-"""
+"""Coronium V3 PRO training: compact dual-channel HMI CNN with ECA attention and activity-weighted loss."""
 
 import logging
 import sys
@@ -35,11 +30,7 @@ warnings.filterwarnings("ignore")
 
 
 class SolarAugmentation:
-    """Standard stochastic augmentation for non-extreme training samples.
-
-    Flips and small rotations preserve the visual morphology we need without
-    changing the target index.
-    """
+    """Standard stochastic augmentation (flips, small rotations) that preserves the target index."""
 
     def __init__(self) -> None:
         self.transforms = transforms.Compose([
@@ -54,12 +45,7 @@ class SolarAugmentation:
 
 
 class ExtremeAugmentation:
-    """Interpolation-free augmentation for high-activity solar magnetogram samples.
-
-    High-index samples are rare and carry sharp polarity boundaries. This path
-    uses only flips and 90-degree rotations so augmentation never interpolates
-    or blurs those boundaries.
-    """
+    """Interpolation-free augmentation (flips, 90° rotations) for rare, sharp-edged high-SI samples."""
 
     def __call__(self, img: torch.Tensor) -> torch.Tensor:
         """Apply stochastic isometric transforms without resampling pixels."""
@@ -80,12 +66,7 @@ class ExtremeAugmentation:
 
 
 class SolarDataset(Dataset):
-    """PyTorch Dataset wrapper for preprocessed dual-channel HMI magnetogram tensors.
-
-    Current samples are `(2, H, W)` arrays with B+ and B- channels. Older
-    single-channel arrays are converted at load time so historical datasets can
-    still be inspected, but new training data should come from `prepare_dataset`.
-    """
+    """Dataset of preprocessed (2, H, W) B+/B- tensors; legacy single-channel arrays are converted at load."""
 
     def __init__(
         self,
@@ -132,9 +113,7 @@ class SolarDataset(Dataset):
             self._extreme_aug is not None          # threshold active (train only)
             and target > self.extreme_threshold    # sample is high-activity
         ):
-            # Targeted augmentation: interpolation-free isometric transforms.
-            # Replaces base SolarAugmentation to avoid bilinear artefacts on
-            # the most informative (and rarest) high-index samples.
+            # Interpolation-free isometric transforms avoid bilinear artefacts on rare high-index samples.
             image_tensor = self._extreme_aug(image_tensor)
         elif self.transform:
             # Standard augmentation for normal samples (existing behaviour).
@@ -144,12 +123,7 @@ class SolarDataset(Dataset):
 
 
 class WeightedHuberLoss(nn.Module):
-    """Activity-aware Huber loss for solar magnetogram regression.
-
-    The target distribution is quiet-Sun heavy, so plain MSE underweights the
-    rare active-region cases. Huber caps outlier gradients, while `(1 + alpha*y)`
-    gives higher-index samples more influence without oversampling.
-    """
+    """Activity-aware Huber loss: caps outlier gradients; (1 + alpha*y) upweights rare high-index samples."""
 
     def __init__(self, delta: float = 1.0, alpha: float = 2.0) -> None:
         super().__init__()
@@ -167,10 +141,7 @@ def weighted_huber_loss(
     delta: float = 1.0,
     alpha: float = 2.0,
 ) -> torch.Tensor:
-    """Activity-proportional Huber loss for solar dynamic-range regression.
-
-    Formula: `mean((1 + alpha*y) * huber_delta(y_pred - y))`.
-    """
+    """Activity-proportional Huber loss: ``mean((1 + alpha*y) * huber_delta(y_pred - y))``."""
     residual = y_pred - y
     abs_residual = residual.abs()
 
@@ -184,11 +155,7 @@ def weighted_huber_loss(
 
 
 class ECAAttention(nn.Module):
-    """Lightweight channel attention via 1-D convolution (Wang et al., 2020).
-
-    ECA captures local cross-channel dependencies with only a few parameters,
-    which keeps attention affordable for the small ONNX target model.
-    """
+    """Lightweight ECA channel attention via 1-D convolution (Wang et al., 2020)."""
 
     def __init__(self, channels: int) -> None:
         super().__init__()
@@ -207,12 +174,7 @@ class ECAAttention(nn.Module):
 
 
 class V3ResidualBlock(nn.Module):
-    """Residual block with ECA attention for Coronium V3 PRO.
-
-    The skip projection only changes channel count; spatial structure is left
-    to the main 3x3 convolution. Dropout2d regularizes whole feature maps and is
-    also the source of MC Dropout uncertainty during validation.
-    """
+    """Residual block with ECA; Dropout2d regularises feature maps and drives MC Dropout uncertainty."""
 
     def __init__(
         self,
@@ -246,18 +208,12 @@ class V3ResidualBlock(nn.Module):
 
 
 class CoroniumV3(nn.Module):
-    """Four-stage residual CNN promoted as the V3 PRO architecture.
-
-    The 32/64/96/128 channel schedule is the model shape exported to ONNX. Global
-    average pooling keeps parameter count low and makes the head independent of
-    the input's final spatial size.
-    """
+    """Four-stage residual CNN (32/64/96/128 channels) with global average pooling, exported to ONNX."""
 
     def __init__(self, in_channels: int = 2, dropout_rate: float = 0.2) -> None:
         super().__init__()
 
-        # --- Backbone: four widened residual stages ----------------------------
-        # Schedule: 32 → 64 → 96 → 128 (up from 16 → 32 → 64 → 96)
+        # Backbone: four residual stages, 32 → 64 → 96 → 128 channels.
         self.stage1 = V3ResidualBlock(in_channels, 32, dropout_rate)   # 512→256
         self.pool1  = nn.MaxPool2d(kernel_size=2, stride=2)
 
@@ -270,13 +226,10 @@ class CoroniumV3(nn.Module):
         self.stage4 = V3ResidualBlock(96, 128, dropout_rate)           #  64→ 32
         self.pool4  = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        # --- Head: global pooling → dropout → regression ----------------------
-        # AdaptiveAvgPool collapses (N, 128, 32, 32) → (N, 128, 1, 1),
-        # avoiding parameter explosion from a raw Flatten.
+        # Head: global average pooling avoids the parameter explosion of a raw Flatten.
         self.global_avg_pool = nn.AdaptiveAvgPool2d((1, 1))
 
-        # Scalar dropout regularises the 128-d descriptor before the linear
-        # projection, complementing Dropout2d inside each residual block.
+        # Scalar dropout on the 128-d descriptor complements Dropout2d inside each block.
         self.head_dropout = nn.Dropout(p=0.3)
 
         # Final regression layer: 128 channels → 1 predicted sunspot index.
@@ -323,13 +276,7 @@ class EarlyStopping:
 
 
 def enable_mc_dropout(model: nn.Module) -> None:
-    """Switch model to MC Dropout inference mode.
-
-    Sets the model to eval mode (freezing BatchNorm running statistics) and
-    then re-enables all Dropout and Dropout2d layers so that T stochastic
-    forward passes produce an uncertainty estimate without corrupting BatchNorm
-    running statistics.
-    """
+    """MC Dropout mode: eval() freezes BatchNorm statistics, then Dropout layers are re-enabled."""
     model.eval()
     for module in model.modules():
         if isinstance(module, (nn.Dropout, nn.Dropout2d)):
@@ -358,13 +305,7 @@ def train_epoch(
     optimizer: optim.Optimizer,
     device: torch.device,
 ) -> Tuple[float, float]:
-    """Execute one full pass over the training DataLoader.
-
-    ``WeightedHuberLoss`` drives backpropagation. It combines Huber robustness
-    (capping gradient magnitude for large residuals) with activity-proportional
-    sample weighting, ensuring that rare high-activity observations receive
-    proportionally more gradient signal. MAE is tracked only for reporting.
-    """
+    """One training epoch; WeightedHuberLoss drives backprop, MAE is tracked only for reporting."""
     model.train()
     running_whl = 0.0
     running_mae = 0.0
@@ -400,13 +341,7 @@ def validate_epoch(
     device: torch.device,
     mc_passes: int = 20,
 ) -> Tuple[float, float]:
-    """Execute one full pass over the validation DataLoader with MC Dropout.
-
-    MC Dropout is activated via ``enable_mc_dropout``: BatchNorm layers use
-    frozen running statistics while Dropout2d layers remain stochastic.
-    ``mc_passes`` independent forward passes are averaged per batch, providing
-    an ensemble mean for the validation loss.
-    """
+    """One validation epoch averaging ``mc_passes`` MC Dropout passes with frozen BatchNorm statistics."""
     enable_mc_dropout(model)
     running_whl = 0.0
     running_mae = 0.0
@@ -509,9 +444,7 @@ def train_model(
             epoch, num_epochs, train_whl, val_whl, train_mae, val_mae, current_lr,
         )
 
-        # Save checkpoint on minimum val_mae (direct regression metric),
-        # not val_whl — ensures the saved weights correspond to the best
-        # selection by SI error (percentage points) rather than the loss landscape.
+        # Checkpoint on minimum val_mae (SI pp), not val_whl, so selection follows the regression error.
         if val_mae < best_val_mae:
             best_val_mae = val_mae
             torch.save(model.state_dict(), epoch_dir / f"best_epoch_{epoch:04d}.pth")
@@ -608,8 +541,7 @@ def main(run_dir: Optional[Path] = None) -> None:
         data_dir="data/processed",
         metadata_csv="data/processed/metadata_processed.csv",
         transform=None,
-        # extreme_threshold intentionally omitted (defaults to None):
-        # double lock — both transform and _extreme_aug are disabled for val.
+        # No extreme_threshold for val: transform and _extreme_aug both stay disabled (double lock).
     )
 
     split_path = Path("models/split_indices_phase1_v1.json")

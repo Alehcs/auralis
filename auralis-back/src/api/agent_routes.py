@@ -1,13 +1,4 @@
-"""Additive Agent Lab routes (read-only).
-
-These endpoints expose the Auralis Agent Lab audit layer. They are mounted on a
-separate ``APIRouter`` and included from ``main.py`` with a single
-``include_router`` call, so no existing route handler is touched.
-
-Every handler shares the dataset loader, catches :class:`AgentDataError`, and
-returns a structured 503 when a required artifact is missing — the existing API
-keeps working regardless of the Agent Lab's state.
-"""
+"""Read-only Agent Lab routes; missing artifacts return a structured 503 without affecting the existing API."""
 
 from __future__ import annotations
 

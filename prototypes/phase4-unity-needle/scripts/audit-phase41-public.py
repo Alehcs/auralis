@@ -22,8 +22,7 @@ def check(path):
         data = response.read()
         digest = hashlib.sha256(data).hexdigest()
         expected = path.read_bytes()
-        # Sites/Cloudflare may append its browser check before </body>.
-        # Keep the raw hash mismatch visible and verify the application HTML separately.
+        # Cloudflare may inject a browser check; keep the raw hash mismatch and verify app HTML separately.
         insertion = expected.find(b'</body>')
         html_application_matches = (name == 'index.html' and insertion >= 0
             and data.startswith(expected[:insertion]) and data.endswith(expected[insertion:]))

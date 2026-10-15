@@ -1,12 +1,4 @@
-"""XAI Review Agent (Phase 1 — lightweight).
-
-This agent deliberately does NOT run a full-dataset Grad-CAM sweep. Grad-CAM and
-the deletion-curve faithfulness metric are expensive (many forward passes per
-image), so Phase 1 only inventories what XAI assets exist and recommends a
-sampled/cached strategy for a later phase.
-
-It is explicit that Grad-CAM is post-hoc and correlational, never causal proof.
-"""
+"""XAI Review Agent: inventories XAI assets and plans a sampled sweep; Grad-CAM is correlational, not causal."""
 
 from __future__ import annotations
 
@@ -18,8 +10,7 @@ from models.serving_selection import IS_RELEASE_V32
 
 AGENT_NAME = "XAI Review Agent"
 
-# Existing XAI surfaces in the backend (src/api/main.py). Listed by route so the
-# frontend/coordinator can point at them without this agent calling them.
+# Existing XAI routes in src/api/main.py, listed for reference; this agent never calls them.
 _XAI_ASSETS = [
     "GET /api/xai/faithfulness  — Grad-CAM deletion curve + AUC (cached per file)",
     "GET /api/explain-panels/{filename}  — 3-panel B+ | B- | Grad-CAM figure",

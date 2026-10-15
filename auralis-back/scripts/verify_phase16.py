@@ -1,7 +1,4 @@
-"""Verify V3.1 provenance, real HTTP inference and preservation; no retraining.
-
-Use --output with a fresh filename to preserve earlier verification evidence.
-"""
+"""Verify V3.1 provenance, real HTTP inference and preservation; no retraining."""
 
 import argparse
 import json
