@@ -16,3 +16,9 @@ venv/
 /prototypes/phase4-unity-needle/evidence/**/*.zip
 /prototypes/phase4-unity-needle/evidence/qr-private-url.png
 /deployments/dashboard-sites/.git/
+
+# Kept locally, not versioned
+/docs/
+/demo_assets/
+/deployments/dashboard-sites/
+/scripts/
